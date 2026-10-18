@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>قاموس سترونج — مكتبة دراسة الشواهد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="spage"><div class="top"><a href="index.html">← مكتبة دراسة الشواهد</a><span id="stt" class="pill str"></span></div><div id="out"></div></div>
+<script src="assets/strong.js"></script>
+<script src="assets/sidx.js"></script>
+<script>
+const AR={"Gen": "التكوين", "Exo": "الخروج", "Lev": "اللاويين", "Num": "العدد", "Deu": "التثنية", "Jos": "يشوع", "Jdg": "القضاة", "Rut": "راعوث", "1Sa": "صموئيل الأول", "2Sa": "صموئيل الثاني", "1Ki": "الملوك الأول", "2Ki": "الملوك الثاني", "1Ch": "أخبار الأيام الأول", "2Ch": "أخبار الأيام الثاني", "Ezr": "عزرا", "Neh": "نحميا", "Est": "أستير", "Job": "أيوب", "Psa": "المزامير", "Pro": "الأمثال", "Ecc": "الجامعة", "Son": "نشيد الأنشاد", "Isa": "إشعياء", "Jer": "إرميا", "Lam": "مراثي إرميا", "Eze": "حزقيال", "Dan": "دانيال", "Hos": "هوشع", "Joe": "يوئيل", "Amo": "عاموس", "Oba": "عوبديا", "Jon": "يونان", "Mic": "ميخا", "Nah": "ناحوم", "Hab": "حبقوق", "Zep": "صفنيا", "Hag": "حجي", "Zec": "زكريا", "Mal": "ملاخي", "Mat": "متى", "Mar": "مرقس", "Luk": "لوقا", "Joh": "يوحنا", "Act": "أعمال الرسل", "Rom": "رومية", "1Co": "كورنثوس الأولى", "2Co": "كورنثوس الثانية", "Gal": "غلاطية", "Eph": "أفسس", "Phi": "فيلبي", "Col": "كولوسي", "1Th": "تسالونيكي الأولى", "2Th": "تسالونيكي الثانية", "1Ti": "تيموثاوس الأولى", "2Ti": "تيموثاوس الثانية", "Tit": "تيطس", "Phm": "فليمون", "Heb": "العبرانيين", "Jam": "يعقوب", "1Pe": "بطرس الأولى", "2Pe": "بطرس الثانية", "1Jo": "يوحنا الأولى", "2Jo": "يوحنا الثانية", "3Jo": "يوحنا الثالثة", "Jud": "يهوذا", "Rev": "الرؤيا"};
+const PS=30;
+const $=s=>document.querySelector(s);
+const n=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const isHeb=x=>x[0]==="H";
+const link=h=>h.replace(/\b([GH]\d+)\b/g,m=>STRONG[m]?`<a class="sref" href="#${m}">${m}</a>`:m);
+const plural=(k,one,two,few,many)=>k===1?one:k===2?two:(k>=3&&k<=10)?`${n(k)} ${few}`:`${n(k)} ${many}`;
+let S={num:"",book:"all",page:1,rows:[]};
+function hl(text,words){let t=esc(text);for(const w of words){const e=esc(w);if(e)t=t.split(e).join("<mark>"+e+"</mark>")}return t}
+function load(){
+  const num=decodeURIComponent(location.hash.replace(/^#\/?/,"")).toUpperCase().trim();
+  S.num=num;S.page=1;S.book="all";
+  S.rows=(window.SIDX||[]).filter(x=>x[4]).map(x=>({x,ws:x[4].filter(a=>a[1].includes(num)).map(a=>a[0])})).filter(o=>o.ws.length);
+  render();
+}
+function render(){
+  const num=S.num,e=STRONG[num];
+  document.title="سترونج "+num;
+  $("#stt").textContent="سترونج "+num;
+  const per={};S.rows.forEach(o=>{per[o.x[0]]=(per[o.x[0]]||0)+1});
+  const rows=S.book==="all"?S.rows:S.rows.filter(o=>o.x[0]===S.book);
+  const pages=Math.max(1,Math.ceil(rows.length/PS)); if(S.page>pages)S.page=pages;
+  const cur=rows.slice((S.page-1)*PS,S.page*PS);
+  const dent=e?`<div class="dent"><div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span></div>
+    <div class="cols"><div class="col arc"><h5>المعنى بالعربية</h5><div class="tx">${e.ar?link(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد.</span>`}</div></div>
+    <div class="col enc"><h5>Strong's Dictionary (English)</h5><div class="tx">${link(e.d)}</div></div></div></div>`
+    :`<div class="dent"><div class="hd"><span class="num">${esc(num)}</span></div><p class="na">هذا المدخل غير متاح.</p></div>`;
+  const opts=`<option value="all">كل الأسفار (${n(S.rows.length)})</option>`+Object.keys(per).map(a=>`<option value="${a}" ${S.book===a?"selected":""}>${AR[a]||a} (${n(per[a])})</option>`).join("");
+  let pg="";
+  if(pages>1){const set=new Set([1,pages]);for(let i=S.page-2;i<=S.page+2;i++)if(i>=1&&i<=pages)set.add(i);
+    const ps=[...set].sort((a,b)=>a-b);let prev=0;
+    pg=`<div class="pager"><button data-p="${S.page-1}" ${S.page<=1?"disabled":""}>السابق →</button>`+ps.map(i=>{const gap=prev&&i-prev>1?"<span>…</span>":"";prev=i;return gap+`<button data-p="${i}" class="${i===S.page?"on":""}">${n(i)}</button>`}).join("")+`<button data-p="${S.page+1}" ${S.page>=pages?"disabled":""}>← التالي</button></div>`}
+  $("#out").innerHTML=`<section class="dict">${dent}</section>
+    <div class="sum"><b>${plural(rows.length,"عدد واحد","عددان","أعداد","عددًا")}</b><span class="pill">تَرِد فيها هذه الكلمة</span><select id="bk">${opts}</select><span class="pill">صفحة ${n(S.page)} من ${n(pages)}</span></div>`+
+    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${hl(x[3],o.ws)}</div></div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg;
+}
+document.addEventListener("click",e=>{const b=e.target.closest(".pager button");if(b&&!b.disabled){S.page=+b.dataset.p;render();window.scrollTo({top:0,behavior:"smooth"})}});
+document.addEventListener("change",e=>{if(e.target.id==="bk"){S.book=e.target.value;S.page=1;render()}});
+window.addEventListener("hashchange",load);
+load();
+</script>
+</body>
+</html>
