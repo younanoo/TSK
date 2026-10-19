@@ -1,0 +1,1 @@
+window.OL=window.OL||{};window.OL["Hag"]=[[1,"A Call to Rebuild the Temple","دعوة إلى بناء الهيكل",1,1,1,11],[1,"Zerubbabel and the People Obey","زربابل والشعب يطيعون",1,12,1,15],[1,"The Coming Glory of God’s House","مجد البيت الآتي",2,1,2,9],[1,"Blessings for a Defiled People","بركات لشعب نجس",2,10,2,19],[1,"Zerubbabel the LORD’s Signet Ring","زربابل خاتم الرب",2,20,2,23]];

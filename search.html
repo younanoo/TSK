@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بحث عن كلمة — مكتبة دراسة الشواهد</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+html,body{overflow-x:clip;padding:0}
+.srch{max-width:900px;margin:0 auto;padding:18px 16px 70px}
+.srch h1{font:700 22px var(--ui);margin:0 0 4px}.srch .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.sform{display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:12px}
+.sform input[type=search]{flex:1 1 220px;min-width:0;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:10px 12px;font:16px var(--ui)}
+.sform button{font:inherit;padding:9px 16px;border:1px solid var(--gold);border-radius:12px;background:var(--gold-soft);color:var(--ink);cursor:pointer}
+.sform a{color:var(--muted);text-decoration:none;font-size:13.5px}
+.opts{display:flex;gap:14px;flex-wrap:wrap;width:100%;font-size:14px}
+.opts label{cursor:pointer;display:flex;gap:6px;align-items:center}
+.meta{color:var(--muted);font-size:13.5px;margin:0 0 10px}
+.bk{margin:18px 0 6px;font:700 15px var(--ui);color:var(--gold);display:flex;gap:8px;align-items:baseline}
+.bk small{color:var(--muted);font-weight:500}
+.rootbox{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 14px;margin:0 0 12px}.rootbox summary{cursor:pointer;font:600 13px var(--ui);color:var(--accent)}.forms{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font:17px var(--ui)}.forms label{cursor:pointer;display:flex;gap:4px;align-items:center}.forms small{color:#888;font-size:12px}
+.hit{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.hit:hover{border-color:var(--gold);background:var(--gold-soft)}
+.hit b{display:block;font:600 13px var(--ui);color:var(--accent);margin-bottom:2px}
+.hit .t{font:20px/1.9 "Amiri","Noto Naskh Arabic",serif}
+mark{background:var(--gold-soft);color:inherit;box-shadow:0 0 0 2px var(--gold-soft);border-bottom:2px solid var(--gold);border-radius:2px;padding:0 1px}
+.bks{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:6px 12px}
+.bks summary{cursor:pointer;font-size:14px;padding:4px 0}
+.bks .tools{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.bks .tools button{padding:5px 12px;font-size:13px;border-radius:999px;background:var(--bg);border-color:var(--line)}
+.bgrp{margin:8px 0;border-top:1px dashed var(--line);padding-top:6px}
+.bgrp>label{font-weight:700;color:var(--gold)}
+.bgrp .bl{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px}
+.bks label{display:flex;gap:5px;align-items:center;cursor:pointer;white-space:nowrap;font-size:13.5px}
+.bks input{width:auto;margin:0}
+.more{display:block;margin:14px auto;font:inherit;padding:9px 22px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer}
+</style></head><body>
+<div class="srch">
+<h1>🔍 البحث عن كلمة</h1>
+<p class="sub">في نص فاندايك فقط</p>
+<form class="sform" id="f" action="search.html" method="get">
+<input type="search" id="q" name="q" placeholder="اكتب الكلمة أو العبارة" autocomplete="off" aria-label="كلمة البحث">
+<button type="submit">🔍 بحث</button><a href="index.html">← المكتبة</a>
+<div class="opts"><label><input type="radio" name="m" value="part"> جزء من الكلمة (يحتوي النص)</label><label><input type="radio" name="m" value="exact"> الكلمة كما كتبتها تمامًا</label><label><input type="radio" name="m" value="root"> بالجذر (كل اشتقاقات الكلمة)</label></div>
+<details class="bks" id="bks"><summary id="bksum">الأسفار: الكل</summary><div class="tools"><button type="button" id="ball">تحديد الكل</button><button type="button" id="bnone">إلغاء الكل</button></div><div id="bgrps"></div></details>
+<input type="hidden" name="b" id="bval">
+</form>
+<p class="meta" id="meta">جاري تحميل نص فاندايك…</p>
+<div id="res"></div>
+</div>
+<script src="assets/tx_svd.js"></script>
+<script>
+const ABBR="Gen Exo Lev Num Deu Jos Jdg Rut 1Sa 2Sa 1Ki 2Ki 1Ch 2Ch Ezr Neh Est Job Psa Pro Ecc Son Isa Jer Lam Eze Dan Hos Joe Amo Oba Jon Mic Nah Hab Zep Hag Zec Mal Mat Mar Luk Joh Act Rom 1Co 2Co Gal Eph Phi Col 1Th 2Th 1Ti 2Ti Tit Phm Heb Jam 1Pe 2Pe 1Jo 2Jo 3Jo Jud Rev".split(" ");
+const AR = {Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
+const $=s=>document.querySelector(s);
+const nAr=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const BKGRP=[["التوراة (الخمسة)",1,5],["الأسفار التاريخية",6,17],["أسفار الشعر والحكمة",18,22],["الأنبياء الكبار",23,27],["الأنبياء الصغار",28,39],["الأناجيل وأعمال الرسل",40,44],["رسائل بولس",45,57],["الرسائل العامة",58,65],["الرؤيا",66,66]];
+const sp=new URLSearchParams(location.search);
+const selParam=(sp.get("b")||"").split(",").filter(a=>ABBR.includes(a));
+const SEL=new Set(selParam.length?selParam:ABBR);
+(function(){
+  const g=$("#bgrps");
+  g.innerHTML=BKGRP.map(([t,a,z],gi)=>'<div class="bgrp"><label><input type="checkbox" data-g="'+gi+'"> '+t+'</label><div class="bl">'+ABBR.map((ab,i)=>({ab,id:i+1})).filter(x=>x.id>=a&&x.id<=z).map(x=>'<label><input type="checkbox" class="bc" value="'+x.ab+'" '+(SEL.has(x.ab)?"checked":"")+'> '+AR[x.ab]+'</label>').join("")+'</div></div>').join("");
+  const bcs=()=>[...g.querySelectorAll(".bc")];
+  function sync(){
+    const on=bcs().filter(x=>x.checked).map(x=>x.value);
+    g.querySelectorAll("input[data-g]").forEach(c=>{const ks=[...c.closest(".bgrp").querySelectorAll(".bc")];c.checked=ks.every(k=>k.checked);c.indeterminate=!c.checked&&ks.some(k=>k.checked)});
+    $("#bsum")&&0; $("#bksum").textContent="الأسفار: "+(on.length===ABBR.length?"الكل":on.length===0?"لم يتم اختيار أي سفر":nAr(on.length)+" من "+nAr(ABBR.length));
+    $("#bval").value=on.length===ABBR.length?"":on.join(",");
+  }
+  g.addEventListener("change",e=>{const t=e.target;if(t.dataset.g!=null){t.closest(".bgrp").querySelectorAll(".bc").forEach(k=>k.checked=t.checked)}sync()});
+  $("#ball").addEventListener("click",()=>{bcs().forEach(k=>k.checked=true);sync()});
+  $("#bnone").addEventListener("click",()=>{bcs().forEach(k=>k.checked=false);sync()});
+  $("#f").addEventListener("submit",e=>{if(!bcs().some(k=>k.checked)){e.preventDefault();$("#bks").open=true;$("#bksum").textContent="اختر سفرًا واحدًا على الأقل"}});
+  if(selParam.length&&selParam.length<ABBR.length)$("#bks").open=true;
+  sync();
+})();
+let mode=sp.get("m"); if(!["exact","part","root"].includes(mode)){try{mode=JSON.parse(localStorage.getItem("tsklib:smode"))||"part"}catch(e){mode="part"}}
+if(!["exact","part","root"].includes(mode))mode="part";
+try{localStorage.setItem("tsklib:smode",JSON.stringify(mode))}catch(e){}
+const Q=(sp.get("q")||"").trim();
+$("#q").value=Q; document.querySelector('input[name=m][value='+mode+']').checked=true;
+document.querySelectorAll("input[name=m]").forEach(r=>r.addEventListener("change",()=>{try{localStorage.setItem("tsklib:smode",JSON.stringify(r.value))}catch(e){}}));
+/* تطبيع: إزالة التشكيل والتطويل، وتوحيد الألف والياء والتاء المربوطة */
+const MAP={"أ":"ا","إ":"ا","آ":"ا","ٱ":"ا","ى":"ي","ة":"ه","ؤ":"و","ئ":"ي"};
+const DROP=/[\u064B-\u065F\u0670\u0640]/;
+const isL=c=>/[\u0621-\u064A0-9A-Za-z]/.test(c);
+function norm(s){let o="",m=[];for(let i=0;i<s.length;i++){const c=s[i];if(DROP.test(c))continue;o+=MAP[c]||c;m.push(i)}return [o,m]}
+
+/* بحث بالجذر: roots.js يحوي خريطة كلمة→جذور */
+const MN={part:"جزء من الكلمة",exact:"الكلمة كما هي",root:"بالجذر"};
+function loadRoots(cb){if(window.RT)return cb();const s=document.createElement("script");s.src="assets/roots.js";s.onload=cb;s.onerror=()=>{$("#meta").textContent="تعذر تحميل فهرس الجذور.";};document.head.appendChild(s)}
+let REV=null;
+function buildRev(){if(REV)return;REV={};for(const w in window.RT){window.RT[w].split(",").forEach(r=>{(REV[r]=REV[r]||[]).push(w)})}}
+function qRoots(q){let rs=new Set();const m=window.RT[q];if(m)m.split(",").forEach(r=>rs.add(r));
+  const cand=[q];if(q.length===2)cand.push(q+q[1]);
+  for(let i=0;i<q.length;i++)if(q[i]==="ا"){const h=q.slice(0,i)+"ء"+q.slice(i+1);cand.push(h);if(q.length===2)cand.push(h+h[1])}
+  if(q.endsWith("ه")||q.endsWith("ا"))cand.push(q.slice(0,-1)+"ء");
+  cand.forEach(c=>{if(REV[c])rs.add(c)});
+  if(q.length>=2&&q.length<=4&&!m){/* قد يكون المستخدم كتب الجذر نفسه */}
+  return [...rs]}
+function runRoot(){
+  const meta=$("#meta"),res=$("#res"),T=window.TX.svd;
+  const qs=norm(Q)[0].split(/[^ء-ي0-9A-Za-z]+/).filter(Boolean);
+  if(!qs.length){meta.textContent="نص البحث غير صالح.";return}
+  buildRev();
+  const groups=qs.map(q=>{const rs=qRoots(q);const ws=new Set([q]);rs.forEach(r=>REV[r]&&REV[r].forEach(w=>ws.add(w)));return {q,rs,ws}});
+  const rootsTxt=[...new Set(groups.flatMap(g=>g.rs))];
+  const form={};/* كل صيغة مطابقة وعدد مرات ورودها */
+  const verses=[];
+  ABBR.forEach(a=>{if(!SEL.has(a))return;const bk=T[a];if(!bk)return;
+    Object.keys(bk).forEach(k=>{const raw=bk[k],[nt,mp]=norm(raw);const toks=[];const re=/[ء-ي0-9A-Za-z]+/g;let m;
+      while((m=re.exec(nt))){toks.push([m[0],m.index,m.index+m[0].length])}
+      const hitsBy=groups.map(g=>toks.filter(t=>g.ws.has(t[0])));
+      if(hitsBy.every(h=>h.length)){verses.push({a,k,raw,mp,hits:hitsBy.flat()});hitsBy.flat().forEach(t=>{form[t[0]]=(form[t[0]]||0)+1})}})});
+  const forms=Object.keys(form).sort((x,y)=>form[y]-form[x]);
+  const off=new Set(),roff=new Set(),qset=new Set(qs);
+  const ok=f=>!off.has(f)&&(qset.has(f)||!window.RT[f]||window.RT[f].split(',').some(r=>!roff.has(r)||!rootsTxt.includes(r)));
+  const box=document.createElement("details");box.className="rootbox";box.open=forms.length>1;
+  function drawResults(){
+    const list=verses.map(v=>({...v,use:v.hits.filter(t=>ok(t[0]))})).filter(v=>v.use.length);
+    const by={};list.forEach(v=>{(by[v.a]=by[v.a]||[]).push(v)});
+    const occ=list.reduce((s,v)=>s+v.use.length,0);
+    meta.textContent=list.length?("وُجد «"+Q+"» بالجذر"+(rootsTxt.length?" ("+rootsTxt.join("، ")+")":"")+" في "+nAr(list.length)+" آية ("+nAr(occ)+" موضع)"):("لا توجد نتائج لـ «"+Q+"» بالجذر.");
+    const flat=[];ABBR.forEach(a=>{if(!by[a])return;flat.push({head:a,count:by[a].length});by[a].sort((x,y)=>{const[c1,v1]=x.k.split(":"),[c2,v2]=y.k.split(":");return c1-c2||v1-v2}).forEach(v=>flat.push({a,v}))});
+    res.innerHTML="";let shown=0;const STEP=150;
+    function more(){let html="",cnt=0;const b=document.getElementById("moreBtn");if(b)b.remove();
+      while(shown<flat.length&&cnt<STEP){const it=flat[shown++];
+        if(it.head){html+='<div class="bk">'+esc(AR[it.head])+'<small>'+nAr(it.count)+' آية</small></div>'}
+        else{cnt++;const v=it.v,sp=v.use.map(t=>[v.mp[t[1]],v.mp[t[2]-1]+1]).sort((x,y)=>x[0]-y[0]);let h="",p=0;sp.forEach(([s,e])=>{if(s<p)return;h+=esc(v.raw.slice(p,s))+"<mark>"+esc(v.raw.slice(s,e))+"</mark>";p=e});h+=esc(v.raw.slice(p));
+          const [c,vv]=v.k.split(":");html+='<a class="hit" target="_blank" rel="noopener" href="'+it.a+'.html#/'+it.a+'/'+c+':'+vv+'"><b>'+esc(AR[it.a])+' '+nAr(c)+': '+nAr(vv)+'</b><span class="t">'+h+'</span></a>'}}
+      res.insertAdjacentHTML("beforeend",html);
+      if(shown<flat.length){res.insertAdjacentHTML("beforeend",'<button class="more" id="moreBtn">عرض المزيد</button>');document.getElementById("moreBtn").addEventListener("click",more)}}
+    more();
+  }
+  if(rootsTxt.length>1){const rb=document.createElement("div");rb.className="rootbox";rb.innerHTML='<b style="font:600 13px var(--ui);color:var(--accent)">الجذور المحتملة:</b> <span class="forms" style="display:inline-flex">'+rootsTxt.map(r=>'<label><input type="checkbox" checked data-r="'+esc(r)+'"> '+esc(r)+'</label>').join("")+'</span>';
+    meta.insertAdjacentElement("afterend",rb);rb.addEventListener("change",e=>{const r=e.target.dataset.r;if(r==null)return;e.target.checked?roff.delete(r):roff.add(r);drawResults()})}
+  if(forms.length){box.innerHTML='<summary>الصيغ المطابقة ('+nAr(forms.length)+') — ألغِ تحديد ما لا يخصّ المعنى</summary><div class="forms">'+forms.map(f=>'<label><input type="checkbox" checked data-f="'+esc(f)+'"> '+esc(f)+' <small>'+nAr(form[f])+'</small></label>').join("")+'</div>';
+    meta.insertAdjacentElement("afterend",box);
+    box.addEventListener("change",e=>{const f=e.target.dataset.f;if(f==null)return;e.target.checked?off.delete(f):off.add(f);drawResults()})}
+  drawResults();
+}
+function run(){
+  const meta=$("#meta"),res=$("#res");
+  if(!Q){meta.textContent="اكتب كلمة أو عبارة للبحث عنها في نص فاندايك، واختر طريقة المطابقة والأسفار من الأعلى.";$("#q").focus();return}
+  document.title="بحث: "+Q+" — مكتبة دراسة الشواهد";
+  const T=window.TX&&window.TX.svd; if(!T){meta.textContent="تعذر تحميل نص فاندايك.";return}
+  if(mode==="root"){loadRoots(runRoot);return}
+  const qn=norm(Q)[0].replace(/\s+/g," ").trim(); if(!qn){meta.textContent="نص البحث غير صالح.";return}
+  const hits=[]; let total=0;
+  ABBR.forEach(a=>{if(!SEL.has(a))return;const bk=T[a];if(!bk)return;const list=[];
+    Object.keys(bk).forEach(k=>{const raw=bk[k],[nt,mp]=norm(raw);let from=0,spans=[];
+      for(;;){const i=nt.indexOf(qn,from);if(i<0)break;const j=i+qn.length;
+        if(mode==="exact"){if((i>0&&isL(nt[i-1]))||(j<nt.length&&isL(nt[j]))){from=i+1;continue}}
+        spans.push([mp[i],(mp[j-1]!=null?mp[j-1]+1:raw.length)]);from=j}
+      if(spans.length){let h="",p=0;spans.forEach(([s,e])=>{h+=esc(raw.slice(p,s))+"<mark>"+esc(raw.slice(s,e))+"</mark>";p=e});h+=esc(raw.slice(p));
+        const [c,v]=k.split(":");list.push({k,c:+c,v:+v,h,n:spans.length})}});
+    if(list.length){list.sort((x,y)=>x.c-y.c||x.v-y.v);hits.push([a,list]);total+=list.length}});
+  const occ=hits.reduce((s,[,l])=>s+l.reduce((t,x)=>t+x.n,0),0);
+  const scope=SEL.size===ABBR.length?"":" — في "+nAr(SEL.size)+" من "+nAr(ABBR.length)+" سفرًا";
+  meta.textContent=total?("وُجد «"+Q+"» في "+nAr(total)+" آية ("+nAr(occ)+" موضع) — "+(mode==="exact"?"الكلمة كما هي":"جزء من الكلمة")+scope):("لا توجد نتائج لـ «"+Q+"» ("+(mode==="exact"?"الكلمة كما هي":"جزء من الكلمة")+")"+scope+".");
+  const flat=[];hits.forEach(([a,l])=>{flat.push({head:a,count:l.length});l.forEach(x=>flat.push({a,x}))});
+  let shown=0;const STEP=150;
+  function more(){let html="",cnt=0;const b=document.getElementById("moreBtn");if(b)b.remove();
+    while(shown<flat.length&&cnt<STEP){const it=flat[shown++];
+      if(it.head){html+='<div class="bk">'+esc(AR[it.head])+'<small>'+nAr(it.count)+' آية</small></div>'}
+      else{cnt++;html+='<a class="hit" target="_blank" rel="noopener" href="'+it.a+'.html#/'+it.a+'/'+it.x.c+':'+it.x.v+'"><b>'+esc(AR[it.a])+' '+nAr(it.x.c)+': '+nAr(it.x.v)+'</b><span class="t">'+it.x.h+'</span></a>'}}
+    res.insertAdjacentHTML("beforeend",html);
+    if(shown<flat.length){res.insertAdjacentHTML("beforeend",'<button class="more" id="moreBtn">عرض المزيد</button>');document.getElementById("moreBtn").addEventListener("click",more)}}
+  more();
+}
+run();
+</script></body></html>

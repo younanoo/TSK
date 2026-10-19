@@ -1,0 +1,1 @@
+window.OL=window.OL||{};window.OL["2Jo"]=[[1,"A Greeting from the Elder","تحية من الشيخ",1,1,1,3],[1,"Walking in Truth: Love One Another","السلوك في الحق: أحبوا بعضكم بعضا",1,4,1,6],[1,"Beware Deceivers","احذروا المضلين",1,7,1,11],[1,"Conclusion","الخاتمة",1,12,1,13]];

@@ -1,0 +1,1 @@
+window.OL=window.OL||{};window.OL["Phm"]=[[1,"Greetings from Paul and Timothy","تحية من بولس وتيموثاوس",1,1,1,3],[1,"Philemon’s Faith and Love","إيمان فليمون ومحبته",1,4,1,7],[1,"Paul's Appeal for Onesimus","مناشدة بولس من أجل أنسيمس",1,8,1,22],[1,"Final Greetings","التحيات الأخيرة",1,23,1,25]];

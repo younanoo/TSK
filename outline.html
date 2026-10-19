@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مخطط السفر — مكتبة دراسة الشواهد</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+html,body{overflow-x:clip;padding:0}
+.ol{max-width:900px;margin:0 auto;padding:18px 16px 70px}
+.ol h1{font:700 22px var(--ui);margin:0 0 4px}.ol .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.ol .top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.ol .top a,.ol .top select{font:14px var(--ui)}
+.ol .top a{color:var(--muted);text-decoration:none}
+.ol .src{margin-top:22px;color:var(--muted);font-size:12.5px;line-height:1.7}
+.olr .orc{font:12px var(--ui);color:var(--muted)}
+.ol .olr{border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-bottom:6px}
+.ol .olr.l2{margin-inline-start:22px}.ol .olr.l3{margin-inline-start:44px}.ol .olr.l4{margin-inline-start:66px}
+</style></head><body>
+<div class="ol">
+<h1 id="h">📑 مخطط السفر</h1>
+<p class="sub" id="sub"></p>
+<div class="top"><a href="index.html">← المكتبة</a><a id="bk" href="#">فتح السفر</a><select id="sel" aria-label="السفر"></select></div>
+<div id="list"></div>
+<p class="src">المخطط من «Berean Study Bible — Book Outlines» (Bible Hub)، وعناوينه بالإنجليزية مترجمة إلى العربية. الأرقام هي المقاطع داخل السفر وفق ترقيم الترجمات الإنجليزية.</p>
+</div>
+<script>
+const BOOKS=[{"a":"Gen","n":"التكوين","nc":50},{"a":"Exo","n":"الخروج","nc":40},{"a":"Lev","n":"اللاويين","nc":27},{"a":"Num","n":"العدد","nc":36},{"a":"Deu","n":"التثنية","nc":34},{"a":"Jos","n":"يشوع","nc":24},{"a":"Jdg","n":"القضاة","nc":21},{"a":"Rut","n":"راعوث","nc":4},{"a":"1Sa","n":"صموئيل الأول","nc":31},{"a":"2Sa","n":"صموئيل الثاني","nc":24},{"a":"1Ki","n":"الملوك الأول","nc":22},{"a":"2Ki","n":"الملوك الثاني","nc":25},{"a":"1Ch","n":"أخبار الأيام الأول","nc":29},{"a":"2Ch","n":"أخبار الأيام الثاني","nc":36},{"a":"Ezr","n":"عزرا","nc":10},{"a":"Neh","n":"نحميا","nc":13},{"a":"Est","n":"أستير","nc":10},{"a":"Job","n":"أيوب","nc":42},{"a":"Psa","n":"المزامير","nc":150},{"a":"Pro","n":"الأمثال","nc":31},{"a":"Ecc","n":"الجامعة","nc":12},{"a":"Son","n":"نشيد الأنشاد","nc":8},{"a":"Isa","n":"إشعياء","nc":66},{"a":"Jer","n":"إرميا","nc":52},{"a":"Lam","n":"مراثي إرميا","nc":5},{"a":"Eze","n":"حزقيال","nc":48},{"a":"Dan","n":"دانيال","nc":12},{"a":"Hos","n":"هوشع","nc":14},{"a":"Joe","n":"يوئيل","nc":3},{"a":"Amo","n":"عاموس","nc":9},{"a":"Oba","n":"عوبديا","nc":1},{"a":"Jon","n":"يونان","nc":4},{"a":"Mic","n":"ميخا","nc":7},{"a":"Nah","n":"ناحوم","nc":3},{"a":"Hab","n":"حبقوق","nc":3},{"a":"Zep","n":"صفنيا","nc":3},{"a":"Hag","n":"حجي","nc":2},{"a":"Zec","n":"زكريا","nc":14},{"a":"Mal","n":"ملاخي","nc":4},{"a":"Mat","n":"متى","nc":28},{"a":"Mar","n":"مرقس","nc":16},{"a":"Luk","n":"لوقا","nc":24},{"a":"Joh","n":"يوحنا","nc":21},{"a":"Act","n":"أعمال الرسل","nc":28},{"a":"Rom","n":"رومية","nc":16},{"a":"1Co","n":"كورنثوس الأولى","nc":16},{"a":"2Co","n":"كورنثوس الثانية","nc":13},{"a":"Gal","n":"غلاطية","nc":6},{"a":"Eph","n":"أفسس","nc":6},{"a":"Phi","n":"فيلبي","nc":4},{"a":"Col","n":"كولوسي","nc":4},{"a":"1Th","n":"تسالونيكي الأولى","nc":5},{"a":"2Th","n":"تسالونيكي الثانية","nc":3},{"a":"1Ti","n":"تيموثاوس الأولى","nc":6},{"a":"2Ti","n":"تيموثاوس الثانية","nc":4},{"a":"Tit","n":"تيطس","nc":3},{"a":"Phm","n":"فليمون","nc":1},{"a":"Heb","n":"العبرانيين","nc":13},{"a":"Jam","n":"يعقوب","nc":5},{"a":"1Pe","n":"بطرس الأولى","nc":5},{"a":"2Pe","n":"بطرس الثانية","nc":3},{"a":"1Jo","n":"يوحنا الأولى","nc":5},{"a":"2Jo","n":"يوحنا الثانية","nc":1},{"a":"3Jo","n":"يوحنا الثالثة","nc":1},{"a":"Jud","n":"يهوذا","nc":1},{"a":"Rev","n":"الرؤيا","nc":22}];
+const OLB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
+const AR="٠١٢٣٤٥٦٧٨٩",n=x=>String(x).replace(/\d/g,d=>AR[d]);
+const abbr=new URLSearchParams(location.search).get("b")||"Jon";
+const book=BOOKS.find(x=>x.a===abbr)||BOOKS.find(x=>x.a==="Jon");
+const sel=document.getElementById("sel");
+sel.innerHTML=BOOKS.filter(x=>OLB.includes(x.a)).map(x=>'<option value="'+x.a+'"'+(x.a===book.a?" selected":"")+'>'+x.n+'</option>').join("");
+sel.onchange=()=>location.search="?b="+sel.value;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=r=>r[3]===r[5]?n(r[3])+": "+n(r[4])+"–"+n(r[6]):n(r[3])+": "+n(r[4])+" – "+n(r[5])+": "+n(r[6]);
+document.title="مخطط سفر "+book.n+" — مكتبة دراسة الشواهد";
+document.getElementById("h").textContent="📑 مخطط سفر "+book.n;
+document.getElementById("bk").href=book.a+".html";document.getElementById("bk").textContent="فتح سفر "+book.n+" ↗";
+const s=document.createElement("script");s.src="assets/ol_"+book.a+".js";
+s.onload=()=>{const O=window.OL[book.a];
+ document.getElementById("sub").textContent=n(O.filter(r=>r[0]===1).length)+" أقسام رئيسية · "+n(O.length)+" عنوانًا";
+ document.getElementById("list").innerHTML=O.map(r=>'<a class="olr l'+r[0]+'" href="'+book.a+'.html#/'+book.a+'/'+r[3]+':'+r[4]+'"><span class="ort">'+esc(r[2]||r[1])+'</span><span class="ore ltr">'+esc(r[1])+'</span><span class="orn">'+fmt(r)+'</span></a>').join("")};
+document.body.appendChild(s);
+</script></body></html>

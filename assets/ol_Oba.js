@@ -1,0 +1,1 @@
+window.OL=window.OL||{};window.OL["Oba"]=[[1,"The Judgment of Edom","دينونة أدوم",1,1,1,14],[2,"The Destruction of Edom","خراب أدوم",1,1,1,9],[2,"The Sin of Edom","خطية أدوم",1,10,1,14],[1,"The Day of the LORD for All Nations","يوم الرب على جميع الأمم",1,15,1,21],[2,"Destruction of the Nations","هلاك الأمم",1,15,1,16],[2,"The Deliverance of Israel","نجاة إسرائيل",1,17,1,21]];
