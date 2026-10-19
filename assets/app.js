@@ -76,15 +76,29 @@ const doneOf = vs => vs.filter(d=>S.done[K(d.b,d.c,d.v)]).length;
 const inCh = (b,c) => b.verses.filter(d=>d.c===c);
 const pct = (a,b)=>n(Math.round(a/b*100))+"٪";
 
+const BKGRP=[["التوراة (الخمسة)",1,5],["الأسفار التاريخية",6,17],["أسفار الشعر والحكمة",18,22],["الأنبياء الكبار",23,27],["الأنبياء الصغار",28,39],["الأناجيل وأعمال الرسل",40,44],["رسائل بولس",45,57],["الرسائل العامة",58,65],["الرؤيا",66,66]];
+function groupedBooks(cats,mk,activeId,old){let o="";BKGRP.forEach(([t,a,z])=>{const bs=cats.filter(c=>c.id>=a&&c.id<=z);if(!bs.length)return;const key=a+"";const op=bs.some(c=>c.id===activeId)||(old&&old.has(key));o+=`<details class="bkg" data-g="${key}" ${op?"open":""}><summary>${t}<b>${bs.length}</b></summary><div class="bkl">${bs.map(mk).join("")}</div></details>`});return o}
 /* ---------- sidebar ---------- */
+function setFs(d){const v=Math.min(1.6,Math.max(.8,Math.round(((store.get("fs",1))+d*.1)*10)/10));store.set("fs",v);document.documentElement.style.setProperty("--fs",v)}
+document.documentElement.style.setProperty("--fs",store.get("fs",1));
+const nz=x=>String(x).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[\u064B-\u0652\s.]/g,"").toLowerCase();
+function gotoRef(q){
+  const m=q.trim().replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).match(/^(.*?)\s*(\d+)?\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
+  if(!m)return false;
+  const name=nz(m[1]!=null?m[1]:m[4]),c=m[2]||m[5]||"1",v=m[3]||"1"; if(!name)return false;
+  const c1=CAT.find(x=>[AR[x.abbr],SH[x.abbr],x.abbr,x.en].some(t=>nz(t)===name))||CAT.find(x=>[AR[x.abbr],x.en].some(t=>nz(t).startsWith(name)));
+  if(!c1)return false;
+  location.href=pageOf(c1.abbr,"/"+c1.abbr+"/"+c+":"+v);return true}
+function sideTools(){
+  if(!$("#gotoBox")){const h=$("#home");h&&h.insertAdjacentHTML("afterend",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="اذهب إلى عدد: إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off"></form>`);}
+  if(!$("#mmLink")){const t=$("#themeBtn");t&&t.insertAdjacentHTML("beforebegin",`<a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none">🕸 خريطة الشواهد الذهنية</a>`);}
+  if(!$("#fsRow")){const t=$("#themeBtn");t&&t.insertAdjacentHTML("beforebegin",`<div id="fsRow" class="fsrow"><span>حجم الخط</span><button class="tool" data-fs="-1" aria-label="تصغير الخط">أ−</button><button class="tool" data-fs="1" aria-label="تكبير الخط">أ+</button></div>`);}
+}
 function sidebar(){
-  const totalDone=doneOf(ALL);
-  const allV=CAT.reduce((a,c)=>a+c.nv,0);
-  $("#libProg").textContent=`درست ${n(Object.keys(S.done).length)} من ${n(allV)}`;
-  $("#booksel").innerHTML = (()=>{const f=c=>`<a href="${pageOf(c.abbr,"/"+c.abbr)}" ${c.id===S.b?'data-book="'+c.id+'"':""} class="${c.id===S.b?"active":""}"><span class="ab">${SH[c.abbr]}</span><span class="nm"><b>${AR[c.abbr]}</b><span>${chs(c.nc)} · ${n(c.nv)} عددًا</span></span><span class="pc">${pct(doneIn(c.id),c.nv)}</span></a>`;let o="",lt=null;CAT.forEach(c=>{const t=c.id<=39?"ot":"nt";if(t!==lt){o+=`<div class="bkhd">${t==="ot"?"العهد القديم":"العهد الجديد"}</div>`;lt=t}o+=f(c)});return o})()
-  const b=book();
-  const sn=mine(S.stars).length, nn=mine(S.notes).filter(k=>(S.notes[k]||"").trim()).length;
-  $("#starN").textContent=sn?n(sn):""; $("#noteN").textContent=nn?n(nn):"";
+  sideTools();
+  const old=new Set([...document.querySelectorAll("#booksel details[open]")].map(x=>x.dataset.g));
+  const f=c=>`<a href="${pageOf(c.abbr,"/"+c.abbr)}" ${c.id===S.b?'data-book="'+c.id+'"':""} class="${c.id===S.b?"active":""}"><span class="ab">${SH[c.abbr]}</span><span class="nm"><b>${AR[c.abbr]}</b><span>${chs(c.nc)}</span></span></a>`;
+  $("#booksel").innerHTML=groupedBooks(CAT,f,S.b,old);
   $("#toggleRaw").textContent=(S.raw?"☰ إخفاء":"☰ إظهار")+" سطر الشواهد الأصلي (TSK)";
 }
 
@@ -95,7 +109,7 @@ function txText(bk,c,v){const k=trCur();if(k==="alab")return null;
   if(!TXL[k]){TXL[k]=1;const sc=document.createElement("script");sc.src="assets/tx_"+k+".js";sc.onload=()=>render();document.body.appendChild(sc)}
   return null}
 function refRow(r,k,q){
-  const on=!!S.stars[k], R=refAr(r.l);
+  const R=refAr(r.l);
   let self="";
   const tb=BY_ABBR[R.bk];
   const m=r.l.match(/ (\d+):(\d+)/);
@@ -104,16 +118,22 @@ function refRow(r,k,q){
   const mc=r.l.match(/ (\d+):/), kjv=trCur()==="kjv";
   const vt=(vn,t)=>{const x=mc&&txText(R.bk,mc[1],vn);return x||t};
   const body=r.vs.length===1?`<p>${hl(vt(r.vs[0][0],r.vs[0][1]),q)}</p>`:r.vs.map(([vn,t])=>`<p><span class="vn">${n(vn)}</span>${hl(vt(vn,t),q)}</p>`).join("");
-  return `<div class="r ${on?"starred":""}" data-key="${esc(k)}">
+  return `<div class="r" data-key="${esc(k)}">
     <div class="lbl"><span class="nmr">${hl(R.name+" "+R.num,q)}${r.n?` <small>${MARK[r.n]||esc(r.n)}</small>`:""}</span><span class="en ltr">${esc(r.l)}</span>${self}</div>
-    <div class="txt ar" ${kjv?'dir="ltr" style="text-align:left"':""}>${body}</div>
-    <button class="star ${on?"on":""}" title="ميّز هذا الشاهد بنجمة" aria-label="نجمة">★</button></div>`;
+    <div class="txt ar" ${kjv?'dir="ltr" style="text-align:left"':""}>${body}</div></div>`;
 }
-const crumbs=(title,sub,nav)=>`<div class="crumbs"><button class="menu-btn" id="menu">☰ القائمة</button><div class="ref">${sub?`<small>${sub}</small>`:""}${title}</div>${nav||"<span></span>"}</div>`;
+const crumbs=(title,sub,nav,bar)=>(bar||"")+`<div class="crumbs${bar?" nomenu":""}"><button class="menu-btn" id="menu">☰</button><div class="ref">${sub?`<small>${sub}</small>`:""}${title}</div>${bar?"<span></span>":(nav||"<span></span>")}</div>`;
+function stickBar(b,c,v,nav){
+  const bo=CAT.map(x=>`<option value="${x.abbr}" ${x.abbr===b.abbr?"selected":""}>${AR[x.abbr]}</option>`).join("");
+  const co=b.chapters.map(x=>`<option value="${x}" ${x===c?"selected":""}>${n(x)}</option>`).join("");
+  const vo=v?`<select class="sbV" aria-label="العدد">${inCh(b,c).map(d=>`<option value="${d.v}" ${d.v===v?"selected":""}>${n(d.v)}</option>`).join("")}</select>`:"";
+  return `<div class="stickbar"><button class="menu-btn" id="menu">☰</button><select class="sbBook" aria-label="السفر">${bo}</select><select class="sbCh" aria-label="الأصحاح">${co}</select>${vo}<span class="sp"></span>${nav}</div>`}
+
 const fromLink=(d,label)=>`<a data-go="${d.b}.${d.c}:${d.v}">${label||"من"} ${vref(d)} ←</a>`;
 const kwTitle=g=>{const c=trCur();if(c==="kjv"&&g.kw)return g.kw;
-  if(c==="svd"&&g.kwAr&&g.kw){const t=trText(cur())||"";const nz=x=>x.replace(/[\u064B-\u065F]/g,"").replace(/[أإآ]/g,"ا");if(!nz(t).includes(nz(g.kwAr)))return g.kw}
-  return g.kwAr||g.kw||"الشواهد"};
+  if(c==="svd")return g.s||g.kwAr||g.kw||"الشواهد";
+  return g.kwAr||g.s||g.kw||"الشواهد"};
+LIB.forEach(b=>{const t=window.TR&&window.TR[b.abbr]&&window.TR[b.abbr].svdK;if(t)b.verses.forEach(d=>{const a=t[d.c+":"+d.v];if(a)d.groups.forEach((g,i)=>{g.s=a[i]||""})})});
 
 
 /* ---------- Strong's ---------- */
@@ -167,43 +187,17 @@ function showEntry(num,{fromRef=false,scroll=true}={}){
 
 /* ---------- views ---------- */
 function viewHome(){
-  const refs=ALL.reduce((a,d)=>a+refCount(d),0), vs=ALL.reduce((a,d)=>a+verseCount(d),0), dn=doneOf(ALL);
   const last=cur();
-  const ot=ABBR.slice(0,39), nt=ABBR.slice(39);
-  const chip=a=>{const b=BY_ABBR[a];return `<button class="bk ${b?"on":""}" ${b?`data-book="${b.id}"`:""} title="${AR[a]}${b?"":" — لم يُضف بعد"}">${SH[a]}</button>`};
-  $("#main").innerHTML = crumbs("","") + `
-  <section class="hero" data-wm="${AR[book().abbr]}">
-    <h2>مكتبة دراسة الشواهد</h2>
-    <p>دراسة الكتاب المقدس عددًا بعدد، مع كل شواهد «كنز معرفة الكتاب المقدس» (TSK) ونصها الكامل بالعربية. اختر سفرًا، واقرأ العدد، وافتح كلماته الرئيسية، ثم تتبّع الشواهد.</p>
-    <div class="stats">
-      <div class="stat"><b>${n(LIB.length)}</b><span>أسفار</span></div>
-      <div class="stat"><b>${n(ALL.length)}</b><span>عددًا</span></div>
-      <div class="stat"><b>${n(refs)}</b><span>شاهدًا من TSK</span></div>
-      <div class="stat"><b>${n(vs)}</b><span>آية للقراءة</span></div>
-      <div class="stat"><b>${n(dn)}</b><span>درستها</span></div>
-    </div>
-    <button class="cta" data-go="${last.b}.${last.c}:${last.v}">${dn?"تابع من":"ابدأ من"} ${vref(last)} ←</button>
-  </section>
-  <h3 class="sec-title">أسفارك</h3>
-  <div class="chgrid">${LIB.map(b=>{const d=doneOf(b.verses),r=b.verses.reduce((a,x)=>a+refCount(x),0);
-    return `<button class="chcard bookcard" data-book="${b.id}"><span class="ab">${SH[b.abbr]}</span><div class="n">${bname(b)}<small class="ltr">${b.en}</small></div>
-      <div class="meta">${chs(b.chapters.length)} · ${n(b.verses.length)} عددًا · ${n(r)} شاهدًا</div>
-      <div class="open ar">${esc(b.verses[0].text)}</div>
-      <div class="bar"><i style="width:${d/b.verses.length*100}%"></i></div><div class="pct">درست ${n(d)} من ${n(b.verses.length)}</div></button>`}).join("")}</div>
-  <h3 class="sec-title">الكتاب المقدس كله</h3>
-  <div class="canon"><h5>العهد القديم</h5><div class="row">${ot.map(chip).join("")}</div>
-    <h5>العهد الجديد</h5><div class="row">${nt.map(chip).join("")}</div>
-    <div class="legend">الأسفار الملوّنة موجودة في هذه المكتبة، وسيضيء الباقي كلما أضفت سفرًا جديدًا.</div></div>`;
+  $("#main").innerHTML = crumbs("مكتبة دراسة الشواهد","") + `
+  <a class="resume" href="#" data-go="${last.b}.${last.c}:${last.v}"><small>تابع القراءة</small><b>${vref(last)}</b><span class="ar">${esc(last.text)}</span></a>
+  <div class="grp-home">${groupedBooks(LIB.map(b=>({id:b.id,abbr:b.abbr,nc:b.chapters.length,nv:b.verses.length})),c=>`<button class="mini" data-book="${c.id}"><span class="ab">${SH[c.abbr]}</span><b>${AR[c.abbr]}</b></button>`,0,new Set(BKGRP.map(g=>g[1]+"")))}</div>`;
 }
 
 function viewBook(){
   const b=book();
   $("#main").innerHTML = crumbs(bname(b),`<span class="ltr">${b.en}</span> · ${chs(b.chapters.length)} · ${n(b.verses.length)} عددًا`) + `
-  <div class="chgrid">${b.chapters.map(c=>{const vs=inCh(b,c),d=doneOf(vs),refs=vs.reduce((a,x)=>a+refCount(x),0);
-    return `<button class="chcard" data-gc="${b.id}.${c}"><div class="n">الأصحاح <span>${n(c)}</span></div>
-      <div class="meta">${n(vs.length)} عددًا · ${n(refs)} شاهدًا</div>
-      <div class="open ar">${esc(vs[0].text)}</div>
-      <div class="bar"><i style="width:${d/vs.length*100}%"></i></div><div class="pct">درست ${n(d)} من ${n(vs.length)}</div></button>`}).join("")}</div>`;
+  <button class="cta" data-gc="${b.id}.${b.chapters[0]}">ابدأ القراءة ←</button>
+  <div class="chpick big">${b.chapters.map(x=>`<button data-gc="${b.id}.${x}" class="chp" title="الأصحاح ${n(x)}">${n(x)}</button>`).join("")}</div>`;
 }
 
 function interBlock(d){
@@ -228,12 +222,11 @@ function viewChapter(){
   const nextBtn=nc!=null?`<button data-gc="${b.id}.${nc}" title="الأصحاح التالي"><span class="lb">${n(nc)}</span> ←</button>`
     :nb?`<a class="xnav" href="${pageOf(nb.abbr,"/"+nb.abbr+"/ch/1")}" title="السفر التالي"><span class="lb">${SH[nb.abbr]} ${n(1)}</span> ←</a>`
     :`<button disabled>←</button>`;
-  const dn=doneOf(vs), refs=vs.reduce((a,x)=>a+refCount(x),0);
-  $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا · درست ${n(dn)}`,`<div class="nav">${prevBtn}${nextBtn}</div>`) + `
-  <div class="chpick">${b.chapters.map(x=>`<button data-gc="${b.id}.${x}" class="chp ${x===c?"active":""}" title="الأصحاح ${n(x)}">${n(x)}</button>`).join("")}</div>
-  ${INTER?"":trBar()}<div class="chlink"><button class="trb" id="interBtn">${INTER?"☰ العرض العادي":"≋ عرض كلمة بكلمة (Interlinear)"}</button> <a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">⇄ مقارنة الترجمات الثلاث لهذا الأصحاح</a></div>${INTER?`<div class="ilist">${vs.map(d=>`<div class="ilv"><button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button><div class="ilrow" dir="rtl">${interBlock(d)}</div></div>`).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
-    return `<button class="cv ${S.done[k]?"done":""} ${S.notes[k]?"has-note":""}" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
-      <span class="cvn">${n(d.v)}</span><span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span><span class="cvm">${rc?n(rc)+" شاهدًا":"—"}${S.done[k]?" ✓":""}</span></button>`}).join("")}</div>
+  const refs=vs.reduce((a,x)=>a+refCount(x),0);
+  $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
+  ${INTER?"":trBar()}<div class="chlink"><button class="trb" id="interBtn">${INTER?"☰ العرض العادي":"≋ عرض كلمة بكلمة (Interlinear)"}</button> <a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">⇄ مقارنة الترجمات الثلاث لهذا الأصحاح</a></div>${INTER?`<div class="ilist">${vs.map(d=>`<div class="ilv"><button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button><div class="ilcol"><div class="ilar ar">${esc(d.text)}</div><div class="ilrow" dir="rtl">${interBlock(d)}</div></div></div>`).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
+    return `<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
+      <span class="cvn">${n(d.v)}</span><span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span><span class="cvm">${rc?n(rc)+" شاهدًا":"—"}</span></button>`}).join("")}</div>
   <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
 function viewVerse(){
@@ -248,23 +241,22 @@ function viewVerse(){
     return `<section class="group ${closed?"closed":""}" id="g${gi}" data-ck="${ck}">
       <div class="ghead"><h3><em>«</em>${esc(kwTitle(g))}<em>»</em></h3>
         ${g.kw&&trCur()!=="kjv"?`<span class="en ltr" title="الكلمة في TSK">${esc(g.kw)}</span>`:""}
-        ${g.refs.length?`<span class="count">${plural(g.refs.length,"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>`:""}<span class="chev">▾</span></div>
+        ${g.refs.length?`<span class="count">${plural(g.refs.length,"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>`:""}<a class="mm" target="tskmindmap" href="mindmap.html#${b.abbr}/${d.c}:${d.v}/g${gi}" title="خريطة ذهنية لشواهد هذه الكلمة">🕸</a><span class="chev">▾</span></div>
       <div class="gbody">
         ${S.raw?`<div class="raw ltr">${esc(g.raw)}</div>`:""}
         ${(trCur()==="kjv"&&g.note)?`<div class="gnote"><b>TSK note</b><span class="ltr">${esc(g.note)}</span></div>`:g.noteAr?`<div class="gnote"><b>ملاحظة TSK</b>${esc(g.noteAr)}</div>`:(g.note?`<div class="gnote"><b>ملاحظة TSK</b><span class="ltr">${esc(g.note)}</span></div>`:"")}
-        <div class="refs">${g.refs.map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}</div>
+        <div class="refs">${g.refs.slice(0,5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}${g.refs.length>5?`<div class="morerefs" hidden>${g.refs.slice(5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}</div><button class="showall" data-n="${g.refs.length}">عرض الكل (${n(g.refs.length)})</button>`:""}</div>
       </div></section>`}).join("");
   const sameCh=x=>x&&x.b===d.b&&x.c===d.c;
   $("#main").innerHTML = crumbs(`${bname(b)} ${n(d.c)}: <span>${n(d.v)}</span>`,`<span class="ltr">${b.en} ${d.c}:${d.v}</span> · الأصحاح ${n(d.c)} · العدد ${n(d.v)} من ${n(inCh(b,d.c).length)}`,
-    `<div class="nav">${pb?xbtn(pb,pb.last,"→","السفر السابق"):`<button data-go="${prev?prev.b+"."+prev.c+":"+prev.v:""}" ${prev?"":"disabled"} title="السابق">→ <span class="lb">${lab(prev)}</span></button>`}${nb?xbtn(nb,"1:1","←","السفر التالي"):`<button data-go="${next?next.b+"."+next.c+":"+next.v:""}" ${next?"":"disabled"} title="التالي"><span class="lb">${lab(next)}</span> ←</button>`}</div>`) + `
+    "",stickBar(b,d.c,d.v,`<div class="nav">${pb?xbtn(pb,pb.last,"→","السفر السابق"):`<button data-go="${prev?prev.b+"."+prev.c+":"+prev.v:""}" ${prev?"":"disabled"} title="السابق">→ <span class="lb">${lab(prev)}</span></button>`}${nb?xbtn(nb,"1:1","←","السفر التالي"):`<button data-go="${next?next.b+"."+next.c+":"+next.v:""}" ${next?"":"disabled"} title="التالي"><span class="lb">${lab(next)}</span> ←</button>`}</div>`)) + `
     <div class="chlink"><button data-gc="${d.b}.${d.c}">☰ عرض الأصحاح ${n(d.c)} كاملًا</button></div>
-    ${trBar()}<div class="verse-card ${store.get("nostr",false)?"nostr":""}">
+    ${trBar()}<div class="verse-card ${store.get("nostr2",true)?"nostr":""}">
       <div class="ar">${verseHTML(d)}</div>
       <div class="verse-meta">
         <span class="pill">${plural(d.groups.length,"كلمة واحدة","كلمتان","كلمات","كلمة")}</span>
         <span class="pill">${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>
-        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${(d.arS&&!trText(d))||trSeg(d)?`<button class="tgl ${store.get("nostr",false)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
-        <button class="check ${S.done[k]?"on":""}" id="doneBtn">${S.done[k]?"✓ تمت دراسته":"○ علّم كمدروس"}</button>
+        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${(d.arS&&!trText(d))||trSeg(d)?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
       </div>
     </div>
     <div class="context">
@@ -273,10 +265,7 @@ function viewVerse(){
     </div>
     ${dictSection(d)}
     ${d.groups.length>1?`<nav class="kw-index">${d.groups.map((g,gi)=>`<a href="#g${gi}" data-jump="g${gi}">${esc(kwTitle(g))}${g.refs.length?`<b>${n(g.refs.length)}</b>`:""}</a>`).join("")}</nav>`:""}
-    ${groups || `<div class="empty">لا توجد شواهد في TSK لهذا العدد (أحيانًا يضم TSK شواهد العدد إلى العدد الذي قبله).</div>`}
-    <div class="notes"><h3>ملاحظاتي على ${vref(d)}</h3>
-      <textarea id="note" dir="auto" placeholder="اكتب تأملاتك هنا…">${esc(S.notes[k]||"")}</textarea>
-      <div class="hint">تُحفظ تلقائيًا في هذا المتصفح.</div></div>`;
+    ${groups || `<div class="empty">لا توجد شواهد في TSK لهذا العدد (أحيانًا يضم TSK شواهد العدد إلى العدد الذي قبله).</div>`}`;
 }
 
 function refMatch(r,nq){
@@ -323,24 +312,9 @@ function viewStrongSearch(num){
     :`<div class="empty">${has?"لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.":"لم يُضف قاموس سترونج إلى أي سفر بعد."}</div>`);
 }
 
-function viewStarred(){
-  const items=[];
-  ALL.forEach(d=>d.groups.forEach((g,gi)=>g.refs.forEach(r=>{const k=`${K(d.b,d.c,d.v)}|${gi}|${r.l}`;if(S.stars[k])items.push({d,g,r,k})})));
-  $("#main").innerHTML = crumbs(`الشواهد المميزة في <span>${bname(book())}</span>`,plural(items.length,"شاهد واحد محفوظ","شاهدان محفوظان","شواهد محفوظة","شاهدًا محفوظًا")) +
-    (items.length?items.map(({d,g,r,k})=>`<div class="item"><div class="from"><span>«${esc(kwTitle(g))}»</span>${fromLink(d)}</div><div class="refs">${refRow(r,k)}</div></div>`).join("")
-    :`<div class="empty">لا توجد شواهد مميزة بعد. اضغط ★ بجانب أي شاهد لتجمعه هنا.</div>`);
-}
-
-function viewNotes(){
-  const items=ALL.filter(d=>(S.notes[K(d.b,d.c,d.v)]||"").trim());
-  $("#main").innerHTML = crumbs(`ملاحظاتي في <span>${bname(book())}</span>`,plural(items.length,"عدد واحد عليه ملاحظات","عددان عليهما ملاحظات","أعداد عليها ملاحظات","عددًا عليها ملاحظات")) +
-    (items.length?items.map(d=>`<div class="item nitem"><div class="from" style="padding:0"><span class="ar" style="font-size:16px">${esc(d.text)}</span></div><a data-go="${d.b}.${d.c}:${d.v}" style="color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none">${vref(d)} ←</a><div class="body" dir="auto">${esc(S.notes[K(d.b,d.c,d.v)])}</div></div>`).join("")
-    :`<div class="empty">لا توجد ملاحظات بعد. اكتب تأملاتك في أسفل أي عدد.</div>`);
-}
-
 function render(){
   sidebar();
-  ({home:viewHome,book:viewBook,chapter:viewChapter,verse:viewVerse,search:viewSearch,starred:viewStarred,notes:viewNotes})[S.view]();
+  ({home:viewHome,book:viewBook,chapter:viewChapter,verse:viewVerse,search:viewSearch})[S.view]();
 }
 
 /* ---------- navigation ---------- */
@@ -364,7 +338,6 @@ function fromHash(){
   if(m&&BY_ABBR[m[1]]&&BY_ABBR[m[1]].idx[m[2]+":"+m[3]]!=null){const b=BY_ABBR[m[1]];S.b=b.id;S.c=+m[2];S.v=+m[3];S.view="verse";}
   else if((m=h.match(/^\/([1-3]?[A-Za-z]{2,3})\/ch\/(\d+)$/))&&BY_ABBR[m[1]]&&BY_ABBR[m[1]].chapters.includes(+m[2])){S.b=BY_ABBR[m[1]].id;S.c=+m[2];S.view="chapter";}
   else if((m=h.match(/^\/([1-3]?[A-Za-z]{2,3})$/))&&BY_ABBR[m[1]]){S.b=BY_ABBR[m[1]].id;S.view="book";}
-  else if(["starred","notes"].includes(h)) S.view=h;
   else S.view="book";
   render();
 }
@@ -374,9 +347,9 @@ document.addEventListener("click",e=>{
   const sr=e.target.closest(".sref"); if(sr){ if($("#dict")) showEntry(sr.dataset.sn,{fromRef:true}); return }
   if(e.target.closest("#dback")){const p=DICT.trail.pop(); DICT.cur=p; $("#dict").innerHTML=dictInner(); return}
   const dn=e.target.closest("[data-dn]"); if(dn){showEntry(dn.dataset.dn,{scroll:false});return}
-  {const sn=e.target.closest(".verse-card span.sn");if(sn&&!e.target.closest(".verse-card.nostr")){showEntry(sn.dataset.sn);return}}
-  const sw=e.target.closest(".verse-card .sw"); if(sw&&!e.target.closest(".verse-card.nostr")){showEntry(sw.dataset.n.split(" ")[0]);return}
-  if(e.target.closest("#strTgl")){const vc=document.querySelector(".verse-card");const off=!vc.classList.contains("nostr");vc.classList.toggle("nostr",off);e.target.closest("#strTgl").classList.toggle("on",!off);store.set("nostr",off);return}
+  {const sn=e.target.closest(".verse-card span.sn");if(sn){showEntry(sn.dataset.sn);return}}
+  const sw=e.target.closest(".verse-card .sw"); if(sw){showEntry(sw.dataset.n.split(" ")[0]);return}
+  if(e.target.closest("#strTgl")){const vc=document.querySelector(".verse-card");const off=!vc.classList.contains("nostr");vc.classList.toggle("nostr",off);e.target.closest("#strTgl").classList.toggle("on",!off);store.set("nostr2",off);return}
   const tb=e.target.closest("[data-tr]"); if(tb){store.set("tr",tb.dataset.tr);render();return}
   if(e.target.closest("#interBtn")){store.set("inter",!store.get("inter",false));render();return}
   const gc=e.target.closest("[data-gc]"); if(gc){const p=gc.dataset.gc.split("."); goChapter(+p[0],+p[1]); return}
@@ -387,22 +360,25 @@ document.addEventListener("click",e=>{
     if(innerWidth>880){const a=document.querySelector(".app");a.classList.toggle("collapsed");store.set("sideOff",a.classList.contains("collapsed"));}
     else $("#side").classList.toggle("open");
     return}
+  const sa=e.target.closest(".showall"); if(sa){const m=sa.previousElementSibling,h=m.hidden;m.hidden=!h;sa.textContent=h?"عرض أقل":`عرض الكل (${n(sa.dataset.n)})`;return}
+  const fz=e.target.closest("[data-fs]"); if(fz){setFs(+fz.dataset.fs);return}
   const sh=e.target.closest("#side .sh"); if(sh){const sec=sh.closest("[data-sec]");sec.classList.toggle("shut");const o=store.get("shut",{});if(sec.classList.contains("shut"))o[sec.dataset.sec]=1;else delete o[sec.dataset.sec];store.set("shut",o);return}
   const j=e.target.closest("[data-jump]"); if(j){e.preventDefault();document.getElementById(j.dataset.jump).scrollIntoView({behavior:"smooth"});return}
   const ch=e.target.closest("#chgrid button"); if(ch){S.c=+ch.dataset.ch;sidebar();return}
   const vb=e.target.closest("#vlist button"); if(vb){go(S.b,S.c,+vb.dataset.v);return}
   const sc=e.target.closest("[data-scope]"); if(sc){S.scope=sc.dataset.scope;S.limit=60;viewSearch();return}
+  if(e.target.closest("a.mm"))return;
   const h=e.target.closest(".ghead"); if(h){const s=h.parentElement;s.classList.toggle("closed");if(s.classList.contains("closed"))S.closed[s.dataset.ck]=true;else delete S.closed[s.dataset.ck];store.set("closed",S.closed);return}
-  const st=e.target.closest(".star"); if(st){const row=st.closest(".r"),k=row.dataset.key;if(S.stars[k])delete S.stars[k];else S.stars[k]=1;store.set("stars",S.stars);st.classList.toggle("on");row.classList.toggle("starred");sidebar();if(S.view==="starred")viewStarred();return}
-  if(e.target.closest("#doneBtn")){const d=cur(),k=K(d.b,d.c,d.v);if(S.done[k])delete S.done[k];else S.done[k]=true;store.set("done",S.done);render();return}
   if(e.target.closest("#more")){S.limit+=60;viewSearch();return}
 });
-document.addEventListener("input",e=>{
-  if(e.target.id==="note"){const d=cur(),k=K(d.b,d.c,d.v);if(e.target.value.trim())S.notes[k]=e.target.value;else delete S.notes[k];store.set("notes",S.notes);sidebar()}
+document.addEventListener("change",e=>{const t=e.target;
+  if(t.classList.contains("sbBook")){location.href=pageOf(t.value,"/"+t.value+"/ch/1");return}
+  const b=book();
+  if(t.classList.contains("sbCh")){goChapter(b.id,+t.value);return}
+  if(t.classList.contains("sbV")){go(b.id,S.c,+t.value)}
 });
+document.addEventListener("submit",e=>{if(e.target.id==="gotoBox"){e.preventDefault();const i=$("#gotoIn");if(!gotoRef(i.value)){i.classList.add("bad");setTimeout(()=>i.classList.remove("bad"),900)}}});
 $("#home").addEventListener("click",()=>{location.href="index.html"});
-$("#starredView").addEventListener("click",()=>show("starred"));
-$("#notesView").addEventListener("click",()=>show("notes"));
 function setAll(closed){ if(S.view!=="verse")return; const d=cur(),k=K(d.b,d.c,d.v); d.groups.forEach((g,gi)=>{if(closed)S.closed[k+"|"+gi]=true;else delete S.closed[k+"|"+gi]}); store.set("closed",S.closed); render(); }
 $("#expandAll").addEventListener("click",()=>setAll(false));
 $("#collapseAll").addEventListener("click",()=>setAll(true));

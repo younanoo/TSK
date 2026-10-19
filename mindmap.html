@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خريطة الشواهد الذهنية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="mmpage">
+<header class="mmbar">
+  <a class="mmback" href="index.html" title="العودة إلى المكتبة">← المكتبة</a>
+  <h1>خريطة الشواهد</h1>
+  <label>السفر <select id="selB"></select></label>
+  <label>الأصحاح <select id="selC"></select></label>
+  <label>العدد <select id="selV"></select></label>
+  <label>الكلمة <select id="selW"></select></label>
+  <label>التفرع <select id="selN"><option value="0">قليل</option><option value="1" selected>متوسط</option><option value="2">كثير</option></select></label>
+  <span class="sp"></span>
+  <span class="seg"><button id="vMap" class="on">🕸 خريطة</button><button id="vTbl">▦ جدول</button></span>
+  <button id="zin" aria-label="تكبير">＋</button><button id="zout" aria-label="تصغير">－</button><button id="zfit">⤢ ملاءمة</button>
+  <button id="themeBtn" aria-label="الوضع الفاتح / الداكن">◐</button>
+</header>
+<div id="stage">
+  <svg id="svg" role="img" aria-label="خريطة ذهنية للشواهد"><g id="vp"></g></svg>
+  <div id="legend"><b>المستويات</b><span>١ شواهد الكلمة</span><span>٢ شواهد الشواهد</span><span>٣ المستوى الثالث</span><span>┄ سفر غير مضاف بعد</span></div>
+  <div id="zoomBox"><button id="zin2" aria-label="تكبير">＋</button><button id="zout2" aria-label="تصغير">－</button><button id="zfit2" aria-label="ملاءمة" title="ملاءمة">⤢</button></div>
+  <div id="tbl" hidden></div>
+  <div id="panel" hidden></div>
+</div>
+<script src="assets/mm_data.js"></script>
+<script>
+const ABBR="Gen Exo Lev Num Deu Jos Jdg Rut 1Sa 2Sa 1Ki 2Ki 1Ch 2Ch Ezr Neh Est Job Psa Pro Ecc Son Isa Jer Lam Eze Dan Hos Joe Amo Oba Jon Mic Nah Hab Zep Hag Zec Mal Mat Mar Luk Joh Act Rom 1Co 2Co Gal Eph Phi Col 1Th 2Th 1Ti 2Ti Tit Phm Heb Jam 1Pe 2Pe 1Jo 2Jo 3Jo Jud Rev".split(" ");
+const AR = {Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
+const SH = {Gen:"تك",Exo:"خر",Lev:"لا",Num:"عد",Deu:"تث",Jos:"يش",Jdg:"قض",Rut:"را","1Sa":"١صم","2Sa":"٢صم","1Ki":"١مل","2Ki":"٢مل","1Ch":"١أخ","2Ch":"٢أخ",Ezr:"عز",Neh:"نح",Est:"أس",Job:"أي",Psa:"مز",Pro:"أم",Ecc:"جا",Son:"نش",Isa:"إش",Jer:"إر",Lam:"مرا",Eze:"حز",Dan:"دا",Hos:"هو",Joe:"يؤ",Amo:"عا",Oba:"عو",Jon:"يون",Mic:"مي",Nah:"نا",Hab:"حب",Zep:"صف",Hag:"حج",Zec:"زك",Mal:"ملا",Mat:"مت",Mar:"مر",Luk:"لو",Joh:"يو",Act:"أع",Rom:"رو","1Co":"١كو","2Co":"٢كو",Gal:"غل",Eph:"أف",Phi:"في",Col:"كو","1Th":"١تس","2Th":"٢تس","1Ti":"١تي","2Ti":"٢تي",Tit:"تي",Phm:"فل",Heb:"عب",Jam:"يع","1Pe":"١بط","2Pe":"٢بط","1Jo":"١يو","2Jo":"٢يو","3Jo":"٣يو",Jud:"يه",Rev:"رؤ"};
+const n=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=s=>document.querySelector(s);
+const get=(k,d)=>{try{const v=localStorage.getItem("tsklib:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const set=(k,v)=>{try{localStorage.setItem("tsklib:"+k,JSON.stringify(v))}catch(e){}};
+const th=get("theme",null); if(th) document.documentElement.dataset.theme=th;
+$("#themeBtn").onclick=()=>{const c=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const nx=c==="dark"?"light":"dark";document.documentElement.dataset.theme=nx;set("theme",nx)};
+const {R,T,E}=window.MM;
+const BID=a=>ABBR.indexOf(a)+1, ABB=i=>ABBR[i-1];
+const dec=id=>({b:Math.floor(id/1e6),c:Math.floor(id%1e6/1e3),v:id%1e3});
+const label=id=>{const d=dec(id);return AR[ABB(d.b)]+" "+n(d.c)+": "+n(d.v)+(E[id]?"–"+n(E[id]):"")};
+const short=id=>{const d=dec(id);return SH[ABB(d.b)]+" "+n(d.c)+": "+n(d.v)+(E[id]?"–"+n(E[id]):"")};
+const inLib=id=>!!R[id];
+const useSvd=()=>get("tr","alab")==="svd";
+const wTitle=g=>(useSvd()?(g[1]||g[0]):(g[0]||g[1]))||g[2]||"الشواهد";
+const IDX={};Object.keys(R).forEach(k=>{const d=dec(+k);((IDX[d.b]=IDX[d.b]||{})[d.c]=IDX[d.b][d.c]||[]).push(d.v)});
+Object.values(IDX).forEach(o=>Object.values(o).forEach(a=>a.sort((x,y)=>x-y)));
+const books=Object.keys(IDX).map(Number).sort((a,b)=>a-b);
+const CAPS=[[8,3,2],[14,4,3],[24,6,4]];
+let S={vid:null,gi:-1,N:1,view:get("mmview","m")};
+const selB=$("#selB"),selC=$("#selC"),selV=$("#selV"),selW=$("#selW");
+selB.innerHTML=books.map(b=>`<option value="${b}">${AR[ABB(b)]}</option>`).join("");
+function fillC(){const b=+selB.value;selC.innerHTML=Object.keys(IDX[b]).map(Number).sort((a,b)=>a-b).map(c=>`<option value="${c}">${n(c)}</option>`).join("")}
+function fillV(){const b=+selB.value,c=+selC.value;selV.innerHTML=IDX[b][c].map(v=>`<option value="${v}">${n(v)}</option>`).join("")}
+function fillW(){const id=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);const gs=R[id]||[];selW.innerHTML=`<option value="-1">كل كلمات العدد (${n(gs.reduce((a,g)=>a+g[3].length,0))})</option>`+gs.map((g,i)=>`<option value="${i}">${esc(wTitle(g))} (${n(g[3].length)})</option>`).join("")}
+selB.onchange=()=>{fillC();selC.onchange()};selC.onchange=()=>{fillV();selV.onchange()};
+selV.onchange=()=>{fillW();selW.value="-1";pick()};selW.onchange=pick;$("#selN").onchange=()=>{S.N=+$("#selN").value;draw()};
+function pick(){S.vid=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);S.gi=+selW.value;hash();draw()}
+function hash(){const d=dec(S.vid);try{history.replaceState(null,"","#"+ABB(d.b)+"/"+d.c+":"+d.v+(S.gi>=0?"/g"+S.gi:""))}catch(e){}}
+function setSel(id,gi){const d=dec(id);if(!IDX[d.b]||!IDX[d.b][d.c]||!IDX[d.b][d.c].includes(d.v))return false;selB.value=d.b;fillC();selC.value=d.c;fillV();selV.value=d.v;fillW();selW.value=String(gi);return true}
+function refsOf(id,gi){const gs=R[id];if(!gs)return[];const out=[];(gi!=null&&gi>=0?[gs[gi]]:gs).forEach(g=>g&&g[3].forEach(r=>{if(!out.includes(r))out.push(r)}));return out}
+function build(){
+  const [c1,c2,c3]=CAPS[S.N],seen=new Set([S.vid]);
+  const gs=R[S.vid]||[];
+  const root={id:S.vid,lv:0,txt:S.gi>=0&&gs[S.gi]?wTitle(gs[S.gi]):label(S.vid),sub:S.gi>=0?label(S.vid):"كل كلمات العدد",kids:[],all:0};
+  const grow=(node,list,cap,lv)=>{const fresh=list.filter(r=>!seen.has(r));node.all=fresh.length;fresh.slice(0,cap).forEach(r=>{seen.add(r);node.kids.push({id:r,lv,kids:[],all:0,br:node.br})})};
+  grow(root,refsOf(S.vid,S.gi),c1,1);
+  root.kids.forEach((k,i)=>k.br=i);
+  root.kids.forEach(k=>grow(k,refsOf(k.id),c2,2));
+  root.kids.forEach(k=>k.kids.forEach(k2=>{k2.br=k.br}));
+  root.kids.forEach(k=>k.kids.forEach(k2=>grow(k2,refsOf(k2.id),c3,3)));
+  root.kids.forEach(k=>k.kids.forEach(k2=>k2.kids.forEach(k3=>{k3.br=k.br})));
+  return root}
+const ROW=34,W=s=>Math.max(78,s.length*7.4+26);
+let B={w:1,h:1,cx:0,cy:0},V={x:0,y:0,k:1};const svgEl=$("#svg");
+function draw(){
+  if(S.vid==null)return;
+  const root=build(),vp=$("#vp");
+  document.body.classList.toggle("istbl",S.view==="t");$("#vMap").classList.toggle("on",S.view!=="t");$("#vTbl").classList.toggle("on",S.view==="t");
+  if(S.view==="t"){renderTable(root);return}
+  $("#tbl").hidden=true;
+  const kids=root.kids;const leaves=nd=>nd.kids.length?nd.kids.reduce((a,k)=>a+leaves(k),0):1;
+  const tot=kids.reduce((a,k)=>a+leaves(k),0);let acc=0,half=0;while(half<kids.length&&acc+leaves(kids[half])/2<=tot/2){acc+=leaves(kids[half]);half++}
+  if(kids.length>1)half=Math.min(Math.max(half,1),kids.length-1);
+  const sides=[kids.slice(0,half),kids.slice(half)];
+  const colW=[0,0,0,0];
+  const walk=nd=>{const w=nd.lv?W(short(nd.id)):Math.max(W(nd.txt),W(nd.sub));colW[nd.lv]=Math.max(colW[nd.lv],w);nd.kids.forEach(walk)};walk(root);
+  const GAP=64,x0=[0,colW[0]/2+GAP];x0[2]=x0[1]+colW[1]+GAP;x0[3]=x0[2]+colW[2]+GAP;
+  const col=br=>`hsl(${(br*47)%360} 52% 52%)`;
+  let svg="";const nodes=[];
+  const edge=(x1,y1,x2,y2,br)=>{const mx=(x1+x2)/2;return `<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" fill="none" stroke="${col(br)}" stroke-width="2.2" stroke-opacity=".75"/>`};
+  const place=(nd,sgn,y0)=>{nd.x=sgn*(x0[nd.lv]+colW[nd.lv]/2);
+    if(!nd.kids.length){nd.y=y0+ROW/2;return}
+    let yy=y0;nd.kids.forEach(k=>{place(k,sgn,yy);yy+=leaves(k)*ROW});
+    nd.y=(nd.kids[0].y+nd.kids[nd.kids.length-1].y)/2};
+  const sideH=sides.map(s=>s.reduce((a,k)=>a+leaves(k),0)*ROW);
+  const H=Math.max(...sideH,ROW*2);
+  sides.forEach((s,si)=>{const sgn=si?-1:1;let yy=(H-sideH[si])/2;s.forEach(k=>{place(k,sgn,yy);yy+=leaves(k)*ROW})});
+  root.x=0;root.y=H/2;
+  const collect=(nd,par)=>{nodes.push(nd);nd.kids.forEach(k=>{const sg=k.x>0?1:-1;svg+=edge(par.lv===0?sg*colW[0]/2:par.x+sg*colW[par.lv]/2,par.y,k.x-sg*colW[k.lv]/2,k.y,k.br);collect(k,nd)})};
+  collect(root,root);
+  nodes.forEach(nd=>{
+    if(nd.lv===0){const w=colW[0];svg+=`<g class="mmn c0" data-id="${nd.id}" transform="translate(0,${nd.y})"><rect x="${-w/2-8}" y="-30" width="${w+16}" height="60" rx="30"/><text y="-3" class="t0">${esc(nd.txt)}</text><text y="18" class="s0">${esc(nd.sub)}</text></g>`;return}
+    const w=colW[nd.lv],sg=nd.x>0?1:-1,more=nd.all>nd.kids.length?`<text class="more" x="${sg*(w/2+(nd.lv<3?30:8))}" y="4" text-anchor="${sg>0?"start":"end"}">+${n(nd.all-nd.kids.length)}</text>`:"";
+    svg+=`<g class="mmn c${nd.lv}${inLib(nd.id)?"":" ext"}" data-id="${nd.id}" transform="translate(${nd.x},${nd.y})" style="--bc:${col(nd.br)}"><title>${esc(label(nd.id))} — ${esc((T[nd.id]||"").slice(0,160))}</title><rect x="${-w/2}" y="-13" width="${w}" height="26" rx="13"/><text y="4.5">${esc(short(nd.id))}</text>${more}</g>`});
+  if(!root.kids.length)svg+=`<text class="empty" x="0" y="${H/2+70}">لا توجد شواهد لهذه الكلمة</text>`;
+  vp.innerHTML=svg;
+  const ext=x0[3]+colW[3]+60;B={w:kids.length>1?2*ext:ext*1.2,h:H+90,cx:0,cy:H/2};
+  fit();$("#panel").hidden=true}
+function renderTable(root){
+  const t=$("#tbl"),cell=nd=>`<td rowspan="@@" class="l${nd.lv}${inLib(nd.id)?"":" ext"}" style="--bc:hsl(${(nd.br*47)%360} 52% 52%)"><div class="vref"><b>${esc(label(nd.id))}</b>${inLib(nd.id)?`<a href="${ABB(dec(nd.id).b)}.html#/${ABB(dec(nd.id).b)}/${dec(nd.id).c}:${dec(nd.id).v}" target="_blank" title="افتحه في الدراسة">↗</a>`:""}${nd.all>nd.kids.length&&nd.lv<3?`<span class="mo">+${n(nd.all-nd.kids.length)}</span>`:""}</div><div class="ar vt">${esc(T[nd.id]||"")}</div></td>`;
+  const lv=nd=>nd.kids.length?nd.kids.reduce((a,k)=>a+lv(k),0):1;
+  let rows="";
+  const emit=(nd,pre)=>{const row=pre.concat([cell(nd).replace("@@",lv(nd))]);
+    if(!nd.kids.length||nd.lv===3){rows+="<tr>"+row.join("")+"</tr>";return}
+    nd.kids.forEach((k,i)=>emit(k,i?[]:row))};
+  root.kids.forEach(k=>emit(k,[]));
+  // pad rows that stop early so every row has 3 columns
+  t.innerHTML=`<div class="tblhead"><h2>${esc(root.txt)}</h2><div class="sub">${esc(root.sub)}</div><div class="ar vt">${esc(T[root.id]||"")}</div></div>
+  <table><thead><tr><th>المستوى ١ — شواهد الكلمة</th><th>المستوى ٢ — شواهد الشواهد</th><th>المستوى ٣</th></tr></thead><tbody>${rows||'<tr><td colspan="3" class="muted">لا توجد شواهد لهذه الكلمة</td></tr>'}</tbody></table>`;
+  t.hidden=false;$("#panel").hidden=true}
+function apply(){$("#vp").setAttribute("transform",`translate(${V.x},${V.y}) scale(${V.k})`)}
+function fit(){const r=svgEl.getBoundingClientRect(),k=Math.min(r.width/B.w,r.height/B.h,1.3);V.k=k;V.x=r.width/2-B.cx*k;V.y=r.height/2-B.cy*k;apply()}
+function zoomAt(f,px,py){const r=svgEl.getBoundingClientRect();px=px??r.width/2;py=py??r.height/2;const k=Math.min(3,Math.max(.1,V.k*f));V.x=px-(px-V.x)*(k/V.k);V.y=py-(py-V.y)*(k/V.k);V.k=k;apply()}
+svgEl.addEventListener("wheel",e=>{e.preventDefault();const r=svgEl.getBoundingClientRect();zoomAt(e.deltaY<0?1.12:1/1.12,e.clientX-r.left,e.clientY-r.top)},{passive:false});
+let drag=null,moved=0;
+svgEl.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,vx:V.x,vy:V.y};moved=0;svgEl.setPointerCapture(e.pointerId)});
+svgEl.addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved=Math.max(moved,Math.abs(dx)+Math.abs(dy));V.x=drag.vx+dx;V.y=drag.vy+dy;apply()});
+svgEl.addEventListener("pointerup",e=>{drag=null;if(moved<5){const g=document.elementFromPoint(e.clientX,e.clientY);const nd=g&&g.closest&&g.closest(".mmn");if(nd)show(+nd.dataset.id);else $("#panel").hidden=true}});
+const zi=()=>zoomAt(1.25),zo=()=>zoomAt(1/1.25);
+$("#zin").onclick=zi;$("#zout").onclick=zo;$("#zfit").onclick=fit;$("#zin2").onclick=zi;$("#zout2").onclick=zo;$("#zfit2").onclick=fit;
+$("#vMap").onclick=()=>{S.view="m";set("mmview","m");draw()};$("#vTbl").onclick=()=>{S.view="t";set("mmview","t");draw()};addEventListener("resize",fit);
+function show(id){
+  const d=dec(id),ab=ABB(d.b),p=$("#panel");
+  p.innerHTML=`<button class="x" aria-label="إغلاق">✕</button><h3>${esc(label(id))}</h3><div class="ar vt">${esc(T[id]||"")}</div>
+  <div class="acts">${inLib(id)?`<button id="recenter">اجعله مركز الخريطة</button><a href="${ab}.html#/${ab}/${d.c}:${d.v}" target="_blank">افتحه في الدراسة ↗</a>`:`<span class="muted">هذا السفر لم يُضف إلى المكتبة بعد، فلا يمكن التوسع منه.</span>`}</div>`;
+  p.hidden=false;p.querySelector(".x").onclick=()=>p.hidden=true;
+  const rc=$("#recenter");if(rc)rc.onclick=()=>{setSel(id,-1);pick()}}
+(function init(){
+  S.N=+$("#selN").value;
+  const m=location.hash.match(/^#(\w+)\/(\d+):(\d+)(?:\/g(\d+))?/);
+  let ok=false;
+  if(m&&BID(m[1])>0)ok=setSel(BID(m[1])*1e6+ +m[2]*1e3+ +m[3],m[4]!=null?+m[4]:-1);
+  if(!ok){const b=get("b",null),c=get("c",1),v=get("v",1);ok=!!b&&setSel(b*1e6+c*1e3+v,-1)}
+  if(!ok){selB.value=String(books[0]);fillC();fillV();fillW()}
+  pick()}
+)();
+addEventListener("hashchange",()=>{const m=location.hash.match(/^#(\w+)\/(\d+):(\d+)(?:\/g(\d+))?/);if(m&&BID(m[1])>0&&setSel(BID(m[1])*1e6+ +m[2]*1e3+ +m[3],m[4]!=null?+m[4]:-1)){S.vid=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);S.gi=+selW.value;draw()}});
+</script>
+</body></html>
