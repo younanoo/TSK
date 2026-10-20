@@ -1,0 +1,12 @@
+# backups and temp files - keep them in ..\backups, not in the site
+*.tar.gz
+*.zip
+*.bak
+*.bak_*
+_backup*
+*.tmp
+# OS / editor junk
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
