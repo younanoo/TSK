@@ -1,0 +1,1 @@
+window.FN=window.FN||{};window.FN["2Jo"]={"1:8":[[6,"NE and WH <i>what you have worked for</i>","NE وWH: <i>ما تعبتم لأجله</i>"]],"1:12":[[19,"Literally <i>mouth to mouth</i>","حرفيًا <i>فمًا إلى فم</i>"]],"1:13":[[8,"BYZ and TR include <i>Amen.</i>","يتضمن BYZ وTR كلمة <i>آمين.</i>"]]};

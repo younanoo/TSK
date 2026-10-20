@@ -216,6 +216,7 @@ function viewBook(){
   <div class="chpick big">${b.chapters.map(x=>`<button data-gc="${b.id}.${x}" class="chp" title="الأصحاح ${n(x)}">${n(x)}</button>`).join("")}</div>`+olBook(b);
 }
 
+function ilText(d){const t=window.TR&&window.TR[book().abbr],k=d.c+":"+d.v;if(t&&t.svd){if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];if(t.svd[k])return t.svd[k]}return d.text}
 function interBlock(d){
   const t=window.TR&&window.TR[book().abbr], key=d.c+":"+d.v, kj=t&&t.kjvS&&t.kjvS[key];
   if(!kj) return `<div class="ilv-none">لا يتوفر تفسير كلمة بكلمة لهذا العدد</div>`;
@@ -237,6 +238,25 @@ function interBlock(d){
     out.splice(at+1,0,{si:it.si,h:cell(x,"—",it.w," ilc-s")})});
   return out.map(o=>o.h).join("");
 }
+/* ---- Interlinear بديل: النص العبري/اليوناني من BSB (تجربة) ---- */
+const BSBB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
+function bsbLoad(abbr){const rr=()=>{if(S.view==="chapter")render()};
+  if(!window.BSBP&&LOADED["assets/bsb_parse.js"]===undefined)loadJS("assets/bsb_parse.js",rr);
+  if(window.BSBI&&window.BSBI[abbr])return window.BSBI[abbr];const src="assets/bsb_"+abbr+".js";
+  if(LOADED[src]===undefined)loadJS(src,rr);return null}
+function interBlockB(d){const ab=book().abbr,B=bsbLoad(ab);if(!B)return `<div class="ilv-none">جارٍ التحميل…</div>`;
+  const w=B[d.c+":"+d.v];if(!w)return `<div class="ilv-none">لا يتوفر هذا العدد في هذا المصدر</div>`;
+  const ST=window.STRONG||{};
+  const fl=fnHas(d)||[];return w.map(([o,tr,sid,pc,en,pn],wi)=>{const fm=fl.map((x,i)=>x[0]===wi?i+1:0).filter(Boolean);const e=ST[sid]||{};const tip=((window.BSBP&&window.BSBP[pc])||pc)+(e.ar?" — "+e.ar:"");
+    return `<div class="ilc" title="${esc(tip)}"><a class="iln" href="strong.html#${sid}" target="_blank">${sid||"&nbsp;"}</a><span class="ilo">${esc(o)}</span><span class="ilt">${esc(tr)}</span><span class="ilk">${esc(en||"—")}${esc(pn)}${fm.length?`<sup class="fnm" title="حاشية">${fm.map(n).join("،")}</sup>`:""}</span><span class="ilp ltr">${esc(pc)}</span></div>`}).join("")}
+/* ---- حواشي Berean (Footnotes) مع الترجمة العربية ---- */
+function fnLoad(abbr){if(window.FN&&window.FN[abbr])return window.FN[abbr];const src="assets/fn_"+abbr+".js";
+  if(LOADED[src]===undefined)loadJS(src,()=>{if(["chapter","verse"].includes(S.view))render()});return null}
+function fnHas(d){const F=fnLoad(book().abbr);return F&&F[d.c+":"+d.v]||null}
+const fnItem=(x,i)=>`<div class="fni"><b class="fnn">${n(i+1)}</b><div><div class="fnar">${x[2]||""}</div><div class="fnen ltr" dir="ltr">${x[1]}</div></div></div>`;
+function fnBox(d,open){const L=fnHas(d);if(!L)return "";return `<details class="fnbox" ${open?"open":""}><summary>📝 حواشي Berean (${n(L.length)})</summary>${L.map(fnItem).join("")}</details>`}
+function fnChapter(b,vs){const F=fnLoad(b.abbr);if(!F)return "";const rows=[];vs.forEach(d=>{const L=F[d.c+":"+d.v];if(L)L.forEach(x=>rows.push([d,x]))});if(!rows.length)return "";
+  return `<details class="fnbox"><summary>📝 حواشي Berean لهذا الأصحاح (${n(rows.length)})</summary>${rows.map(([d,x])=>`<div class="fni"><a class="fnv" href="#/${b.abbr}/${d.c}:${d.v}" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</a><div><div class="fnar">${x[2]||""}</div><div class="fnen ltr" dir="ltr">${x[1]}</div></div></div>`).join("")}</details>`}
 /* ---- مخطط السفر (Berean Study Bible Outlines) ---- */
 const OLB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
 function olLoad(abbr){if(!OLB.includes(abbr))return null;if(window.OL&&window.OL[abbr])return window.OL[abbr];
@@ -266,9 +286,10 @@ function viewChapter(){
     :`<button disabled>←</button>`;
   const refs=vs.reduce((a,x)=>a+refCount(x),0);
   $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
-  ${olChapter(b,c)}${INTER?"":trBar()}<div class="chlink"><button class="trb" id="interBtn">${INTER?"☰ العرض العادي":"≋ عرض كلمة بكلمة (Interlinear)"}</button> ${INTER?`<button class="trb" id="dirBtn" title="اتجاه نص الأصحاح">⇄ الاتجاه: ${store.get("idir","rtl")==="ltr"?"LTR (يسار ← يمين)":"RTL (يمين ← يسار)"}</button> `:""}<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">⇄ مقارنة الترجمات الثلاث لهذا الأصحاح</a></div>${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>`<div class="ilv"><button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button><div class="ilcol"><div class="ilar ar">${esc(d.text)}</div><div class="ilrow" dir="rtl">${interBlock(d)}</div></div></div>`).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
+  ${olChapter(b,c)}${INTER?"":trBar()}<div class="chlink"><button class="trb" id="interBtn">${INTER?"☰ العرض العادي":"≋ عرض كلمة بكلمة (Interlinear)"}</button> ${INTER&&BSBB.includes(b.abbr)?`<button class="trb" id="srcBtn" title="تبديل مصدر الكلمة بكلمة">🔀 المصدر: ${store.get("isrc","ours")==="bsb"?"Berean (أصل عبري/يوناني)":"مكتبتنا (KJV + فاندايك)"}</button> `:""}${INTER?`<button class="trb" id="dirBtn" title="اتجاه نص الأصحاح">⇄ الاتجاه: ${store.get("idir","rtl")==="ltr"?"LTR (يسار ← يمين)":"RTL (يمين ← يسار)"}</button> `:""}<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">⇄ مقارنة الترجمات الثلاث لهذا الأصحاح</a></div>${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>`<div class="ilv"><button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button><div class="ilcol"><div class="ilar ar">${esc(ilText(d))}</div><div class="ilrow" dir="${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"&&b.id>39?"ltr":"rtl"}">${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"?interBlockB(d):interBlock(d)}</div>${fnBox(d,true)}</div></div>`).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
     return `<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
       <span class="cvn">${n(d.v)}</span><span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span><span class="cvm">${rc?n(rc)+" شاهدًا":"—"}</span></button>`}).join("")}</div>
+  ${fnChapter(b,vs)}
   <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
 function viewVerse(){
@@ -310,6 +331,7 @@ function viewVerse(){
         <span class="pill">${n(verseCount(d))} آية للقراءة</span>${(d.arS&&!trText(d))||trSeg(d)?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
       </div>
     </div>
+    ${fnBox(d,true)}
     <div class="context">
       ${sameCh(prev)?`<button class="ctx" data-go="${prev.b}.${prev.c}:${prev.v}"><em>${n(prev.v)}</em>${esc(prev.text)}</button>`:""}
       ${sameCh(next)?`<button class="ctx" data-go="${next.b}.${next.c}:${next.v}"><em>${n(next.v)}</em>${esc(next.text)}</button>`:""}
@@ -405,6 +427,7 @@ document.addEventListener("click",e=>{
   if(e.target.closest("#strTgl")){const vc=document.querySelector(".verse-card");const off=!vc.classList.contains("nostr");vc.classList.toggle("nostr",off);e.target.closest("#strTgl").classList.toggle("on",!off);store.set("nostr2",off);return}
   if(e.target.closest("#diaBtn")){store.set("dia",!diaOn());render();return}
   const tb=e.target.closest("[data-tr]"); if(tb){store.set("tr",tb.dataset.tr);render();return}
+  if(e.target.closest("#srcBtn")){store.set("isrc",store.get("isrc","ours")==="bsb"?"ours":"bsb");render();return}
   if(e.target.closest("#dirBtn")){store.set("idir",store.get("idir","rtl")==="ltr"?"rtl":"ltr");render();return}
   if(e.target.closest("#interBtn")){store.set("inter",!store.get("inter",false));render();return}
   const gc=e.target.closest("[data-gc]"); if(gc){const p=gc.dataset.gc.split("."); goChapter(+p[0],+p[1]); return}

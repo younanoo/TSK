@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بحث نحوي — مكتبة دراسة الشواهد</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+html,body{overflow-x:clip;padding:0}
+.g{max-width:960px;margin:0 auto;padding:18px 16px 70px}
+.g h1{font:700 22px var(--ui);margin:0 0 4px}.g .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.gf{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px;position:sticky;top:0;z-index:5}
+.gr{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:flex-end}
+.gr label{display:flex;flex-direction:column;gap:2px;font:600 12px var(--ui);color:var(--muted)}
+.gr select,.gr input{font:14px var(--ui);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:110px}
+.gb{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.gb button{font:inherit;padding:8px 16px;border:1px solid var(--gold);border-radius:10px;background:var(--gold-soft);color:var(--ink);cursor:pointer}
+.gb a{color:var(--muted);text-decoration:none;font-size:13.5px}
+.gm{font:600 14px var(--ui);margin:8px 0}
+.lem{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.lem span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font:13px var(--ui);background:var(--paper)}
+.lem .o{font:18px "Noto Serif Hebrew","Noto Serif",serif;margin-inline-end:4px}
+.lem small{color:#888}
+.hit{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.hit:hover{border-color:var(--gold);background:var(--gold-soft)}
+.hit b{display:block;font:600 13px var(--ui);color:var(--accent);margin-bottom:2px}
+.hit .t{font:20px/1.9 "Amiri","Noto Naskh Arabic",serif;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{border:1px solid var(--gold);border-radius:8px;padding:2px 8px;text-align:center;font:12px var(--ui);display:flex;flex-direction:column;align-items:center}
+.chip .o{font:19px "Noto Serif Hebrew","Noto Serif",serif;direction:rtl}
+.chip .tr{font:italic 11px "Noto Serif",serif;opacity:.7;direction:ltr}
+.chip .en{font:600 12px "Noto Serif",serif;direction:ltr}
+.chip .pc{font:600 10px var(--ui);color:#888;direction:ltr}
+.bk{font:700 15px var(--ui);margin:14px 0 6px;color:var(--accent)}.bk small{color:var(--muted);font-weight:400;margin-inline-start:6px}
+</style></head><body><div class="g">
+<h1>🔬 بحث نحوي (تجربة)</h1>
+<p class="sub">ابحث في النص العبري واليوناني بحسب القواعد: نوع الكلمة، الزمن، الصيغة، الشخص، العدد… (نسخة تجريبية على سفرَي يونان وفيلبي)</p>
+<div class="gf"><div class="gr" id="gr"></div>
+<div class="gb"><button id="go">🔍 بحث</button><button id="rs" style="background:none">مسح</button><a href="index.html">← المكتبة</a></div></div>
+<div class="gm" id="gm"></div><div class="lem" id="lem"></div><div id="res"></div>
+</div>
+<script src="assets/tx_svd.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const nAr=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const BOOKS={Jon:{ar:"يونان",l:"H"},Phi:{ar:"فيلبي",l:"G"}};
+const AR={Jon:"يونان",Phi:"فيلبي"};
+/* ---- تفكيك رموز التحليل ---- */
+const HPOS={V:"فعل",N:"اسم","N-proper":"اسم علم",Adj:"صفة",Pro:"ضمير",Prep:"حرف جر",Conj:"حرف عطف",Art:"أداة تعريف",Adv:"ظرف",DirObjM:"علامة المفعول",Interrog:"استفهام",Number:"عدد",Interjection:"تعجب",Prtcl:"أداة"};
+const GPOS={V:"فعل",N:"اسم",Adj:"صفة",PPro:"ضمير شخصي",Art:"أداة تعريف",Prep:"حرف جر",Conj:"حرف عطف",Adv:"ظرف",DPro:"ضمير إشارة",RelPro:"ضمير موصول",IPro:"ضمير استفهام",RefPro:"ضمير انعكاسي",Prtcl:"أداة",Heb:"كلمة عبرية",Aram:"كلمة آرامية",Intj:"تعجب",PPro:"ضمير شخصي",RecPro:"ضمير تبادلي",CPro:"ضمير مترابط",Num:"عدد"};
+function decode(code,L){
+  const f={};const parts=(code||"").split(/ \| /);
+  const nm=parts.filter(p=>!/^[123]?[mfc][sdp]$/.test(p));let main=nm.length?nm[nm.length-1]:parts[0];
+  f.suffix=parts.some(p=>/^[123]?[mfc][sdp]$/.test(p)&&p!==main);
+  const t=main.split("-");const pos=(L==="H"&&t[0]==="N"&&t[1]==="proper")?"N-proper":t[0].split(",")[0].trim();
+  f.pos=pos;
+  if(L==="H"){
+    let rest=t.slice(pos==="N-proper"?2:1);
+    if(pos==="V"){f.stem=rest[0];f.form=rest[1];const pgn=rest[2];if(pgn)gpn(pgn,f)}
+    else{rest.forEach(x=>gpn(x,f))}
+  }else{
+    const rest=t.slice(1);
+    if(pos==="V"){const a=rest[0]||"";f.tense=a[0];f.mood=a[1];f.voice=a.slice(2);const b=rest[1];
+      if(b){const m=b.match(/^([NGDAV])([MFN])([SP])$/);if(m){f.case=m[1];f.gender=m[2];f.number=m[3]}else{const m2=b.match(/^([123])([SP])$/);if(m2){f.person=m2[1];f.number=m2[2]}}}}
+    else{rest.forEach(x=>{const m=x.match(/^([NGDAV])?([MFN])?([123])?([SP])$/);if(m){f.case=f.case||m[1];f.gender=f.gender||m[2];f.person=f.person||m[3];f.number=f.number||m[4]}})}
+  }
+  return f}
+function gpn(s,f){const m=s.match(/^([123])?([mfc])([sdp])(c)?$/);if(m){f.person=m[1];f.gender=m[2];f.number=m[3];if(m[4])f.state="c"}else if(/^[mfc][sdp]c$/.test(s)){f.gender=s[0];f.number=s[1];f.state="c"}}
+/* ---- خيارات الواجهة ---- */
+const OPT={
+ H:{pos:["نوع الكلمة",Object.entries(HPOS)],stem:["الجذع (البنيان)",[["Qal","قال (Qal)"],["Niphal","نِفعَل"],["Nifal","نِفعَل (Nifal)"],["Piel","بيئيل (Piel)"],["Pual","بوعل (Pual)"],["Hifil","هِفعيل (Hifil)"],["Hofal","هُفعَل (Hofal)"],["Hitpael","هتبعيل (Hitpael)"]]],
+    form:["الصيغة",[["Perf","ماضٍ تام (Perfect)"],["Imperf","مضارع (Imperfect)"],["ConsecImperf","مضارع معطوف بواو الاتصال (Consec.)"],["ConjImperf","مضارع مقترن"],["Imp","أمر"],["Inf","مصدر"],["InfAbs","مصدر مطلق"],["Prtcpl","اسم فاعل/مفعول"]]],
+    person:["الشخص",[["1","الأول"],["2","الثاني"],["3","الثالث"]]],gender:["الجنس",[["m","مذكر"],["f","مؤنث"],["c","مشترك"]]],number:["العدد",[["s","مفرد"],["d","مثنى"],["p","جمع"]]],state:["الحالة",[["c","مضاف (Construct)"]]]},
+ G:{pos:["نوع الكلمة",Object.entries(GPOS)],tense:["الزمن",[["P","مضارع"],["I","ماضٍ ناقص"],["A","أوريست (ماضٍ بسيط)"],["F","مستقبل"],["R","تام"],["L","تام سابق"]]],
+    mood:["الصيغة",[["I","إخبارية"],["S","التمني (Subjunctive)"],["M","أمر"],["O","تمني (Optative)"],["N","مصدر (Infinitive)"],["P","اسم فاعل (Participle)"]]],
+    voice:["الصوت",[["A","معلوم (Active)"],["M","وسيط (Middle)"],["P","مجهول (Passive)"],["M/P","وسيط أو مجهول"]]],
+    person:["الشخص",[["1","الأول"],["2","الثاني"],["3","الثالث"]]],"case":["الحالة الإعرابية",[["N","فاعل (Nominative)"],["G","مضاف إليه (Genitive)"],["D","مجرور بالـ (Dative)"],["A","مفعول (Accusative)"],["V","نداء (Vocative)"]]],
+    gender:["الجنس",[["M","مذكر"],["F","مؤنث"],["N","محايد"]]],number:["العدد",[["S","مفرد"],["P","جمع"]]]}};
+const bsel=Object.keys(BOOKS);
+const gr=$("#gr");
+function build(){
+  const b=$("#bk")?$("#bk").value:bsel[0];const L=BOOKS[b].l;
+  const vals={};gr.querySelectorAll("select[data-k]").forEach(s=>vals[s.dataset.k]=s.value);
+  const wq=$("#wq")?$("#wq").value:"";
+  gr.innerHTML='<label>السفر<select id="bk">'+bsel.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+BOOKS[x].ar+(BOOKS[x].l==="H"?" (عبري)":" (يوناني)")+'</option>').join("")+'</select></label>'+
+   Object.entries(OPT[L]).map(([k,[lab,os]])=>'<label>'+lab+'<select data-k="'+k+'"><option value="">— أيّ —</option>'+os.map(([v,t])=>'<option value="'+v+'">'+t+'</option>').join("")+'</select></label>').join("")+
+   '<label>كلمة / رقم سترونج<input id="wq" placeholder="H7225 أو G26 أو الكلمة" value="'+esc(wq)+'"></label>';
+  $("#bk").addEventListener("change",()=>{build()});
+}
+build();
+$("#rs").addEventListener("click",()=>{$("#wq").value="";gr.querySelectorAll("select[data-k]").forEach(s=>s.value="");$("#go").click()});
+const DATA={};
+function load(ab,cb){if(DATA[ab])return cb();const s=document.createElement("script");s.src="assets/bsb_"+ab+".js";s.onload=()=>{DATA[ab]=window.BSBI[ab];cb()};document.head.appendChild(s)}
+function run(){
+  const b=$("#bk").value,ab=b==="ALL"?Object.keys(BOOKS):[b];
+  const flt={};gr.querySelectorAll("select[data-k]").forEach(s=>{if(s.value)flt[s.dataset.k]=s.value});
+  const wq=$("#wq").value.trim();
+  let n=0;ab.forEach(a=>load(a,()=>{if(++n===ab.length)show(ab,flt,wq)}))}
+function show(abs,flt,wq){
+  const res=$("#res");res.innerHTML="";const out=[];let words=0;const lem={};
+  const wqn=wq.replace(/[֑-ׇ̀-ͯ]/g,"").replace(/[ً-ٟ]/g,"");
+  abs.forEach(a=>{const L=BOOKS[a].l;const D=DATA[a];
+    Object.keys(D).sort((x,y)=>{const[a1,b1]=x.split(":"),[a2,b2]=y.split(":");return a1-a2||b1-b2}).forEach(k=>{
+      const hits=[];
+      D[k].forEach(w=>{const f=decode(w[3],L);let ok=true;
+        for(const key in flt){const v=flt[key];if(key==="pos"){if(f.pos!==v&&!(w[3].split(/ \| /).some(p=>p.split("-")[0]===v)&&0)){ok=false;break}}else if((f[key]||"")!==v){ok=false;break}}
+        if(ok&&wq){if(/^[HG]\d+$/i.test(wq)){ok=w[2].toUpperCase()===wq.toUpperCase()}else{const o=w[0].replace(/[֑-ׇ̀-ͯ]/g,"").replace(/[־]/g,"");const tr=(w[1]||"").toLowerCase();ok=o.includes(wqn)||tr.includes(wq.toLowerCase())||(w[4]||"").toLowerCase()===wq.toLowerCase()}}
+        if(ok){hits.push(w);words++;const id=w[2]||w[0];(lem[id]=lem[id]||{o:w[0],t:w[1],e:w[4],id:w[2],c:0}).c++}});
+      if(hits.length)out.push({a,k,hits})})});
+  $("#gm").textContent=Object.keys(flt).length||wq?(words?"وُجد "+nAr(words)+" كلمة في "+nAr(out.length)+" آية":"لا توجد نتائج"):"اختر شروطًا ثم اضغط بحث";
+  const ls=Object.values(lem).sort((x,y)=>y.c-x.c).slice(0,24);
+  $("#lem").innerHTML=ls.map(l=>'<span><span class="o">'+esc(l.o)+'</span>'+esc(l.t||"")+' <small>'+(l.id||"")+' · '+nAr(l.c)+'</small></span>').join("");
+  let cur="",html="";
+  out.forEach(h=>{if(h.a!==cur){cur=h.a;html+='<div class="bk">'+AR[h.a]+'</div>'}
+    const [c,v]=h.k.split(":");const T=window.TX.svd[h.a][h.k]||"";
+    html+='<a class="hit" target="_blank" href="'+h.a+'.html#/'+h.a+'/'+c+':'+v+'"><b>'+AR[h.a]+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+esc(T)+'</span><div class="chips">'+h.hits.map(w=>'<span class="chip"><span class="o">'+esc(w[0])+'</span><span class="tr">'+esc(w[1])+'</span><span class="en">'+esc(w[4]||"—")+'</span><span class="pc">'+esc(w[3])+'</span></span>').join("")+'</div></a>'});
+  res.innerHTML=html}
+$("#go").addEventListener("click",run);
+</script></body></html>
