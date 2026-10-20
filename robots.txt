@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /TSK/_tools/
+
+Sitemap: https://younanoo.github.io/TSK/sitemap.xml

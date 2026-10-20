@@ -1,0 +1,55 @@
+{
+ "name": "جدد وعتقاء — كنوز الكتاب المقدس",
+ "short_name": "جدد وعتقاء",
+ "description": "مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK) لكل أسفار الكتاب، مع نص كتاب الحياة وفاندايك وKJV، وقاموس سترونج، وفهرس المواضيع، والبحث، والخرائط الذهنية.",
+ "lang": "ar",
+ "dir": "rtl",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#FAF8F2",
+ "theme_color": "#0B1E30",
+ "icons": [
+  {
+   "src": "assets/brand/app-icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "assets/brand/app-icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "assets/brand/maskable-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "assets/brand/maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ],
+ "shortcuts": [
+  {
+   "name": "البحث في الكتاب المقدس",
+   "short_name": "البحث",
+   "url": "search.html"
+  },
+  {
+   "name": "فهرس المواضيع",
+   "short_name": "المواضيع",
+   "url": "topics.html"
+  },
+  {
+   "name": "قاموس سترونج",
+   "short_name": "سترونج",
+   "url": "strong.html"
+  }
+ ]
+}

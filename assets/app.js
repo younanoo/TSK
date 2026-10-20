@@ -7,10 +7,12 @@ function loadJS(src,cb){if(LOADED[src]===true){cb&&cb();return}if(LOADED[src]){L
 /* نصوص الشواهد: ملف صغير لكل سفر ولكل ترجمة (assets/tx/alab_Mat.js …) يُحمَّل فقط حين يُعرض شاهد من ذلك السفر */
 window.TXB=window.TXB||{};
 function txGet(k,bk,c,v){const t=window.TXB[k+"/"+bk];return t?(t[c+":"+v]||""):undefined}
+/* إن تعذّر تحميل ملف السفر (غالبًا دون اتصال ولم يُحفظ بعد) تظهر هذه الملاحظة بدل سطر فارغ */
+const TX_NA=`<span class="txna">نص هذا الشاهد غير محفوظ على جهازك بعد — يظهر عند الاتصال بالإنترنت.</span>`;
 function txNeed(k,bk){const src=`assets/tx/${k}_${bk}.js`;if(LOADED[src]!==undefined)return;loadJS(src,()=>{
-  const t=window.TXB[k+"/"+bk]||{},q=S.view==="search"?S.q:"";
+  const T=window.TXB[k+"/"+bk],t=T||{},q=S.view==="search"?S.q:"";
   document.querySelectorAll(`[data-tx^="${k}|${bk}|"]`).forEach(el=>{const cv=el.dataset.tx.split("|")[2];
-    el.innerHTML=hl(t[cv]||el.dataset.fb||"",q);el.removeAttribute("data-tx");el.classList.remove("txp")})})}
+    el.innerHTML=(t[cv]||el.dataset.fb)?hl(t[cv]||el.dataset.fb,q):(T?"":TX_NA);el.removeAttribute("data-tx");el.classList.remove("txp")})})}
 /* الترجمات (فاندايك / KJV) تُحمَّل عند اختيارها فقط */
 function trData(){const ab=book().abbr,t=window.TR&&window.TR[ab];if(t)return t;
   const src=`assets/tr_${ab}.js`;if(LOADED[src]===undefined)loadJS(src,()=>render());return null}
@@ -139,7 +141,7 @@ function refRow(r,k,q){
     if(!mc) return hl(t||"",q);
     const x=txGet(tk,R.bk,chOf[i],vn);
     if(x!==undefined) return hl(x||t||"",q);
-    if(LOADED[`assets/tx/${tk}_${R.bk}.js`]===true) return hl(t||"",q); /* الملف غير متاح */
+    if(LOADED[`assets/tx/${tk}_${R.bk}.js`]===true) return t?hl(t,q):TX_NA; /* الملف غير متاح */
     txNeed(tk,R.bk);
     return `<span class="txp" data-tx="${tk}|${R.bk}|${chOf[i]}:${vn}"${t?` data-fb="${esc(t)}"`:""}>…</span>`};
   const body=r.vs.length===1?`<p>${vt(r.vs[0][0],r.vs[0][1],0)}</p>`:r.vs.map(([vn,t],i)=>`<p><span class="vn">${n(vn)}</span>${vt(vn,t,i)}</p>`).join("");
@@ -221,12 +223,40 @@ function viewHome(){
   <div class="grp-home">${groupedBooks(LIB.map(b=>({id:b.id,abbr:b.abbr,nc:b.chapters.length,nv:b.verses.length})),c=>`<button class="mini" data-book="${c.id}"><span class="ab">${SH[c.abbr]}</span><b>${AR[c.abbr]}</b></button>`,0,new Set(BKGRP.map(g=>g[1]+"")))}</div>`;
 }
 
+/* غلاف السفر: img/books/<abbr>All — النسخ المصغّرة في img/web (من assets/imgs.js)، ثم الأصل، ثم غلاف بشعار الموقع */
 function viewBook(){
-  const b=book();
-  $("#main").innerHTML = crumbs(bname(b),`<span class="ltr">${b.en}</span> · ${chs(b.chapters.length)} · ${n(b.verses.length)} عددًا`) + `
-  <button class="cta" data-gc="${b.id}.${b.chapters[0]}">ابدأ القراءة ←</button>
-  <div class="chpick big">${b.chapters.map(x=>`<button data-gc="${b.id}.${x}" class="chp" title="الأصحاح ${n(x)}">${n(x)}</button>`).join("")}</div>`+olBook(b);
+  const b=book(), key=b.abbr+"All", M=window.IMGS||{}, meta=(window.BOOKIMG||{})[b.abbr]||{};
+  const sub=`<span class="ltr">${b.en}</span> · ${chs(b.chapters.length)} · ${n(b.verses.length)} عددًا`;
+  const chips=`<div class="chpick big">${b.chapters.map(x=>`<button data-gc="${b.id}.${x}" class="chp" title="الأصحاح ${n(x)}">${n(x)}</button>`).join("")}</div>`;
+  const g=BKGRP.find(x=>b.id>=x[1]&&b.id<=x[2]);
+  const alt=esc(meta.alt||`${bname(b)} — صورة غلاف السفر`), sz=`(max-width:1020px) 100vw, 960px`;
+  const raw=["jpg","png","jpeg","webp"].map(e=>`img/books/${key}.${e}`);
+  const art=M[key]
+    ? `<picture><source type="image/webp" srcset="img/web/${key}-800.webp 800w, img/web/${key}-1600.webp 1600w" sizes="${sz}"><img src="img/web/${key}-1600.jpg" srcset="img/web/${key}-800.jpg 800w, img/web/${key}-1600.jpg 1600w" sizes="${sz}" alt="${alt}" width="${M[key][0]}" height="${M[key][1]}" decoding="async" fetchpriority="high" data-try="${raw.join("|")}" onerror="bkImgFail(this)"></picture>`
+    : `<img src="${raw[0]}" alt="${alt}" decoding="async" fetchpriority="high" data-try="${raw.slice(1).join("|")}" onerror="bkImgFail(this)">`;
+  $("#main").innerHTML = crumbs(`<span class="crumb-mini"><a href="index.html">المكتبة</a> ‹ ${bname(b)}</span>`,"") + `
+  <figure class="bkhero" style="--pos:${meta.pos||"50% 50%"}">
+    ${art}
+    <figcaption class="bkcap">
+      <span class="eyebrow">${g?g[0]+" · ":""}السفر ${n(b.id)} من ٦٦</span>
+      <h1>${bname(b)}</h1>
+      <span class="bksub">${sub}</span>
+      <button class="cta" data-gc="${b.id}.${b.chapters[0]}">ابدأ القراءة ←</button>
+    </figcaption>
+  </figure>
+  ${meta.note?`<p class="bknote">${esc(meta.note)}</p>`:""}
+  <h2 class="bksec">الأصحاحات</h2>
+  ${chips}`+olBook(b);
 }
+window.bkImgFail=function(img){
+  const f=img.closest("figure"); if(!f) return;
+  f.querySelectorAll("source").forEach(x=>x.remove()); img.removeAttribute("srcset");
+  const rest=(img.dataset.try||"").split("|").filter(Boolean);
+  if(rest.length){img.dataset.try=rest.slice(1).join("|"); img.src=rest[0]; return}
+  const pic=img.closest("picture")||img;
+  pic.outerHTML=`<div class="bkart" aria-hidden="true"><img src="assets/brand/mark-on-navy.svg" alt=""></div>`;
+  f.classList.add("noimg");
+};
 
 function ilText(d){const t=trData(),k=d.c+":"+d.v;if(t&&t.svd){if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];if(t.svd[k])return t.svd[k]}return d.text}
 function interBlock(d){
@@ -295,6 +325,23 @@ function olChapter(b,c){const O=olLoad(b.abbr);if(!O)return "";
 function olVerse(b,d){const O=olLoad(b.abbr);if(!O)return "";
   const rows=O.filter(r=>olIn(r,d.c,d.v));if(!rows.length)return "";
   return `<div class="olpath">📑 ${rows.map(r=>`<span>${esc(r[2]||r[1])} <small>(${olFmt(r)})</small></span>`).join(" ‹ ")} <a href="outline.html?b=${b.abbr}" target="tskoutline">المخطط كاملًا ↗</a></div>`}
+/* صورة الأصحاح: img/web/<abbr><c> (من assets/imgs.js) ← img/<abbr><c>.jpg|png|jpeg|webp ← شعار الموقع */
+function chImage(b,c){
+  const key=b.abbr+c, M=window.IMGS||{}, alt=`${bname(b)} — الأصحاح ${n(c)}`;
+  const raw=["jpg","png","jpeg","webp"].map(e=>`img/${key}.${e}`);
+  const cap=`<figcaption class="chcap"><span>${bname(b)}</span><b>الأصحاح ${n(c)}</b></figcaption>`;
+  if(M[key]){const s=w=>`img/web/${key}-${w}`, sz=`(max-width:1020px) 100vw, 960px`;
+    return `<figure class="chhero"><picture><source type="image/webp" srcset="${s(800)}.webp 800w, ${s(1600)}.webp 1600w" sizes="${sz}"><img src="${s(1600)}.jpg" srcset="${s(800)}.jpg 800w, ${s(1600)}.jpg 1600w" sizes="${sz}" alt="${esc(alt)}" width="${M[key][0]}" height="${M[key][1]}" decoding="async" data-try="${raw.join("|")}" onerror="chImgFail(this)"></picture>${cap}</figure>`}
+  return `<figure class="chhero"><img src="${raw[0]}" alt="${esc(alt)}" decoding="async" data-try="${raw.slice(1).join("|")}" onerror="chImgFail(this)">${cap}</figure>`;
+}
+window.chImgFail=function(img){
+  const f=img.closest("figure"); if(!f) return;
+  f.querySelectorAll("source").forEach(x=>x.remove()); img.removeAttribute("srcset");
+  const rest=(img.dataset.try||"").split("|").filter(Boolean);
+  if(rest.length){img.dataset.try=rest.slice(1).join("|"); img.src=rest[0]; return}
+  f.className="chhero chlogo";
+  f.innerHTML=`<img class="logo-l" src="assets/brand/logo-stacked-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="320" height="230"><img class="logo-d" src="assets/brand/logo-stacked-dark.svg" alt="" width="320" height="230">`;
+};
 function viewChapter(){
   const INTER=store.get("inter",false);
   if(INTER) needStrong(()=>{if(S.view==="chapter")render()});
@@ -309,7 +356,7 @@ function viewChapter(){
     :`<button disabled>←</button>`;
   const refs=vs.reduce((a,x)=>a+refCount(x),0);
   $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
-  ${olChapter(b,c)}${INTER?"":trBar()}<div class="chlink"><button class="trb" id="interBtn">${INTER?"☰ العرض العادي":"≋ عرض كلمة بكلمة (Interlinear)"}</button> ${INTER&&BSBB.includes(b.abbr)?`<button class="trb" id="srcBtn" title="تبديل مصدر الكلمة بكلمة">🔀 المصدر: ${store.get("isrc","ours")==="bsb"?"Berean (أصل عبري/يوناني)":"مكتبتنا (KJV + فاندايك)"}</button> `:""}${INTER?`<button class="trb" id="dirBtn" title="اتجاه نص الأصحاح">⇄ الاتجاه: ${store.get("idir","rtl")==="ltr"?"LTR (يسار ← يمين)":"RTL (يمين ← يسار)"}</button> `:""}<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">⇄ مقارنة الترجمات الثلاث لهذا الأصحاح</a></div>${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>`<div class="ilv"><button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button><div class="ilcol"><div class="ilar ar">${esc(ilText(d))}</div><div class="ilrow" dir="${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"&&b.id>39?"ltr":"rtl"}">${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"?interBlockB(d):interBlock(d)}</div>${fnBox(d,true)}</div></div>`).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
+  ${chImage(b,c)}${olChapter(b,c)}${INTER?"":trBar()}<div class="chlink"><button class="trb" id="interBtn">${INTER?"☰ العرض العادي":"≋ عرض كلمة بكلمة (Interlinear)"}</button> ${INTER&&BSBB.includes(b.abbr)?`<button class="trb" id="srcBtn" title="تبديل مصدر الكلمة بكلمة">🔀 المصدر: ${store.get("isrc","ours")==="bsb"?"Berean (أصل عبري/يوناني)":"مكتبتنا (KJV + فاندايك)"}</button> `:""}${INTER?`<button class="trb" id="dirBtn" title="اتجاه نص الأصحاح">⇄ الاتجاه: ${store.get("idir","rtl")==="ltr"?"LTR (يسار ← يمين)":"RTL (يمين ← يسار)"}</button> `:""}<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">⇄ مقارنة الترجمات الثلاث لهذا الأصحاح</a></div>${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>`<div class="ilv"><button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button><div class="ilcol"><div class="ilar ar">${esc(ilText(d))}</div><div class="ilrow" dir="${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"&&b.id>39?"ltr":"rtl"}">${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"?interBlockB(d):interBlock(d)}</div>${fnBox(d,true)}</div></div>`).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
     return `<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
       <span class="cvn">${n(d.v)}</span><span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span><span class="cvm">${rc?n(rc)+" شاهدًا":"—"}</span></button>`}).join("")}</div>
   ${fnChapter(b,vs)}

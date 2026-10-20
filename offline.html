@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>غير متصل — جدد وعتقاء</title>
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
+<meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
+<style>
+:root{--bg:#FAF8F2;--paper:#fff;--ink:#253342;--muted:#4E6684;--line:#E6DFCF;--accent:#0F3554;--gold:#8A6420}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0B1E30;--paper:#12293F;--ink:#E8E4D8;--muted:#A9B4C2;--line:#24425F;--accent:#8DB9E0;--gold:#D4A64A}}
+:root[data-theme=dark]{--bg:#0B1E30;--paper:#12293F;--ink:#E8E4D8;--muted:#A9B4C2;--line:#24425F;--accent:#8DB9E0;--gold:#D4A64A}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.9 "IBM Plex Sans Arabic",Tahoma,sans-serif}
+main{max-width:620px;margin:0 auto;padding:48px 16px;text-align:center}
+.logo{height:150px;width:auto}.logo-d{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .logo-l{display:none}:root:not([data-theme=light]) .logo-d{display:inline}}
+:root[data-theme=dark] .logo-l{display:none}:root[data-theme=dark] .logo-d{display:inline}
+h1{font-family:"El Messiri",serif;color:var(--accent);font-size:1.7rem;margin:18px 0 6px}
+p{color:var(--muted);margin:6px 0}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:26px 0}
+.btns a{padding:9px 18px;border-radius:10px;border:1px solid var(--line);background:var(--paper);color:var(--accent);text-decoration:none;font-weight:600}
+.btns a.main{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+#saved{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+#saved a{padding:3px 12px;border:1px solid var(--line);border-radius:8px;color:var(--accent);text-decoration:none;background:var(--paper)}
+</style>
+<script>try{var t=JSON.parse(localStorage.getItem("tsklib:theme"));if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body><main>
+<img class="logo logo-l" src="assets/brand/logo-stacked-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="209" height="150"><img class="logo logo-d" src="assets/brand/logo-stacked-dark.svg" alt="" width="209" height="150">
+<h1>أنت غير متصل بالإنترنت</h1>
+<p>هذه الصفحة لم تُحفظ على جهازك بعد. كل سفر تفتحه وأنت متصل يُحفظ تلقائيًا للقراءة لاحقًا دون إنترنت.</p>
+<div class="btns"><a class="main" href="index.html">المكتبة</a><a href="javascript:location.reload()">إعادة المحاولة</a></div>
+<p id="savedT" hidden>الأسفار المحفوظة على هذا الجهاز:</p><div id="saved"></div>
+<script>(async()=>{try{const AR={"Gen":"التكوين","Exo":"الخروج","Lev":"اللاويين","Num":"العدد","Deu":"التثنية","Jos":"يشوع","Jdg":"القضاة","Rut":"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني","Ezr":"عزرا","Neh":"نحميا","Est":"أستير","Job":"أيوب","Psa":"المزامير","Pro":"الأمثال","Ecc":"الجامعة","Son":"نشيد الأنشاد","Isa":"إشعياء","Jer":"إرميا","Lam":"مراثي إرميا","Eze":"حزقيال","Dan":"دانيال","Hos":"هوشع","Joe":"يوئيل","Amo":"عاموس","Oba":"عوبديا","Jon":"يونان","Mic":"ميخا","Nah":"ناحوم","Hab":"حبقوق","Zep":"صفنيا","Hag":"حجي","Zec":"زكريا","Mal":"ملاخي","Mat":"متى","Mar":"مرقس","Luk":"لوقا","Joh":"يوحنا","Act":"أعمال الرسل","Rom":"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية","Gal":"غلاطية","Eph":"أفسس","Phi":"فيلبي","Col":"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية","Tit":"تيطس","Phm":"فليمون","Heb":"العبرانيين","Jam":"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة","Jud":"يهوذا","Rev":"الرؤيا"};const c=await caches.open("jw-files");const ks=await c.keys();
+const got=Object.keys(AR).filter(a=>ks.some(k=>new URL(k.url).pathname.endsWith("/"+a+".html")));
+if(got.length){document.getElementById("savedT").hidden=false;document.getElementById("saved").innerHTML=got.map(a=>'<a href="'+a+'.html#/'+a+'">'+AR[a]+'</a>').join("")}}catch(e){}})()</script>
+</main></body></html>
