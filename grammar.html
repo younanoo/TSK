@@ -39,14 +39,14 @@ html,body{overflow-x:clip;padding:0}
 .chip .pc{font:600 10px var(--ui);color:#888;direction:ltr}
 .bk{font:700 15px var(--ui);margin:14px 0 6px;color:var(--accent)}.bk small{color:var(--muted);font-weight:400;margin-inline-start:6px}
 </style><!--seo-->
-<meta name="description" content="بحث نحوي في كلمات الكتاب المقدس بلغتيه الأصليتين حسب نوع الكلمة وتصريفها.">
+<meta name="description" content="بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.">
 <link rel="canonical" href="https://younanoo.github.io/TSK/grammar.html">
 <link rel="manifest" href="manifest.webmanifest">
 <meta property="og:site_name" content="جدد وعتقاء">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:type" content="website">
 <meta property="og:title" content="بحث نحوي — جدد وعتقاء">
-<meta property="og:description" content="بحث نحوي في كلمات الكتاب المقدس بلغتيه الأصليتين حسب نوع الكلمة وتصريفها.">
+<meta property="og:description" content="بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.">
 <meta property="og:url" content="https://younanoo.github.io/TSK/grammar.html">
 <meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
 <meta property="og:image:width" content="1200">
@@ -54,14 +54,14 @@ html,body{overflow-x:clip;padding:0}
 <meta property="og:image:alt" content="بحث نحوي — جدد وعتقاء">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="بحث نحوي — جدد وعتقاء">
-<meta name="twitter:description" content="بحث نحوي في كلمات الكتاب المقدس بلغتيه الأصليتين حسب نوع الكلمة وتصريفها.">
+<meta name="twitter:description" content="بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.">
 <meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
 <!--/seo-->
 </head><body>
 <header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html">⌂ المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن">◐</button></header>
 <div class="g">
-<h1>🔬 بحث نحوي (تجربة)</h1>
-<p class="sub">ابحث في النص العبري واليوناني بحسب القواعد: نوع الكلمة، الزمن، الصيغة، الشخص، العدد… (نسخة تجريبية على سفرَي يونان وفيلبي)</p>
+<h1>🔬 بحث نحوي باللغات الأصلية</h1>
+<p class="sub">ابحث في النص العبري واليوناني بحسب القواعد: نوع الكلمة، الزمن، الصيغة، الشخص، العدد… في أي سفر، أو في العهد القديم كله (عبري) أو العهد الجديد كله (يوناني). التحليل النحوي من Berean Standard Bible.</p>
 <div class="gf"><div class="gr" id="gr"></div>
 <div class="gb"><button id="go">🔍 بحث</button><button id="rs" style="background:none">مسح</button><a href="index.html">← المكتبة</a></div></div>
 <div class="gm" id="gm"></div><div class="lem" id="lem"></div><div id="res"></div>
@@ -71,20 +71,20 @@ html,body{overflow-x:clip;padding:0}
 const $=s=>document.querySelector(s);
 const nAr=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const BOOKS={Jon:{ar:"يونان",l:"H"},Phi:{ar:"فيلبي",l:"G"}};
-const AR={Jon:"يونان",Phi:"فيلبي"};
+const AR={"Gen": "التكوين", "Exo": "الخروج", "Lev": "اللاويين", "Num": "العدد", "Deu": "التثنية", "Jos": "يشوع", "Jdg": "القضاة", "Rut": "راعوث", "1Sa": "صموئيل الأول", "2Sa": "صموئيل الثاني", "1Ki": "الملوك الأول", "2Ki": "الملوك الثاني", "1Ch": "أخبار الأيام الأول", "2Ch": "أخبار الأيام الثاني", "Ezr": "عزرا", "Neh": "نحميا", "Est": "أستير", "Job": "أيوب", "Psa": "المزامير", "Pro": "الأمثال", "Ecc": "الجامعة", "Son": "نشيد الأنشاد", "Isa": "إشعياء", "Jer": "إرميا", "Lam": "مراثي إرميا", "Eze": "حزقيال", "Dan": "دانيال", "Hos": "هوشع", "Joe": "يوئيل", "Amo": "عاموس", "Oba": "عوبديا", "Jon": "يونان", "Mic": "ميخا", "Nah": "ناحوم", "Hab": "حبقوق", "Zep": "صفنيا", "Hag": "حجي", "Zec": "زكريا", "Mal": "ملاخي", "Mat": "متى", "Mar": "مرقس", "Luk": "لوقا", "Joh": "يوحنا", "Act": "أعمال الرسل", "Rom": "رومية", "1Co": "كورنثوس الأولى", "2Co": "كورنثوس الثانية", "Gal": "غلاطية", "Eph": "أفسس", "Phi": "فيلبي", "Col": "كولوسي", "1Th": "تسالونيكي الأولى", "2Th": "تسالونيكي الثانية", "1Ti": "تيموثاوس الأولى", "2Ti": "تيموثاوس الثانية", "Tit": "تيطس", "Phm": "فليمون", "Heb": "العبرانيين", "Jam": "يعقوب", "1Pe": "بطرس الأولى", "2Pe": "بطرس الثانية", "1Jo": "يوحنا الأولى", "2Jo": "يوحنا الثانية", "3Jo": "يوحنا الثالثة", "Jud": "يهوذا", "Rev": "الرؤيا"};
+const ORD=Object.keys(AR),OT=ORD.slice(0,39),NT=ORD.slice(39);
+const BOOKS={};ORD.forEach((a,i)=>BOOKS[a]={ar:AR[a],l:i<39?"H":"G"});
+const LANG=b=>b==="OT"?"H":b==="NT"?"G":BOOKS[b].l;
 /* ---- تفكيك رموز التحليل ---- */
 const HPOS={V:"فعل",N:"اسم","N-proper":"اسم علم",Adj:"صفة",Pro:"ضمير",Prep:"حرف جر",Conj:"حرف عطف",Art:"أداة تعريف",Adv:"ظرف",DirObjM:"علامة المفعول",Interrog:"استفهام",Number:"عدد",Interjection:"تعجب",Prtcl:"أداة"};
-const GPOS={V:"فعل",N:"اسم",Adj:"صفة",PPro:"ضمير شخصي",Art:"أداة تعريف",Prep:"حرف جر",Conj:"حرف عطف",Adv:"ظرف",DPro:"ضمير إشارة",RelPro:"ضمير موصول",IPro:"ضمير استفهام",RefPro:"ضمير انعكاسي",Prtcl:"أداة",Heb:"كلمة عبرية",Aram:"كلمة آرامية",Intj:"تعجب",PPro:"ضمير شخصي",RecPro:"ضمير تبادلي",CPro:"ضمير مترابط",Num:"عدد"};
-function decode(code,L){
-  const f={};const parts=(code||"").split(/ \| /);
-  const nm=parts.filter(p=>!/^[123]?[mfc][sdp]$/.test(p));let main=nm.length?nm[nm.length-1]:parts[0];
-  f.suffix=parts.some(p=>/^[123]?[mfc][sdp]$/.test(p)&&p!==main);
-  const t=main.split("-");const pos=(L==="H"&&t[0]==="N"&&t[1]==="proper")?"N-proper":t[0].split(",")[0].trim();
-  f.pos=pos;
+const GPOS={V:"فعل",N:"اسم",Adj:"صفة",PPro:"ضمير شخصي",Art:"أداة تعريف",Prep:"حرف جر",Conj:"حرف عطف",Adv:"ظرف",DPro:"ضمير إشارة",RelPro:"ضمير موصول",IPro:"ضمير استفهام",RefPro:"ضمير انعكاسي",Prtcl:"أداة",IntPrtcl:"أداة استفهام",I:"تعجب (Interjection)",Indec:"غير متصرف",Heb:"كلمة عبرية",Aram:"كلمة آرامية",Intj:"تعجب",PPro:"ضمير شخصي",RecPro:"ضمير تبادلي",CPro:"ضمير مترابط",Num:"عدد"};
+const SUF=/^([123]?[mfc][sdp]\w*|Pn)(, *Pn)?$/;
+function decodePart(main,L){
+  const f={};const t=main.split("-");const pos=(L==="H"&&t[0]==="N"&&t[1]==="proper")?"N-proper":t[0].split(",")[0].trim();
+  f.pos=pos==="Noun"?"N":pos==="Verb"?"V":pos;
   if(L==="H"){
     let rest=t.slice(pos==="N-proper"?2:1);
-    if(pos==="V"){f.stem=rest[0];f.form=rest[1];const pgn=rest[2];if(pgn)gpn(pgn,f)}
+    if(f.pos==="V"){f.stem=rest[0];f.form=rest[1];const pgn=rest[2];if(pgn)gpn(pgn,f)}
     else{rest.forEach(x=>gpn(x,f))}
   }else{
     const rest=t.slice(1);
@@ -93,24 +93,38 @@ function decode(code,L){
     else{rest.forEach(x=>{const m=x.match(/^([NGDAV])?([MFN])?([123])?([SP])$/);if(m){f.case=f.case||m[1];f.gender=f.gender||m[2];f.person=f.person||m[3];f.number=f.number||m[4]}})}
   }
   return f}
+/* كل كلمة قد تتألف من أجزاء (حرف جر/عطف + اسم/فعل…) — نفحص كل جزء على حدة، وتُستبعد ضمائر اللواحق */
+function decodeAll(code,L){return (code||"").split(/ \| /).filter(p=>p&&!SUF.test(p)).map(p=>decodePart(p,L))}
+function matchVal(key,v,f){const x=f[key]||"";
+  if(key==="form"){switch(v){
+    case "Perf":return /^(Conj)?Perf$/.test(x);
+    case "ConjPerf":return x==="ConjPerf";
+    case "Imperf":return /^Imperf(\.|$)/.test(x);
+    case "ConjImperf":return /^ConjImperf/.test(x);
+    case "Jus":return /\.Jus$/.test(x);
+    case "Cohort":return /\.Cohort$/.test(x);
+    case "Prtcpl":return /Prtcpl$/.test(x);
+    default:return x===v}}
+  return x===v}
+const NORM=s=>String(s||"").normalize("NFD").replace(/[\u0591-\u05C7\u0300-\u036F\u064B-\u065F]/g,"").replace(/[־]/g,"").replace(/ς/g,"σ").toLowerCase();
 function gpn(s,f){const m=s.match(/^([123])?([mfc])([sdp])(c)?$/);if(m){f.person=m[1];f.gender=m[2];f.number=m[3];if(m[4])f.state="c"}else if(/^[mfc][sdp]c$/.test(s)){f.gender=s[0];f.number=s[1];f.state="c"}}
 /* ---- خيارات الواجهة ---- */
 const OPT={
- H:{pos:["نوع الكلمة",Object.entries(HPOS)],stem:["الجذع (البنيان)",[["Qal","قال (Qal)"],["Niphal","نِفعَل"],["Nifal","نِفعَل (Nifal)"],["Piel","بيئيل (Piel)"],["Pual","بوعل (Pual)"],["Hifil","هِفعيل (Hifil)"],["Hofal","هُفعَل (Hofal)"],["Hitpael","هتبعيل (Hitpael)"]]],
-    form:["الصيغة",[["Perf","ماضٍ تام (Perfect)"],["Imperf","مضارع (Imperfect)"],["ConsecImperf","مضارع معطوف بواو الاتصال (Consec.)"],["ConjImperf","مضارع مقترن"],["Imp","أمر"],["Inf","مصدر"],["InfAbs","مصدر مطلق"],["Prtcpl","اسم فاعل/مفعول"]]],
+ H:{pos:["نوع الكلمة",Object.entries(HPOS)],stem:["الجذع (البنيان)",[["Qal","قال (Qal)"],["QalPass","قال مبني للمجهول (QalPass)"],["Nifal","نِفعَل (Nifal)"],["Piel","بيئيل (Piel)"],["Pual","بوعل (Pual)"],["Hifil","هِفعيل (Hifil)"],["Hofal","هُفعَل (Hofal)"],["Hitpael","هتبعيل (Hitpael)"]]],
+    form:["الصيغة",[["Perf","ماضٍ تام (Perfect — يشمل المقترن بواو)"],["ConjPerf","ماضٍ مقترن بواو (Conj.Perfect)"],["Imperf","مضارع (Imperfect — يشمل الأنواع الفرعية)"],["ConsecImperf","مضارع معطوف بواو الاتصال (Consec.)"],["ConjImperf","مضارع مقترن بواو"],["Jus","غائب أمر (Jussive)"],["Cohort","حثّ (Cohortative)"],["Imp","أمر"],["Inf","مصدر"],["InfAbs","مصدر مطلق"],["Prtcpl","اسم فاعل/مفعول (Participle)"]]],
     person:["الشخص",[["1","الأول"],["2","الثاني"],["3","الثالث"]]],gender:["الجنس",[["m","مذكر"],["f","مؤنث"],["c","مشترك"]]],number:["العدد",[["s","مفرد"],["d","مثنى"],["p","جمع"]]],state:["الحالة",[["c","مضاف (Construct)"]]]},
  G:{pos:["نوع الكلمة",Object.entries(GPOS)],tense:["الزمن",[["P","مضارع"],["I","ماضٍ ناقص"],["A","أوريست (ماضٍ بسيط)"],["F","مستقبل"],["R","تام"],["L","تام سابق"]]],
     mood:["الصيغة",[["I","إخبارية"],["S","التمني (Subjunctive)"],["M","أمر"],["O","تمني (Optative)"],["N","مصدر (Infinitive)"],["P","اسم فاعل (Participle)"]]],
     voice:["الصوت",[["A","معلوم (Active)"],["M","وسيط (Middle)"],["P","مجهول (Passive)"],["M/P","وسيط أو مجهول"]]],
     person:["الشخص",[["1","الأول"],["2","الثاني"],["3","الثالث"]]],"case":["الحالة الإعرابية",[["N","فاعل (Nominative)"],["G","مضاف إليه (Genitive)"],["D","مجرور بالـ (Dative)"],["A","مفعول (Accusative)"],["V","نداء (Vocative)"]]],
     gender:["الجنس",[["M","مذكر"],["F","مؤنث"],["N","محايد"]]],number:["العدد",[["S","مفرد"],["P","جمع"]]]}};
-const bsel=Object.keys(BOOKS);
+
 const gr=$("#gr");
 function build(){
-  const b=$("#bk")?$("#bk").value:bsel[0];const L=BOOKS[b].l;
+  const b=$("#bk")?$("#bk").value:"Jon";const L=LANG(b);
   const vals={};gr.querySelectorAll("select[data-k]").forEach(s=>vals[s.dataset.k]=s.value);
   const wq=$("#wq")?$("#wq").value:"";
-  gr.innerHTML='<label>السفر<select id="bk">'+bsel.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+BOOKS[x].ar+(BOOKS[x].l==="H"?" (عبري)":" (يوناني)")+'</option>').join("")+'</select></label>'+
+  gr.innerHTML='<label>السفر<select id="bk"><optgroup label="مجموعات"><option value="OT" '+(b==="OT"?"selected":"")+'>كل العهد القديم (عبري)</option><option value="NT" '+(b==="NT"?"selected":"")+'>كل العهد الجديد (يوناني)</option></optgroup><optgroup label="العهد القديم (عبري)">'+OT.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+AR[x]+'</option>').join("")+'</optgroup><optgroup label="العهد الجديد (يوناني)">'+NT.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+AR[x]+'</option>').join("")+'</optgroup></select></label>'+
    Object.entries(OPT[L]).map(([k,[lab,os]])=>'<label>'+lab+'<select data-k="'+k+'"><option value="">— أيّ —</option>'+os.map(([v,t])=>'<option value="'+v+'">'+t+'</option>').join("")+'</select></label>').join("")+
    '<label>كلمة / رقم سترونج<input id="wq" placeholder="H7225 أو G26 أو الكلمة" value="'+esc(wq)+'"></label>';
   $("#bk").addEventListener("change",()=>{build()});
@@ -118,30 +132,33 @@ function build(){
 build();
 $("#rs").addEventListener("click",()=>{$("#wq").value="";gr.querySelectorAll("select[data-k]").forEach(s=>s.value="");$("#go").click()});
 const DATA={};
-function load(ab,cb){if(DATA[ab])return cb();const s=document.createElement("script");s.src="assets/bsb_"+ab+".js";s.onload=()=>{DATA[ab]=window.BSBI[ab];cb()};document.head.appendChild(s)}
+function load(ab,cb){if(DATA[ab])return cb();const s=document.createElement("script");s.src="assets/bsb_"+ab+".js";s.onerror=()=>{DATA[ab]={};cb()};s.onload=()=>{DATA[ab]=window.BSBI[ab]||{};cb()};document.head.appendChild(s)}
 function run(){
-  const b=$("#bk").value,ab=b==="ALL"?Object.keys(BOOKS):[b];
+  const b=$("#bk").value,ab=b==="OT"?OT:b==="NT"?NT:[b];
   const flt={};gr.querySelectorAll("select[data-k]").forEach(s=>{if(s.value)flt[s.dataset.k]=s.value});
   const wq=$("#wq").value.trim();
-  let n=0;ab.forEach(a=>load(a,()=>{if(++n===ab.length)show(ab,flt,wq)}))}
+  if(!Object.keys(flt).length&&!wq){$("#gm").textContent="اختر شرطًا واحدًا على الأقل (أو اكتب كلمة / رقم سترونج) ثم اضغط بحث";$("#res").innerHTML="";$("#lem").innerHTML="";return}
+  let n=0;if(ab.length>1)$("#gm").textContent="جارٍ تحميل النصوص… (0/"+nAr(ab.length)+")";
+  ab.forEach(a=>load(a,()=>{n++;if(n<ab.length){if(ab.length>1)$("#gm").textContent="جارٍ تحميل النصوص… ("+nAr(n)+"/"+nAr(ab.length)+")"}else show(ab,flt,wq)}))}
 function show(abs,flt,wq){
   const res=$("#res");res.innerHTML="";const out=[];let words=0;const lem={};
-  const wqn=wq.replace(/[֑-ׇ̀-ͯ]/g,"").replace(/[ً-ٟ]/g,"");
   abs.forEach(a=>{const L=BOOKS[a].l;const D=DATA[a];
     Object.keys(D).sort((x,y)=>{const[a1,b1]=x.split(":"),[a2,b2]=y.split(":");return a1-a2||b1-b2}).forEach(k=>{
       const hits=[];
-      D[k].forEach(w=>{const f=decode(w[3],L);let ok=true;
-        for(const key in flt){const v=flt[key];if(key==="pos"){if(f.pos!==v&&!(w[3].split(/ \| /).some(p=>p.split("-")[0]===v)&&0)){ok=false;break}}else if((f[key]||"")!==v){ok=false;break}}
-        if(ok&&wq){if(/^[HG]\d+$/i.test(wq)){ok=w[2].toUpperCase()===wq.toUpperCase()}else{const o=w[0].replace(/[֑-ׇ̀-ͯ]/g,"").replace(/[־]/g,"");const tr=(w[1]||"").toLowerCase();ok=o.includes(wqn)||tr.includes(wq.toLowerCase())||(w[4]||"").toLowerCase()===wq.toLowerCase()}}
+      D[k].forEach(w=>{let ok=true;
+        if(Object.keys(flt).length){const fs=decodeAll(w[3],L);ok=fs.some(f=>Object.keys(flt).every(key=>matchVal(key,flt[key],f)))}
+        if(ok&&wq){if(/^[HG]\d+$/i.test(wq)){ok=(w[2]||"").toUpperCase()===wq.toUpperCase()}else{const q=NORM(wq);ok=NORM(w[0]).includes(q)||NORM(w[1]).includes(q)||NORM(w[4]).split(/[^a-z]+/).includes(q)||NORM(w[4]).includes(q)}}
         if(ok){hits.push(w);words++;const id=w[2]||w[0];(lem[id]=lem[id]||{o:w[0],t:w[1],e:w[4],id:w[2],c:0}).c++}});
       if(hits.length)out.push({a,k,hits})})});
   $("#gm").textContent=Object.keys(flt).length||wq?(words?"وُجد "+nAr(words)+" كلمة في "+nAr(out.length)+" آية":"لا توجد نتائج"):"اختر شروطًا ثم اضغط بحث";
   const ls=Object.values(lem).sort((x,y)=>y.c-x.c).slice(0,24);
   $("#lem").innerHTML=ls.map(l=>'<span><span class="o">'+esc(l.o)+'</span>'+esc(l.t||"")+' <small>'+(l.id||"")+' · '+nAr(l.c)+'</small></span>').join("");
-  let cur="",html="";
-  out.forEach(h=>{if(h.a!==cur){cur=h.a;html+='<div class="bk">'+AR[h.a]+'</div>'}
+  window._out=out;draw(300)}
+function draw(lim){const res=$("#res");let cur="",html="";
+  window._out.slice(0,lim).forEach(h=>{if(h.a!==cur){cur=h.a;html+='<div class="bk">'+AR[h.a]+'</div>'}
     const [c,v]=h.k.split(":");const T=window.TX.svd[h.a][h.k]||"";
     html+='<a class="hit" target="_blank" href="'+h.a+'.html#/'+h.a+'/'+c+':'+v+'"><b>'+AR[h.a]+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+esc(T)+'</span><div class="chips">'+h.hits.map(w=>'<span class="chip"><span class="o">'+esc(w[0])+'</span><span class="tr">'+esc(w[1])+'</span><span class="en">'+esc(w[4]||"—")+'</span><span class="pc">'+esc(w[3])+'</span></span>').join("")+'</div></a>'});
-  res.innerHTML=html}
+  if(window._out.length>lim)html+='<button id="more" style="margin:10px 0;padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--gold-soft);font:600 13px var(--ui);cursor:pointer">عرض المزيد ('+nAr(window._out.length-lim)+' آية متبقية)</button>';
+  res.innerHTML=html;const mb=$("#more");if(mb)mb.onclick=()=>draw(lim+300)}
 $("#go").addEventListener("click",run);
 </script></body></html>
