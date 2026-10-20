@@ -568,3 +568,6 @@ text.empty{fill:var(--muted);text-anchor:middle;font:16px var(--ui)}
 .tpc:hover{background:var(--gold);color:#fff}
 
 .tpmore{display:contents}.tpmore>summary{cursor:pointer;font:12px var(--ui);color:var(--muted);padding:3px 8px;list-style:none;width:100%}.tpmore[open]>summary{display:none}
+
+/* نص شاهد قيد التحميل */
+.txp{opacity:.45}

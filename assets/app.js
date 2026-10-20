@@ -1,13 +1,19 @@
 
 const LIB = window.LIB;
-/* نصوص الشواهد تُقرأ من ملف «كتاب الحياة» المشترك (assets/tx_alab.js) بدلًا من تكرارها داخل صفحة كل سفر */
-(function(){const A=window.TX&&window.TX.alab;if(!A)return;
-  LIB.forEach(b=>b.verses.forEach(d=>d.groups.forEach(g=>g.refs.forEach(r=>{const m=r.l.match(/^(\S+) (\d+):/);
-    r.vs.forEach(x=>{if(x.length<2)x[1]=(m&&A[m[1]]&&A[m[1]][m[2]+":"+x[0]])||""})}))))})();
 /* تحميل الملفات الكبيرة عند الحاجة فقط */
 const LOADED={};
 function loadJS(src,cb){if(LOADED[src]===true){cb&&cb();return}if(LOADED[src]){LOADED[src].push(cb);return}
   LOADED[src]=[cb];const s=document.createElement("script");s.src=src;s.onload=s.onerror=()=>{const q=LOADED[src];LOADED[src]=true;q.forEach(f=>f&&f())};document.body.appendChild(s)}
+/* نصوص الشواهد: ملف صغير لكل سفر ولكل ترجمة (assets/tx/alab_Mat.js …) يُحمَّل فقط حين يُعرض شاهد من ذلك السفر */
+window.TXB=window.TXB||{};
+function txGet(k,bk,c,v){const t=window.TXB[k+"/"+bk];return t?(t[c+":"+v]||""):undefined}
+function txNeed(k,bk){const src=`assets/tx/${k}_${bk}.js`;if(LOADED[src]!==undefined)return;loadJS(src,()=>{
+  const t=window.TXB[k+"/"+bk]||{},q=S.view==="search"?S.q:"";
+  document.querySelectorAll(`[data-tx^="${k}|${bk}|"]`).forEach(el=>{const cv=el.dataset.tx.split("|")[2];
+    el.innerHTML=hl(t[cv]||el.dataset.fb||"",q);el.removeAttribute("data-tx");el.classList.remove("txp")})})}
+/* الترجمات (فاندايك / KJV) تُحمَّل عند اختيارها فقط */
+function trData(){const ab=book().abbr,t=window.TR&&window.TR[ab];if(t)return t;
+  const src=`assets/tr_${ab}.js`;if(LOADED[src]===undefined)loadJS(src,()=>render());return null}
 let STRONG = window.STRONG || {};
 /* يعيد true إن كان قاموس سترونج محمّلًا، وإلا يبدأ تحميله ثم يستدعي cb */
 function needStrong(cb){if(window.STRONG&&Object.keys(window.STRONG).length){STRONG=window.STRONG;return true}
@@ -117,11 +123,6 @@ function sidebar(){
 }
 
 /* ---------- pieces ---------- */
-let TXL={};
-function txText(bk,c,v){const k=trCur();if(k==="alab")return null;
-  if(window.TX&&window.TX[k]){const x=window.TX[k][bk];return x&&x[c+":"+v]||null}
-  if(!TXL[k]){TXL[k]=1;const sc=document.createElement("script");sc.src="assets/tx_"+k+".js";sc.onload=()=>render();document.body.appendChild(sc)}
-  return null}
 function refRow(r,k,q){
   const R=refAr(r.l);
   let self="";
@@ -129,9 +130,19 @@ function refRow(r,k,q){
   const m=r.l.match(/ (\d+):(\d+)/);
   if(tb){ if(m && tb.idx[m[1]+":"+m[2]]!=null) self=`<button class="self" data-go="${tb.id}.${m[1]}:${m[2]}">افتحه في الدراسة</button>`;}
   else if(m && CAT_ABBR[R.bk]) self=`<a class="self" href="${pageOf(R.bk,"/"+R.bk+"/"+m[1]+":"+m[2])}">افتحه في الدراسة</a>`;
-  const mc=r.l.match(/ (\d+):/), kjv=trCur()==="kjv";
-  const vt=(vn,t)=>{const x=mc&&txText(R.bk,mc[1],vn);return x||t};
-  const body=r.vs.length===1?`<p>${hl(vt(r.vs[0][0],r.vs[0][1]),q)}</p>`:r.vs.map(([vn,t])=>`<p><span class="vn">${n(vn)}</span>${hl(vt(vn,t),q)}</p>`).join("");
+  const mc=r.l.match(/ (\d+):/), tk=trCur(), kjv=tk==="kjv";
+  /* t موجود مسبقًا في البيانات لبعض الشواهد الممتدة عبر أصحاحات؛ وإلا يُقرأ من ملف السفر */
+  /* الشاهد قد يمتد عبر أصحاحات (2Sa 15:1-18:33): يزيد رقم الأصحاح كلما رجع رقم العدد إلى الوراء */
+  let cc=mc?+mc[1]:0,pv=0;const chOf=r.vs.map(([vn])=>{if(vn<pv)cc++;pv=vn;return cc});
+  const vt=(vn,t,i)=>{
+    if(tk==="alab"&&t!=null) return hl(t,q);
+    if(!mc) return hl(t||"",q);
+    const x=txGet(tk,R.bk,chOf[i],vn);
+    if(x!==undefined) return hl(x||t||"",q);
+    if(LOADED[`assets/tx/${tk}_${R.bk}.js`]===true) return hl(t||"",q); /* الملف غير متاح */
+    txNeed(tk,R.bk);
+    return `<span class="txp" data-tx="${tk}|${R.bk}|${chOf[i]}:${vn}"${t?` data-fb="${esc(t)}"`:""}>…</span>`};
+  const body=r.vs.length===1?`<p>${vt(r.vs[0][0],r.vs[0][1],0)}</p>`:r.vs.map(([vn,t],i)=>`<p><span class="vn">${n(vn)}</span>${vt(vn,t,i)}</p>`).join("");
   return `<div class="r" data-key="${esc(k)}">
     <div class="lbl"><span class="nmr">${hl(R.name+" "+R.num,q)}${r.n?` <small>${MARK[r.n]||esc(r.n)}</small>`:""}</span><span class="en ltr">${esc(r.l)}</span>${self}</div>
     <div class="txt ar" ${kjv?'dir="ltr" style="text-align:left"':""}>${body}</div></div>`;
@@ -147,7 +158,7 @@ const fromLink=(d,label)=>`<a data-go="${d.b}.${d.c}:${d.v}">${label||"من"} ${
 const kwTitle=g=>{const c=trCur();if(c==="kjv"&&g.kw)return g.kw;
   if(c==="svd")return g.s||g.kwAr||g.kw||"الشواهد";
   return g.kwAr||g.s||g.kw||"الشواهد"};
-LIB.forEach(b=>{const t=window.TR&&window.TR[b.abbr]&&window.TR[b.abbr].svdK;if(t)b.verses.forEach(d=>{const a=t[d.c+":"+d.v];if(a)d.groups.forEach((g,i)=>{g.s=a[i]||""})})});
+/* عناوين كلمات فاندايك (g.s) مضمّنة الآن في ملف السفر lib_XXX.js */
 
 
 /* ---------- Strong's ---------- */
@@ -155,13 +166,14 @@ const isHeb = n => n[0]==="H";
 const linkRefs = h => h.replace(/\b([GH]\d+)\b/g,(m)=>STRONG[m]?`<span class="sref" data-sn="${m}">${m}</span>`:m);
 let DICT={cur:null, hist:[], trail:[]};   // per-verse state
 const TRN={alab:"كتاب الحياة",svd:"فاندايك",kjv:"KJV"};
-function trAvail(){const t=window.TR&&window.TR[book().abbr];return t?Object.keys(TRN).filter(k=>k==="alab"||t[k]):[]}
+function trAvail(){const b=book();if(b.trs)return ["alab",...b.trs];const t=window.TR&&window.TR[b.abbr];return t?Object.keys(TRN).filter(k=>k==="alab"||t[k]):[]}
 function trCur(){const c=store.get("tr","alab");return trAvail().includes(c)?c:"alab"}
-function diaOn(){const t=window.TR&&window.TR[book().abbr];return trCur()==="svd"&&!!(t&&t.svdD)&&store.get("dia",false)===true}
-function trText(d){const c=trCur();if(c==="alab")return null;const t=window.TR[book().abbr],k=d.c+":"+d.v;if(diaOn()&&t.svdD[k])return t.svdD[k];return t[c][k]||null}
-function trBar(){const av=trAvail();const t=window.TR&&window.TR[book().abbr];const dia=trCur()==="svd"&&t&&t.svdD?`<button class="trb ${diaOn()?"on":""}" id="diaBtn" title="إظهار التشكيل أو إخفاؤه">تشكيل</button>`:"";return av.length>1?`<div class="trbar">${av.map(k=>`<button class="trb ${k===trCur()?"on":""}" data-tr="${k}">${TRN[k]}</button>`).join("")}${dia}</div>`:""}
+function hasDia(){const b=book();if(b.dia!=null)return b.dia;const t=window.TR&&window.TR[b.abbr];return !!(t&&t.svdD)}
+function diaOn(){return trCur()==="svd"&&hasDia()&&store.get("dia",false)===true}
+function trText(d){const c=trCur();if(c==="alab")return null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];return (t[c]&&t[c][k])||null}
+function trBar(){const av=trAvail();const dia=trCur()==="svd"&&hasDia()?`<button class="trb ${diaOn()?"on":""}" id="diaBtn" title="إظهار التشكيل أو إخفاؤه">تشكيل</button>`:"";return av.length>1?`<div class="trbar">${av.map(k=>`<button class="trb ${k===trCur()?"on":""}" data-tr="${k}">${TRN[k]}</button>`).join("")}${dia}</div>`:""}
 function segHTML(a){return a.map(([t,ns])=>ns.length?`<span class="sw" data-n="${ns.join(" ")}">${esc(t)}<sup>${ns.map(x=>`<span class="sn" data-sn="${x}" title="اعرض معنى ${x}">${x}</span>`).join(" ")}</sup></span>`:esc(t)).join("")}
-function trSeg(d){const c=trCur();if(c==="alab")return null;const t=window.TR[book().abbr];const k=d.c+":"+d.v;if(diaOn()&&t.svdSD&&t.svdSD[k])return t.svdSD[k];const a=t[c+"S"]&&t[c+"S"][k];return a||null}
+function trSeg(d){const c=trCur();if(c==="alab")return null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdSD&&t.svdSD[k])return t.svdSD[k];const a=t[c+"S"]&&t[c+"S"][k];return a||null}
 function verseHTML(d){
   const sg=trSeg(d); if(sg){const h=segHTML(sg);return trCur()==="kjv"?`<span class="ltr" dir="ltr" style="display:block;text-align:left">${h}</span>`:h}
   const tt=trText(d); if(tt) return trCur()==="kjv"?`<span class="ltr" dir="ltr" style="display:block;text-align:left">${esc(tt)}</span>`:esc(tt);
@@ -216,9 +228,10 @@ function viewBook(){
   <div class="chpick big">${b.chapters.map(x=>`<button data-gc="${b.id}.${x}" class="chp" title="الأصحاح ${n(x)}">${n(x)}</button>`).join("")}</div>`+olBook(b);
 }
 
-function ilText(d){const t=window.TR&&window.TR[book().abbr],k=d.c+":"+d.v;if(t&&t.svd){if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];if(t.svd[k])return t.svd[k]}return d.text}
+function ilText(d){const t=trData(),k=d.c+":"+d.v;if(t&&t.svd){if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];if(t.svd[k])return t.svd[k]}return d.text}
 function interBlock(d){
-  const t=window.TR&&window.TR[book().abbr], key=d.c+":"+d.v, kj=t&&t.kjvS&&t.kjvS[key];
+  const t=trData(), key=d.c+":"+d.v, kj=t&&t.kjvS&&t.kjvS[key];
+  if(!t) return `<div class="ilv-none">جارٍ التحميل…</div>`;
   if(!kj) return `<div class="ilv-none">لا يتوفر تفسير كلمة بكلمة لهذا العدد</div>`;
   const FN=new Set("G3588 G2532 G1161 G3767 G846 G848 G3450 G3165 G1473 G4675 G4571 G4771 G5216 G5209 G5210 G2257 G2254 G2248 G2249 G1438".split(" "));
   const ST=window.STRONG||{};
@@ -353,7 +366,7 @@ function viewVerse(){
 
 function refMatch(r,nq){
   const R=refAr(r.l);
-  return norm(r.l).includes(nq)||norm(R.name+" "+R.num).includes(nq)||r.vs.some(([vn,t])=>norm(t).includes(nq));
+  return norm(r.l).includes(nq)||norm(R.name+" "+R.num).includes(nq)||r.vs.some(([vn,t])=>t!=null&&norm(t).includes(nq));
 }
 function viewSearch(){
   if(!needSidx(()=>{if(S.view==="search")render()})){$("#main").innerHTML=crumbs("جارٍ التحميل…","");return}
