@@ -560,3 +560,11 @@ text.empty{fill:var(--muted);text-anchor:middle;font:16px var(--ui)}
 .fnar{font:18px/1.8 "Amiri","Noto Naskh Arabic",serif}
 .fnen{font:13px/1.5 "Noto Serif",serif;opacity:.7;text-align:left}
 .fnm{color:var(--gold);font:700 11px var(--ui);margin-inline-start:2px}
+
+.tpbox{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 14px;margin:10px 0}
+.tpbox summary{cursor:pointer;font:600 13px var(--ui);color:var(--accent)}
+.tpchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tpc{font:13px var(--ui);text-decoration:none;color:var(--ink);border:1px solid var(--gold);background:var(--gold-soft);border-radius:999px;padding:3px 11px}
+.tpc:hover{background:var(--gold);color:#fff}
+
+.tpmore{display:contents}.tpmore>summary{cursor:pointer;font:12px var(--ui);color:var(--muted);padding:3px 8px;list-style:none;width:100%}.tpmore[open]>summary{display:none}

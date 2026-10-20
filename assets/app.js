@@ -103,7 +103,7 @@ function gotoRef(q){
   location.href=pageOf(c1.abbr,"/"+c1.abbr+"/"+c+":"+v);return true}
 function sideTools(){
   if(!$("#findSec")){const h=$("#home");h&&h.insertAdjacentHTML("afterend",`<div class="side-sec" id="findSec" data-sec="find"><h4 class="sh">الانتقال والبحث</h4><div class="sbody"><form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="اذهب إلى عدد: إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off"></form>
-<a id="srchLink" class="tool" target="tsksearch" href="search.html" style="text-decoration:none;display:block;margin-top:8px">🔍 بحث في الكتاب المقدس (فاندايك)</a></div></div>`);
+<a id="srchLink" class="tool" target="tsksearch" href="search.html" style="text-decoration:none;display:block;margin-top:8px">🔍 بحث في الكتاب المقدس (فاندايك)</a><a class="tool" target="tsktopics" href="topics.html" style="text-decoration:none;display:block;margin-top:8px">🏷️ فهرس المواضيع (٤٦ ألف موضوع)</a></div></div>`);
 }
   if(!$("#mmLink")){const t=$("#themeBtn");t&&t.insertAdjacentHTML("beforebegin",`<a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none">🕸 خريطة الشواهد الذهنية</a>`);}
   if(!$("#fsRow")){const t=$("#themeBtn");t&&t.insertAdjacentHTML("beforebegin",`<div id="fsRow" class="fsrow"><span>حجم الخط</span><button class="tool" data-fs="-1" aria-label="تصغير الخط">أ−</button><button class="tool" data-fs="1" aria-label="تكبير الخط">أ+</button></div>`);}
@@ -257,6 +257,16 @@ const fnItem=(x,i)=>`<div class="fni"><b class="fnn">${n(i+1)}</b><div><div clas
 function fnBox(d,open){const L=fnHas(d);if(!L)return "";return `<details class="fnbox" ${open?"open":""}><summary>📝 حواشي Berean (${n(L.length)})</summary>${L.map(fnItem).join("")}</details>`}
 function fnChapter(b,vs){const F=fnLoad(b.abbr);if(!F)return "";const rows=[];vs.forEach(d=>{const L=F[d.c+":"+d.v];if(L)L.forEach(x=>rows.push([d,x]))});if(!rows.length)return "";
   return `<details class="fnbox"><summary>📝 حواشي Berean لهذا الأصحاح (${n(rows.length)})</summary>${rows.map(([d,x])=>`<div class="fni"><a class="fnv" href="#/${b.abbr}/${d.c}:${d.v}" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</a><div><div class="fnar">${x[2]||""}</div><div class="fnen ltr" dir="ltr">${x[1]}</div></div></div>`).join("")}</details>`}
+/* ---- فهرس المواضيع (Nave / Torrey / BibleHub) ---- */
+const TPB=["Gen","Exo","Lev","Num","Deu","Jos","Jdg","Rut","1Sa","2Sa","1Ki","2Ki","1Ch","2Ch","Ezr","Neh","Est","Job","Psa","Pro","Ecc","Son","Isa","Jer","Lam","Eze","Dan","Hos","Joe","Amo","Oba","Jon","Mic","Nah","Hab","Zep","Hag","Zec","Mal","Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
+function tpLoad(abbr){if(!TPB.includes(abbr))return null;if(window.TPBK&&window.TPBK[abbr])return window.TPBK[abbr];const src="assets/tp_"+abbr+".js";
+  if(LOADED[src]===undefined)loadJS(src,()=>{if(S.view==="verse")render()});return null}
+function tpChips(d){const P=tpLoad(book().abbr);if(!P)return "";
+  const ts=P.filter(t=>t[4].some(r=>(d.c>r[0]||(d.c===r[0]&&d.v>=r[1]))&&(d.c<r[2]||(d.c===r[2]&&d.v<=r[3]))));
+  if(!ts.length)return "";
+  const chip=t=>`<a class="tpc" target="_blank" href="topics.html#t=${t[0]}" title="${esc(t[2])}">${esc(t[3]||t[2])}</a>`;
+  const MAX=30;
+  return `<details class="tpbox"><summary>🏷️ مواضيع هذا العدد (${n(ts.length)})</summary><div class="tpchips">${ts.slice(0,MAX).map(chip).join("")}${ts.length>MAX?`<details class="tpmore"><summary>عرض ${n(ts.length-MAX)} موضوعًا آخر</summary>${ts.slice(MAX).map(chip).join("")}</details>`:""}</div></details>`}
 /* ---- مخطط السفر (Berean Study Bible Outlines) ---- */
 const OLB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
 function olLoad(abbr){if(!OLB.includes(abbr))return null;if(window.OL&&window.OL[abbr])return window.OL[abbr];
@@ -331,7 +341,7 @@ function viewVerse(){
         <span class="pill">${n(verseCount(d))} آية للقراءة</span>${(d.arS&&!trText(d))||trSeg(d)?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
       </div>
     </div>
-    ${fnBox(d,true)}
+    ${tpChips(d)}${fnBox(d,true)}
     <div class="context">
       ${sameCh(prev)?`<button class="ctx" data-go="${prev.b}.${prev.c}:${prev.v}"><em>${n(prev.v)}</em>${esc(prev.text)}</button>`:""}
       ${sameCh(next)?`<button class="ctx" data-go="${next.b}.${next.c}:${next.v}"><em>${n(next.v)}</em>${esc(next.text)}</button>`:""}

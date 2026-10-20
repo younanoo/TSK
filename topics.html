@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فهرس المواضيع — مكتبة دراسة الشواهد</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+html,body{overflow-x:clip;padding:0}
+.tp{max-width:1000px;margin:0 auto;padding:18px 16px 70px}
+.tp h1{font:700 22px var(--ui);margin:0 0 4px}.tp .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.tf{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line)}
+.tf input{flex:1 1 240px;min-width:0;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:10px 12px;font:16px var(--ui)}
+.tf select{font:14px var(--ui);padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);max-width:150px}
+.tf a{color:var(--muted);text-decoration:none;font-size:13.5px}
+.cols{display:grid;grid-template-columns:minmax(240px,340px) 1fr;gap:16px;align-items:start}
+@media(max-width:760px){.cols{grid-template-columns:1fr}.list{max-height:240px}}
+.list{background:var(--paper);border:1px solid var(--line);border-radius:12px;max-height:72vh;overflow:auto}
+.ti{display:block;padding:8px 12px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);cursor:pointer}
+.ti:hover{background:var(--gold-soft)}.ti.on{background:var(--gold-soft);border-inline-start:3px solid var(--gold)}
+.ti .a{font:600 14px var(--ui);display:block}.ti .e{font:12px "Noto Serif",serif;opacity:.65;direction:ltr;text-align:left;display:block}
+.ti small{color:var(--muted);font:11px var(--ui)}
+.more{display:block;width:100%;padding:10px;border:0;background:var(--gold-soft);color:var(--ink);font:600 13px var(--ui);cursor:pointer}
+.src{display:inline-block;font:600 10px var(--ui);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-inline-start:6px;color:var(--muted)}
+.det h2{font:700 20px var(--ui);margin:0 0 2px}.det .en{font:14px "Noto Serif",serif;opacity:.65;direction:ltr;text-align:left;margin-bottom:10px}
+.v{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.v:hover{border-color:var(--gold);background:var(--gold-soft)}
+.v b{display:block;font:600 13px var(--ui);color:var(--accent);margin-bottom:2px}
+.v .t{font:20px/1.9 "Amiri","Noto Naskh Arabic",serif}.v .t sup{font:700 11px var(--ui);color:var(--gold);margin-inline:3px}
+.bk{font:700 15px var(--ui);margin:14px 0 6px;color:var(--accent)}.bk small{color:var(--muted);font-weight:400;margin-inline-start:6px}
+.note{font:13px var(--ui);color:var(--muted);background:var(--gold-soft);border-radius:10px;padding:8px 12px;margin-bottom:12px}
+</style></head><body><div class="tp">
+<h1>🏷️ فهرس المواضيع</h1>
+<p class="sub">٤٦ ألف موضوع من Nave وTorrey وBibleHub، مع الآيات بنص فاندايك. العناوين مترجمة آليًا وقد تحتاج مراجعة؛ الأصل الإنجليزي يظهر تحت كل عنوان.</p>
+<div class="tf"><input id="q" type="search" placeholder="ابحث في المواضيع (عربي أو English)…"><select id="src"><option value="">كل المصادر</option><option value="Nav">Nave</option><option value="TTT">Torrey</option><option value="Top">BibleHub</option></select><select id="bk"><option value="">كل الأسفار</option></select><a href="index.html">← المكتبة</a></div>
+<div class="cols"><div class="list" id="list"></div><div class="det" id="det"><div class="note">اختر موضوعًا من القائمة لعرض آياته.</div></div></div>
+</div>
+<script src="assets/tx_svd.js"></script>
+<script src="assets/tp_idx.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const nAr=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const AR={Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
+const ORD=Object.keys(AR);const SRC={Nav:"Nave",TTT:"Torrey",Top:"BibleHub"};
+ORD.forEach(a=>$("#bk").insertAdjacentHTML("beforeend",'<option value="'+a+'">'+AR[a]+'</option>'));
+const TS=window.TPI;const norm=s=>String(s).toLowerCase().replace(/[ً-ٟـ]/g,"").replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه");
+TS.forEach(t=>t.push(norm(t[3])+" "+t[2].toLowerCase()));
+const BKSET={};   // abbr -> Set of ids
+let cur=null,lim=200,ls=[];
+function loadJS(src,cb){const s=document.createElement("script");s.src=src;s.onload=cb;s.onerror=cb;document.head.appendChild(s)}
+function filt(){const q=norm($("#q").value.trim()),s=$("#src").value,b=$("#bk").value;
+  const set=b?BKSET[b]:null;
+  ls=TS.filter(t=>(!s||t[1]===s)&&(!set||set.has(t[0]))&&(!q||t[5].includes(q)))}
+function drawList(reset){if(reset){lim=200;filt()}
+  const part=ls.slice(0,lim);
+  $("#list").innerHTML=ls.length?part.map(t=>'<a class="ti '+(cur===t[0]?"on":"")+'" data-id="'+t[0]+'"><span class="a">'+esc(t[3])+'<span class="src">'+SRC[t[1]]+'</span></span><span class="e">'+esc(t[2])+'</span><small>'+nAr(t[4])+' مقطعًا</small></a>').join("")+(ls.length>lim?'<button class="more" id="more">عرض المزيد ('+nAr(ls.length-lim)+' متبقٍ)</button>':"")+"":'<div class="note" style="margin:10px">لا توجد مواضيع مطابقة.</div>'}
+function verses(r){const [ab,c,v,c2,v2]=r;const T=window.TX.svd[ab]||{};const out=[];
+  for(let cc=c;cc<=c2;cc++){const a=cc===c?v:1;const b=cc===c2?v2:999;for(let vv=a;vv<=b;vv++){const k=cc+":"+vv;if(T[k])out.push([cc,vv,T[k]]);else if(vv>a&&b===999)break}}
+  return out}
+function ranges(id,cb){const k=Math.floor(id/2000),src="assets/tp_r"+k+".js";
+  if(window.TPR&&window.TPR[id])return cb(window.TPR[id]);
+  loadJS(src,()=>cb((window.TPR||{})[id]||[]))}
+function show(id){cur=id;const t=TS.find(x=>x[0]===id);if(!t)return;
+  $("#det").innerHTML='<div class="note">جارٍ التحميل…</div>';
+  ranges(id,rg=>{
+  const by={};rg.forEach(r=>(by[r[0]]=by[r[0]]||[]).push(r));
+  let h='<h2>'+esc(t[3])+'<span class="src">'+SRC[t[1]]+'</span></h2><div class="en">'+esc(t[2])+'</div>';
+  ORD.filter(a=>by[a]).forEach(a=>{h+='<div class="bk">'+AR[a]+'<small>'+nAr(by[a].length)+'</small></div>';
+    by[a].forEach(r=>{const vs=verses(r);if(!vs.length)return;const [c,v]=[vs[0][0],vs[0][1]];
+      const ref=vs.length>1?(r[1]===r[3]?nAr(r[1])+": "+nAr(r[2])+"–"+nAr(r[4]):nAr(r[1])+": "+nAr(r[2])+" – "+nAr(r[3])+": "+nAr(r[4])):nAr(c)+": "+nAr(v);
+      h+='<a class="v" target="_blank" href="'+a+'.html#/'+a+'/'+c+':'+v+'"><b>'+AR[a]+' '+ref+'</b><span class="t">'+vs.map(x=>(vs.length>1?'<sup>'+nAr(x[1])+'</sup>':"")+esc(x[2])).join(" ")+'</span></a>'})});
+  $("#det").innerHTML=h;drawList();history.replaceState(null,"","#t="+id)})}
+let tm;$("#q").addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(()=>drawList(true),180)});
+$("#src").addEventListener("change",()=>drawList(true));
+$("#bk").addEventListener("change",()=>{const b=$("#bk").value;
+  if(!b||BKSET[b])return drawList(true);
+  loadJS("assets/tp_"+b+".js",()=>{BKSET[b]=new Set(((window.TPBK||{})[b]||[]).map(x=>x[0]));drawList(true)})});
+$("#list").addEventListener("click",e=>{if(e.target.id==="more"){lim+=200;return drawList()}const a=e.target.closest(".ti");if(a)show(+a.dataset.id)});
+drawList(true);const m=location.hash.match(/t=(\d+)/);if(m)show(+m[1]);
+</script></body></html>
