@@ -17,7 +17,7 @@ HEADX = ('<link rel="icon" href="assets/brand/favicon.ico" sizes="any">\n'
          '<script src="assets/brand.js"></script>\n')
 LOGOS = ('<img class="logo logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="252" height="76">'
          '<img class="logo logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="252" height="76">')
-BRAND_SUB = '<small>مكتبة دراسة الشواهد · TSK · كتاب الحياة</small>'
+BRAND_SUB = ''
 SITEBAR = ('<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية">'
            '<img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44">'
            '<img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a>'

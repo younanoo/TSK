@@ -37,6 +37,7 @@
 <body class="mmpage">
 <header class="mmbar">
   <a class="mmback" href="index.html" title="العودة إلى المكتبة">← المكتبة</a>
+  <a class="mmback" id="mmCh" href="index.html" title="العودة إلى صفحة الأصحاح المحدَّد"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14l-4 -4l4 -4" /> <path d="M5 10h11a4 4 0 1 1 0 8h-1" /></svg> صفحة الأصحاح</a>
   <a class="mmlogo" href="index.html" title="جدد وعتقاء"><img src="assets/brand/mark.svg" alt="جدد وعتقاء" width="40" height="34"></a><h1>خريطة الشواهد</h1>
   <label>السفر <select id="selB"></select></label>
   <label>الأصحاح <select id="selC"></select></label>
@@ -44,9 +45,9 @@
   <label>الكلمة <select id="selW"></select></label>
   <label>التفرع <select id="selN"><option value="0">قليل</option><option value="1" selected>متوسط</option><option value="2">كثير</option></select></label>
   <span class="sp"></span>
-  <span class="seg"><button id="vMap" class="on">🕸 خريطة</button><button id="vTbl">▦ جدول</button></span>
+  <span class="seg"><button id="vMap" class="on"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M18 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M10 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M6 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M18 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M22 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z" /> <path d="M6 12h4" /> <path d="M14 12h4" /> <path d="M15 7l-2 3" /> <path d="M9 7l2 3" /> <path d="M11 14l-2 3" /> <path d="M13 14l2 3" /></svg> خريطة</button><button id="vTbl"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /> <path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /> <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /> <path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" /></svg> جدول</button></span>
   <button id="zin" aria-label="تكبير">＋</button><button id="zout" aria-label="تصغير">－</button><button id="zfit">⤢ ملاءمة</button>
-  <button id="themeBtn" aria-label="الوضع الفاتح / الداكن">◐</button>
+  <button id="themeBtn" aria-label="الوضع الفاتح / الداكن"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button>
 </header>
 <div id="stage">
   <svg id="svg" role="img" aria-label="خريطة ذهنية للشواهد"><g id="vp"></g></svg>
@@ -88,7 +89,8 @@ function fillW(){const id=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);cons
 selB.onchange=()=>{fillC();selC.onchange()};selC.onchange=()=>{fillV();selV.onchange()};
 selV.onchange=()=>{fillW();selW.value="-1";pick()};selW.onchange=pick;$("#selN").onchange=()=>{S.N=+$("#selN").value;draw()};
 function pick(){S.vid=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);S.gi=+selW.value;hash();draw()}
-function hash(){const d=dec(S.vid);try{history.replaceState(null,"","#"+ABB(d.b)+"/"+d.c+":"+d.v+(S.gi>=0?"/g"+S.gi:""))}catch(e){}}
+function chLink(d){const a=document.getElementById("mmCh");if(a){a.href="index.html#/"+ABB(d.b)+"/ch/"+d.c;a.innerHTML="<svg class='ti' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 14l-4 -4l4 -4' /> <path d='M5 10h11a4 4 0 1 1 0 8h-1' /></svg> صفحة الأصحاح "+n(d.c)}}
+function hash(){const d=dec(S.vid);chLink(d);try{history.replaceState(null,"","#"+ABB(d.b)+"/"+d.c+":"+d.v+(S.gi>=0?"/g"+S.gi:""))}catch(e){}}
 function setSel(id,gi){const d=dec(id);if(!IDX[d.b]||!IDX[d.b][d.c]||!IDX[d.b][d.c].includes(d.v))return false;selB.value=d.b;fillC();selC.value=d.c;fillV();selV.value=d.v;fillW();selW.value=String(gi);return true}
 function refsOf(id,gi){const gs=R[id];if(!gs)return[];const out=[];(gi!=null&&gi>=0?[gs[gi]]:gs).forEach(g=>g&&g[3].forEach(r=>{if(!out.includes(r))out.push(r)}));return out}
 function build(){
@@ -105,7 +107,7 @@ function build(){
   return root}
 const ROW=34,W=s=>Math.max(78,s.length*7.4+26);
 let B={w:1,h:1,cx:0,cy:0},V={x:0,y:0,k:1};const svgEl=$("#svg");
-function draw(){
+function draw(){chLink(dec(S.vid));
   if(S.vid==null)return;
   const root=build(),vp=$("#vp");
   document.body.classList.toggle("istbl",S.view==="t");$("#vMap").classList.toggle("on",S.view!=="t");$("#vTbl").classList.toggle("on",S.view==="t");
@@ -140,7 +142,7 @@ function draw(){
   const ext=x0[3]+colW[3]+60;B={w:kids.length>1?2*ext:ext*1.2,h:H+90,cx:0,cy:H/2};
   fit();$("#panel").hidden=true}
 function renderTable(root){
-  const t=$("#tbl"),cell=nd=>`<td rowspan="@@" class="l${nd.lv}${inLib(nd.id)?"":" ext"}" style="--bc:hsl(${(nd.br*47)%360} 52% 52%)"><div class="vref"><b>${esc(label(nd.id))}</b>${inLib(nd.id)?`<a href="${ABB(dec(nd.id).b)}.html#/${ABB(dec(nd.id).b)}/${dec(nd.id).c}:${dec(nd.id).v}" target="_blank" title="افتحه في الدراسة">↗</a>`:""}${nd.all>nd.kids.length&&nd.lv<3?`<span class="mo">+${n(nd.all-nd.kids.length)}</span>`:""}</div><div class="ar vt">${esc(T[nd.id]||"")}</div></td>`;
+  const t=$("#tbl"),cell=nd=>`<td rowspan="@@" class="l${nd.lv}${inLib(nd.id)?"":" ext"}" style="--bc:hsl(${(nd.br*47)%360} 52% 52%)"><div class="vref"><b>${esc(label(nd.id))}</b>${inLib(nd.id)?`<a href="${ABB(dec(nd.id).b)}.html#/${ABB(dec(nd.id).b)}/${dec(nd.id).c}:${dec(nd.id).v}" target="_blank" title="افتحه في الدراسة"><svg class='ti' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:""}${nd.all>nd.kids.length&&nd.lv<3?`<span class="mo">+${n(nd.all-nd.kids.length)}</span>`:""}</div><div class="ar vt">${esc(T[nd.id]||"")}</div></td>`;
   const lv=nd=>nd.kids.length?nd.kids.reduce((a,k)=>a+lv(k),0):1;
   let rows="";
   const emit=(nd,pre)=>{const row=pre.concat([cell(nd).replace("@@",lv(nd))]);
@@ -164,8 +166,8 @@ $("#zin").onclick=zi;$("#zout").onclick=zo;$("#zfit").onclick=fit;$("#zin2").onc
 $("#vMap").onclick=()=>{S.view="m";set("mmview","m");draw()};$("#vTbl").onclick=()=>{S.view="t";set("mmview","t");draw()};addEventListener("resize",fit);
 function show(id){
   const d=dec(id),ab=ABB(d.b),p=$("#panel");
-  p.innerHTML=`<button class="x" aria-label="إغلاق">✕</button><h3>${esc(label(id))}</h3><div class="ar vt">${esc(T[id]||"")}</div>
-  <div class="acts">${inLib(id)?`<button id="recenter">اجعله مركز الخريطة</button><a href="${ab}.html#/${ab}/${d.c}:${d.v}" target="_blank">افتحه في الدراسة ↗</a>`:`<span class="muted">هذا السفر لم يُضف إلى المكتبة بعد، فلا يمكن التوسع منه.</span>`}</div>`;
+  p.innerHTML=`<button class="x" aria-label="إغلاق"><svg class='ti' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M18 6l-12 12' /> <path d='M6 6l12 12' /></svg></button><h3>${esc(label(id))}</h3><div class="ar vt">${esc(T[id]||"")}</div>
+  <div class="acts">${inLib(id)?`<button id="recenter">اجعله مركز الخريطة</button><a href="${ab}.html#/${ab}/${d.c}:${d.v}" target="_blank">افتحه في الدراسة <svg class='ti' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:`<span class="muted">هذا السفر لم يُضف إلى المكتبة بعد، فلا يمكن التوسع منه.</span>`}</div>`;
   p.hidden=false;p.querySelector(".x").onclick=()=>p.hidden=true;
   const rc=$("#recenter");if(rc)rc.onclick=()=>{setSel(id,-1);pick()}}
 (function init(){
