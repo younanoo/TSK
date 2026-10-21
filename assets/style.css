@@ -799,11 +799,11 @@ html body .cheads{color:var(--gold)}
 .ilopts .fsb{width:50px;height:44px}
 .ilopts .fsb svg{width:28px;height:28px}
 
-.ti{width:1.2em;height:1.2em;vertical-align:-.22em;flex:none}
-.fsb .ti{width:22px;height:22px}
-.dirb .ti,.ilopts .fsb .ti{width:28px;height:28px}
-.fsgrp .ti,.dirgrp .ti{vertical-align:middle}
-.themefab .ti{width:22px;height:22px;vertical-align:middle}
+.tic{width:1.2em;height:1.2em;vertical-align:-.22em;flex:none}
+.fsb .tic{width:22px;height:22px}
+.dirb .tic,.ilopts .fsb .tic{width:28px;height:28px}
+.fsgrp .tic,.dirgrp .tic{vertical-align:middle}
+.themefab .tic{width:22px;height:22px;vertical-align:middle}
 
 /* pre:start — نص مكتوب مسبقًا في الصفحة لمحركات البحث (يستبدله التطبيق فور تحميله) */
 .pre{max-width:820px;margin:0 auto;padding:28px 20px 60px;line-height:2.1;color:var(--ink)}

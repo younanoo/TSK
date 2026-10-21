@@ -16,3 +16,6 @@ img/*
 !img/web/
 node_modules/
 _tmp_lt/
+
+# python cache
+__pycache__/
