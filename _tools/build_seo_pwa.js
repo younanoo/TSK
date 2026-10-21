@@ -9,7 +9,7 @@ const M = require("./site_meta.js");
 const { ROOT, BASE, SITE, TAGLINE, esc, n, nk } = M;
 const A = p => path.join(ROOT, p);
 const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => fs.writeFileSync(A(p), s);
-const CSS_VER = "7", BRAND_VER = "2", APP_VER = "4";
+const CSS_VER = "8", BRAND_VER = "2", APP_VER = "5";
 const CAT = M.catalog();
 const today = new Date().toISOString().slice(0, 10);
 const BASE_PATH = new URL(BASE).pathname;               // "/TSK/"

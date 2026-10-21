@@ -187,6 +187,9 @@ function verseHTML(d){
   if(!d.arS) return esc(d.text);
   return d.arS.map(([t,ns])=>ns.length?`<span class="sw" data-n="${ns.join(" ")}">${esc(t)}<sup>${ns.map(x=>`<span class="sn" data-sn="${x}" title="اعرض معنى ${x}">${x}</span>`).join(" ")}</sup></span>`:esc(t)).join("");
 }
+const AI_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"/></svg>';
+/* «اسأل Google AI»: assets/askai.js بيتحمّل أول مرة بس لما حد يدوس على الزرار */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-askai]");if(!b||window.AskAI)return;e.preventDefault();loadJS("assets/askai.js?v=1",()=>window.AskAI&&window.AskAI.fromEl(b))});
 function wordsFor(d,num){ return d&&d.arS ? d.arS.filter(([t,ns])=>ns.includes(num)).map(([t])=>t) : []; }
 function dentHTML(num,d=cur()){
   const e=STRONG[num];
@@ -195,6 +198,7 @@ function dentHTML(num,d=cur()){
   return `<div class="dent">
     <div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span>
       <a class="stopen" href="strong.html#${num}" target="_blank" rel="noopener">فتح في صفحة سترونج ${ic("external-link")}</a>
+      <button type="button" class="stai" data-askai data-num="${num}" data-ref="${d&&d.c?esc(AR[book().abbr]+" "+n(d.c)+": "+n(d.v)):""}" data-words="${esc(ws.join("، "))}" title="اسأل وضع الذكاء الاصطناعي في Google عن الكلمة دي">${AI_IC} اسأل Google AI</button>
       ${ws.length?`<span class="inv"><small>في النص:</small>${ws.map(esc).join("، ")}</span>`:""}</div>
     <div class="cols">
       <div class="col arc"><h5>المعنى بالعربية</h5><div class="tx">${e.ar?linkRefs(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد (تُترجم حاليًا كلمات أعداد السفر فقط).</span>`}</div></div>
