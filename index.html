@@ -213,7 +213,7 @@ body.h{background:var(--bg)}
 /* --- الأسفار --- */
 .h-books{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
 .h-bk{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
-.h-bk .cov{position:relative;aspect-ratio:16/8;background:linear-gradient(135deg,#0F3554,#1E4E78);overflow:hidden}
+.h-bk .cov{display:block;color:inherit;text-decoration:none;position:relative;aspect-ratio:16/8;background:linear-gradient(135deg,#0F3554,#1E4E78);overflow:hidden}
 .h-bk .cov img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .h-bk:hover .cov img{transform:scale(1.04)}
 .h-bk .cov .mk{position:absolute;inset:0;display:grid;place-items:center;opacity:.35}
@@ -366,7 +366,7 @@ body.h{background:var(--bg)}
       </div>
       <div class="h-ctas">
         <a class="h-btn pri" href="Gen.html#/Gen"><svg class="ic"><use href="#i-book"/></svg> ابدأ القراءة من التكوين</a>
-        <a class="h-btn ghost" href="#how">إزاي أستخدم الموقع؟</a>
+        <a class="h-btn ghost" href="#how">كيف أستخدم الموقع؟</a>
       </div>
     </div>
     <figure class="h-qcard" style="margin:0">
@@ -381,7 +381,7 @@ body.h{background:var(--bg)}
   <div class="h-stats" id="hStats"></div>
   <a class="h-resume" id="hResume" href="#">
     <span class="ri"><svg class="ic"><use href="#i-reading"/></svg></span>
-    <span class="rt"><small>كمّل من حيث توقفت</small><b id="hResRef"></b><span class="rq" id="hResTxt"></span></span>
+    <span class="rt"><small>تابع من حيث توقفت</small><b id="hResRef"></b><span class="rq" id="hResTxt"></span></span>
     <svg class="ic" style="color:var(--accent)"><use href="#i-arrow"/></svg>
   </a>
 </div>
@@ -390,8 +390,8 @@ body.h{background:var(--bg)}
 <section class="h-sec" id="votd">
   <div class="h-wrap">
     <p class="h-kick">آية اليوم وشواهدها</p>
-    <h2 class="h-h2">كل يوم آية… ومعها الكتاب كله</h2>
-    <p class="h-lead">لكل يوم في السنة آية، وفي الأعياد آية خاصة بالمناسبة. ومع الآية أهم الشواهد المرتبطة بكلماتها. اقرأها، وبعدين افتحها في صفحة السفر وكمّل دراستها.</p>
+    <h2 class="h-h2">في كل يوم آية… ومعها الكتاب كله</h2>
+    <p class="h-lead">لكل يوم في السنة آية، وفي الأعياد آية خاصة بالمناسبة. ومع الآية أهم الشواهد المرتبطة بكلماتها. اقرأها، ثم افتحها في صفحة السفر وتابع دراستها.</p>
     <div class="h-votd">
       <div class="h-vmain" id="vMain"><div class="h-skel"></div></div>
       <div class="h-vrefs" id="vRefs"><div class="h-skel"></div><div class="h-skel"></div></div>
@@ -403,29 +403,29 @@ body.h{background:var(--bg)}
 <section class="h-sec h-first" id="firsts">
   <div class="h-wrap">
     <p class="h-kick">لأول مرة باللغة العربية</p>
-    <h2 class="h-h2">أدوات ماكانتش موجودة بالعربي قبل كده</h2>
-    <p class="h-lead">أدوات الدراسة دي كانت متاحة بالإنجليزي بس. هنا تقدر تستخدمها بالعربي لأول مرة، ومجانًا.</p>
+    <h2 class="h-h2">أدوات لم تكن متاحة بالعربية من قبل</h2>
+    <p class="h-lead">كانت هذه الأدوات متاحة بالإنجليزية فقط. هنا يمكنك استخدامها بالعربية لأول مرة، ومجانًا.</p>
     <div class="h-firsts">
       <a class="h-fc" href="strong.html#G25" target="_blank">
         <span class="badge">لأول مرة</span>
-        <h3>قاموس سترونج بالعربي</h3>
-        <p>كل كلمات العهد القديم العبرية وكلمات العهد الجديد اليونانية، ومع كل كلمة أصلها ونطقها ومعناها، مترجمة للعربي.</p>
+        <h3>قاموس سترونج بالعربية</h3>
+        <p>كل كلمات العهد القديم العبرية وكلمات العهد الجديد اليونانية، ومع كل كلمة أصلها ونطقها ومعناها، مترجمةً إلى العربية.</p>
         <div class="demo" style="font:600 15px var(--ui)"><span style="font:600 22px 'Noto Serif',serif;direction:ltr;unicode-bidi:isolate">ἀγαπάω</span> · G25 · يحب</div>
         <span class="go">افتح القاموس <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-fc" href="Joh.html#/Joh/3:16">
         <span class="badge">لأول مرة</span>
         <h3>فاندايك بأرقام سترونج</h3>
-        <p>كل كلمة في ترجمة فاندايك مربوطة برقم سترونج بتاعها. اضغط على الكلمة وهتعرف أصلها العبري أو اليوناني ومعناها.</p>
+        <p>كل كلمة في ترجمة فاندايك مرتبطة برقم سترونج الخاص بها. اضغط على الكلمة لتعرف أصلها العبري أو اليوناني ومعناها.</p>
         <div class="demo" id="fcVd"></div>
         <span class="go">جرّب على يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
-      <a class="h-fc" href="Joh.html#/Joh/3:16">
+      <a class="h-fc" href="Joh.html?tr=alab#/Joh/3:16">
         <span class="badge">لأول مرة</span>
         <h3>كتاب الحياة بأرقام سترونج</h3>
-        <p>ترجمة كتاب الحياة كمان مربوطة بأرقام سترونج. يعني تقدر تقارن الترجمتين العربيتين وانت عارف كل كلمة جاية من أنهي أصل.</p>
+        <p>ترجمة كتاب الحياة أيضًا مرتبطة بأرقام سترونج. فيمكنك مقارنة الترجمتين العربيتين وأنت تعرف الأصل الذي جاءت منه كل كلمة.</p>
         <div class="demo" id="fcKh"></div>
-        <span class="go">قارن الترجمتين <svg class="ic"><use href="#i-arrow"/></svg></span>
+        <span class="go">افتح يو ٣: ١٦ بكتاب الحياة <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
     </div>
   </div>
@@ -436,30 +436,30 @@ body.h{background:var(--bg)}
   <div class="h-wrap">
     <p class="h-kick">إمكانيات الموقع</p>
     <h2 class="h-h2">كل أدوات الدراسة في مكان واحد</h2>
-    <p class="h-lead">من غير تسجيل، ومن غير إعلانات، وبالعربي. كل أداة هنا مربوطة بالتانية، فتقدر تبدأ من آية وتوصل للكلمة الأصلية في نقرتين.</p>
+    <p class="h-lead">بلا تسجيل، وبلا إعلانات، وباللغة العربية. كل أداة هنا مرتبطة بالأخرى، فيمكنك أن تبدأ من آية وتصل إلى الكلمة الأصلية بنقرتين.</p>
     <div class="h-feats">
       <a class="h-feat big gold" href="Joh.html#/Joh/3:16">
         <span class="fi"><svg class="ic"><use href="#i-link"/></svg></span>
         <h3>الشواهد المتقاطعة (TSK)</h3>
-        <p>أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس»، مترتبة تحت كلمات كل آية في ترجمة فاندايك. اضغط على أي شاهد وهتقرأ نصه في مكانه من غير ما تسيب الصفحة.</p>
-        <span class="go">شوف مثال: يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
+        <p>أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس»، مرتبة تحت كلمات كل آية في ترجمة فاندايك. اضغط على أي شاهد لتقرأ نصه في مكانه دون مغادرة الصفحة.</p>
+        <span class="go">شاهد مثالًا: يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="compare.html?b=Joh&amp;c=3" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-compare"/></svg></span>
         <h3>مقارنة الترجمات</h3>
-        <p>فاندايك وكتاب الحياة وKJV جنب بعض، عشان تلاحظ الفروق الدقيقة في المعنى.</p>
+        <p>فاندايك وكتاب الحياة وKJV جنبًا إلى جنب، لتلاحظ الفروق الدقيقة في المعنى.</p>
         <span class="go">قارن <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="strong.html#G25" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-lang"/></svg></span>
-        <h3>قاموس سترونج بالعربي</h3>
-        <p>لأول مرة بالعربي: أصل كل كلمة العبري أو اليوناني، ونطقها، ومعناها.</p>
+        <h3>قاموس سترونج بالعربية</h3>
+        <p>لأول مرة بالعربية: أصل كل كلمة العبري أو اليوناني، ونطقها، ومعناها.</p>
         <span class="go">افتح القاموس <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <button class="h-feat gold" type="button" data-askai data-num="G25" data-o="ἀγαπάω" data-tr="agapaō" data-ref="يوحنا ٣: ١٦" data-words="أحب" style="font:inherit;text-align:start;cursor:pointer">
         <span class="fi"><svg class="ic"><use href="#i-sparkles"/></svg></span>
         <h3>اسأل Google AI عن الكلمة</h3>
-        <p>من أي كلمة عبرية أو يونانية، اختار سؤال جاهز (معناها، جذرها، استخدامها في الآية أو في الكتاب كله) وابعته لوضع الذكاء الاصطناعي في Google.</p>
+        <p>من أي كلمة عبرية أو يونانية، اختر سؤالًا جاهزًا (معناها، جذرها، استخدامها في الآية أو في الكتاب كله) وأرسله إلى وضع الذكاء الاصطناعي في Google.</p>
         <span class="go">جرّب على «أحب» في يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
       </button>
       <a class="h-feat" href="grammar.html" target="_blank">
@@ -471,36 +471,36 @@ body.h{background:var(--bg)}
       <a class="h-feat gold" href="topics.html" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-tag"/></svg></span>
         <h3>فهرس المواضيع</h3>
-        <p>٤٦ ألف موضوع، كل موضوع معاه الآيات اللي بتتكلم عنه. ممتاز لتحضير درس أو عظة.</p>
+        <p>٤٦ ألف موضوع، ومع كل موضوع الآيات التي تتناوله. مفيد جدًا لتحضير درس أو عظة.</p>
         <span class="go">تصفّح المواضيع <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="search.html" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-search"/></svg></span>
         <h3>البحث في النص</h3>
-        <p>ابحث عن أي كلمة في ترجمة فاندايك، بالتشكيل أو من غيره.</p>
+        <p>ابحث عن أي كلمة في ترجمة فاندايك، بالتشكيل أو بدونه.</p>
         <span class="go">ابحث <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="mindmap.html#Joh/3:16/g0" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-mindmap"/></svg></span>
         <h3>الخريطة الذهنية</h3>
-        <p>شوف شواهد الآية كشبكة: الشاهد بيوديك لشاهد، وبكده تكتشف خيوط الموضوع عبر الكتاب كله.</p>
+        <p>شاهد شواهد الآية على هيئة شبكة: كل شاهد يقودك إلى شاهد آخر، فتكتشف خيوط الموضوع عبر الكتاب كله.</p>
         <span class="go">افتح الخريطة <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="outline.html?b=Joh" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-outline"/></svg></span>
         <h3>مخطط السفر</h3>
-        <p>أقسام كل سفر وعناوينه، عشان تفهم الصورة الكبيرة قبل ما تدخل في التفاصيل.</p>
+        <p>أقسام كل سفر وعناوينه، لتفهم الصورة العامة قبل الدخول في التفاصيل.</p>
         <span class="go">مخطط يوحنا <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <div class="h-feat" style="cursor:default">
         <span class="fi"><svg class="ic"><use href="#i-check"/></svg></span>
         <h3>تابع تقدّمك</h3>
-        <p>علّم على الأعداد اللي درستها، والموقع يفتكر آخر مكان وقفت عنده. كل ده محفوظ على جهازك أنت بس.</p>
+        <p>علّم على الأعداد التي درستها، ويتذكر الموقع آخر موضع توقفت عنده. كل ذلك محفوظ على جهازك وحده.</p>
       </div>
       <div class="h-feat" style="cursor:default">
         <span class="fi"><svg class="ic"><use href="#i-offline"/></svg></span>
-        <h3>من غير إنترنت</h3>
-        <p>ثبّت الموقع كتطبيق على الموبايل أو الكمبيوتر، والصفحات اللي فتحتها قبل كده هتشتغل من غير اتصال. وفيه وضع ليلي للقراءة بالليل.</p>
+        <h3>دون إنترنت</h3>
+        <p>ثبّت الموقع كتطبيق على الهاتف أو الحاسوب، وستعمل الصفحات التي فتحتها سابقًا دون اتصال. وفيه وضع ليلي للقراءة مساءً.</p>
         <button class="h-btn acc" type="button" data-dl style="align-self:flex-start;margin-top:14px;font-size:14px;padding:9px 16px"><svg class="ic"><use href="#i-download"/></svg> تنزيل التطبيق</button>
       </div>
     </div>
@@ -511,14 +511,14 @@ body.h{background:var(--bg)}
 <section class="h-sec" id="how">
   <div class="h-wrap">
     <p class="h-kick">طريقة الاستخدام</p>
-    <h2 class="h-h2">إزاي تدرس آية بالشواهد؟ خمس خطوات</h2>
-    <p class="h-lead">هنمشي سوا على مثال حقيقي من الموقع: <b>يوحنا ٣: ١٦</b>. اختار أي خطوة عشان تشوفها.</p>
+    <h2 class="h-h2">كيف تدرس آية بالشواهد؟ خمس خطوات</h2>
+    <p class="h-lead">سنسير معًا على مثال حقيقي من الموقع: <b>يوحنا ٣: ١٦</b>. اختر أي خطوة لتشاهدها.</p>
     <div class="h-how">
       <div class="h-steps" role="tablist" aria-label="خطوات الدراسة">
-        <button class="h-step" role="tab" aria-selected="true" aria-controls="p1" id="t1"><span><b>اختار الآية</b><span>من الفهرس أو اكتب الشاهد</span></span></button>
+        <button class="h-step" role="tab" aria-selected="true" aria-controls="p1" id="t1"><span><b>اختر الآية</b><span>من الفهرس أو اكتب الشاهد</span></span></button>
         <button class="h-step" role="tab" aria-selected="false" aria-controls="p2" id="t2" tabindex="-1"><span><b>افتح الشواهد</b><span>الكلمات المظللة هي مفاتيح الشواهد</span></span></button>
-        <button class="h-step" role="tab" aria-selected="false" aria-controls="p3" id="t3" tabindex="-1"><span><b>قارن الترجمات</b><span>شوف الآية بأكتر من صياغة</span></span></button>
-        <button class="h-step" role="tab" aria-selected="false" aria-controls="p4" id="t4" tabindex="-1"><span><b>ارجع للكلمة الأصلية</b><span>سترونج بالعربي</span></span></button>
+        <button class="h-step" role="tab" aria-selected="false" aria-controls="p3" id="t3" tabindex="-1"><span><b>قارن الترجمات</b><span>شاهد الآية بأكثر من صياغة</span></span></button>
+        <button class="h-step" role="tab" aria-selected="false" aria-controls="p4" id="t4" tabindex="-1"><span><b>ارجع إلى الكلمة الأصلية</b><span>سترونج بالعربية</span></span></button>
         <button class="h-step" role="tab" aria-selected="false" aria-controls="p5" id="t5" tabindex="-1"><span><b>تتبّع الخيط</b><span>الخريطة الذهنية للشواهد</span></span></button>
       </div>
       <div class="h-demo">
@@ -533,11 +533,11 @@ body.h{background:var(--bg)}
 <section class="h-sec" id="tips">
   <div class="h-wrap">
     <p class="h-kick">نصائح للدراسة</p>
-    <h2 class="h-h2">عشان تستفيد أكتر</h2>
+    <h2 class="h-h2">لتستفيد أكثر</h2>
     <div class="h-tips">
-      <div class="h-tip"><h3>ابدأ بفقرة قصيرة</h3><p>آية أو اتنين في اليوم بشواهدهم أحسن من أصحاح كامل قريته بسرعة.</p></div>
-      <div class="h-tip"><h3>اقرأ الشاهد في سياقه</h3><p>لو شاهد لفت نظرك، افتح الأصحاح بتاعه واقرأ اللي قبله واللي بعده قبل ما تطلع باستنتاج.</p></div>
-      <div class="h-tip"><h3>خلّي الكتاب يفسّر نفسه</h3><p>الشواهد مش تفسير بشري. هي آيات تانية بتنوّر الآية اللي بتدرسها، فاسأل نفسك: إيه اللي بيربطهم ببعض؟</p></div>
+      <div class="h-tip"><h3>ابدأ بفقرة قصيرة</h3><p>آية أو آيتان في اليوم مع شواهدهما أفضل من أصحاح كامل تقرؤه على عجل.</p></div>
+      <div class="h-tip"><h3>اقرأ الشاهد في سياقه</h3><p>إذا لفت شاهدٌ نظرك، فافتح أصحاحه واقرأ ما قبله وما بعده قبل أن تصل إلى استنتاج.</p></div>
+      <div class="h-tip"><h3>دع الكتاب يفسّر نفسه</h3><p>الشواهد ليست تفسيرًا بشريًا، بل آيات أخرى تُنير الآية التي تدرسها، فاسأل نفسك: ما الذي يربط بينها؟</p></div>
     </div>
   </div>
 </section>
@@ -546,8 +546,8 @@ body.h{background:var(--bg)}
 <section class="h-sec" id="books">
   <div class="h-wrap">
     <p class="h-kick">الأسفار</p>
-    <h2 class="h-h2">ستة وستون سفرًا… اختار من أين تبدأ</h2>
-    <p class="h-lead">الأسفار متقسمة حسب نوعها. افتح أي قسم واختار السفر.</p>
+    <h2 class="h-h2">ستة وستون سفرًا… اختر من أين تبدأ</h2>
+    <p class="h-lead">الأسفار مقسّمة حسب نوعها. افتح أي قسم واختر السفر.</p>
     <div class="h-books" id="hBooks"></div>
   </div>
 </section>
@@ -558,15 +558,15 @@ body.h{background:var(--bg)}
     <p class="h-kick">أسئلة شائعة</p>
     <h2 class="h-h2">عندك سؤال؟</h2>
     <div class="h-faq">
-      <details><summary>إيه هو «كنز معرفة الكتاب المقدس» (TSK)؟</summary><div>هو مرجع إنجليزي كلاسيكي (Treasury of Scripture Knowledge) بيجمع لكل آية في الكتاب المقدس الآيات المرتبطة بيها، كلمة كلمة. وهنا الشواهد دي مربوطة بكلمات ترجمة فاندايك.</div></details>
-      <details><summary>إيه هو قاموس سترونج؟</summary><div>قاموس بيدّي كل كلمة عبرية أو يونانية في الكتاب المقدس رقم، زي G25 لكلمة «يحب» اليونانية. والموقع ده بيقدّم القاموس كامل بالعربي لأول مرة، ومربوط بكلمات فاندايك وكتاب الحياة.</div></details>
-      <details><summary>إزاي أسأل Google AI عن كلمة؟</summary><div>اضغط على رقم سترونج لأي كلمة في الآية، وفي بطاقة الكلمة هتلاقي زرار «اسأل Google AI». الزرار ده موجود كمان في <a href="strong.html#G25">صفحة قاموس سترونج</a>. اختار نوع السؤال، وعدّله لو حبيت، وهيفتح وضع الذكاء الاصطناعي في Google بالإجابة. الإجابة من Google مش من الموقع، فراجعها دايمًا على الكتاب المقدس نفسه.</div></details>
-      <details><summary>الموقع مجاني؟</summary><div>أيوه، مجاني بالكامل وغير ربحي، ومن غير تسجيل ولا إعلانات.</div></details>
-      <details><summary>إيه الترجمات الموجودة؟</summary><div>ترجمة فاندايك هي النص الأساسي، ومعاها كتاب الحياة والترجمة الإنجليزية KJV. والترجمتين العربيتين مربوطين بأرقام سترونج، فتقدر توصل من أي كلمة لأصلها العبري أو اليوناني.</div></details>
-      <details><summary>أكتب الشاهد إزاي في مربع البحث؟</summary><div>اكتب اختصار السفر أو اسمه، وبعده الأصحاح والعدد: <b>يو ٣: ١٦</b> أو <b>يوحنا ٣ ١٦</b> أو <b>Joh 3:16</b>. ولو كتبت كلمة عادية، هنوديك لصفحة البحث بالكلمة دي.</div></details>
-      <details><summary>الموقع بيحفظ تقدمي؟</summary><div>أيوه. آخر مكان قرأته والأعداد اللي علّمت عليها بيتحفظوا على جهازك في المتصفح بس، ومحدش غيرك يقدر يشوفهم. لو مسحت بيانات المتصفح أو فتحت من جهاز تاني، هتبدأ من الأول.</div></details>
-      <details><summary>أقدر أستخدمه من غير إنترنت؟</summary><div>أيوه. على الموبايل افتح قائمة المتصفح واختار «إضافة إلى الشاشة الرئيسية» أو «تثبيت التطبيق»، وعلى الكمبيوتر هتلاقي أيقونة التثبيت في شريط العنوان. والصفحات اللي فتحتها قبل كده هتشتغل من غير اتصال.</div></details>
-      <details><summary>إيه مصادر الموقع؟</summary><div>كل المصادر والتراخيص موجودة في <a href="sources.html">صفحة المصادر والمراجع</a>.</div></details>
+      <details><summary>ما هو «كنز معرفة الكتاب المقدس» (TSK)؟</summary><div>هو مرجع إنجليزي كلاسيكي (Treasury of Scripture Knowledge) يجمع لكل آية في الكتاب المقدس الآيات المرتبطة بها، كلمةً كلمة. وهنا ترتبط هذه الشواهد بكلمات ترجمة فاندايك.</div></details>
+      <details><summary>ما هو قاموس سترونج؟</summary><div>قاموس يعطي كل كلمة عبرية أو يونانية في الكتاب المقدس رقمًا، مثل G25 لكلمة «يحب» اليونانية. ويقدّم هذا الموقع القاموس كاملًا بالعربية لأول مرة، ومرتبطًا بكلمات فاندايك وكتاب الحياة.</div></details>
+      <details><summary>كيف أسأل Google AI عن كلمة؟</summary><div>اضغط على رقم سترونج لأي كلمة في الآية، وستجد في بطاقة الكلمة زر «اسأل Google AI». وهذا الزر موجود أيضًا في <a href="strong.html#G25">صفحة قاموس سترونج</a>. اختر نوع السؤال وعدّله إن شئت، فيفتح وضع الذكاء الاصطناعي في Google بالإجابة. الإجابة من Google وليست من الموقع، فراجعها دائمًا على الكتاب المقدس نفسه.</div></details>
+      <details><summary>الموقع مجاني؟</summary><div>نعم، مجاني بالكامل وغير ربحي، وبلا تسجيل ولا إعلانات.</div></details>
+      <details><summary>ما الترجمات الموجودة؟</summary><div>ترجمة فاندايك هي النص الأساسي، ومعها كتاب الحياة والترجمة الإنجليزية KJV. والترجمتان العربيتان مرتبطتان بأرقام سترونج، فيمكنك الوصول من أي كلمة إلى أصلها العبري أو اليوناني.</div></details>
+      <details><summary>كيف أكتب الشاهد في مربع البحث؟</summary><div>اكتب اختصار السفر أو اسمه، وبعده الأصحاح والعدد: <b>يو ٣: ١٦</b> أو <b>يوحنا ٣ ١٦</b> أو <b>Joh 3:16</b>. وإن كتبت كلمة عادية، فسننقلك إلى صفحة البحث بهذه الكلمة.</div></details>
+      <details><summary>هل يحفظ الموقع تقدّمي؟</summary><div>نعم. يُحفظ آخر موضع قرأته والأعداد التي علّمت عليها على جهازك في المتصفح فقط، ولا يستطيع أحد غيرك رؤيتها. وإذا مسحت بيانات المتصفح أو فتحت الموقع من جهاز آخر فستبدأ من جديد.</div></details>
+      <details><summary>هل يمكنني استخدامه دون إنترنت؟</summary><div>نعم. اضغط على زر «تنزيل التطبيق» واختر «تثبيت التطبيق» أو «التطبيق دون الصور» أو «مع الصور». وعلى الهاتف يمكنك أيضًا اختيار «إضافة إلى الشاشة الرئيسية» من قائمة المتصفح. وستعمل الصفحات المحفوظة دون اتصال.</div></details>
+      <details><summary>ما مصادر الموقع؟</summary><div>جميع المصادر والتراخيص موجودة في <a href="sources.html">صفحة المصادر والمراجع</a>.</div></details>
     </div>
   </div>
 </section>
@@ -574,7 +574,7 @@ body.h{background:var(--bg)}
 <section class="h-sec" style="padding-top:0;border-top:0">
   <div class="h-wrap">
     <div class="h-cta">
-      <div><h2>جاهز تبدأ؟</h2><p>افتح أول سفر، أو ارجع لآخر مكان وقفت عنده.</p></div>
+      <div><h2>جاهز تبدأ؟</h2><p>افتح أول سفر، أو ارجع إلى آخر موضع توقفت عنده.</p></div>
       <div class="btns">
         <a class="h-btn acc" id="ctaStart" href="Gen.html#/Gen"><svg class="ic"><use href="#i-book"/></svg> ابدأ القراءة</a>
         <button class="h-btn out" id="installBtn" type="button" data-dl><svg class="ic"><use href="#i-download"/></svg> تنزيل التطبيق</button>
@@ -599,7 +599,7 @@ body.h{background:var(--bg)}
   <div class="dh"><img src="assets/brand/app-icon-192.png" alt=""><h3 id="dlTitle">تنزيل «جدد وعتقاء»</h3><button class="x" type="button" id="dlClose" aria-label="إغلاق"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg></button></div>
   <div class="db">
     <div id="dlInst"><div class="dlh">بالإنترنت</div>
-    <button class="dlopt" type="button" id="dlInstall"><svg class="ic"><use href="#i-download"/></svg><span class="t"><b>تثبيت التطبيق</b><small>أيقونة على الشاشة تفتح مثل أي تطبيق. الصفحات اللي تفتحها بتتحفظ تلقائيًا، وباقي المحتوى يحتاج اتصال.</small></span><span class="sz">خفيف</span></button></div>
+    <button class="dlopt" type="button" id="dlInstall"><svg class="ic"><use href="#i-download"/></svg><span class="t"><b>تثبيت التطبيق</b><small>أيقونة على الشاشة تُفتح مثل أي تطبيق. تُحفظ الصفحات التي تفتحها تلقائيًا، ويحتاج باقي المحتوى إلى اتصال.</small></span><span class="sz">خفيف</span></button></div>
     <div class="dlh">دون إنترنت — اختر ما تنزّله على جهازك</div>
     <button class="dlopt" type="button" data-om="app"><svg class="ic"><use href="#i-offline"/></svg><span class="t"><b>التطبيق بدون الصور</b><small>كل الأسفار والترجمات والبحث والخرائط الذهنية.</small></span><span class="sz" id="szApp">…</span></button>
     <button class="dlopt" type="button" data-om="img"><svg class="ic"><use href="#i-offline"/></svg><span class="t"><b>التطبيق مع الصور</b><small>كل ما سبق مع صور الأسفار والأصحاحات.</small></span><span class="sz" id="szImg">…</span></button>
@@ -648,7 +648,7 @@ const lbId=get("b",null);
 if(lbId!=null&&BYID[lbId]){const lb=BYID[lbId],lc=get("c",1),lv=get("v",1),r=document.getElementById("hResume");
   r.href=vlink(lb.abbr,lc,lv);document.getElementById("hResRef").textContent=`${AR[lb.abbr]} ${n(lc)}: ${n(lv)}`;
   document.getElementById("hResTxt").textContent=lb.first||"";r.classList.add("on");
-  document.getElementById("ctaStart").href=r.href;document.getElementById("ctaStart").lastChild.textContent=" كمّل القراءة"}
+  document.getElementById("ctaStart").href=r.href;document.getElementById("ctaStart").lastChild.textContent=" تابع القراءة"}
 
 /* ---------- مربع الانتقال/البحث ---------- */
 const nz=x=>String(x).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[ً-ْ\s.]/g,"").toLowerCase();
@@ -703,7 +703,7 @@ function renderVotd(){
   const shown=groups.reduce((a,g)=>a+g[1].length,0);
   document.getElementById("vRefs").innerHTML=groups.map(([kw,rs,all])=>`<div class="h-grp"><h4><span>${esc(kw)}</span><small>${N(all)} ${all>10||all<3?"شاهدًا":"شواهد"}</small></h4>
      ${rs.map(([rb,rc,rv,re,rt])=>`<div class="h-r"><a href="${vlink(rb,rc,rv)}">${lbl(rb,rc,rv,re)}</a><p>${esc(rt)}${re?" …":""}</p></div>`).join("")}</div>`).join("")
-   +(tot>shown?`<p class="h-more">ودي ${N(shown)} من أصل ${N(tot)} شاهدًا لهذه الآية. <a href="${vlink(b,c,v)}">شوفهم كلهم</a></p>`:"");
+   +(tot>shown?`<p class="h-more">هذه ${N(shown)} من أصل ${N(tot)} شاهدًا لهذه الآية. <a href="${vlink(b,c,v)}">شاهدها كلها</a></p>`:"");
   document.getElementById("vNext").addEventListener("click",nextVerse);
 }
 async function nextVerse(){
@@ -738,18 +738,18 @@ function svHTML(){return EX.seg.map(([w,ns])=>ns.length&&EX.st[ns[0]]?`<button t
 function wordHTML(k){const e=EX.st[k];if(!e)return"";return `<div class="h-word"><div class="gk">${esc(e.o)}<small>${esc(e.tr)}</small></div><div><span class="num">${k}</span><p>${esc(e.ar)}</p><p style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"><a class="h-btn out" style="font-size:13px;padding:6px 12px" href="strong.html#${k}" target="_blank">افتح ${k} في القاموس</a><button class="h-btn acc" style="font-size:13px;padding:6px 12px" type="button" data-askai data-num="${k}" data-o="${esc(e.o)}" data-tr="${esc(e.tr)}" data-ref="يوحنا ٣: ١٦" data-words="${esc((EX.seg.find(x=>x[1][0]===k)||[""])[0])}">${ic("sparkles")} اسأل Google AI</button></p></div></div>`}
 function demoSeg(seg,max){let out="",c=0;for(const [w,ns] of seg){if(c>=max)break;out+=ns.length?`<s>${esc(w)}</s><sub>${ns[0]}</sub>`:esc(w);if(/\S/.test(w))c++}return out+" …"}
 const PANELS=[
- ["Joh.html#/Joh/3:16",()=>`<h3>اختار الآية</h3><p>من القائمة الجانبية في أي صفحة اختار السفر والأصحاح، أو أسرع: اكتب الشاهد في مربع «اذهب إلى عدد» بأي صيغة تريحك.</p>
+ ["Joh.html#/Joh/3:16",()=>`<h3>اختر الآية</h3><p>من القائمة الجانبية في أي صفحة اختر السفر والأصحاح، أو اختصر الطريق: اكتب الشاهد في مربع «اذهب إلى عدد» بأي صيغة تناسبك.</p>
    <div class="h-fake-in">يو ٣: ١٦<span class="cur"></span></div>
    <div class="h-tags"><code>يو ٣: ١٦</code><code>يوحنا ٣ ١٦</code><code>Joh 3:16</code><code>مز ٢٣</code></div>
    <div class="h-ver"><sup>١٦</sup>${esc(EX.text)}</div>`],
- ["Joh.html#/Joh/3:16",()=>`<h3>افتح الشواهد</h3><p>الكلمات المظللة في الآية هي اللي ليها شواهد. اضغط على أي واحدة منهم (جرّب هنا) وهتظهر الآيات المرتبطة بيها. لهذه الآية وحدها ${N(EX.nrefs)} شاهدًا.</p>
+ ["Joh.html#/Joh/3:16",()=>`<h3>افتح الشواهد</h3><p>الكلمات المظللة في الآية هي التي لها شواهد. اضغط على أي واحدة منها (جرّب هنا) فتظهر الآيات المرتبطة بها. لهذه الآية وحدها ${N(EX.nrefs)} شاهدًا.</p>
    <div class="h-ver" id="exVer"><sup>١٦</sup>${verseMarked()}</div><div id="exRefs">${refsHTML(0)}</div>`],
- ["compare.html?b=Joh&c=3",()=>`<h3>قارن الترجمات</h3><p>اختلاف الصياغة بين الترجمات بيلفت نظرك لكلمات ممكن تعدّي عليها. افتح صفحة المقارنة وشوف الأصحاح كله جنب بعضه.</p>
+ ["compare.html?b=Joh&c=3",()=>`<h3>قارن الترجمات</h3><p>يلفت اختلاف الصياغة بين الترجمات نظرك إلى كلمات قد تمرّ عليها دون انتباه. افتح صفحة المقارنة وشاهد الأصحاح كله جنبًا إلى جنب.</p>
    <div class="h-cmp"><div><b>فاندايك (النص الأساسي)</b><p>${esc(EX.text)}</p></div><div><b>كتاب الحياة</b><p>${esc(EX.kh)}</p></div><div><b>KJV</b><p class="en">${esc(EX.kjv)}</p></div></div>`],
- ["strong.html#G25",()=>`<h3>ارجع للكلمة الأصلية</h3><p>كل كلمة في فاندايك وكتاب الحياة مربوطة برقم سترونج، والقاموس بالعربي. اضغط على أي كلمة في الآية:</p>
+ ["strong.html#G25",()=>`<h3>ارجع إلى الكلمة الأصلية</h3><p>كل كلمة في فاندايك وكتاب الحياة مرتبطة برقم سترونج، والقاموس بالعربية. اضغط على أي كلمة في الآية:</p>
    <div class="h-sv" id="exSv">${svHTML()}</div><div id="exWord">${wordHTML("G25")}</div>
-   <p style="margin:14px 0 0;color:var(--muted);font-size:14.5px">وعايز تعرف أكتر؟ زرار «اسأل Google AI» بيجهّزلك سؤال عن الكلمة في سياق الآية ويبعته لوضع الذكاء الاصطناعي في Google.</p>`],
- ["mindmap.html#Joh/3:16/g0",()=>`<h3>تتبّع الخيط</h3><p>الخريطة الذهنية بتعرض شواهد الآية كشبكة. اضغط على أي شاهد عشان تفتح شواهده هو كمان، وكده تمشي مع الموضوع من سفر لسفر.</p>${mm()}
+   <p style="margin:14px 0 0;color:var(--muted);font-size:14.5px">وإن أردت المزيد، فإن زر «اسأل Google AI» يجهّز لك سؤالًا عن الكلمة في سياق الآية ويرسله إلى وضع الذكاء الاصطناعي في Google.</p>`],
+ ["mindmap.html#Joh/3:16/g0",()=>`<h3>تتبّع الخيط</h3><p>تعرض الخريطة الذهنية شواهد الآية على هيئة شبكة. اضغط على أي شاهد لتفتح شواهده هو أيضًا، وهكذا تتبع الموضوع من سفر إلى سفر.</p>${mm()}
    <div class="h-dnav" style="border:0;padding-top:0"><a class="h-btn acc" href="mindmap.html#Joh/3:16/g0" target="tskmindmap">${ic("mindmap")} افتح الخريطة الحقيقية</a></div>`]
 ];
 const tabs=[...document.querySelectorAll(".h-step")],body=document.getElementById("dBody"),url=document.getElementById("dUrl");
@@ -772,7 +772,7 @@ document.getElementById("fcKh").innerHTML=demoSeg([["لأنه هكذا ",[]],["�
 /* ---------- الأسفار ---------- */
 const BKGRP=[["التوراة",1,5,"Exo14"],["الأسفار التاريخية",6,17,"Jdg6"],["الشعر والحكمة",18,22,"Job38"],["الأنبياء الكبار",23,27,"Eze37"],["الأنبياء الصغار",28,39,"Mal3"],["الأناجيل وأعمال الرسل",40,44,"Mat5"],["رسائل بولس",45,57,"Phi1"],["الرسائل العامة",58,65,"1Jo4"],["الرؤيا",66,66,"Rev21"]];
 document.getElementById("hBooks").innerHTML=BKGRP.map(([t,a,z,img])=>{const bs=CAT.filter(c=>c.id>=a&&c.id<=z);
-  return `<div class="h-bk"><div class="cov">${img?`<img loading="lazy" src="img/web/${img}-800.webp" alt="" onerror="this.remove()">`:`<span class="mk"><img src="assets/brand/mark-on-navy.svg" alt=""></span>`}<h3>${t}<small>${bs.length===1?"سفر واحد":N(bs.length)+" "+(bs.length<=10?"أسفار":"سفرًا")}</small></h3></div>
+  return `<div class="h-bk"><a class="cov" href="${page(bs[0].abbr,"/"+bs[0].abbr)}" aria-label="افتح ${t}: ابدأ من ${AR[bs[0].abbr]}">${img?`<img loading="lazy" src="img/web/${img}-800.webp" alt="" onerror="this.remove()">`:`<span class="mk"><img src="assets/brand/mark-on-navy.svg" alt=""></span>`}<h3>${t}<small>${bs.length===1?"سفر واحد":N(bs.length)+" "+(bs.length<=10?"أسفار":"سفرًا")}</small></h3></a>
    <details><summary>عرض الأسفار</summary><div class="bl">${bs.map(c=>`<a href="${page(c.abbr,"/"+c.abbr)}">${AR[c.abbr]}</a>`).join("")}</div></details></div>`}).join("");
 
 /* ---------- اسأل Google AI (assets/askai.js بيتحمّل أول ضغطة بس) ---------- */
@@ -796,31 +796,31 @@ function guide(){
     sam=/SamsungBrowser/i.test(ua);
   let intro="",steps=[],note="";
   if(location.protocol==="file:"){
-    intro="التثبيت مش بيشتغل والموقع مفتوح كملف من الجهاز. افتح الموقع من الإنترنت الأول:";
-    steps=[`افتح <b>younanoo.github.io/TSK</b> في المتصفح`,`دوس على زرار ${kb("ثبّت التطبيق")} تاني`];
+    intro="لا يعمل التثبيت والموقع مفتوح كملف من الجهاز. افتح الموقع من الإنترنت أولًا:";
+    steps=[`افتح <b>younanoo.github.io/TSK</b> في المتصفح`,`اضغط على زر ${kb("تنزيل التطبيق")} مرة أخرى`];
   }else if(iOS){
-    intro="على الآيفون والآيباد التثبيت بيتعمل من قائمة المشاركة:";
-    steps=[`دوس على زرار المشاركة ${kb(SHARE)} ${/CriOS|EdgiOS/.test(ua)?"اللي في شريط العنوان فوق":"اللي تحت في Safari"}`,
-      `انزل في القائمة واختار ${kb("إضافة إلى الشاشة الرئيسية")}`,`دوس ${kb("إضافة")} في أعلى الشاشة`];
-    note="لو مش لاقي الاختيار ده، افتح الموقع في Safari وجرّب تاني.";
+    intro="على الآيفون والآيباد يتم التثبيت من قائمة المشاركة:";
+    steps=[`اضغط على زر المشاركة ${kb(SHARE)} ${/CriOS|EdgiOS/.test(ua)?"الموجود في شريط العنوان بالأعلى":"الموجود بالأسفل في Safari"}`,
+      `مرّر القائمة لأسفل واختر ${kb("إضافة إلى الشاشة الرئيسية")}`,`اضغط ${kb("إضافة")} في أعلى الشاشة`];
+    note="إن لم تجد هذا الخيار، فافتح الموقع في Safari وجرّب مرة أخرى.";
   }else if(android){
     intro="على أندرويد:";
-    steps=sam?[`دوس على القائمة ${kb("☰")} تحت`,`اختار ${kb("إضافة صفحة إلى")} ← ${kb("الشاشة الرئيسية")}`]
-      :ff?[`دوس على القائمة ${kb("⋮")}`,`اختار ${kb("تثبيت")} أو ${kb("إضافة إلى الشاشة الرئيسية")}`]
-      :[`دوس على القائمة ${kb("⋮")} فوق جنب شريط العنوان`,`اختار ${kb("تثبيت التطبيق")} أو ${kb("إضافة إلى الشاشة الرئيسية")}`,`أكّد بـ ${kb("تثبيت")}`];
+    steps=sam?[`اضغط على القائمة ${kb("☰")} في الأسفل`,`اختر ${kb("إضافة صفحة إلى")} ← ${kb("الشاشة الرئيسية")}`]
+      :ff?[`اضغط على القائمة ${kb("⋮")}`,`اختر ${kb("تثبيت")} أو ${kb("إضافة إلى الشاشة الرئيسية")}`]
+      :[`اضغط على القائمة ${kb("⋮")} في الأعلى بجانب شريط العنوان`,`اختر ${kb("تثبيت التطبيق")} أو ${kb("إضافة إلى الشاشة الرئيسية")}`,`أكّد بالضغط على ${kb("تثبيت")}`];
   }else if(safariMac){
     intro="على Safari في الماك:";
-    steps=[`من القائمة فوق اختار ${kb("ملف")} ← ${kb("إضافة إلى Dock")}`,`دوس ${kb("إضافة")}`];
+    steps=[`من القائمة العلوية اختر ${kb("ملف")} ← ${kb("إضافة إلى Dock")}`,`اضغط ${kb("إضافة")}`];
   }else if(ff){
-    intro="متصفح Firefox على الكمبيوتر مش بيدعم تثبيت المواقع كتطبيقات.";
-    steps=[`افتح الموقع في <b>Chrome</b> أو <b>Edge</b>`,`دوس على زرار ${kb("ثبّت التطبيق")} تاني`];
+    intro="لا يدعم متصفح Firefox على الحاسوب تثبيت المواقع كتطبيقات.";
+    steps=[`افتح الموقع في <b>Chrome</b> أو <b>Edge</b>`,`اضغط على زر ${kb("تنزيل التطبيق")} مرة أخرى`];
   }else{
     intro=edge?"على Microsoft Edge:":"على Chrome:";
-    steps=[`دوس على أيقونة التثبيت ${kb("⊕")} في آخر شريط العنوان`,`أو من القائمة ${kb("⋮")} اختار ${edge?kb("التطبيقات")+" ← "+kb("تثبيت هذا الموقع كتطبيق"):kb("إرسال وحفظ ومشاركة")+" ← "+kb("تثبيت الصفحة كتطبيق")}`,`أكّد بـ ${kb("تثبيت")}`];
-    note="لو مش لاقي أيقونة التثبيت، يمكن الموقع متثبت عندك أصلًا: دوّر على «جدد وعتقاء» في قائمة البرامج.";
+    steps=[`اضغط على أيقونة التثبيت ${kb("⊕")} في طرف شريط العنوان`,`أو من القائمة ${kb("⋮")} اختر ${edge?kb("التطبيقات")+" ← "+kb("تثبيت هذا الموقع كتطبيق"):kb("إرسال وحفظ ومشاركة")+" ← "+kb("تثبيت الصفحة كتطبيق")}`,`أكّد بالضغط على ${kb("تثبيت")}`];
+    note="إن لم تجد أيقونة التثبيت، فربما يكون الموقع مثبّتًا لديك بالفعل: ابحث عن «جدد وعتقاء» في قائمة البرامج.";
   }
   ib.innerHTML=`<p>${intro}</p><ol>${steps.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>${note?`<p class="note">${note}</p>`:""}
-   <div class="why"><span>${ic("check")} يفتح من أيقونة على الشاشة زي أي تطبيق</span><span>${ic("check")} الصفحات اللي فتحتها قبل كده تشتغل من غير إنترنت</span><span>${ic("check")} مجاني ومن غير تسجيل، وحجمه صغير</span></div>`;
+   <div class="why"><span>${ic("check")} يُفتح من أيقونة على الشاشة مثل أي تطبيق</span><span>${ic("check")} الصفحات التي فتحتها سابقًا تعمل دون إنترنت</span><span>${ic("check")} مجاني وبلا تسجيل، وحجمه صغير</span></div>`;
   dlg.showModal();
 }
 async function install(){
