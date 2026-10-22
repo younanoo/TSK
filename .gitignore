@@ -19,3 +19,6 @@ _tmp_lt/
 
 # python cache
 __pycache__/
+_tools/.hashcache.json
+_tools/_dbg.js
+_tools/.sizecache.json

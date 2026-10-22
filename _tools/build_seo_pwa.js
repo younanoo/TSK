@@ -250,12 +250,20 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
     }
   })("");
   const orphans = [];
+  const SZ_FILE = path.join(__dirname, ".sizecache.json"); let SZ = {}; try { SZ = JSON.parse(fs.readFileSync(SZ_FILE, "utf8")); } catch (e) {} const SZ2 = {};
   const out = GROUPS.map(g => ({ id: g.id, title: g.title, desc: g.desc, req: g.req ? 1 : 0, files: [], bytes: 0 }));
   for (const p of files) {
     const gi = GROUPS.findIndex(g => g.test(p)); if (gi < 0) { if (!/^assets\/(og)\//.test(p) && !/^img\/web\/.*\.jpe?g$/.test(p) && !/^(offline|sitemap)/.test(p)) orphans.push(p); continue; }
-    const buf = fs.readFileSync(A(p)), txt = /\.(html|js|css|svg|webmanifest)$/i.test(p);
-    out[gi].files.push(p); out[gi].bytes += txt ? zlib.gzipSync(buf, { level: 6 }).length : buf.length;
+    const txt = /\.(html|js|css|svg|webmanifest)$/i.test(p);
+    const st = fs.statSync(A(p)), ck = st.size + ":" + Math.round(st.mtimeMs);
+    let b;
+    if (!txt) b = st.size;
+    else if (SZ[p] && SZ[p][0] === ck) b = SZ[p][1];
+    else b = zlib.gzipSync(fs.readFileSync(A(p)), { level: 6 }).length;
+    SZ2[p] = [ck, b];
+    out[gi].files.push(p); out[gi].bytes += b;
   }
+  try { fs.writeFileSync(SZ_FILE, JSON.stringify(SZ2)); } catch (e) {}
   write("assets/offline.json", JSON.stringify(out));
   if (orphans.length) {
     const by = {}; orphans.forEach(p => { const k = p.replace(/[0-9]+/g, "#").replace(/(_)[A-Za-z]+(\.)/, "$1*$2"); (by[k] = by[k] || []).push(p); });
@@ -267,14 +275,22 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
 
 /* ---------- sw.js: fingerprint every published file ---------- */
 const REV = {};
+const HC_FILE = path.join(__dirname, ".hashcache.json");
+let HC = {}; try { HC = JSON.parse(fs.readFileSync(HC_FILE, "utf8")); } catch (e) {}
+const HC2 = {}; let HASHED = 0;
 (function walk(dir) {
   for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
     const p = dir ? dir + "/" + e.name : e.name;
     if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
     if (p === "sw.js" || !OK_EXT.test(p) || dir === "img") continue;      // img/*.jpg originals are not published (only img/web)
-    REV[p] = crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 10);
+    const st = fs.statSync(A(p)), ck = st.size + ":" + Math.round(st.mtimeMs), hit = HC[p];       // hash cache: re-hash only files that changed
+    if (hit && hit[0] === ck) REV[p] = hit[1];
+    else { REV[p] = crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 10); }
+    HC2[p] = [ck, REV[p]];
+    if (!hit || hit[0] !== ck) { if (++HASHED % 150 === 0) try { fs.writeFileSync(HC_FILE, JSON.stringify(Object.assign({}, HC, HC2))); } catch (e) {} }
   }
 })("");
+try { fs.writeFileSync(HC_FILE, JSON.stringify(HC2)); } catch (e) {}
 const SHELL = ["index.html", "offline.html", "manifest.webmanifest", "assets/style.css", "assets/app.js", "assets/catalog.js",
   "assets/brand.js", "assets/bookimg.js", "assets/imgs.js", "assets/brand/favicon.ico", "assets/brand/mark-micro.svg",
   "assets/brand/logo-horizontal-light.svg", "assets/brand/logo-horizontal-dark.svg",
