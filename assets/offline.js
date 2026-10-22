@@ -10,7 +10,7 @@
     "#offDlg p.oi{margin:0 0 10px;font:13px/1.8 var(--ui);color:var(--muted)}#offDlg .opre{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}" +
     "#offDlg .opre button{font:12.5px var(--ui);border:1px solid var(--gold);color:var(--gold);background:transparent;border-radius:999px;padding:4px 12px;cursor:pointer}#offDlg .opre button:hover{background:var(--gold);color:var(--on-gold)}" +
     "#offDlg label.og{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;cursor:pointer}#offDlg label.og.on{border-color:var(--gold);background:var(--gold-soft)}" +
-    "#offDlg label.og input{margin-top:5px;accent-color:var(--gold);width:17px;height:17px;flex:none}#offDlg .ot{flex:1}#offDlg .ot b{display:block;font:600 14px var(--ui)}#offDlg .ot small{display:block;font:12px/1.7 var(--ui);color:var(--muted)}" +
+    "#offDlg label.og input{margin-top:3px;accent-color:var(--gold);width:17px;height:17px;flex:none}#offDlg .ot{flex:1}#offDlg .ot b{display:block;font:600 14px var(--ui)}#offDlg .ot small{display:block;font:12px/1.7 var(--ui);color:var(--muted)}" +
     "#offDlg .os{font:600 13px var(--ui);white-space:nowrap;color:var(--gold);text-align:end}#offDlg .os em{display:block;font:11px var(--ui);color:var(--muted);font-style:normal}#offDlg .os .ok{color:#2e7d32}" +
     "#offDlg .of{padding:12px 18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}#offDlg .osum{font:600 14px var(--ui)}#offDlg .osum small{font:12px var(--ui);color:var(--muted);font-weight:400}" +
     "#offDlg .obar{height:10px;border-radius:999px;background:var(--line);overflow:hidden;display:none}#offDlg .obar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}" +
@@ -34,35 +34,36 @@
   function build() {
     var el = document.createElement("dialog"); el.id = "offDlg";
     el.innerHTML = '<div class="oh">' + DL + '<h3>التنزيل للاستخدام دون إنترنت</h3><button class="ox" id="offX" aria-label="إغلاق">×</button></div>' +
-      '<div class="ob"><p class="oi">اختر ما تريد حفظه على جهازك. الأحجام المذكورة هي حجم التنزيل الفعلي تقريبًا، وما تم تنزيله سابقًا لا يُحمَّل مرة أخرى. يُفضَّل استخدام شبكة Wi‑Fi للحزم الكبيرة.</p>' +
-      '<div class="opre" id="offPre"></div><div id="offList"></div></div>' +
+      '<div class="ob"><p class="oi">اختر نوع الحزمة التي تريد حفظها على جهازك. الأحجام المذكورة هي حجم التنزيل الفعلي تقريبًا، وما تم تنزيله سابقًا لا يُحمَّل مرة أخرى. يُفضَّل استخدام شبكة Wi‑Fi للحزم الكبيرة.</p>' +
+      '<div id="offList"></div></div>' +
       '<div class="of"><div class="osum" id="offSum"></div><div class="obar" id="offBar"><i></i></div><div class="omsg" id="offMsg"></div>' +
       '<div class="oact"><button id="offGo">' + "تنزيل المحدد" + '</button><button class="sec" id="offStop" style="display:none">إيقاف</button><button class="sec" id="offClr">مسح النسخة المخزَّنة</button></div></div>';
     document.body.appendChild(el); return el;
   }
-  function chosen() { return G.filter(function (g) { var i = $("#og_" + g.id); return i && i.checked; }); }
+  var MODE = "app";
+  function isImg(g) { return /^img_/.test(g.id); }
+  function chosen() { return G.filter(function (g) { return g.req || !isImg(g) || MODE === "img"; }); }
   function total() { return chosen().reduce(function (a, g) { return a + remBytes(g); }, 0); }
   function sum() {
     var t = total();
     $("#offSum").innerHTML = t ? "حجم التنزيل: " + mb(t) : "كل المحدد منزَّل بالفعل ✓";
-    G.forEach(function (g) { var l = $("#ol_" + g.id); l && l.classList.toggle("on", $("#og_" + g.id).checked); });
+    ["app", "img"].forEach(function (k) { var l = $("#ol_" + k); l && l.classList.toggle("on", MODE === k); });
     $("#offGo").disabled = busy || !t;
     if (navigator.storage && navigator.storage.estimate) navigator.storage.estimate().then(function (e) {
       if (e.quota) $("#offSum").innerHTML += ' <small>· المساحة المتاحة نحو ' + mb(e.quota - e.usage) + "</small>";
     }).catch(function () {});
   }
   function list() {
-    $("#offList").innerHTML = G.map(function (g) {
-      var m = missing(g).length, done = m === 0;
-      return '<label class="og" id="ol_' + g.id + '"><input type="checkbox" id="og_' + g.id + '"' + (g.req ? " checked disabled" : "") + '><span class="ot"><b>' + g.title + '</b><small>' + g.desc + '</small></span>' +
-        '<span class="os">' + mb(g.bytes) + (done ? '<em class="ok">✓ منزَّل</em>' : (m < g.files.length ? '<em>باقٍ ' + mb(remBytes(g)) + '</em>' : "")) + '</span></label>';
+    var opts = [
+      ["app", "التطبيق بدون الصور", "كل الأسفار والترجمات والبحث والخرائط الذهنية — بدون صور الأصحاحات. أخف وأسرع.", function (g) { return !isImg(g); }],
+      ["img", "التطبيق مع الصور", "كل ما سبق مع صور الأسفار والأصحاحات، فتعمل كلها دون إنترنت.", function () { return true; }]
+    ];
+    $("#offList").innerHTML = opts.map(function (o) {
+      var gs = G.filter(o[3]), by = gs.reduce(function (a, g) { return a + g.bytes; }, 0), rem = gs.reduce(function (a, g) { return a + remBytes(g); }, 0);
+      return '<label class="og" id="ol_' + o[0] + '"><input type="radio" name="offmode" id="og_' + o[0] + '"' + (MODE === o[0] ? " checked" : "") + '><span class="ot"><b>' + o[1] + '</b><small>' + o[2] + '</small></span>' +
+        '<span class="os">' + mb(by) + (rem === 0 ? '<em class="ok">✓ منزَّل</em>' : (rem < by ? '<em>باقٍ ' + mb(rem) + '</em>' : "")) + '</span></label>';
     }).join("");
-    G.forEach(function (g) { $("#og_" + g.id).addEventListener("change", sum); });
-    var P = function (ids) { return function () { G.forEach(function (g) { if (!g.req) $("#og_" + g.id).checked = ids.indexOf(g.id) >= 0; }); sum(); }; };
-    var S = function (ids) { return G.filter(function (g) { return g.req || ids.indexOf(g.id) >= 0; }).reduce(function (a, g) { return a + g.bytes; }, 0); };
-    var presets = [["الأساس فقط", []], ["دراسة كاملة بدون صور", ["tr", "strong", "il", "search", "topics", "mm"]], ["كل شيء بجودة متوسطة", ["tr", "strong", "il", "search", "topics", "mm", "img_m"]], ["كل شيء بأعلى جودة", ["tr", "strong", "il", "search", "topics", "mm", "img_m", "img_h"]]];
-    $("#offPre").innerHTML = presets.map(function (p, i) { return '<button data-p="' + i + '">' + p[0] + " · " + mb(S(p[1])) + "</button>"; }).join("");
-    Array.prototype.forEach.call($("#offPre").children, function (b, i) { b.onclick = P(presets[i][1]); });
+    opts.forEach(function (o) { $("#og_" + o[0]).addEventListener("change", function () { MODE = o[0]; sum(); }); });
     sum();
   }
   function run() {
@@ -88,7 +89,8 @@
       $("#offMsg").textContent = stop ? "تم الإيقاف. يمكنك المتابعة لاحقًا، وما تم تنزيله محفوظ." : fails ? "اكتمل التنزيل مع تعذّر " + n(fails) + " ملف؛ أعد المحاولة." : "اكتمل التنزيل ✓ — يمكنك الآن استخدام المحدد دون إنترنت.";
     });
   }
-  function open() {
+  function open(m) {
+    if (m === "app" || m === "img") MODE = m;
     if (!("serviceWorker" in navigator) || !window.caches) { alert("المتصفح لا يدعم التخزين للاستخدام دون إنترنت."); return; }
     if (!document.getElementById("offCss")) { var st = document.createElement("style"); st.id = "offCss"; st.textContent = CSS; document.head.appendChild(st); }
     dlg = dlg || build();
@@ -101,5 +103,5 @@
     }).catch(function () { alert("تعذّر تحميل قائمة الحزم. تحقّق من الاتصال."); });
   }
   window.OFFLINE_UI = { open: open };
-  open();
+  open(window.OFFLINE_MODE);
 })();
