@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=8">
+<link rel="stylesheet" href="assets/style.css?v=2ee09c97">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -450,6 +450,12 @@ body.h{background:var(--bg)}
         <p>لأول مرة بالعربي: أصل كل كلمة العبري أو اليوناني، ونطقها، ومعناها.</p>
         <span class="go">افتح القاموس <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
+      <button class="h-feat gold" type="button" data-askai data-num="G25" data-o="ἀγαπάω" data-tr="agapaō" data-ref="يوحنا ٣: ١٦" data-words="أحب" style="font:inherit;text-align:start;cursor:pointer">
+        <span class="fi"><svg class="ic"><use href="#i-sparkles"/></svg></span>
+        <h3>اسأل Google AI عن الكلمة</h3>
+        <p>من أي كلمة عبرية أو يونانية، اختار سؤال جاهز (معناها، جذرها، استخدامها في الآية أو في الكتاب كله) وابعته لوضع الذكاء الاصطناعي في Google.</p>
+        <span class="go">جرّب على «أحب» في يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
+      </button>
       <a class="h-feat" href="grammar.html" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-grammar"/></svg></span>
         <h3>البحث النحوي</h3>
@@ -485,7 +491,7 @@ body.h{background:var(--bg)}
         <h3>تابع تقدّمك</h3>
         <p>علّم على الأعداد اللي درستها، والموقع يفتكر آخر مكان وقفت عنده. كل ده محفوظ على جهازك أنت بس.</p>
       </div>
-      <div class="h-feat big" style="cursor:default">
+      <div class="h-feat" style="cursor:default">
         <span class="fi"><svg class="ic"><use href="#i-offline"/></svg></span>
         <h3>من غير إنترنت</h3>
         <p>ثبّت الموقع كتطبيق على الموبايل أو الكمبيوتر، والصفحات اللي فتحتها قبل كده هتشتغل من غير اتصال. وفيه وضع ليلي للقراءة بالليل.</p>
@@ -548,6 +554,7 @@ body.h{background:var(--bg)}
     <div class="h-faq">
       <details><summary>إيه هو «كنز معرفة الكتاب المقدس» (TSK)؟</summary><div>هو مرجع إنجليزي كلاسيكي (Treasury of Scripture Knowledge) بيجمع لكل آية في الكتاب المقدس الآيات المرتبطة بيها، كلمة كلمة. وهنا الشواهد دي مربوطة بكلمات ترجمة فاندايك.</div></details>
       <details><summary>إيه هو قاموس سترونج؟</summary><div>قاموس بيدّي كل كلمة عبرية أو يونانية في الكتاب المقدس رقم، زي G25 لكلمة «يحب» اليونانية. والموقع ده بيقدّم القاموس كامل بالعربي لأول مرة، ومربوط بكلمات فاندايك وكتاب الحياة.</div></details>
+      <details><summary>إزاي أسأل Google AI عن كلمة؟</summary><div>اضغط على رقم سترونج لأي كلمة في الآية، وفي بطاقة الكلمة هتلاقي زرار «اسأل Google AI». الزرار ده موجود كمان في <a href="strong.html#G25">صفحة قاموس سترونج</a>. اختار نوع السؤال، وعدّله لو حبيت، وهيفتح وضع الذكاء الاصطناعي في Google بالإجابة. الإجابة من Google مش من الموقع، فراجعها دايمًا على الكتاب المقدس نفسه.</div></details>
       <details><summary>الموقع مجاني؟</summary><div>أيوه، مجاني بالكامل وغير ربحي، ومن غير تسجيل ولا إعلانات.</div></details>
       <details><summary>إيه الترجمات الموجودة؟</summary><div>ترجمة فاندايك هي النص الأساسي، ومعاها كتاب الحياة والترجمة الإنجليزية KJV. والترجمتين العربيتين مربوطين بأرقام سترونج، فتقدر توصل من أي كلمة لأصلها العبري أو اليوناني.</div></details>
       <details><summary>أكتب الشاهد إزاي في مربع البحث؟</summary><div>اكتب اختصار السفر أو اسمه، وبعده الأصحاح والعدد: <b>يو ٣: ١٦</b> أو <b>يوحنا ٣ ١٦</b> أو <b>Joh 3:16</b>. ولو كتبت كلمة عادية، هنوديك لصفحة البحث بالكلمة دي.</div></details>
@@ -565,6 +572,7 @@ body.h{background:var(--bg)}
       <div class="btns">
         <a class="h-btn acc" id="ctaStart" href="Gen.html#/Gen"><svg class="ic"><use href="#i-book"/></svg> ابدأ القراءة</a>
         <button class="h-btn out" id="installBtn" type="button" data-install><svg class="ic"><use href="#i-download"/></svg> ثبّت التطبيق</button>
+        <button class="h-btn out" id="offlineBtn" type="button"><svg class="ic"><use href="#i-download"/></svg> التنزيل للاستخدام دون إنترنت</button>
       </div>
     </div>
   </div>
@@ -712,7 +720,7 @@ const mm=()=>{const kids=EX.groups.flatMap(g=>g[1].slice(0,2).map(r=>lbl(r[0],r[
   pts.forEach(([x,y,k,i])=>s+=`<rect class="${Math.floor(i/2)%2?"g":"n"}" x="${x-46}" y="${y-15}" width="92" height="30" rx="15"/><text x="${x}" y="${y+5}" text-anchor="middle">${k}</text>`);
   s+=`<rect class="c" x="${cx-60}" y="${cy-20}" width="120" height="40" rx="20"/><text x="${cx}" y="${cy+5}" text-anchor="middle">يو ٣: ١٦</text></svg>`;return s};
 function svHTML(){return EX.seg.map(([w,ns])=>ns.length&&EX.st[ns[0]]?`<button type="button" data-n="${ns[0]}" aria-pressed="${ns[0]==="G25"}">${esc(w)}</button>`:esc(w)).join("")}
-function wordHTML(k){const e=EX.st[k];if(!e)return"";return `<div class="h-word"><div class="gk">${esc(e.o)}<small>${esc(e.tr)}</small></div><div><span class="num">${k}</span><p>${esc(e.ar)}</p><p style="margin-top:8px"><a href="strong.html#${k}" target="_blank" style="color:var(--accent);font-weight:600">افتح ${k} في القاموس ←</a></p></div></div>`}
+function wordHTML(k){const e=EX.st[k];if(!e)return"";return `<div class="h-word"><div class="gk">${esc(e.o)}<small>${esc(e.tr)}</small></div><div><span class="num">${k}</span><p>${esc(e.ar)}</p><p style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"><a class="h-btn out" style="font-size:13px;padding:6px 12px" href="strong.html#${k}" target="_blank">افتح ${k} في القاموس</a><button class="h-btn acc" style="font-size:13px;padding:6px 12px" type="button" data-askai data-num="${k}" data-o="${esc(e.o)}" data-tr="${esc(e.tr)}" data-ref="يوحنا ٣: ١٦" data-words="${esc((EX.seg.find(x=>x[1][0]===k)||[""])[0])}">${ic("sparkles")} اسأل Google AI</button></p></div></div>`}
 function demoSeg(seg,max){let out="",c=0;for(const [w,ns] of seg){if(c>=max)break;out+=ns.length?`<s>${esc(w)}</s><sub>${ns[0]}</sub>`:esc(w);if(/\S/.test(w))c++}return out+" …"}
 const PANELS=[
  ["Joh.html#/Joh/3:16",()=>`<h3>اختار الآية</h3><p>من القائمة الجانبية في أي صفحة اختار السفر والأصحاح، أو أسرع: اكتب الشاهد في مربع «اذهب إلى عدد» بأي صيغة تريحك.</p>
@@ -724,7 +732,8 @@ const PANELS=[
  ["compare.html?b=Joh&c=3",()=>`<h3>قارن الترجمات</h3><p>اختلاف الصياغة بين الترجمات بيلفت نظرك لكلمات ممكن تعدّي عليها. افتح صفحة المقارنة وشوف الأصحاح كله جنب بعضه.</p>
    <div class="h-cmp"><div><b>فاندايك (النص الأساسي)</b><p>${esc(EX.text)}</p></div><div><b>كتاب الحياة</b><p>${esc(EX.kh)}</p></div><div><b>KJV</b><p class="en">${esc(EX.kjv)}</p></div></div>`],
  ["strong.html#G25",()=>`<h3>ارجع للكلمة الأصلية</h3><p>كل كلمة في فاندايك وكتاب الحياة مربوطة برقم سترونج، والقاموس بالعربي. اضغط على أي كلمة في الآية:</p>
-   <div class="h-sv" id="exSv">${svHTML()}</div><div id="exWord">${wordHTML("G25")}</div>`],
+   <div class="h-sv" id="exSv">${svHTML()}</div><div id="exWord">${wordHTML("G25")}</div>
+   <p style="margin:14px 0 0;color:var(--muted);font-size:14.5px">وعايز تعرف أكتر؟ زرار «اسأل Google AI» بيجهّزلك سؤال عن الكلمة في سياق الآية ويبعته لوضع الذكاء الاصطناعي في Google.</p>`],
  ["mindmap.html#Joh/3:16/g0",()=>`<h3>تتبّع الخيط</h3><p>الخريطة الذهنية بتعرض شواهد الآية كشبكة. اضغط على أي شاهد عشان تفتح شواهده هو كمان، وكده تمشي مع الموضوع من سفر لسفر.</p>${mm()}
    <div class="h-dnav" style="border:0;padding-top:0"><a class="h-btn acc" href="mindmap.html#Joh/3:16/g0" target="tskmindmap">${ic("mindmap")} افتح الخريطة الحقيقية</a></div>`]
 ];
@@ -746,10 +755,14 @@ document.getElementById("fcVd").innerHTML=demoSeg(EX.seg,4);
 document.getElementById("fcKh").innerHTML=demoSeg([["لأنه هكذا ",[]],["أحب",["G25"]],[" ",[]],["الله",["G2316"]],[" ",[]],["العالم",["G2889"]]],4);
 
 /* ---------- الأسفار ---------- */
-const BKGRP=[["التوراة",1,5,"Exo14"],["الأسفار التاريخية",6,17,"Jdg6"],["الشعر والحكمة",18,22,""],["الأنبياء الكبار",23,27,"Eze37"],["الأنبياء الصغار",28,39,"Mal3"],["الأناجيل وأعمال الرسل",40,44,"Mat5"],["رسائل بولس",45,57,"Phi1"],["الرسائل العامة",58,65,""],["الرؤيا",66,66,""]];
+const BKGRP=[["التوراة",1,5,"Exo14"],["الأسفار التاريخية",6,17,"Jdg6"],["الشعر والحكمة",18,22,"Job38"],["الأنبياء الكبار",23,27,"Eze37"],["الأنبياء الصغار",28,39,"Mal3"],["الأناجيل وأعمال الرسل",40,44,"Mat5"],["رسائل بولس",45,57,"Phi1"],["الرسائل العامة",58,65,"1Jo4"],["الرؤيا",66,66,"Rev21"]];
 document.getElementById("hBooks").innerHTML=BKGRP.map(([t,a,z,img])=>{const bs=CAT.filter(c=>c.id>=a&&c.id<=z);
   return `<div class="h-bk"><div class="cov">${img?`<img loading="lazy" src="img/web/${img}-800.webp" alt="" onerror="this.remove()">`:`<span class="mk"><img src="assets/brand/mark-on-navy.svg" alt=""></span>`}<h3>${t}<small>${bs.length===1?"سفر واحد":N(bs.length)+" "+(bs.length<=10?"أسفار":"سفرًا")}</small></h3></div>
    <details><summary>عرض الأسفار</summary><div class="bl">${bs.map(c=>`<a href="${page(c.abbr,"/"+c.abbr)}">${AR[c.abbr]}</a>`).join("")}</div></details></div>`}).join("");
+
+/* ---------- اسأل Google AI (assets/askai.js بيتحمّل أول ضغطة بس) ---------- */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-askai]");if(!b||window.AskAI)return;e.preventDefault();
+  const s=document.createElement("script");s.src="assets/askai.js?v=2";s.onload=()=>window.AskAI&&window.AskAI.fromEl(b);document.body.appendChild(s)});
 
 /* ---------- تثبيت التطبيق ---------- */
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||matchMedia("(display-mode: window-controls-overlay)").matches||navigator.standalone===true;
@@ -800,6 +813,7 @@ async function install(){
   guide();
 }
 document.querySelectorAll("[data-install]").forEach(b=>b.addEventListener("click",install));
+document.getElementById("offlineBtn").addEventListener("click",()=>{if(window.OFFLINE_UI)return window.OFFLINE_UI.open();const x=document.createElement("script");x.src="assets/offline.js";document.head.appendChild(x)});
 })();
 </script>
 </body>

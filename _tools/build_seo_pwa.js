@@ -9,7 +9,9 @@ const M = require("./site_meta.js");
 const { ROOT, BASE, SITE, TAGLINE, esc, n, nk } = M;
 const A = p => path.join(ROOT, p);
 const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => fs.writeFileSync(A(p), s);
-const CSS_VER = "8", BRAND_VER = "2", APP_VER = "5";
+const hashOf = p => crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 8);
+/* app.js and style.css versions follow their content, so browsers never reuse a stale copy after a change */
+const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "2", APP_VER = hashOf("assets/app.js");
 const CAT = M.catalog();
 const today = new Date().toISOString().slice(0, 10);
 const BASE_PATH = new URL(BASE).pathname;               // "/TSK/"
@@ -53,9 +55,9 @@ ${o.ld ? `<script type="application/ld+json">${JSON.stringify(o.ld)}</script>\n`
 function applyHead(h, o) {
   h = h.replace(/<!--seo-->[\s\S]*?<!--\/seo-->\n?/, "");
   if (o.title) h = h.replace(/<title>[^<]*<\/title>/, `<title>${esc(o.title)}</title>`);
-  h = h.replace(/assets\/style\.css(\?v=\d+)?"/g, `assets/style.css?v=${CSS_VER}"`)
-       .replace(/assets\/brand\.js(\?v=\d+)?"/g, `assets/brand.js?v=${BRAND_VER}"`)
-       .replace(/assets\/app\.js(\?v=\d+)?"/g, `assets/app.js?v=${APP_VER}"`);
+  h = h.replace(/assets\/style\.css(\?v=[0-9a-z]+)?"/g, `assets/style.css?v=${CSS_VER}"`)
+       .replace(/assets\/brand\.js(\?v=[0-9a-z]+)?"/g, `assets/brand.js?v=${BRAND_VER}"`)
+       .replace(/assets\/app\.js(\?v=[0-9a-z]+)?"/g, `assets/app.js?v=${APP_VER}"`);
   const i = h.indexOf("</head>");
   return h.slice(0, i) + headBlock(o) + h.slice(i);
 }
@@ -221,14 +223,54 @@ bj += `
 `;
 write("assets/brand.js", bj);
 
-/* ---------- sw.js: fingerprint every published file ---------- */
 const SKIP_DIR = new Set(["_tools", ".git", "node_modules", ".vscode"]);
 const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
+/* ---------- assets/offline.json: packages the user can download for offline use (sizes = what is sent over the wire) ---------- */
+(function () {
+  const zlib = require("zlib");
+  const GROUPS = [
+    { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بنص كتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
+    { id: "tr", title: "ترجمتا فاندايك وKJV", desc: "نصوص الترجمات الإضافية لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
+    { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالكلمة.", test: p => /^assets\/(strong|sidx|roots)\.js$/.test(p) },
+    { id: "il", title: "كلمة بكلمة والبحث النحوي", desc: "بيانات Berean بالعبرية واليونانية مع التحليل النحوي.", test: p => /^assets\/bsb_/.test(p) },
+    { id: "search", title: "البحث في نص الكتاب", desc: "نصوص كاملة للبحث (كتاب الحياة وفاندايك وKJV).", test: p => /^assets\/tx_[a-z]+\.js$/.test(p) },
+    { id: "topics", title: "فهرس المواضيع", desc: "٤٦ ألف موضوع مع آياتها.", test: p => /^assets\/tp_/.test(p) },
+    { id: "mm", title: "الخريطة الذهنية للشواهد", desc: "بيانات الخريطة الذهنية.", test: p => p === "assets/mm_data.js" },
+    { id: "img_m", title: "الصور — جودة متوسطة (٨٠٠ بكسل)", desc: "صور الأصحاحات المناسبة للجوال.", test: p => /^img\/web\/.*-800\.webp$/.test(p) },
+    { id: "img_h", title: "الصور — جودة عالية (١٦٠٠ بكسل)", desc: "للشاشات الكبيرة؛ تُحمَّل مع المتوسطة للحصول على كل الأحجام.", test: p => /^img\/web\/.*-1600\.webp$/.test(p) }
+  ];
+  const files = [];
+  (function walk(dir) {
+    for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
+      const p = dir ? dir + "/" + e.name : e.name;
+      if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
+      if (p === "sw.js" || p === "assets/offline.json" || !OK_EXT.test(p) || dir === "img") continue;
+      files.push(p);
+    }
+  })("");
+  const orphans = [];
+  const out = GROUPS.map(g => ({ id: g.id, title: g.title, desc: g.desc, req: g.req ? 1 : 0, files: [], bytes: 0 }));
+  for (const p of files) {
+    const gi = GROUPS.findIndex(g => g.test(p)); if (gi < 0) { if (!/^assets\/(og)\//.test(p) && !/^img\/web\/.*\.jpe?g$/.test(p) && !/^(offline|sitemap)/.test(p)) orphans.push(p); continue; }
+    const buf = fs.readFileSync(A(p)), txt = /\.(html|js|css|svg|webmanifest)$/i.test(p);
+    out[gi].files.push(p); out[gi].bytes += txt ? zlib.gzipSync(buf, { level: 6 }).length : buf.length;
+  }
+  write("assets/offline.json", JSON.stringify(out));
+  if (orphans.length) {
+    const by = {}; orphans.forEach(p => { const k = p.replace(/[0-9]+/g, "#").replace(/(_)[A-Za-z]+(\.)/, "$1*$2"); (by[k] = by[k] || []).push(p); });
+    console.log("\n⚠ ملفات ليست ضمن أي حزمة تنزيل (لن تُحمَّل مع «التنزيل للاستخدام دون إنترنت»؛ تُحفظ فقط عند أول زيارة):");
+    Object.keys(by).forEach(k => console.log("   " + k + "  ×" + by[k].length + (by[k].length > 1 ? "   مثال: " + by[k][0] : "")));
+    console.log("   ← أضف نمطًا مناسبًا في GROUPS داخل _tools/build_seo_pwa.js إن كانت ضرورية للعمل دون إنترنت.\n");
+  } else console.log("✓ كل الملفات المنشورة ضمن حزم التنزيل");
+})();
+
+/* ---------- sw.js: fingerprint every published file ---------- */
 const REV = {};
 (function walk(dir) {
   for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
     const p = dir ? dir + "/" + e.name : e.name;
-    if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !(dir === "img" && e.name !== "web")) walk(p); continue; }
+    if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
     if (p === "sw.js" || !OK_EXT.test(p) || dir === "img") continue;      // img/*.jpg originals are not published (only img/web)
     REV[p] = crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 10);
   }

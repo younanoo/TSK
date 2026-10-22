@@ -1,5 +1,5 @@
 /* جدد وعتقاء — «اسأل Google AI» عن كلمة عبرية أو يونانية
-   الاستخدام: أي عنصر فيه data-askai data-num="G25" [data-ref="يوحنا ٣: ١٦"] [data-words="أحب"]
+   الاستخدام: أي عنصر فيه data-askai data-num="G25" [data-ref="يوحنا ٣: ١٦"] [data-words="أحب"] [data-o="ἀγαπάω" data-tr="agapaō" لو قاموس سترونج مش متحمّل في الصفحة]
    بيفتح لوحة فيها سؤال جاهز (يقدر القارئ يعدّله)، وبعدين يبعته لوضع الذكاء الاصطناعي في Google في نافذة جانبية.
    Google ما بيسمحش بعرض صفحاته جوه إطار في موقع تاني، فالإجابة بتظهر في نافذة/تبويب منفصل. */
 (function(){
@@ -60,7 +60,7 @@ function qs(w){
 }
 function open(w){
   const S=(window.STRONG||{})[w.num]||{};
-  W=Object.assign({o:S.o||"",tr:S.tr||""},w);
+  W=Object.assign({},w,{o:S.o||w.o||"",tr:S.tr||w.tr||""});
   const L=qs(W);let pick=get("aiq",W.ref?"ctx":"root");if(!L.some(x=>x[0]===pick))pick=L[0][0];
   dlg.innerHTML=`<div class="ah"><div class="aw"><div class="ao ${W.num[0]==="H"?"he":""}" dir="${W.num[0]==="H"?"rtl":"ltr"}" id="askaiT">${esc(W.o||W.num)}</div>
      <div class="at">${W.tr?esc(W.tr)+" · ":""}<b>${esc(W.num)}</b>${W.ref?` · ${esc(W.ref)}`:""}${W.words?` · «${esc(W.words)}»`:""}</div></div>
@@ -94,7 +94,7 @@ function send(q){
   else{try{w.focus()}catch(e){}}
   dlg.close();
 }
-function fromEl(el){open({num:(el.dataset.num||"").toUpperCase(),ref:el.dataset.ref||"",words:el.dataset.words||""})}
+function fromEl(el){const d=el.dataset;open({num:(d.num||"").toUpperCase(),ref:d.ref||"",words:d.words||"",o:d.o||"",tr:d.tr||""})}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-askai]");if(!b)return;e.preventDefault();fromEl(b)});
 window.AskAI={open,fromEl,send};
 })();
