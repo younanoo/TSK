@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=2ee09c97">
+<link rel="stylesheet" href="assets/style.css?v=e3549afa">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -137,11 +137,39 @@ body.h{background:var(--bg)}
 .h-fc .demo sub{font:700 10.5px var(--ui);color:var(--accent);direction:ltr;unicode-bidi:isolate;margin-inline-start:2px;vertical-align:-2px}
 .h-fc .go{margin-top:14px;font:600 13.5px var(--ui);color:var(--accent);display:flex;align-items:center;gap:6px}
 @media (max-width:900px){.h-firsts{grid-template-columns:1fr}}
+.h-firsts{grid-auto-flow:dense}
+.h-fc.wide{grid-column:span 2}
+@media (max-width:900px){.h-fc.wide{grid-column:auto}}
+.h-fc .demo .og{font:600 19px "Noto Serif","Noto Serif Hebrew",serif;unicode-bidi:isolate}
+.h-fc .demo.ex-il{display:flex;gap:6px;flex-wrap:wrap;font:13px var(--ui)}
+.h-fc .demo.ex-il span{display:grid;justify-items:center;gap:1px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--paper);min-width:70px}
+.h-fc .demo.ex-il i{font:700 10.5px var(--ui);color:var(--accent);font-style:normal}
+.h-fc .demo.ex-il b{font:600 17px "Noto Serif",serif;color:var(--heading)}
+.h-fc .demo.ex-il em{font-size:11.5px;color:var(--muted)}
+.h-fc .demo.ex-il small{font-size:12px}
+.h-fc .demo.ex-il u{text-decoration:none;font:600 15px var(--script);color:var(--gold)}
+.h-fc .demo.mmx{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font:600 13px var(--ui)}
+.h-fc .demo.mmx span{padding:4px 12px;border-radius:999px;border:1.5px solid var(--accent);background:var(--paper);color:var(--ink)}
+.h-fc .demo.mmx span.c{background:var(--accent);color:var(--on-accent)}
+.h-fc .demo.mmx i{width:18px;height:2px;background:var(--line);display:block}
+
 .h-sv{font:21px/2.1 var(--script);padding:14px 18px;border-radius:14px;background:var(--bg);border:1px solid var(--line);margin-bottom:14px}
 .h-sv button{all:unset;cursor:pointer;border-bottom:2px solid var(--gold-soft);border-radius:2px}
 .h-sv button:hover{border-color:var(--gold)}
 .h-sv button[aria-pressed="true"]{background:var(--mark);border-color:var(--gold)}
 .h-sv button:focus-visible{outline:2px solid var(--brand-gold)}
+
+/* --- أمثلة داخل كروت الإمكانيات --- */
+.h-feat .ex-il{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;font:13px var(--ui)}
+.h-feat .ex-il span{display:grid;justify-items:center;gap:1px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-width:70px}
+.h-feat .ex-il i{font:700 10.5px var(--ui);color:var(--accent);font-style:normal}
+.h-feat .ex-il b{font:600 17px "Noto Serif",serif;color:var(--heading)}
+.h-feat .ex-il em{font-size:11.5px;color:var(--muted)}
+.h-feat .ex-il small{font-size:12px}
+.h-feat .ex-il u{text-decoration:none;font:600 15px var(--script);color:var(--gold)}
+.h-feat .ex-th{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px}
+.h-feat .ex-th img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:10px;display:block}
+.h-feats{grid-auto-flow:dense}
 
 /* --- الإمكانيات --- */
 .h-feats{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:30px}
@@ -327,6 +355,10 @@ body.h{background:var(--bg)}
   <symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"/></symbol>
   <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></symbol>
   <symbol id="i-reading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l3 3l3 -3h4v12h-4l-3 3l-3 -3h-4z"/><path d="M12 7v12"/></symbol>
+  <symbol id="i-rows" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M4 10h16"/><path d="M4 15h16"/><path d="M9 4v16"/><path d="M15 4v16"/></symbol>
+  <symbol id="i-abc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16v-6a2 2 0 1 1 4 0v6"/><path d="M3 13h4"/><path d="M10 8v6a2 2 0 1 0 4 0v-1a2 2 0 1 0 -4 0v1"/><path d="M20.732 12a2 2 0 0 0 -3.732 1v1a2 2 0 0 0 3.726 1.01"/></symbol>
+  <symbol id="i-notes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"/><path d="M9 7l6 0"/><path d="M9 11l6 0"/><path d="M9 15l4 0"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 8h.01"/><path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z"/><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5"/><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3"/></symbol>
  </defs>
 </svg>
 
@@ -427,6 +459,38 @@ body.h{background:var(--bg)}
         <div class="demo" id="fcKh"></div>
         <span class="go">افتح يو ٣: ١٦ بكتاب الحياة <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
+      <a class="h-fc wide" href="Joh.html#/Joh/3">
+        <span class="badge">لأول مرة</span>
+        <h3>العرض بين السطور بثلاث لغات</h3>
+        <p>في صفحة أي أصحاح اختر «العرض بين السطور»، فتظهر كل كلمة عبرية أو يونانية بنطقها، وتحتها معناها بالإنجليزية، والكلمة المقابلة لها في فاندايك.</p>
+        <div class="demo ex-il" dir="ltr">
+          <span><i>G25</i><b>ἀγαπάω</b><em>agapaō</em><small>loved</small><u>أحب</u></span>
+          <span><i>G2316</i><b>θεός</b><em>theos</em><small>God</small><u>الله</u></span>
+          <span><i>G2889</i><b>κόσμος</b><em>kosmos</em><small>world</small><u>العالم</u></span>
+        </div>
+        <span class="go">جرّبه في يوحنا ٣ <svg class="ic"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="h-fc" href="arword.html#ar=%D9%85%D8%AD%D8%A8%D8%A9">
+        <span class="badge">لأول مرة</span>
+        <h3>البحث بالعربية في اللغات الأصلية</h3>
+        <p>اكتب كلمة عربية، فنستخرج جذرها ونعرض الكلمات العبرية واليونانية التي ترجمها فاندايك وكتاب الحياة إلى كلمات من هذا الجذر، مع شرح كل كلمة.</p>
+        <div class="demo"><b>«محبة»</b> ← <span class="og" dir="ltr">ἀγάπη</span> <sub>G26</sub> · <span class="og" dir="rtl">אהבה</span> <sub>H160</sub></div>
+        <span class="go">جرّب كلمة «محبة» <svg class="ic"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="h-fc" href="grammar.html">
+        <span class="badge">لأول مرة</span>
+        <h3>البحث النحوي في اللغات الأصلية</h3>
+        <p>ابحث في النص العبري واليوناني بنوع الكلمة وتصريفها: زمن الفعل وصيغته، والحالة، والعدد، والشخص، بمصطلحات عربية.</p>
+        <div class="demo" style="font:500 14px/1.9 var(--ui)"><span class="og" dir="ltr">ἠγάπησεν</span> · فعل · أوريست (ماضٍ بسيط) · معلوم · مفرد غائب</div>
+        <span class="go">افتح البحث النحوي <svg class="ic"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="h-fc wide" href="mindmap.html#Joh/3:16/g0">
+        <span class="badge">لأول مرة</span>
+        <h3>خريطة الشواهد الذهنية</h3>
+        <p>شواهد كل كلمة على هيئة شبكة تفاعلية: اضغط على أي شاهد فتظهر شواهده هو أيضًا، فتتبّع خيط الموضوع من سفر إلى سفر عبر الكتاب كله.</p>
+        <div class="demo mmx"><span class="c">يو ٣: ١٦</span><i></i><span>رو ٥: ٨</span><i></i><span>١يو ٤: ٩</span><i></i><span>تك ٢٢: ١٢</span><i></i><span>…</span></div>
+        <span class="go">افتح خريطة يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
@@ -453,7 +517,7 @@ body.h{background:var(--bg)}
       <a class="h-feat" href="strong.html#G25" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-lang"/></svg></span>
         <h3>قاموس سترونج بالعربية</h3>
-        <p>لأول مرة بالعربية: أصل كل كلمة العبري أو اليوناني، ونطقها، ومعناها.</p>
+        <p>لأول مرة بالعربية: أصل كل كلمة العبري أو اليوناني، ونطقها، ومعناها. ويمكنك البحث فيه برقم الكلمة، مثل <span dir="ltr">G25</span> أو <span dir="ltr">H7225</span>.</p>
         <span class="go">افتح القاموس <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <button class="h-feat gold" type="button" data-askai data-num="G25" data-o="ἀγαπάω" data-tr="agapaō" data-ref="يوحنا ٣: ١٦" data-words="أحب" style="font:inherit;text-align:start;cursor:pointer">
@@ -462,11 +526,11 @@ body.h{background:var(--bg)}
         <p>من أي كلمة عبرية أو يونانية، اختر سؤالًا جاهزًا (معناها، جذرها، استخدامها في الآية أو في الكتاب كله) وأرسله إلى وضع الذكاء الاصطناعي في Google.</p>
         <span class="go">جرّب على «أحب» في يو ٣: ١٦ <svg class="ic"><use href="#i-arrow"/></svg></span>
       </button>
-      <a class="h-feat" href="grammar.html" target="_blank">
-        <span class="fi"><svg class="ic"><use href="#i-grammar"/></svg></span>
-        <h3>البحث النحوي</h3>
-        <p>ابحث في النص الأصلي بالصيغة النحوية: زمن الفعل، والحالة، والعدد.</p>
-        <span class="go">جرّب <svg class="ic"><use href="#i-arrow"/></svg></span>
+      <a class="h-feat" href="search.html" target="_blank">
+        <span class="fi"><svg class="ic"><use href="#i-search"/></svg></span>
+        <h3>البحث في النص</h3>
+        <p>ابحث عن أي كلمة في ترجمة فاندايك، بالتشكيل أو بدونه.</p>
+        <span class="go">ابحث <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat gold" href="topics.html" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-tag"/></svg></span>
@@ -474,17 +538,18 @@ body.h{background:var(--bg)}
         <p>٤٦ ألف موضوع، ومع كل موضوع الآيات التي تتناوله. مفيد جدًا لتحضير درس أو عظة.</p>
         <span class="go">تصفّح المواضيع <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
-      <a class="h-feat" href="search.html" target="_blank">
-        <span class="fi"><svg class="ic"><use href="#i-search"/></svg></span>
-        <h3>البحث في النص</h3>
-        <p>ابحث عن أي كلمة في ترجمة فاندايك، بالتشكيل أو بدونه.</p>
-        <span class="go">ابحث <svg class="ic"><use href="#i-arrow"/></svg></span>
+      <a class="h-feat" href="notes.html?b=Jud">
+        <span class="fi"><svg class="ic"><use href="#i-notes"/></svg></span>
+        <h3>ملاحظات على الترجمات</h3>
+        <p>لماذا تختلف الترجمات في بعض المواضع؟ تنبيهات دراسية، سفرًا سفرًا، على الفروق التي سببها اختلاف المخطوطات اليونانية. بدأت برسالة يهوذا، وتُضاف بقية الأسفار تدريجيًا.</p>
+        <span class="go">ملاحظات يهوذا <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
-      <a class="h-feat" href="mindmap.html#Joh/3:16/g0" target="_blank">
-        <span class="fi"><svg class="ic"><use href="#i-mindmap"/></svg></span>
-        <h3>الخريطة الذهنية</h3>
-        <p>شاهد شواهد الآية على هيئة شبكة: كل شاهد يقودك إلى شاهد آخر، فتكتشف خيوط الموضوع عبر الكتاب كله.</p>
-        <span class="go">افتح الخريطة <svg class="ic"><use href="#i-arrow"/></svg></span>
+      <a class="h-feat" href="Gen.html#/Gen">
+        <span class="fi"><svg class="ic"><use href="#i-photo"/></svg></span>
+        <h3>صورة لكل أصحاح</h3>
+        <p>١١٨٩ صورة توضيحية تغطي كل أصحاحات الكتاب المقدس، وغلاف لكل سفر من الأسفار الستة والستين، لتساعدك على تصوّر أحداث الأصحاح قبل قراءته.</p>
+        <div class="ex-th"><img loading="lazy" src="img/web/Gen1-800.webp" alt="" width="800" height="457"><img loading="lazy" src="img/web/Jon2-800.webp" alt="" width="800" height="457"><img loading="lazy" src="img/web/Rev21-800.webp" alt="" width="800" height="457"></div>
+        <span class="go">ابدأ من التكوين <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="outline.html?b=Joh" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-outline"/></svg></span>
@@ -500,10 +565,11 @@ body.h{background:var(--bg)}
       <div class="h-feat" style="cursor:default">
         <span class="fi"><svg class="ic"><use href="#i-offline"/></svg></span>
         <h3>دون إنترنت</h3>
-        <p>ثبّت الموقع كتطبيق على الهاتف أو الحاسوب، وستعمل الصفحات التي فتحتها سابقًا دون اتصال. وفيه وضع ليلي للقراءة مساءً.</p>
+        <p>نزّل المكتبة على جهازك مرة واحدة، بدون الصور أو مع الصور، فتعمل كل الأسفار والترجمات والبحث والخرائط الذهنية دون اتصال. وفيه وضع ليلي للقراءة مساءً.</p>
         <button class="h-btn acc" type="button" data-dl style="align-self:flex-start;margin-top:14px;font-size:14px;padding:9px 16px"><svg class="ic"><use href="#i-download"/></svg> تنزيل التطبيق</button>
       </div>
     </div>
+  
   </div>
 </section>
 
@@ -566,6 +632,8 @@ body.h{background:var(--bg)}
       <details><summary>كيف أكتب الشاهد في مربع البحث؟</summary><div>اكتب اختصار السفر أو اسمه، وبعده الأصحاح والعدد: <b>يو ٣: ١٦</b> أو <b>يوحنا ٣ ١٦</b> أو <b>Joh 3:16</b>. وإن كتبت كلمة عادية، فسننقلك إلى صفحة البحث بهذه الكلمة.</div></details>
       <details><summary>هل يحفظ الموقع تقدّمي؟</summary><div>نعم. يُحفظ آخر موضع قرأته والأعداد التي علّمت عليها على جهازك في المتصفح فقط، ولا يستطيع أحد غيرك رؤيتها. وإذا مسحت بيانات المتصفح أو فتحت الموقع من جهاز آخر فستبدأ من جديد.</div></details>
       <details><summary>هل يمكنني استخدامه دون إنترنت؟</summary><div>نعم. اضغط على زر «تنزيل التطبيق» واختر «تثبيت التطبيق» أو «التطبيق دون الصور» أو «مع الصور». وعلى الهاتف يمكنك أيضًا اختيار «إضافة إلى الشاشة الرئيسية» من قائمة المتصفح. وستعمل الصفحات المحفوظة دون اتصال.</div></details>
+      <details><summary>كيف أعرف الأصل العبري أو اليوناني لكلمة عربية؟</summary><div>استخدم <a href="arword.html">البحث بكلمة عربية</a>: اكتب الكلمة، مثل «خلاص»، فنستخرج جذرها ونعرض الكلمات العبرية واليونانية التي تُرجمت إلى كلمات من هذا الجذر في فاندايك وكتاب الحياة. وإن كنت تعرف رقم سترونج، فاكتبه مباشرة في <a href="strong.html">صفحة القاموس</a>.</div></details>
+      <details><summary>لماذا يختلف نص الترجمات في بعض الآيات؟</summary><div>لأن كل ترجمة بُنيت على مخطوطات يونانية قد تختلف في بعض الكلمات والعبارات. وتشرح صفحة <a href="notes.html">ملاحظات على الترجمات</a> هذه الفروق سفرًا سفرًا، بدءًا برسالة يهوذا.</div></details>
       <details><summary>ما مصادر الموقع؟</summary><div>جميع المصادر والتراخيص موجودة في <a href="sources.html">صفحة المصادر والمراجع</a>.</div></details>
     </div>
   </div>
@@ -591,7 +659,7 @@ body.h{background:var(--bg)}
       <p>نص «كتاب الحياة» مستخدم بإذن من Biblica, Inc.® لأغراض غير ربحية. التفاصيل الكاملة في <a href="sources.html">المصادر والمراجع</a>.</p>
     </div>
     <nav aria-label="روابط">
-      <a href="search.html">البحث</a><a href="topics.html">المواضيع</a><a href="strong.html">سترونج</a><a href="grammar.html">البحث النحوي</a><a href="mindmap.html">الخريطة الذهنية</a><a href="sources.html">المصادر</a>
+      <a href="search.html">البحث</a><a href="topics.html">المواضيع</a><a href="strong.html">سترونج</a><a href="arword.html">البحث بكلمة عربية</a><a href="grammar.html">البحث النحوي</a><a href="mindmap.html">الخريطة الذهنية</a><a href="notes.html">ملاحظات على الترجمات</a><a href="sources.html">المصادر</a>
     </nav>
   </div>
 </footer>
@@ -777,7 +845,7 @@ document.getElementById("hBooks").innerHTML=BKGRP.map(([t,a,z,img])=>{const bs=C
 
 /* ---------- اسأل Google AI (assets/askai.js بيتحمّل أول ضغطة بس) ---------- */
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-askai]");if(!b||window.AskAI)return;e.preventDefault();
-  const s=document.createElement("script");s.src="assets/askai.js?v=2";s.onload=()=>window.AskAI&&window.AskAI.fromEl(b);document.body.appendChild(s)});
+  const s=document.createElement("script");s.src="assets/askai.js?v=3";s.onload=()=>window.AskAI&&window.AskAI.fromEl(b);document.body.appendChild(s)});
 
 /* ---------- تثبيت التطبيق ---------- */
 const standalone=()=>matchMedia("(display-mode: standalone)").matches||matchMedia("(display-mode: window-controls-overlay)").matches||navigator.standalone===true;

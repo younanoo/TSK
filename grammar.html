@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=2ee09c97">
+<link rel="stylesheet" href="assets/style.css?v=e3549afa">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -63,6 +63,7 @@ html,body{overflow-x:clip;padding:0}
 <div class="g">
 <h1><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21h14" /> <path d="M6 18h2" /> <path d="M7 18v3" /> <path d="M9 11l3 3l6 -6l-3 -3z" /> <path d="M10.5 12.5l-1.5 1.5" /> <path d="M17 3l3 3" /> <path d="M12 21a6 6 0 0 0 3.715 -10.712" /></svg> بحث نحوي باللغات الأصلية</h1>
 <p class="sub">ابحث في النص العبري واليوناني بحسب القواعد: نوع الكلمة، الزمن، الصيغة، الشخص، العدد… في أي سفر، أو في العهد القديم كله (عبري) أو العهد الجديد كله (يوناني). التحليل النحوي من Berean Standard Bible.</p>
+<div class="howto"><b>ما وظيفة هذه الصفحة؟</b><p>تفيدك هذه الصفحة إن أردت أن تعرف أين ترد صيغة نحوية معيّنة في اللغة الأصلية، مثل فعل في الزمن التام أو اسم في حالة المفعول. اختر نوع الكلمة وخصائصها من القوائم، ثم السفر أو العهد، فتظهر الكلمات العبرية أو اليونانية المطابقة مع آياتها.</p></div>
 <div class="gf"><div class="gr" id="gr"></div>
 <div class="gb"><button id="go"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg> بحث</button><button id="rs" style="background:none">مسح</button><a href="index.html">← المكتبة</a></div></div>
 <div class="gm" id="gm"></div><div class="lem" id="lem"></div><div id="res"></div>
@@ -75,7 +76,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const AR={"Gen": "التكوين", "Exo": "الخروج", "Lev": "اللاويين", "Num": "العدد", "Deu": "التثنية", "Jos": "يشوع", "Jdg": "القضاة", "Rut": "راعوث", "1Sa": "صموئيل الأول", "2Sa": "صموئيل الثاني", "1Ki": "الملوك الأول", "2Ki": "الملوك الثاني", "1Ch": "أخبار الأيام الأول", "2Ch": "أخبار الأيام الثاني", "Ezr": "عزرا", "Neh": "نحميا", "Est": "أستير", "Job": "أيوب", "Psa": "المزامير", "Pro": "الأمثال", "Ecc": "الجامعة", "Son": "نشيد الأنشاد", "Isa": "إشعياء", "Jer": "إرميا", "Lam": "مراثي إرميا", "Eze": "حزقيال", "Dan": "دانيال", "Hos": "هوشع", "Joe": "يوئيل", "Amo": "عاموس", "Oba": "عوبديا", "Jon": "يونان", "Mic": "ميخا", "Nah": "ناحوم", "Hab": "حبقوق", "Zep": "صفنيا", "Hag": "حجي", "Zec": "زكريا", "Mal": "ملاخي", "Mat": "متى", "Mar": "مرقس", "Luk": "لوقا", "Joh": "يوحنا", "Act": "أعمال الرسل", "Rom": "رومية", "1Co": "كورنثوس الأولى", "2Co": "كورنثوس الثانية", "Gal": "غلاطية", "Eph": "أفسس", "Phi": "فيلبي", "Col": "كولوسي", "1Th": "تسالونيكي الأولى", "2Th": "تسالونيكي الثانية", "1Ti": "تيموثاوس الأولى", "2Ti": "تيموثاوس الثانية", "Tit": "تيطس", "Phm": "فليمون", "Heb": "العبرانيين", "Jam": "يعقوب", "1Pe": "بطرس الأولى", "2Pe": "بطرس الثانية", "1Jo": "يوحنا الأولى", "2Jo": "يوحنا الثانية", "3Jo": "يوحنا الثالثة", "Jud": "يهوذا", "Rev": "الرؤيا"};
 const ORD=Object.keys(AR),OT=ORD.slice(0,39),NT=ORD.slice(39);
 const BOOKS={};ORD.forEach((a,i)=>BOOKS[a]={ar:AR[a],l:i<39?"H":"G"});
-const LANG=b=>b==="OT"?"H":b==="NT"?"G":BOOKS[b].l;
+const LANG=b=>b==="OT"?"H":b==="NT"?"G":b===""?"H":BOOKS[b].l;
 /* ---- تفكيك رموز التحليل ---- */
 const HPOS={V:"فعل",N:"اسم","N-proper":"اسم علم",Adj:"صفة",Pro:"ضمير",Prep:"حرف جر",Conj:"حرف عطف",Art:"أداة تعريف",Adv:"ظرف",DirObjM:"علامة المفعول",Interrog:"استفهام",Number:"عدد",Interjection:"تعجب",Prtcl:"أداة"};
 const GPOS={V:"فعل",N:"اسم",Adj:"صفة",PPro:"ضمير شخصي",Art:"أداة تعريف",Prep:"حرف جر",Conj:"حرف عطف",Adv:"ظرف",DPro:"ضمير إشارة",RelPro:"ضمير موصول",IPro:"ضمير استفهام",RefPro:"ضمير انعكاسي",Prtcl:"أداة",IntPrtcl:"أداة استفهام",I:"تعجب (Interjection)",Indec:"غير متصرف",Heb:"كلمة عبرية",Aram:"كلمة آرامية",Intj:"تعجب",PPro:"ضمير شخصي",RecPro:"ضمير تبادلي",CPro:"ضمير مترابط",Num:"عدد"};
@@ -122,10 +123,10 @@ const OPT={
 
 const gr=$("#gr");
 function build(){
-  const b=$("#bk")?$("#bk").value:"Jon";const L=LANG(b);
+  const b=$("#bk")?$("#bk").value:"";const L=LANG(b);
   const vals={};gr.querySelectorAll("select[data-k]").forEach(s=>vals[s.dataset.k]=s.value);
   const wq=$("#wq")?$("#wq").value:"";
-  gr.innerHTML='<label>السفر<select id="bk"><optgroup label="مجموعات"><option value="OT" '+(b==="OT"?"selected":"")+'>كل العهد القديم (عبري)</option><option value="NT" '+(b==="NT"?"selected":"")+'>كل العهد الجديد (يوناني)</option></optgroup><optgroup label="العهد القديم (عبري)">'+OT.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+AR[x]+'</option>').join("")+'</optgroup><optgroup label="العهد الجديد (يوناني)">'+NT.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+AR[x]+'</option>').join("")+'</optgroup></select></label>'+
+  gr.innerHTML='<label>السفر أو العهد<select id="bk"><option value="" '+(b===""?"selected":"")+'>— اختر السفر أو العهد —</option><optgroup label="مجموعات"><option value="OT" '+(b==="OT"?"selected":"")+'>كل العهد القديم (عبري)</option><option value="NT" '+(b==="NT"?"selected":"")+'>كل العهد الجديد (يوناني)</option></optgroup><optgroup label="العهد القديم (عبري)">'+OT.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+AR[x]+'</option>').join("")+'</optgroup><optgroup label="العهد الجديد (يوناني)">'+NT.map(x=>'<option value="'+x+'" '+(x===b?"selected":"")+'>'+AR[x]+'</option>').join("")+'</optgroup></select></label>'+
    Object.entries(OPT[L]).map(([k,[lab,os]])=>'<label>'+lab+'<select data-k="'+k+'"><option value="">— أيّ —</option>'+os.map(([v,t])=>'<option value="'+v+'">'+t+'</option>').join("")+'</select></label>').join("")+
    '<label>كلمة / رقم سترونج<input id="wq" placeholder="H7225 أو G26 أو الكلمة" value="'+esc(wq)+'"></label>';
   $("#bk").addEventListener("change",()=>{build()});
@@ -135,7 +136,9 @@ $("#rs").addEventListener("click",()=>{$("#wq").value="";gr.querySelectorAll("se
 const DATA={};
 function load(ab,cb){if(DATA[ab])return cb();const s=document.createElement("script");s.src="assets/bsb_"+ab+".js";s.onerror=()=>{DATA[ab]={};cb()};s.onload=()=>{DATA[ab]=window.BSBI[ab]||{};cb()};document.head.appendChild(s)}
 function run(){
-  const b=$("#bk").value,ab=b==="OT"?OT:b==="NT"?NT:[b];
+  const b=$("#bk").value;
+  if(!b){$("#gm").textContent="برجاء اختيار السفر أو العهد أولًا";$("#res").innerHTML="";$("#lem").innerHTML="";$("#bk").focus();return}
+  const ab=b==="OT"?OT:b==="NT"?NT:[b];
   const flt={};gr.querySelectorAll("select[data-k]").forEach(s=>{if(s.value)flt[s.dataset.k]=s.value});
   const wq=$("#wq").value.trim();
   if(!Object.keys(flt).length&&!wq){$("#gm").textContent="اختر شرطًا واحدًا على الأقل (أو اكتب كلمة / رقم سترونج) ثم اضغط بحث";$("#res").innerHTML="";$("#lem").innerHTML="";return}

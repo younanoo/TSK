@@ -65,19 +65,19 @@ function open(w){
   dlg.innerHTML=`<div class="ah"><div class="aw"><div class="ao ${W.num[0]==="H"?"he":""}" dir="${W.num[0]==="H"?"rtl":"ltr"}" id="askaiT">${esc(W.o||W.num)}</div>
      <div class="at">${W.tr?esc(W.tr)+" · ":""}<b>${esc(W.num)}</b>${W.ref?` · ${esc(W.ref)}`:""}${W.words?` · «${esc(W.words)}»`:""}</div></div>
      <button class="ax" type="button" aria-label="إغلاق"><svg class="aic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg></button></div>
-   <div class="ab"><p class="al">عايز تعرف إيه؟</p>
+   <div class="ab"><p class="al">ماذا تريد أن تعرف؟</p>
      <div class="aq" role="group" aria-label="نوع السؤال">${L.map(([k,t])=>`<button type="button" data-k="${k}" aria-pressed="${k===pick}">${t}</button>`).join("")}</div>
-     <p class="al">السؤال (تقدر تعدّله أو تضيف عليه):</p>
+     <p class="al">السؤال (يمكنك تعديله أو الإضافة إليه):</p>
      <textarea id="askaiQ" dir="rtl"></textarea>
      <div class="af"><button class="go" type="button">${SPARK} اسأل Google AI</button><button class="cp" type="button">نسخ السؤال</button></div>
-     <p class="an">هيفتح وضع الذكاء الاصطناعي من Google في نافذة جانبية. الإجابة من Google وليست من الموقع، فراجعها على الكتاب المقدس نفسه.</p></div>`;
+     <p class="an">سيُفتح وضع الذكاء الاصطناعي من Google في نافذة جانبية. الإجابة من Google وليست من الموقع، فراجعها على الكتاب المقدس نفسه.</p></div>`;
   const ta=dlg.querySelector("#askaiQ");
   const fill=k=>{ta.value=(L.find(x=>x[0]===k)||L[0])[2]};fill(pick);
   dlg.querySelector(".ax").onclick=()=>dlg.close();
   dlg.querySelectorAll(".aq button").forEach(b=>b.onclick=()=>{dlg.querySelectorAll(".aq button").forEach(x=>x.setAttribute("aria-pressed",x===b));fill(b.dataset.k);set("aiq",b.dataset.k)});
   dlg.querySelector(".go").onclick=()=>{send(ta.value.trim());};
   const cp=dlg.querySelector(".cp");
-  cp.onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);cp.textContent="اتنسخ ✓"}catch(e){ta.select();document.execCommand&&document.execCommand("copy");cp.textContent="اتنسخ ✓"}setTimeout(()=>cp.textContent="نسخ السؤال",1600)};
+  cp.onclick=async()=>{try{await navigator.clipboard.writeText(ta.value);cp.textContent="تم النسخ ✓"}catch(e){ta.select();document.execCommand&&document.execCommand("copy");cp.textContent="تم النسخ ✓"}setTimeout(()=>cp.textContent="نسخ السؤال",1600)};
   dlg.open||dlg.showModal();
   dlg.querySelector(".go").focus();
 }
