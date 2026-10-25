@@ -330,7 +330,7 @@ function olLoad(abbr){if(!OLB.includes(abbr))return null;if(window.OL&&window.OL
 const olIn=(r,c,v)=>(c>r[3]||(c===r[3]&&v>=r[4]))&&(c<r[5]||(c===r[5]&&v<=r[6]));
 const olFmt=r=>r[3]===r[5]?`${n(r[3])}: ${n(r[4])}–${n(r[6])}`:`${n(r[3])}: ${n(r[4])} – ${n(r[5])}: ${n(r[6])}`;
 function olRow(b,r,c){const v=r[3]<c?1:r[4];return `<a class="olr l${r[0]}" href="#/${b.abbr}/${c}:${v}" data-go="${b.id}.${c}:${v}"><span class="ort">${esc(r[2]||r[1])}</span><span class="ore ltr">${esc(r[1])}</span><span class="orn">${olFmt(r)}</span></a>`}
-const NOTES=["Jud","2Jo","3Jo","Rev"];
+const NOTES=["Jud","2Jo","3Jo","Rev","1Jo","2Pe","1Pe","Heb","Mat","Phm","Rom","Tit","2Ti","1Ti","1Co","2Th","Act","Luk","Joh","Mar","Phi","Col","2Co","Gal"];
 function notesLink(b){return NOTES.includes(b.abbr)?`<a class="notelink" href="notes.html?b=${b.abbr}" target="tsknotes">${ic("note")} ملاحظات على الترجمات في هذا السفر ${ic("external-link")}</a>`:""}
 function olBook(b){const O=olLoad(b.abbr);if(!O)return "";
   return `<details class="olbox" open><summary>${ic("bookmarks")} مخطط السفر</summary>${O.map(r=>olRow(b,r,r[3])).join("")}<a class="olall" href="outline.html?b=${b.abbr}" target="tskoutline">صفحة المخطط كاملة ${ic("external-link")}</a></details>`}
