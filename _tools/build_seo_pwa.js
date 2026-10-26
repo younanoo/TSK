@@ -232,7 +232,7 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بنص كتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "ترجمتا فاندايك وKJV", desc: "نصوص الترجمات الإضافية لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) },
     { id: "il", title: "كلمة بكلمة والبحث النحوي", desc: "بيانات Berean بالعبرية واليونانية مع التحليل النحوي.", test: p => /^assets\/bsb_/.test(p) },
