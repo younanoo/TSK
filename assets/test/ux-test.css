@@ -36,7 +36,7 @@
   .stickbar .menu-btn{width:44px;height:44px;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center;flex-shrink:0}
   .uxt-pick{flex:1 1 0!important;min-width:84px}
   .uxt-aa{padding:0 10px}
-  .uxt-aa small{max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .uxt-aa small{max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .stickbar .nav .lb{display:none!important}
   .stickbar .nav button,.stickbar .nav a.xnav{padding:0;width:44px;font-size:18px}
   .uxt-pick{flex:1 1 auto;padding:0 10px}
@@ -92,7 +92,7 @@
 .olbox summary .uxt-olhint{font:500 13px var(--ui);color:var(--muted);margin-inline-start:auto}
 @media (max-width:880px){
   /* أدوات العرض تنتقل لزرار Aa */
-  #main>.chlink,#main>.trbar,#main>.trgrp.seg{display:none!important}
+  #main>.chlink,#main>.trbar,#main>.trgrp.seg,#main>.ilopts{display:none!important}
   /* في صفحة العدد زرار "عرض الأصحاح كاملًا" يفضل ظاهر */
   #main>.chlink.uxt-keep{display:block!important}
   /* المخطط الإنجليزي يختفي على الموبايل (#13) */
@@ -143,3 +143,20 @@ a.olall{display:inline-flex;align-items:center;gap:4px;min-height:44px}
   #main>figure.chhero{max-height:240px;overflow:hidden}
   #main>figure.chhero img{height:240px;width:100%;object-fit:cover;object-position:center 40%}
 }
+
+/* ---------- Interlinear: فتح العدد في صفحة العدد ---------- */
+.ilv .ilvn{min-width:44px;height:44px;font-size:15px;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.uxt-ilgo{display:inline-flex;align-items:center;min-height:40px;margin-top:10px;padding:0 14px;border-radius:999px;
+  border:1px solid var(--gold);background:transparent;color:var(--gold);font:600 14px var(--ui);cursor:pointer}
+.uxt-ilgo:hover{background:var(--gold);color:var(--on-gold)}
+/* الـ sheet في وضع Interlinear: خيارات المصدر والاتجاه تبقى مرتبة */
+.uxt-sheet .ilopts{display:flex;flex-direction:column;gap:10px;width:100%}
+.uxt-sheet .chlink>*{max-width:100%}
+
+/* ---------- فتح العدد من العرض العادي: علامة واضحة تحت كل عدد ---------- */
+.cv .cvm{display:inline-flex!important;align-items:center;gap:4px;justify-self:start;align-self:end;
+  margin-top:8px;padding:4px 12px;min-height:32px;border-radius:999px;border:1px solid var(--gold);
+  color:var(--gold);font:600 13px var(--ui)!important;white-space:nowrap}
+.cv .cvm::after{content:"←";font-size:14px}
+.cv:hover .cvm{background:var(--gold);color:var(--on-gold)}
+@media (max-width:880px){.cv .cvm{grid-column:2}}

@@ -99,10 +99,10 @@
   function openAa(){
     openSheet("aa","إعدادات العرض",body=>{
       const sec=(title,nodes)=>{if(!nodes.length)return;const s=el("div",{class:"uxt-sec"},`<h4>${title}</h4>`);nodes.forEach(x=>s.append(x));body.append(s)};
-      const tr=$("#main>.trbar"), seg=$("#main>.trgrp.seg"), cl=$("#main>.chlink:not(.uxt-keep)");
+      const tr=$("#main>.trbar"), seg=$("#main>.trgrp.seg"), cl=$("#main>.chlink:not(.uxt-keep)"), io=$("#main>.ilopts");
       sec("الترجمة وحجم الخط",[tr].filter(Boolean));
-      sec("طريقة العرض",[seg,cl].filter(Boolean));
-      movedForSheet=[tr,seg,cl].filter(Boolean);
+      sec("طريقة العرض",[seg,cl,io].filter(Boolean));
+      movedForSheet=[tr,seg,cl,io].filter(Boolean);
       const dark = (document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark";
       const th=el("div",{class:"uxt-sec"},`<h4>المظهر</h4><div class="uxt-row"><span>الوضع الداكن</span><button class="uxt-sw" id="uxtDark">${dark?"إيقاف":"تشغيل"}</button></div>`);
       body.append(th);
@@ -164,9 +164,12 @@
       const pick=el("button",{class:"uxt-pick",type:"button","aria-haspopup":"dialog","aria-label":"اختر السفر والأصحاح والعدد"},`<span>${curLabel()}</span><span class="chev">▾</span>`);
       pick.addEventListener("click",()=>openPicker(S.view==="verse"?"v":"c"));
       const sp=$(".sp",sb); sb.insertBefore(pick,sp);
-      if($("#main>.trbar, #main>.trgrp.seg")){
+      /* في وضع Interlinear مفيش .trbar — الأدوات كلها جوه .chlink، فلازم Aa يظهر برضه */
+      const inter=!!$("#main>.ilist");
+      if($("#main>.trbar, #main>.trgrp.seg, #main>.ilopts")||(S.view!=="verse"&&$("#main>.chlink"))){
         const on=$("#main>.trbar .trb.on");
-        const aa=el("button",{class:"uxt-aa",type:"button","aria-haspopup":"dialog","aria-label":"إعدادات العرض"},`Aa${on?` <small>${on.textContent.trim()}</small>`:""}`);
+        const lab=inter?"Interlinear":(on?on.textContent.trim():"");
+        const aa=el("button",{class:"uxt-aa",type:"button","aria-haspopup":"dialog","aria-label":"إعدادات العرض"},`Aa${lab?` <small>${lab}</small>`:""}`);
         aa.addEventListener("click",openAa); sb.insertBefore(aa,sp.nextSibling);
       }
       const th=el("button",{class:"uxt-theme",type:"button",title:"الوضع الفاتح / الداكن","aria-label":"الوضع الفاتح / الداكن"},SVG_THEME);
@@ -192,6 +195,14 @@
     const hero=$("#main>figure.chhero");
     if(hero&&isMobile()){const foot=$("#main>.chfoot")||null;const list=$("#main>.cvlist");
       (foot?foot.before(hero):list&&list.after(hero)); hero.classList.add("uxt-moved");}
+
+    /* Interlinear: زرار واضح تحت كل عدد يفتحه في صفحة العدد (الشواهد + سترونج) */
+    $$("#main .ilist .ilv").forEach(v=>{
+      const nb=$("button.ilvn[data-go]",v), col=$(".ilcol",v);
+      if(!nb||!col||$(".uxt-ilgo",v)) return;
+      nb.setAttribute("aria-label",`افتح العدد ${nb.textContent.trim()} بالشواهد`);
+      col.append(el("button",{class:"uxt-ilgo",type:"button","data-go":nb.dataset.go},`افتح العدد ${nb.textContent.trim()} بالشواهد ←`));
+    });
 
     /* #4 صفوف الشواهد */
     $$("#main .r").forEach(r=>{if(r.querySelector(".self"))r.classList.add("uxt-tap")});
