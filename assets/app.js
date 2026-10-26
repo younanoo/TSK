@@ -4,8 +4,10 @@ const ic=(n,x)=>`<svg class="tic${x?" "+x:""}" viewBox="0 0 24 24" fill="none" s
 const LIB = window.LIB;
 /* تحميل الملفات الكبيرة عند الحاجة فقط */
 const LOADED={};
+const JSFAIL={}; /* الملفات اللي فشل تحميلها (مثلًا offline قبل التنزيل) */
+function retryJS(src){if(JSFAIL[src]){delete LOADED[src];delete JSFAIL[src]}}
 function loadJS(src,cb){if(LOADED[src]===true){cb&&cb();return}if(LOADED[src]){LOADED[src].push(cb);return}
-  LOADED[src]=[cb];const s=document.createElement("script");s.src=src;s.onload=s.onerror=()=>{const q=LOADED[src];LOADED[src]=true;q.forEach(f=>f&&f())};document.body.appendChild(s)}
+  LOADED[src]=[cb];const s=document.createElement("script");s.src=src;s.onload=s.onerror=ev=>{if(ev&&ev.type==="error")JSFAIL[src]=true;const q=LOADED[src];LOADED[src]=true;q.forEach(f=>f&&f())};document.body.appendChild(s)}
 /* نصوص الشواهد: ملف صغير لكل سفر ولكل ترجمة (assets/tx/alab_Mat.js …) يُحمَّل فقط حين يُعرض شاهد من ذلك السفر */
 window.TXB=window.TXB||{};
 function txGet(k,bk,c,v){const t=window.TXB[k+"/"+bk];return t?(t[c+":"+v]||""):undefined}
@@ -20,9 +22,10 @@ function trData(){const ab=book().abbr,t=window.TR&&window.TR[ab];if(t)return t;
   const src=`assets/tr_${ab}.js`;if(LOADED[src]===undefined)loadJS(src,()=>render());return null}
 let STRONG = window.STRONG || {};
 /* يعيد true إن كان قاموس سترونج محمّلًا، وإلا يبدأ تحميله ثم يستدعي cb */
-function needStrong(cb){if(window.STRONG&&Object.keys(window.STRONG).length){STRONG=window.STRONG;return true}
-  loadJS("assets/strong.js",()=>{STRONG=window.STRONG||{};cb&&cb()});return false}
-function needSidx(cb){if(window.SIDX)return true;loadJS("assets/sidx.js",cb);return false}
+function needStrong(cb,fail){if(window.STRONG&&Object.keys(window.STRONG).length){STRONG=window.STRONG;return true}
+  loadJS("assets/strong.js",()=>setTimeout(()=>{STRONG=window.STRONG||{};if(Object.keys(STRONG).length)cb&&cb();else fail&&fail()}));return false}
+function needSidx(cb,fail){if(window.SIDX)return true;loadJS("assets/sidx.js",()=>setTimeout(()=>{if(window.SIDX)cb&&cb();else fail&&fail()}));return false}
+const loadFail=(what,attr)=>`<div class="empty loadfail">تعذّر تحميل ${what} — غالبًا الجهاز غير متصل بالإنترنت، وهذا الجزء لم يُنزَّل للاستخدام دون إنترنت بعد. <button type="button" class="trb" ${attr}>إعادة المحاولة</button></div>`;
 const CAT = window.CATALOG;
 const CAT_ABBR = {}; CAT.forEach((c,i)=>{c.i=i;CAT_ABBR[c.abbr]=c});
 const pageOf = (abbr,hash)=>`${abbr}.html${hash?"#"+hash:""}`;
@@ -219,7 +222,7 @@ function dictInner(){
 }
 function dictSection(d){ return d.arS?`<section class="dict" id="dict">${dictInner()}</section>`:""; }
 function showEntry(num,{fromRef=false,scroll=true}={}){
-  if(!needStrong(()=>showEntry(num,{fromRef,scroll}))){const bx=$("#dict");if(bx)bx.innerHTML=`<div class="empty">جارٍ تحميل قاموس سترونج…</div>`;return}
+  if(!needStrong(()=>showEntry(num,{fromRef,scroll}),()=>{const bx=$("#dict");if(bx)bx.innerHTML=loadFail("قاموس سترونج",`data-jsretry="assets/strong.js" data-dn="${num}"`)})){const bx=$("#dict");if(bx)bx.innerHTML=`<div class="empty loading">جارٍ تحميل قاموس سترونج…</div>`;return}
   if(fromRef && DICT.cur) DICT.trail.push(DICT.cur); else if(!fromRef) DICT.trail=[];
   DICT.cur=num; if(!DICT.hist.includes(num)) DICT.hist.push(num);
   const box=$("#dict"); if(!box) return;
@@ -431,7 +434,7 @@ function refMatch(r,nq){
   return norm(r.l).includes(nq)||norm(R.name+" "+R.num).includes(nq)||r.vs.some(([vn,t])=>t!=null&&norm(t).includes(nq));
 }
 function viewSearch(){
-  if(!needSidx(()=>{if(S.view==="search")render()})){$("#main").innerHTML=crumbs("جارٍ التحميل…","");return}
+  if(!needSidx(()=>{if(S.view==="search")render()},()=>{if(S.view==="search")$("#main").innerHTML=crumbs("تعذّر التحميل","")+loadFail("فهرس البحث",`data-jsretry="assets/sidx.js"`)})){$("#main").innerHTML=crumbs("جارٍ التحميل…","");return}
   const sm=S.q.trim().toUpperCase().match(/^([GH])\s*(\d+)$/);
   if(sm) return viewStrongSearch(sm[1]+sm[2]);
   const q=S.q, nq=norm(q), res=[];
@@ -458,7 +461,7 @@ function viewSearch(){
 function scopeBar(){return `<div class="scope"><button data-scope="all" class="${S.scope==="all"?"on":""}">كل الأسفار</button><button data-scope="book" class="${S.scope==="book"?"on":""}">${bname(book())} فقط</button></div>`}
 function xverseItem(o,q){const x=o.x;return `<div class="item"><div class="from"><span>نص العدد · ${AR[x[0]]}</span><a href="${pageOf(x[0],"/"+x[0]+"/"+x[1]+":"+x[2])}">افتح ${AR[x[0]]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${hl(o.t,q)}</div></div></div></div>`}
 function viewStrongSearch(num){
-  if(!needStrong(()=>render())){$("#main").innerHTML=crumbs("جارٍ تحميل قاموس سترونج…","");return}
+  if(!needStrong(()=>render(),()=>{$("#main").innerHTML=crumbs("تعذّر التحميل","")+loadFail("قاموس سترونج",`data-jsretry="assets/strong.js"`)})){$("#main").innerHTML=crumbs("جارٍ تحميل قاموس سترونج…","");return}
   const all=(window.SIDX||[]).filter(x=>x[4]&&(S.scope==="all"||x[0]===book().abbr)).map(x=>({x,ws:x[4].filter(a=>a[1].includes(num)).map(a=>a[0])})).filter(o=>o.ws.length);
   const has=Object.keys(STRONG).length>0, shown=all.slice(0,S.limit);
   const per={}; all.forEach(o=>{per[o.x[0]]=(per[o.x[0]]||0)+1});
@@ -504,6 +507,7 @@ function fromHash(){
 window.addEventListener("popstate",fromHash);
 
 document.addEventListener("click",e=>{
+  const jr=e.target.closest("[data-jsretry]"); if(jr){retryJS(jr.dataset.jsretry); if(!jr.dataset.dn){render();return}}
   const sr=e.target.closest(".sref"); if(sr){ if($("#dict")) showEntry(sr.dataset.sn,{fromRef:true}); return }
   if(e.target.closest("#dback")){const p=DICT.trail.pop(); DICT.cur=p; $("#dict").innerHTML=dictInner(); return}
   const dn=e.target.closest("[data-dn]"); if(dn){showEntry(dn.dataset.dn,{scroll:false});return}
@@ -563,3 +567,238 @@ document.addEventListener("keydown",e=>{
 (function(){const o=store.get("shut",{});document.querySelectorAll("#side [data-sec]").forEach(s=>{if(o[s.dataset.sec])s.classList.add("shut")});
   if(store.get("sideOff",false)&&innerWidth>880)document.querySelector(".app").classList.add("collapsed");})();
 fromHash();
+
+/* ==== UX LAYER START (reading pages) ==== */
+/* =========================================================
+   UX LAYER — طبقة تحسينات تجربة الاستخدام لصفحات القراءة.
+   بيشتغل فوق الـ render الحالي من غير ما يغيّر app.js:
+   بعد كل render بيعدّل الـ DOM حسب توصيات المراجعة.
+   ========================================================= */
+(function(){
+  "use strict";
+  const MQ = matchMedia("(max-width:880px)");
+  const isMobile = () => MQ.matches;
+  const main = document.getElementById("main");
+  if(!main) return;
+  const $ = (s,r=document)=>r.querySelector(s);
+  const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+  const el = (tag,attrs={},html="")=>{const e=document.createElement(tag);for(const k in attrs)e.setAttribute(k,attrs[k]);e.innerHTML=html;return e};
+  const SVG_THEME = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/></svg>`;
+
+  document.documentElement.classList.add("ux-on");
+
+  /* ---------- Sheet عامة (bottom sheet على الموبايل / نافذة على الديسكتوب) ---------- */
+  const scrim = el("div",{class:"uxt-scrim"});
+  const sheet = el("div",{class:"uxt-sheet",role:"dialog","aria-modal":"true","aria-labelledby":"uxtSheetT"});
+  document.body.append(scrim,sheet);
+  let sheetKind = null, lastFocus = null;
+  function openSheet(kind,title,build){
+    lastFocus = document.activeElement;
+    sheetKind = kind;
+    sheet.innerHTML = `<div class="grab"></div><div class="shd"><h3 id="uxtSheetT">${title}</h3><button class="uxt-x" aria-label="إغلاق">✕</button></div><div class="sbd"></div>`;
+    build($(".sbd",sheet));
+    scrim.classList.add("on"); sheet.classList.add("on");
+    document.documentElement.style.overflow="hidden";
+    setTimeout(()=>{const f=$(".uxt-find",sheet)||$(".uxt-x",sheet);f&&f.focus()},60);
+  }
+  function closeSheet(){
+    if(!sheetKind) return;
+    sheetKind=null; scrim.classList.remove("on"); sheet.classList.remove("on");
+    document.documentElement.style.overflow="";
+    closeDict();
+    if(lastFocus&&document.contains(lastFocus)) lastFocus.focus();
+  }
+  scrim.addEventListener("click",()=>{closeSheet();closeDict()});
+  sheet.addEventListener("click",e=>{if(e.target.closest(".uxt-x"))closeSheet()});
+  addEventListener("keydown",e=>{if(e.key==="Escape"){closeSheet();closeDict()}});
+
+  /* ---------- #2 الـ picker: سفر ← أصحاح ← عدد ---------- */
+  function curLabel(){
+    const b=book(); if(!b) return "اختر";
+    if(S.view==="verse") return `${AR[b.abbr]} ${n(S.c)}: ${n(S.v)}`;
+    if(S.view==="chapter") return `${AR[b.abbr]} ${n(S.c)}`;
+    return AR[b.abbr];
+  }
+  function openPicker(tab){
+    const b=book();
+    let pickAbbr=b.abbr;
+    openSheet("pick","اختر المكان",body=>{
+      body.innerHTML=`<div class="uxt-tabs" role="tablist">
+        <button data-t="b" role="tab">السفر</button><button data-t="c" role="tab">الأصحاح</button><button data-t="v" role="tab">العدد</button></div><div class="uxt-pbody"></div>`;
+      const pb=$(".uxt-pbody",body);
+      const setTab=t=>{
+        $$(".uxt-tabs button",body).forEach(x=>{x.classList.toggle("on",x.dataset.t===t);x.setAttribute("aria-selected",x.dataset.t===t)});
+        const vBtn=$('.uxt-tabs [data-t="v"]',body); vBtn.disabled = pickAbbr!==b.abbr; vBtn.style.opacity = vBtn.disabled?.4:1;
+        if(t==="b"){
+          pb.innerHTML=`<input class="uxt-find" type="search" placeholder="اكتب اسم السفر…" aria-label="بحث عن سفر">`+
+            BKGRP.map(g=>`<div class="uxt-grp">${g[0]}</div><div class="uxt-grid">${CAT.slice(g[1]-1,g[2]).map(x=>
+              `<button data-ab="${x.abbr}" class="${x.abbr===pickAbbr?"on":""}" data-nm="${norm(AR[x.abbr])}">${AR[x.abbr]}</button>`).join("")}</div>`).join("");
+          const inp=$(".uxt-find",pb);
+          inp.addEventListener("input",()=>{const q=norm(inp.value.trim());
+            $$(".uxt-grid button",pb).forEach(x=>x.hidden=q&&!x.dataset.nm.includes(q));
+            $$(".uxt-grp",pb).forEach(h=>{h.hidden=!$$("button",h.nextElementSibling).some(x=>!x.hidden);h.nextElementSibling.hidden=h.hidden})});
+          setTimeout(()=>inp.focus(),30);
+        }else if(t==="c"){
+          const cat=CAT.find(x=>x.abbr===pickAbbr);
+          const list = pickAbbr===b.abbr ? b.chapters : Array.from({length:parseInt(cat.last)},(_,i)=>i+1);
+          pb.innerHTML=`<div class="uxt-grp">${AR[pickAbbr]} — الأصحاحات</div><div class="uxt-grid num">${list.map(c=>
+            `<button data-c="${c}" class="${pickAbbr===b.abbr&&c===S.c?"on":""}">${n(c)}</button>`).join("")}</div>`;
+        }else{
+          pb.innerHTML=`<div class="uxt-grp">${AR[b.abbr]} ${n(S.c)} — الأعداد</div><div class="uxt-grid num">${inCh(b,S.c).map(d=>
+            `<button data-v="${d.v}" class="${S.view==="verse"&&d.v===S.v?"on":""}">${n(d.v)}</button>`).join("")}</div>`;
+        }
+      };
+      body.addEventListener("click",e=>{
+        const t=e.target.closest(".uxt-tabs button"); if(t&&!t.disabled){setTab(t.dataset.t);return}
+        const ab=e.target.closest("[data-ab]"); if(ab){pickAbbr=ab.dataset.ab;setTab("c");return}
+        const c=e.target.closest("[data-c]");
+        if(c){const cn=+c.dataset.c;closeSheet();
+          if(pickAbbr===b.abbr) goChapter(b.id,cn); else location.href=pageOf(pickAbbr,"/"+pickAbbr+"/ch/"+cn);return}
+        const v=e.target.closest("[data-v]"); if(v){closeSheet();go(b.id,S.c,+v.dataset.v)}
+      });
+      setTab(tab||"c");
+    });
+  }
+
+  /* ---------- #1 زرار Aa: إعدادات العرض ---------- */
+  let movedForSheet = [];
+  function openAa(){
+    openSheet("aa","إعدادات العرض",body=>{
+      const sec=(title,nodes)=>{if(!nodes.length)return;const s=el("div",{class:"uxt-sec"},`<h4>${title}</h4>`);nodes.forEach(x=>s.append(x));body.append(s)};
+      const tr=$("#main>.trbar"), seg=$("#main>.trgrp.seg"), cl=$("#main>.chlink:not(.uxt-keep)"), io=$("#main>.ilopts");
+      sec("الترجمة وحجم الخط",[tr].filter(Boolean));
+      sec("طريقة العرض",[seg,cl,io].filter(Boolean));
+      movedForSheet=[tr,seg,cl,io].filter(Boolean);
+      const dark = (document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark";
+      const th=el("div",{class:"uxt-sec"},`<h4>المظهر</h4><div class="uxt-row"><span>الوضع الداكن</span><button class="uxt-sw" id="uxtDark">${dark?"إيقاف":"تشغيل"}</button></div>`);
+      body.append(th);
+      $("#uxtDark",th).addEventListener("click",ev=>{$("#themeBtn").click();const d=document.documentElement.dataset.theme==="dark";ev.target.textContent=d?"إيقاف":"تشغيل"});
+    });
+  }
+  /* لما الـ sheet يتقفل، الأدوات اللي اتنقلت ترجع مكانها (لو الصفحة لسه نفس الـ render) */
+  const _close = closeSheet;
+  closeSheet = function(){
+    if(sheetKind==="aa"){ const anchor=$("#main .cvlist, #main .verse-card, #main .ilist"); movedForSheet.forEach(x=>{if(anchor&&!main.contains(x)) anchor.before(x)}); movedForSheet=[] }
+    _close();
+  };
+
+  /* ---------- #4 قاموس سترونج كـ bottom sheet ---------- */
+  function closeDict(){
+    const d=$("#dict"); if(!d||!d.classList.contains("uxt-dsheet")) return;
+    try{ DICT.cur=null; DICT.trail=[]; d.innerHTML=dictInner(); }catch(e){}
+    d.classList.remove("uxt-dsheet"); if(!sheetKind) scrim.classList.remove("on");
+  }
+  function syncDict(){
+    const d=$("#dict"); if(!d) return;
+    const filled=!d.querySelector(":scope > .empty:not(.loading):not(.loadfail)");
+    if(isMobile()&&filled){
+      if(!d.classList.contains("uxt-dsheet")){d.classList.add("uxt-dsheet");scrim.classList.add("on")}
+      if(!d.querySelector(".uxt-dclose")) d.prepend(el("button",{class:"uxt-dclose","aria-label":"إغلاق القاموس"},"✕"));
+    }else if(d.classList.contains("uxt-dsheet")&&!filled){d.classList.remove("uxt-dsheet");if(!sheetKind)scrim.classList.remove("on")}
+  }
+  document.addEventListener("click",e=>{if(e.target.closest(".uxt-dclose")){e.stopPropagation();closeDict()}},true);
+
+  /* ---------- #4 الشاهد كله قابل للضغط ---------- */
+  document.addEventListener("click",e=>{
+    const r=e.target.closest(".r.uxt-tap"); if(!r) return;
+    if(e.target.closest("a,button,.sref,.sn,.sw,input,select,summary")) return;
+    if(String(getSelection()).trim()) return;
+    const s=r.querySelector(".self"); if(s) s.click();
+  });
+
+  /* ---------- #6 رسالة offline واحدة ---------- */
+  function syncOffline(){
+    const has=!!main.querySelector(".txna");
+    main.classList.toggle("uxt-hasoff",has);
+    const ex=$(".uxt-off",main);
+    if(has&&!ex){
+      const anchor=$("#main section.group, #main .refs");
+      if(!anchor) return;
+      const b=el("div",{class:"uxt-off",role:"status"},`<span>بعض نصوص الشواهد مش محفوظة على جهازك — هتظهر أول ما تتصل بالإنترنت.</span><button type="button">تنزيل للاستخدام دون إنترنت</button>`);
+      $("button",b).addEventListener("click",()=>{try{offOpen()}catch(e){}});
+      (anchor.closest("section.group")||anchor).before(b);
+    }else if(!has&&ex) ex.remove();
+  }
+
+  /* ---------- المعالجة بعد كل render ---------- */
+  function process(){
+    main.append(el("i",{class:"uxt-mark",hidden:""}));
+    const sb=$("#main .stickbar");
+
+    /* #2 picker + Aa + theme داخل الـ sticky bar */
+    if(sb){
+      const pick=el("button",{class:"uxt-pick",type:"button","aria-haspopup":"dialog","aria-label":"اختر السفر والأصحاح والعدد"},`<span>${curLabel()}</span><span class="chev">▾</span>`);
+      pick.addEventListener("click",()=>openPicker(S.view==="verse"?"v":"c"));
+      const sp=$(".sp",sb); sb.insertBefore(pick,sp);
+      /* في وضع Interlinear مفيش .trbar — الأدوات كلها جوه .chlink، فلازم Aa يظهر برضه */
+      const inter=!!$("#main>.ilist");
+      if($("#main>.trbar, #main>.trgrp.seg, #main>.ilopts")||(S.view!=="verse"&&$("#main>.chlink"))){
+        const on=$("#main>.trbar .trb.on");
+        const lab=inter?"Interlinear":(on?on.textContent.trim():"");
+        const aa=el("button",{class:"uxt-aa",type:"button","aria-haspopup":"dialog","aria-label":"إعدادات العرض"},`Aa${lab?` <small>${lab}</small>`:""}`);
+        aa.addEventListener("click",openAa); sb.insertBefore(aa,sp.nextSibling);
+      }
+      const th=el("button",{class:"uxt-theme",type:"button",title:"الوضع الفاتح / الداكن","aria-label":"الوضع الفاتح / الداكن"},SVG_THEME);
+      th.addEventListener("click",()=>$("#themeBtn").click()); sb.append(th);
+      /* أزرار السابق/التالي: aria-label من الـ title لأن النص بيختفي على الموبايل */
+      $$(".nav button, .nav a",sb).forEach(x=>{if(x.title&&!x.getAttribute("aria-label"))x.setAttribute("aria-label",x.title+" "+(x.textContent.replace(/[←→]/g,"").trim()))});
+    }else{
+      /* صفحة السفر: زرار الثيم في الـ crumbs */
+      const cr=$("#main .crumbs");
+      if(cr&&!$(".uxt-theme",cr)){const th=el("button",{class:"uxt-theme",type:"button","aria-label":"الوضع الفاتح / الداكن"},SVG_THEME);th.addEventListener("click",()=>$("#themeBtn").click());cr.append(th)}
+    }
+
+    /* #1 المخطط مقفول + ملخص */
+    $$("#main details.olbox").forEach(d=>{
+      d.open=false;
+      const cnt=$$(".olr",d).length, sm=$("summary",d);
+      if(sm&&cnt&&!$(".uxt-olhint",sm)) sm.append(el("span",{class:"uxt-olhint"},`${plural(cnt,"قسم واحد","قسمان","أقسام","قسمًا")} · اضغط للعرض`));
+    });
+    /* في صفحة العدد زرار "عرض الأصحاح كاملًا" يفضل ظاهر */
+    if(S.view==="verse"){const cl=$("#main>.chlink");cl&&cl.classList.add("uxt-keep")}
+
+    /* #1 صورة الأصحاح بعد النص على الموبايل */
+    const hero=$("#main>figure.chhero");
+    if(hero&&isMobile()){const foot=$("#main>.chfoot")||null;const list=$("#main>.cvlist");
+      (foot?foot.before(hero):list&&list.after(hero)); hero.classList.add("uxt-moved");}
+
+    /* Interlinear: زرار واضح تحت كل عدد يفتحه في صفحة العدد (الشواهد + سترونج) */
+    $$("#main .ilist .ilv").forEach(v=>{
+      const nb=$("button.ilvn[data-go]",v), col=$(".ilcol",v);
+      if(!nb||!col||$(".uxt-ilgo",v)) return;
+      nb.setAttribute("aria-label",`افتح العدد ${nb.textContent.trim()} بالشواهد`);
+      col.append(el("button",{class:"uxt-ilgo",type:"button","data-go":nb.dataset.go},`افتح العدد ${nb.textContent.trim()} بالشواهد ←`));
+    });
+
+    /* #4 صفوف الشواهد */
+    $$("#main .r").forEach(r=>{if(r.querySelector(".self"))r.classList.add("uxt-tap")});
+
+    syncDict(); syncOffline();
+  }
+
+  /* observer: app.js بيعمل innerHTML لـ #main في كل render */
+  let busy=false;
+  new MutationObserver(()=>{
+    if(busy) return; busy=true;
+    requestAnimationFrame(()=>{
+      if(!$(".uxt-mark",main)){ if(sheetKind==="aa"){ /* translation change → أعد بناء الـ sheet */ const k=sheetKind; sheetKind=null; process(); if(k)openAa(); } else process(); }
+      syncDict(); syncOffline();
+      busy=false;
+    });
+  }).observe(main,{childList:true,subtree:true});
+  process();
+
+  /* #2 hide on scroll down / show on scroll up */
+  let lastY=scrollY;
+  addEventListener("scroll",()=>{
+    const y=scrollY, sb=$("#main .stickbar"); if(!sb) return;
+    if(sheetKind) return;
+    if(y>lastY+8&&y>220) sb.classList.add("uxt-hide");
+    else if(y<lastY-8||y<120) sb.classList.remove("uxt-hide");
+    lastY=y;
+  },{passive:true});
+
+  /* لو المقاس اتغير بين موبايل وديسكتوب نعيد الـ render */
+  MQ.addEventListener("change",()=>{closeSheet();try{render()}catch(e){}});
+})();
+/* ==== UX LAYER END ==== */

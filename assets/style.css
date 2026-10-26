@@ -819,6 +819,137 @@ html body .cheads{color:var(--gold)}
 
 .howto{background:var(--gold-soft,#f6efe0);border-radius:10px;padding:10px 14px;margin:0 0 16px;font-family:var(--ui);color:var(--ink)}.howto b{display:block;font-size:13px;color:var(--accent);margin-bottom:2px}.howto p{margin:0;font-size:14px;line-height:1.9}
 
+/* ==== UX LAYER START (reading pages) ==== */
+/* Generated from the Rut_test UX experiment (Oct 2026). Rules apply only when html has .ux-on (set by app.js). */
+.ux-on .themefab{display:none!important}
+.ux-on .uxt-theme{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;
+  flex-shrink:0;border:1px solid var(--line);background:var(--paper);color:var(--gold);border-radius:10px;cursor:pointer}
+.ux-on .uxt-theme:hover{border-color:var(--gold)}
+.ux-on .uxt-theme svg{width:20px;height:20px}
+.ux-on .stickbar{transition:transform .22s ease, box-shadow .22s ease;will-change:transform}
+.ux-on .stickbar.uxt-hide{transform:translateY(calc(-100% - 12px));box-shadow:none}
+.ux-on .stickbar select.sbBook,.ux-on .stickbar select.sbCh,.ux-on .stickbar select.sbV{display:none!important}
+.ux-on .uxt-pick{display:inline-flex;align-items:center;gap:6px;min-height:44px;min-width:0;flex:0 1 auto;
+  border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:0 12px;
+  font:700 16px var(--ui);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ux-on .uxt-pick:hover{border-color:var(--accent)}
+.ux-on .uxt-pick .chev{font-size:12px;color:var(--muted)}
+.ux-on .uxt-aa{display:none;align-items:center;gap:6px;min-height:44px;flex-shrink:0;border:1px solid var(--gold);
+  background:var(--paper);color:var(--gold);border-radius:10px;padding:0 12px;font:700 15px var(--ui);cursor:pointer}
+.ux-on .uxt-aa small{font:600 12px var(--ui);color:var(--muted)}
+.ux-on .stickbar .nav button,.ux-on .stickbar .nav a.xnav{min-height:44px;min-width:44px;justify-content:center}
+@media (max-width:880px){
+.ux-on .stickbar{flex-wrap:nowrap;gap:6px;padding:6px 8px;border-radius:12px;top:6px}
+.ux-on .stickbar .nav{gap:4px;flex:0 0 auto!important;width:auto!important;justify-content:flex-start!important;order:0;margin:0!important}
+.ux-on .stickbar .menu-btn{width:44px;height:44px;padding:0!important;display:inline-flex!important;align-items:center;justify-content:center;flex-shrink:0}
+.ux-on .uxt-pick{flex:1 1 0!important;min-width:84px}
+.ux-on .uxt-aa{padding:0 10px}
+.ux-on .uxt-aa small{max-width:52px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ux-on .stickbar .nav .lb{display:none!important}
+.ux-on .stickbar .nav button,.ux-on .stickbar .nav a.xnav{padding:0;width:44px;font-size:18px}
+.ux-on .uxt-pick{flex:1 1 auto;padding:0 10px}
+.ux-on .uxt-aa{display:inline-flex}
+.ux-on .stickbar .uxt-theme{display:none}
+.ux-on .crumbs{margin-bottom:8px}
+
+}
+.ux-on .uxt-scrim{position:fixed;inset:0;background:rgba(8,20,32,.45);z-index:80;opacity:0;pointer-events:none;transition:opacity .2s}
+.ux-on .uxt-scrim.on{opacity:1;pointer-events:auto}
+.ux-on .uxt-sheet{position:fixed;inset-inline:0;bottom:0;z-index:90;max-height:82vh;overflow:auto;background:var(--paper);
+  border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);padding:8px 16px calc(18px + env(safe-area-inset-bottom));
+  transform:translateY(105%);transition:transform .24s cubic-bezier(.2,.8,.2,1)}
+.ux-on .uxt-sheet.on{transform:none}
+.ux-on .uxt-sheet .grab{width:44px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 10px}
+.ux-on .uxt-sheet .shd{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.ux-on .uxt-sheet .shd h3{margin:0;font:700 19px var(--ui);color:var(--heading)}
+.ux-on .uxt-x{width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font-size:20px;cursor:pointer}
+.ux-on .uxt-sec{border-top:1px solid var(--line);padding:12px 0}
+.ux-on .uxt-sec:first-of-type{border-top:0}
+.ux-on .uxt-sec>h4{margin:0 0 8px;font:600 13px var(--ui);color:var(--muted)}
+.ux-on .uxt-sheet .trbar,.ux-on .uxt-sheet .chlink{margin:0;display:flex!important;flex-wrap:wrap;gap:8px}
+.ux-on .uxt-sheet .trb{min-height:44px;padding:0 16px;font-size:15px}
+.ux-on .uxt-sheet .trgrp.seg{display:flex}
+.ux-on .uxt-row{display:flex;align-items:center;justify-content:space-between;min-height:48px;gap:12px;font:600 15px var(--ui)}
+.ux-on .uxt-sw{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);font:600 14px var(--ui);cursor:pointer}
+.ux-on .uxt-tabs{display:flex;gap:6px;margin-bottom:12px}
+.ux-on .uxt-tabs button{flex:1;min-height:44px;border:1px solid var(--line);background:var(--bg);border-radius:10px;font:600 15px var(--ui);color:var(--ink);cursor:pointer}
+.ux-on .uxt-tabs button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ux-on .uxt-find{width:100%;min-height:46px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:500 16px var(--ui);background:var(--bg);color:var(--ink);margin-bottom:12px}
+.ux-on .uxt-grp{font:700 13px var(--ui);color:var(--gold);margin:12px 0 6px}
+.ux-on .uxt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}
+.ux-on .uxt-grid.num{grid-template-columns:repeat(auto-fill,minmax(52px,1fr))}
+.ux-on .uxt-grid button{min-height:44px;border:1px solid var(--line);background:var(--paper);border-radius:10px;font:600 15px var(--ui);color:var(--ink);cursor:pointer;padding:4px 6px}
+.ux-on .uxt-grid button:hover{border-color:var(--accent)}
+.ux-on .uxt-grid button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+@media (min-width:881px){
+.ux-on .uxt-sheet{inset-inline:auto;left:50%;bottom:auto;top:50%;width:min(640px,92vw);max-height:80vh;border-radius:20px;
+    transform:translate(-50%,-46%);opacity:0;pointer-events:none;transition:opacity .18s, transform .18s}
+.ux-on .uxt-sheet.on{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+.ux-on .uxt-sheet .grab{display:none}
+
+}
+.ux-on .olbox:not([open]){padding-block:4px}
+.ux-on .olbox summary{min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.ux-on .olbox summary .uxt-olhint{font:500 13px var(--ui);color:var(--muted);margin-inline-start:auto}
+@media (max-width:880px){
+.ux-on #main>.chlink,.ux-on #main>.trbar,.ux-on #main>.trgrp.seg,.ux-on #main>.ilopts{display:none!important}
+.ux-on #main>.chlink.uxt-keep{display:block!important}
+.ux-on .olr .ore{display:none}
+.ux-on .olr{flex-wrap:nowrap}
+.ux-on .chhero.uxt-moved{margin-top:18px}
+
+}
+.ux-on #dict:has(> .empty:not(.loading):not(.loadfail)){display:none}
+.ux-on #dict .loadfail{display:flex;flex-direction:column;align-items:flex-start;gap:12px;line-height:1.7}
+.ux-on #dict .loadfail .trb{min-height:44px;padding:0 18px;font-size:15px}
+.ux-on .uxt-dclose{display:none}
+@media (max-width:880px){
+.ux-on #dict.uxt-dsheet{position:fixed;inset-inline:0;bottom:0;z-index:90;margin:0;max-height:72vh;overflow:auto;
+    border-radius:20px 20px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.28);animation:uxtUp .24s cubic-bezier(.2,.8,.2,1)}
+.ux-on #dict.uxt-dsheet .uxt-dclose{display:inline-flex;align-items:center;justify-content:center;position:sticky;top:8px;
+    float:left;margin:8px 8px 0 0;z-index:2;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--paper);font-size:20px;color:var(--ink)}
+
+}
+@keyframes uxtUp{from{transform:translateY(100%)}to{transform:none}}
+.ux-on .r.uxt-tap{cursor:pointer}
+.ux-on .r .lbl .self{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;margin-top:6px;font:600 13px var(--ui);border-radius:8px}
+.ux-on a.olall{display:inline-flex;align-items:center;gap:4px;min-height:44px}
+.ux-on .ctx{min-height:44px}
+.ux-on .tpbox summary{min-height:44px;display:flex;align-items:center}
+.ux-on .tpc{min-height:32px;display:inline-flex;align-items:center}
+.ux-on .uxt-off{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0;padding:12px 16px;border-radius:14px;
+  background:var(--accent-soft);color:var(--accent);font:600 14px/1.6 var(--ui);border:1px solid var(--line)}
+.ux-on .uxt-off button{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--accent);background:var(--paper);color:var(--accent);font:600 14px var(--ui);cursor:pointer}
+.ux-on .uxt-hasoff .txna{display:none}
+.ux-on .uxt-hasoff .r .txt:has(.txna){display:none}
+.ux-on .uxt-hasoff .r{padding-block:8px}
+.ux-on .pill,.ux-on .cvm,.ux-on .ore,.ux-on .orn,.ux-on .olall,.ux-on .trb,.ux-on .r .lbl .en,.ux-on .r .lbl .nmr small,.ux-on .crumbs .ref small,.ux-on .count,.ux-on .dict .dhead .hist button{font-size:13px!important}
+.ux-on .r .txt .vn{font-size:13px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+@media (min-width:881px){
+.ux-on #main>figure.chhero{max-height:240px;overflow:hidden}
+.ux-on #main>figure.chhero img{height:240px;width:100%;object-fit:cover;object-position:center 40%}
+
+}
+.ux-on .ilv .ilvn{min-width:44px;height:44px;font-size:15px;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ux-on .uxt-ilgo{display:inline-flex;align-items:center;min-height:40px;margin-top:10px;padding:0 14px;border-radius:999px;
+  border:1px solid var(--gold);background:transparent;color:var(--gold);font:600 14px var(--ui);cursor:pointer}
+.ux-on .uxt-ilgo:hover{background:var(--gold);color:var(--on-gold)}
+.ux-on .uxt-sheet .ilopts{display:flex;flex-direction:column;gap:10px;width:100%}
+.ux-on .uxt-sheet .chlink>*{max-width:100%}
+.ux-on .cv .cvm{display:inline-flex!important;align-items:center;gap:4px;justify-self:start;align-self:end;
+  margin-top:8px;padding:4px 12px;min-height:32px;border-radius:999px;border:1px solid var(--gold);
+  color:var(--gold);font:600 13px var(--ui)!important;white-space:nowrap}
+.ux-on .cv .cvm::after{content:"←";font-size:14px}
+.ux-on .cv:hover .cvm{background:var(--gold);color:var(--on-gold)}
+@media (max-width:880px){
+.ux-on .cv .cvm{grid-column:2}
+}
+
+/* ==== UX LAYER END ==== */
+
 /* pre:start — نص مكتوب مسبقًا في الصفحة لمحركات البحث (يستبدله التطبيق فور تحميله) */
 .pre{max-width:820px;margin:0 auto;padding:28px 20px 60px;line-height:2.1;color:var(--ink)}
 .pre h1{font-family:"El Messiri",serif;color:var(--heading);font-size:2rem;margin:.2em 0 .3em}
