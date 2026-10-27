@@ -819,6 +819,49 @@ html body .cheads{color:var(--gold)}
 
 .howto{background:var(--gold-soft,#f6efe0);border-radius:10px;padding:10px 14px;margin:0 0 16px;font-family:var(--ui);color:var(--ink)}.howto b{display:block;font-size:13px;color:var(--accent);margin-bottom:2px}.howto p{margin:0;font-size:14px;line-height:1.9}
 
+/* ==== عنوان قسم شواهد TSK في صفحة العدد ==== */
+.tskhead{margin:30px 0 4px;padding-top:18px;border-top:2px solid var(--line);position:relative}
+.tskhead::before{content:"";position:absolute;top:-2px;inset-inline-start:0;width:72px;height:2px;background:var(--brand-gold)}
+.tskhead h2{margin:0;display:flex;align-items:center;gap:8px;font:700 24px/1.3 var(--display);color:var(--heading)}
+.tskhead h2 .tic{width:22px;height:22px;color:var(--gold)}
+.tskhead p{margin:6px 0 0;font:14px/1.7 var(--ui);color:var(--muted)}
+.tskhead+.kw-index{margin-top:12px}
+@media print{.tskhead{border-top:1px solid #ccc}.tskhead::before{display:none}}
+
+/* ==== أسهم العدد السابق/التالي على جانبي الآية ==== */
+.vwrap{position:relative}
+.vnav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer;
+  background:var(--paper);color:var(--gold);border:1px solid var(--gold);box-shadow:var(--shadow)}
+.vnav svg{width:22px;height:22px}
+.vnav:hover{background:var(--gold);color:var(--on-gold)}
+.vnav:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vprev{inset-inline-start:-22px}
+.vnext{inset-inline-end:-22px}
+@media (max-width:880px){
+  .vnav{width:36px;height:36px}
+  .vnav svg{width:18px;height:18px}
+  .vprev{inset-inline-start:-12px}
+  .vnext{inset-inline-end:-12px}
+  .vwrap .verse-card{padding-inline:30px}
+  .vwrap .ilist{padding-inline:28px}
+}
+/* في Interlinear البلوك طويل: الأسهم جنب سطر الآية العربي بدل نص البلوك */
+.vwrap:has(> .ilist) .vnav{top:14px;transform:none}
+/* مساحة للأسهم علشان ماتغطيش رقم العدد ونص الآية في Interlinear */
+.vwrap > .ilist{padding-inline:34px}
+@media print{.vnav{display:none}}
+
+/* ==== «اللغة الأصلية» في عرض الأصحاح (orig_<Book>.js) ==== */
+.cvt.orig.he{font-family:"Noto Serif Hebrew","SBL Hebrew","Ezra SIL",serif;font-size:27px;line-height:2;direction:rtl}
+.cvt.orig.gr{font-family:"Noto Serif","Gentium Plus",serif;font-size:22px;line-height:1.9;direction:ltr;text-align:left;unicode-bidi:isolate}
+.cvt.orig-na{font:15px/1.8 var(--ui);color:var(--muted)}
+.verse-card .orig-v .cvt.orig.he{font-size:34px;line-height:2}
+.verse-card .orig-v .cvt.orig.gr{font-size:28px;line-height:1.8;display:block}
+.verse-card .orig-v .cvt{display:block}
+@media (max-width:880px){.verse-card .orig-v .cvt.orig.he{font-size:28px}.verse-card .orig-v .cvt.orig.gr{font-size:23px}}
+@media (max-width:880px){.cvt.orig.he{font-size:24px}.cvt.orig.gr{font-size:19px}}
+
 /* ==== قائمة ☰ في صفحات الأدوات (assets/sitemenu.js) ==== */
 .sb-menu{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex:none;margin-inline-end:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer}
 .sb-menu:hover{border-color:var(--accent);background:var(--accent-soft)}

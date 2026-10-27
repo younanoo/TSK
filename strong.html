@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=3063e1fb">
+<link rel="stylesheet" href="assets/style.css?v=30d8fd70">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -26,6 +26,13 @@
 .spick{display:grid;gap:10px;margin-top:10px}.spick a{display:flex;gap:12px;align-items:baseline;padding:12px 14px;border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink)}.spick a:hover{border-color:var(--gold)}
 .spick .num{font:700 13px var(--ui);background:var(--gold);color:var(--on-gold);border-radius:7px;padding:2px 9px;direction:ltr}.spick .o{font:600 22px "Noto Serif","Noto Serif Hebrew",serif;direction:ltr}.spick small{color:var(--muted)}
 .shome{margin:10px 0;color:var(--muted);font:14.5px/1.9 var(--ui)}
+/* النص الأصلي تحت النص العربي */
+.otx{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);color:var(--ink)}
+.otx.he{font:400 24px/2 "Noto Serif Hebrew","SBL Hebrew",serif;direction:rtl;text-align:right}
+.otx.gr{font:400 20px/1.8 "Noto Serif","Gentium Plus",serif;direction:ltr;text-align:left}
+.otx mark{background:var(--gold-soft);color:var(--gold);border-radius:6px;padding:0 3px;font-weight:600}
+.otx.wait,.otx.na{font:13px/1.7 var(--ui);color:var(--muted);direction:rtl;text-align:right}
+@media (max-width:600px){.otx.he{font-size:21px}.otx.gr{font-size:18px}}
 </style>
 <!--seo-->
 <meta name="description" content="قاموس سترونج للكلمات العبرية واليونانية في الكتاب المقدس، بشرح عربي وإنجليزي ونطق كل كلمة، مع الأعداد التي ترد فيها.">
@@ -84,6 +91,20 @@ function load(){
 }
 $("#sf").addEventListener("submit",e=>{e.preventDefault();const v=$("#sq").value.trim();if(!v){$("#sfe").textContent="اكتب رقم الكلمة أولًا.";return}
   const h="#"+encodeURIComponent(D(v).replace(/\s/g,"").toUpperCase());if(location.hash===h)load();else location.hash=h});
+/* ---- النص الأصلي (orig_<Book>.js) + تمييز الكلمة (bsb_<Book>.js) — بيتحمّلوا لكل سفر عند الحاجة ---- */
+const OQ={};
+function needOrig(ab){if(OQ[ab])return;OQ[ab]="wait";let left=2;
+  const done=()=>{if(--left)return;OQ[ab]=(window.ORIG&&window.ORIG[ab])?"ok":"fail";if(S.num)render()};
+  ["orig_","bsb_"].forEach(f=>{const x=document.createElement("script");x.src="assets/"+f+ab+".js";x.onload=x.onerror=done;document.body.appendChild(x)})}
+function origHTML(x,num){
+  const ab=x[0],k=x[1]+":"+x[2],O=window.ORIG&&window.ORIG[ab];
+  if(!O){needOrig(ab);return OQ[ab]==="fail"?"":`<div class="otx wait">جارٍ تحميل النص الأصلي…</div>`}
+  const t=O[k];if(!t)return "";
+  const B=window.BSBI&&window.BSBI[ab],forms=new Set(((B&&B[k])||[]).filter(w=>w[2]===num).map(w=>w[0]));
+  const nt=CAT_NT.has(ab);
+  const h=t.replace(/[^\s\u05BE]+\u05BE?/g,w=>forms.has(w)||forms.has(w.replace(/\u05BE$/,""))?`<mark>${esc(w)}</mark>`:esc(w));
+  return `<div class="otx ${nt?"gr":"he"}" dir="${nt?"ltr":"rtl"}" lang="${nt?"grc":"he"}">${h}</div>`}
+const CAT_NT=new Set(Object.keys(AR).slice(39));
 function render(){
   const num=S.num,e=STRONG[num];
   document.title="سترونج "+num;
@@ -103,7 +124,7 @@ function render(){
     pg=`<div class="pager"><button data-p="${S.page-1}" ${S.page<=1?"disabled":""}>السابق →</button>`+ps.map(i=>{const gap=prev&&i-prev>1?"<span>…</span>":"";prev=i;return gap+`<button data-p="${i}" class="${i===S.page?"on":""}">${n(i)}</button>`}).join("")+`<button data-p="${S.page+1}" ${S.page>=pages?"disabled":""}>← التالي</button></div>`}
   $("#out").innerHTML=`<section class="dict">${dent}</section>
     <div class="sum"><b>${plural(rows.length,"عدد واحد","عددان","أعداد","عددًا")}</b><span class="pill">تَرِد فيها هذه الكلمة</span><select id="bk">${opts}</select><span class="pill">صفحة ${n(S.page)} من ${n(pages)}</span></div>`+
-    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${hl(x[3],o.ws)}</div></div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg;
+    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${hl(x[3],o.ws)}</div>${origHTML(x,num)}</div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg;
 }
 document.addEventListener("click",e=>{const b=e.target.closest(".pager button");if(b&&!b.disabled){S.page=+b.dataset.p;render();window.scrollTo({top:0,behavior:"smooth"})}});
 document.addEventListener("change",e=>{if(e.target.id==="bk"){S.book=e.target.value;S.page=1;render()}});

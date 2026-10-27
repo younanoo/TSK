@@ -235,7 +235,7 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
       test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "ترجمتا فاندايك وKJV", desc: "نصوص الترجمات الإضافية لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) },
-    { id: "il", title: "كلمة بكلمة والبحث النحوي", desc: "بيانات Berean بالعبرية واليونانية مع التحليل النحوي.", test: p => /^assets\/bsb_/.test(p) },
+    { id: "il", title: "كلمة بكلمة والبحث النحوي", desc: "بيانات Berean بالعبرية واليونانية مع التحليل النحوي.", test: p => /^assets\/(bsb|orig)_/.test(p) },
     { id: "search", title: "البحث في نص الكتاب", desc: "نصوص كاملة للبحث (كتاب الحياة وفاندايك وKJV).", test: p => /^assets\/tx_[a-z]+\.js$/.test(p) },
     { id: "topics", title: "فهرس المواضيع", desc: "٤٦ ألف موضوع مع آياتها.", test: p => /^assets\/tp_/.test(p) },
     { id: "mm", title: "الخريطة الذهنية للشواهد", desc: "بيانات الخريطة الذهنية.", test: p => p === "assets/mm_data.js" },

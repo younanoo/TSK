@@ -181,7 +181,19 @@ function kdGet(d){const ab=book().abbr,src="assets/kd_"+ab+".js";if(LOADED[src]=
 function kdArS(d){const t=kdGet(d);if(!t)return null;const ab=book().abbr,m=window.KDS&&window.KDS[ab],ns=m&&m[d.c+":"+d.v];if(!ns)return null;const out=[];t.split(" ").forEach((w,i)=>{if(i)out.push([" ",[]]);const mm=w.match(/^([^\u0621-\u064A]*)(.*?)([^\u0621-\u064A\u064B-\u065F\u0670]*)$/s);const a=mm[1],c=mm[2],e=mm[3];if(a)out.push([a,[]]);if(c)out.push([c,ns[i]||[]]);if(e)out.push([e,[]])});return out}
 function diaOn(){return store.get("dia",false)===true&&((trCur()==="svd"&&hasDia())||hasKD())}
 function trText(d){const c=trCur();if(c==="alab")return diaOn()?kdGet(d):null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];return (t[c]&&t[c][k])||null}
-function trBar(extra){const av=trAvail();const dia=(trCur()==="svd"&&hasDia())||hasKD()?`<button class="trb ${diaOn()?"on":""}" id="diaBtn" title="إظهار التشكيل أو إخفاؤه">تشكيل</button>`:"";return `<div class="trbar">${av.length>1?av.map(k=>`<button class="trb ${k===trCur()?"on":""}" data-tr="${k}">${TRN[k]}</button>`).join("")+dia:""}${extra||""}${fsGrp()}</div>`}
+/* ---- اللغة الأصلية (عرض الأصحاح): نص Berean (WLC / Nestle) بترتيب الكلمات الأصلي ---- */
+function origView(){return S.view==="chapter"||S.view==="verse"}
+function origOn(){return origView()&&store.get("corig",false)===true}
+function origLoad(ab){if(window.ORIG&&window.ORIG[ab])return window.ORIG[ab];const src="assets/orig_"+ab+".js";
+  if(LOADED[src]===undefined)loadJS(src,()=>{if(origView())render()});return null}
+function origSpan(d){const b=book(),O=origLoad(b.abbr),gr=b.id>39;
+  if(!O)return `<span class="cvt orig-na">${LOADED["assets/orig_"+b.abbr+".js"]===true?"تعذّر تحميل النص الأصلي.":"جارٍ تحميل النص الأصلي…"}</span>`;
+  const t=O[d.c+":"+d.v];
+  if(!t)return `<span class="cvt orig-na">هذا العدد غير موجود في النص ${gr?"اليوناني (Nestle)":"العبري (WLC)"} الذي يعتمد عليه Berean.</span>`;
+  return `<span class="cvt orig ${gr?"gr":"he"}" dir="${gr?"ltr":"rtl"}" lang="${gr?"grc":"he"}">${esc(t)}</span>`}
+function trBar(extra){const av=trAvail(),og=origOn();const dia=!og&&((trCur()==="svd"&&hasDia())||hasKD())?`<button class="trb ${diaOn()?"on":""}" id="diaBtn" title="إظهار التشكيل أو إخفاؤه">تشكيل</button>`:"";
+  const orig=origView()?`<button class="trb ${og?"on":""}" data-orig="1" title="النص العبري/اليوناني من Berean بدون الإنجليزي والنطق">اللغة الأصلية</button>`:"";
+  return `<div class="trbar">${av.length>1?av.map(k=>`<button class="trb ${!og&&k===trCur()?"on":""}" data-tr="${k}">${TRN[k]}</button>`).join("")+orig+dia:orig}${extra||""}${fsGrp()}</div>`}
 function segHTML(a){return a.map(([t,ns])=>ns.length?`<span class="sw" data-n="${ns.join(" ")}">${esc(t)}<sup>${ns.map(x=>`<span class="sn" data-sn="${x}" title="اعرض معنى ${x}">${x}</span>`).join(" ")}</sup></span>`:esc(t)).join("")}
 function trSeg(d){const c=trCur();if(c==="alab")return null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdSD&&t.svdSD[k])return t.svdSD[k];const a=t[c+"S"]&&t[c+"S"][k];return a||null}
 function viewSeg(){const INTER=store.get("inter",false);return `<span class="trgrp seg"><button class="trb ${INTER?"":"on"}" data-inter="0">${ic("menu-2")} العرض العادي</button><button class="trb ${INTER?"on":""}" data-inter="1">${ic("language")} العرض بين السطور (Interlinear)</button></span>`}
@@ -221,6 +233,11 @@ function dictInner(){
     ${DICT.cur?dentHTML(DICT.cur):`<div class="empty">اضغط على أي رقم سترونج في نص العدد بالأعلى لعرض معناه هنا.</div>`}`;
 }
 function dictSection(d){ return d.arS?`<section class="dict" id="dict">${dictInner()}</section>`:""; }
+/* Interlinear في صفحة العدد: الضغط على رقم سترونج يفتح القاموس في الصفحة (زي العرض العادي) بدل صفحة سترونج.
+   capture على window علشان يسبق nav.js ويمنع فتح الرابط. في صفحة الأصحاح (مفيش #dict) الرابط يفضل زي ما هو. */
+window.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest(".ilist a.iln");if(!a||!$("#dict"))return;
+  const num=(a.getAttribute("href")||"").split("#")[1]||a.textContent.trim();if(!/^[GH]\d+$/.test(num))return;
+  e.preventDefault();e.stopPropagation();showEntry(num)},true);
 function showEntry(num,{fromRef=false,scroll=true}={}){
   if(!needStrong(()=>showEntry(num,{fromRef,scroll}),()=>{const bx=$("#dict");if(bx)bx.innerHTML=loadFail("قاموس سترونج",`data-jsretry="assets/strong.js" data-dn="${num}"`)})){const bx=$("#dict");if(bx)bx.innerHTML=`<div class="empty loading">جارٍ تحميل قاموس سترونج…</div>`;return}
   if(fromRef && DICT.cur) DICT.trail.push(DICT.cur); else if(!fromRef) DICT.trail=[];
@@ -299,7 +316,7 @@ function interBlock(d){
 }
 /* ---- Interlinear بديل: النص العبري/اليوناني من BSB (تجربة) ---- */
 const BSBB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
-function bsbLoad(abbr){const rr=()=>{if(S.view==="chapter")render()};
+function bsbLoad(abbr){const rr=()=>{if(S.view==="chapter"||S.view==="verse")render()}; /* صفحة العدد كانت بتفضل على «جارٍ التحميل» */
   if(!window.BSBP&&LOADED["assets/bsb_parse.js"]===undefined)loadJS("assets/bsb_parse.js",rr);
   if(window.BSBI&&window.BSBI[abbr])return window.BSBI[abbr];const src="assets/bsb_"+abbr+".js";
   if(LOADED[src]===undefined)loadJS(src,rr);return null}
@@ -333,7 +350,7 @@ function olLoad(abbr){if(!OLB.includes(abbr))return null;if(window.OL&&window.OL
 const olIn=(r,c,v)=>(c>r[3]||(c===r[3]&&v>=r[4]))&&(c<r[5]||(c===r[5]&&v<=r[6]));
 const olFmt=r=>r[3]===r[5]?`${n(r[3])}: ${n(r[4])}–${n(r[6])}`:`${n(r[3])}: ${n(r[4])} – ${n(r[5])}: ${n(r[6])}`;
 function olRow(b,r,c){const v=r[3]<c?1:r[4];return `<a class="olr l${r[0]}" href="#/${b.abbr}/${c}:${v}" data-go="${b.id}.${c}:${v}"><span class="ort">${esc(r[2]||r[1])}</span><span class="ore ltr">${esc(r[1])}</span><span class="orn">${olFmt(r)}</span></a>`}
-const NOTES=["Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
+const NOTES=["Rut","Ezr","Est","Son","Lam","Joe","Amo","Oba","Jon","Mic","Nah","Hab","Zep","Hag","Mal","Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
 function notesLink(b){return NOTES.includes(b.abbr)?`<a class="notelink" href="notes.html?b=${b.abbr}" target="tsknotes">${ic("note")} ملاحظات على الترجمات في هذا السفر ${ic("external-link")}</a>`:""}
 function olBook(b){const O=olLoad(b.abbr);if(!O)return "";
   return `<details class="olbox" open><summary>${ic("bookmarks")} مخطط السفر</summary>${O.map(r=>olRow(b,r,r[3])).join("")}<a class="olall" href="outline.html?b=${b.abbr}" target="tskoutline">صفحة المخطط كاملة ${ic("external-link")}</a></details>`}
@@ -377,12 +394,16 @@ function viewChapter(){
   $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
   ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
     return `<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
-      <span class="cvn">${n(d.v)}</span><span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span><span class="cvm">${rc?n(rc)+" شاهدًا":"—"}</span></button>`}).join("")}</div>
+      <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span>`}<span class="cvm">${rc?n(rc)+" شاهدًا":"—"}</span></button>`}).join("")}</div>
   ${fnChapter(b,vs)}
   <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
+/* سهم العدد السابق/التالي على جانبي الآية (بديل سطر «العدد السابق والتالي») */
+function vArrow(x,cls,label,path){if(!x)return "";const t=vref(x)+" — "+x.text;
+  return `<button type="button" class="vnav ${cls}" data-go="${x.b}.${x.c}:${x.v}" aria-label="${label}: ${esc(vref(x))}" title="${esc(t.length>90?t.slice(0,90)+"…":t)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg></button>`}
 function viewVerse(){
   DICT={cur:null,hist:[],trail:[]};
+  if(store.get("inter",false)) needStrong(()=>{if(S.view==="verse")render()}); /* الكلمة الأصلية ونطقها في خانات Interlinear */
   const b=book(), d=cur(), k=K(d.b,d.c,d.v), gi0=GIDX[k];
   const prev=ALL[gi0-1], next=ALL[gi0+1];
   const lab=x=>x?(x.b!==d.b?SH[BY[x.b].abbr]+" ":"")+n(x.c)+": "+n(x.v):"";
@@ -411,20 +432,17 @@ function viewVerse(){
   $("#main").innerHTML = crumbs(`${bname(b)} ${n(d.c)}: <span>${n(d.v)}</span>`,`<span class="ltr">${b.en} ${d.c}:${d.v}</span> · الأصحاح ${n(d.c)} · العدد ${n(d.v)} من ${n(inCh(b,d.c).length)}`,
     "",stickBar(b,d.c,d.v,`<div class="nav">${pb?xbtn(pb,pb.last,"→","السفر السابق"):`<button data-go="${prev?prev.b+"."+prev.c+":"+prev.v:""}" ${prev?"":"disabled"} title="السابق">→ <span class="lb">${lab(prev)}</span></button>`}${nb?xbtn(nb,"1:1","←","السفر التالي"):`<button data-go="${next?next.b+"."+next.c+":"+next.v:""}" ${next?"":"disabled"} title="التالي"><span class="lb">${lab(next)}</span> ←</button>`}</div>`)) + `
     <div class="chlink"><button data-gc="${d.b}.${d.c}">${ic("menu-2")} عرض الأصحاح ${n(d.c)} كاملًا</button></div>
-    ${olVerse(b,d)}${viewSeg()}${store.get("inter",false)?ilOpts(b)+`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${ilItem(d,b,false)}</div>`:trBar()}<div class="verse-card ${store.get("nostr2",true)?"nostr":""}" ${store.get("inter",false)?"hidden":""}>
-      <div class="ar">${verseHTML(d)}</div>
+    ${olVerse(b,d)}${viewSeg()}${store.get("inter",false)?ilOpts(b):trBar()}<div class="vwrap">${store.get("inter",false)?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${ilItem(d,b,false)}</div>`:""}<div class="verse-card ${store.get("nostr2",true)?"nostr":""}" ${store.get("inter",false)?"hidden":""}>
+      ${origOn()?`<div class="ar orig-v">${origSpan(d)}</div>`:`<div class="ar">${verseHTML(d)}</div>`}
       <div class="verse-meta">
         <span class="pill">${plural(d.groups.length,"كلمة واحدة","كلمتان","كلمات","كلمة")}</span>
         <span class="pill">${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>
-        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${(d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d)?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
+        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${!origOn()&&((d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d))?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
       </div>
-    </div>
+    </div>${vArrow(prev,"vprev","العدد السابق",'<path d="M9 6l6 6l-6 6"/>')}${vArrow(next,"vnext","العدد التالي",'<path d="M15 6l-6 6l6 6"/>')}</div>
     ${tpChips(d)}${fnBox(d,true)}
-    <div class="context">
-      ${sameCh(prev)?`<button class="ctx" data-go="${prev.b}.${prev.c}:${prev.v}"><em>${n(prev.v)}</em>${esc(prev.text)}</button>`:""}
-      ${sameCh(next)?`<button class="ctx" data-go="${next.b}.${next.c}:${next.v}"><em>${n(next.v)}</em>${esc(next.text)}</button>`:""}
-    </div>
     ${dictSection(d)}
+    <div class="tskhead" id="tskSec"><h2>${ic("arrows-shuffle")} الشواهد المقابلة من TSK</h2><p>من «كنز معرفة الكتاب المقدس» (Treasury of Scripture Knowledge): الآيات المرتبطة بكلمات هذا العدد${refCount(d)?` — ${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}`:""}.</p></div>
     ${d.groups.length>0?`<nav class="kw-index"><span class="kwact"><button class="tgl" id="expandAll">${ic("chevron-down")} فتح كل الكلمات</button><button class="tgl" id="collapseAll">${ic("chevron-left")} طي كل الكلمات</button></span>${d.groups.map((g,gi)=>(!g.refs.length&&g.note&&!g.kw&&d.groups[gi-1]&&!d.groups[gi-1].refs.length&&d.groups[gi-1].note)?"":`<a href="#g${gi}" data-jump="g${gi}">${(!g.refs.length&&g.note)?ic("note")+" ":""}${esc(kwTitle(g))}${g.refs.length?`<b>${n(g.refs.length)}</b>`:""}</a>`).join("")}</nav>`:""}
     ${groups || `<div class="empty">لا توجد شواهد في TSK لهذا العدد (أحيانًا يضم TSK شواهد العدد إلى العدد الذي قبله).</div>`}`;
 }
@@ -515,7 +533,8 @@ document.addEventListener("click",e=>{
   const sw=e.target.closest(".verse-card .sw"); if(sw){showEntry(sw.dataset.n.split(" ")[0]);return}
   if(e.target.closest("#strTgl")){const vc=document.querySelector(".verse-card");const off=!vc.classList.contains("nostr");vc.classList.toggle("nostr",off);e.target.closest("#strTgl").classList.toggle("on",!off);store.set("nostr2",off);return}
   if(e.target.closest("#diaBtn")){store.set("dia",!diaOn());render();return}
-  const tb=e.target.closest("[data-tr]"); if(tb){store.set("tr",tb.dataset.tr);render();return}
+  const tb=e.target.closest("[data-tr]"); if(tb){store.set("tr",tb.dataset.tr);store.set("corig",false);render();return}
+  if(e.target.closest("[data-orig]")){store.set("corig",true);render();return}
   const sb=e.target.closest("[data-isrc]"); if(sb){store.set("isrc",sb.dataset.isrc);render();return}
   const db=e.target.closest("[data-idir]"); if(db){store.set("idir",db.dataset.idir);render();return}
   const ib=e.target.closest("[data-inter]"); if(ib){store.set("inter",ib.dataset.inter==="1");render();return}
@@ -678,7 +697,7 @@ fromHash();
   /* لما الـ sheet يتقفل، الأدوات اللي اتنقلت ترجع مكانها (لو الصفحة لسه نفس الـ render) */
   const _close = closeSheet;
   closeSheet = function(){
-    if(sheetKind==="aa"){ const anchor=$("#main .cvlist, #main .verse-card, #main .ilist"); movedForSheet.forEach(x=>{if(anchor&&!main.contains(x)) anchor.before(x)}); movedForSheet=[] }
+    if(sheetKind==="aa"){ const anchor=$("#main>.vwrap, #main>.cvlist, #main>.ilist"); movedForSheet.forEach(x=>{if(anchor&&!main.contains(x)) anchor.before(x)}); movedForSheet=[] }
     _close();
   };
 
@@ -731,11 +750,11 @@ fromHash();
       pick.addEventListener("click",()=>openPicker(S.view==="verse"?"v":"c"));
       const sp=$(".sp",sb); sb.insertBefore(pick,sp);
       /* في وضع Interlinear مفيش .trbar — الأدوات كلها جوه .chlink، فلازم Aa يظهر برضه */
-      const inter=!!$("#main>.ilist");
+      const inter=!!$("#main .ilist");
       if($("#main>.trbar, #main>.trgrp.seg, #main>.ilopts")||(S.view!=="verse"&&$("#main>.chlink"))){
         const on=$("#main>.trbar .trb.on");
         const lab=inter?"Interlinear":(on?on.textContent.trim():"");
-        const aa=el("button",{class:"uxt-aa",type:"button","aria-haspopup":"dialog","aria-label":"إعدادات العرض"},`Aa${lab?` <small>${lab}</small>`:""}`);
+        const aa=el("button",{class:"uxt-aa",type:"button","aria-haspopup":"dialog","aria-label":"إعدادات العرض"},`Aa${lab?` <small dir="auto">${lab}</small>`:""}`);
         aa.addEventListener("click",openAa); sb.insertBefore(aa,sp.nextSibling);
       }
       const th=el("button",{class:"uxt-theme",type:"button",title:"الوضع الفاتح / الداكن","aria-label":"الوضع الفاتح / الداكن"},SVG_THEME);
