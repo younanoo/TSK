@@ -8,7 +8,7 @@ const fs = require("fs"), path = require("path"), crypto = require("crypto");
 const M = require("./site_meta.js");
 const { ROOT, BASE, SITE, TAGLINE, esc, n, nk } = M;
 const A = p => path.join(ROOT, p);
-const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => fs.writeFileSync(A(p), s);
+const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => { for (let i = 0; ; i++) { try { return fs.writeFileSync(A(p), s); } catch (e) { if (!["EINVAL","EBUSY","EPERM"].includes(e.code) || i > 10) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 400); } } };
 const hashOf = p => crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 8);
 /* app.js and style.css versions follow their content, so browsers never reuse a stale copy after a change */
 const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "2", APP_VER = hashOf("assets/app.js");
