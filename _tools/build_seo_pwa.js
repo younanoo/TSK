@@ -8,7 +8,7 @@ const fs = require("fs"), path = require("path"), crypto = require("crypto");
 const M = require("./site_meta.js");
 const { ROOT, BASE, SITE, TAGLINE, esc, n, nk } = M;
 const A = p => path.join(ROOT, p);
-const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => { for (let i = 0; ; i++) { try { return fs.writeFileSync(A(p), s); } catch (e) { if (!["EINVAL","EBUSY","EPERM"].includes(e.code) || i > 10) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 400); } } };
+const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => { const f = A(p), t = f + ".~tmp"; for (let i = 0; ; i++) { try { fs.writeFileSync(t, s); fs.renameSync(t, f); return; } catch (e) { if (!["EINVAL","EBUSY","EPERM","EACCES"].includes(e.code) || i > 20) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700); } } };
 const hashOf = p => crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 8);
 /* app.js and style.css versions follow their content, so browsers never reuse a stale copy after a change */
 const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "2", APP_VER = hashOf("assets/app.js");
@@ -26,6 +26,8 @@ const TOOLS = {
   "compare.html": { desc: "قارن نص أي أصحاح في ثلاث ترجمات جنبًا إلى جنب: كتاب الحياة وفاندايك وKJV." },
   "outline.html": { desc: "مخطط تفصيلي لكل سفر من أسفار الكتاب المقدس بالعربية والإنجليزية مع الأعداد." },
   "mindmap.html": { desc: "خريطة ذهنية تفاعلية لشواهد كل كلمة في الكتاب المقدس من «كنز معرفة الكتاب المقدس» (TSK)." },
+  "chrono.html":  { desc: "خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.", sitemap: 1 },
+  "timeline.html":{ desc: "خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.", sitemap: 1 },
   "sources.html": { desc: "مصادر المكتبة ومراجعها: النصوص والترجمات والشواهد والفهارس وبيانات الكلمة بكلمة، مع ترخيص كل مصدر وحقوق Biblica لكتاب الحياة.", sitemap: 1 },
   "notes.html":   { desc: "ملاحظات على الفروق بين الترجمات العربية والإنجليزية في المكتبة، خصوصًا ما سببه اختلاف النص اليوناني الذي بُنيت عليه كل ترجمة، سفرًا سفرًا.", sitemap: 1 },
   "grammar.html": { desc: "بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible." },

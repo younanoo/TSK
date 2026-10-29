@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الخط الزمني — جدد وعتقاء</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=30d8fd70">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
+<meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
+<script src="assets/brand.js?v=2"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/sitemenu.js" defer></script>
+<style>
+html,body{overflow-x:clip;padding:0}
+.cr{max-width:880px;margin:0 auto;padding:18px 16px 70px}
+.cr .pill{display:inline-block;font:600 12px var(--ui);color:var(--gold);background:var(--gold-soft);border:1px solid var(--gold);border-radius:999px;padding:1px 10px}
+.cr h1{font:700 26px/1.35 var(--display);color:var(--heading);margin:8px 0 4px;display:flex;align-items:center;gap:8px}
+.cr h1 .tic{width:26px;height:26px;color:var(--gold)}
+.cr .sub{color:var(--muted);margin:0 0 14px;font-size:14px;max-width:64ch}
+.howto{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 14px;font-size:14px}
+.howto b{color:var(--heading)}.howto p{margin:4px 0 0}
+/* أدوات */
+.tools{display:grid;gap:10px;margin:0 0 12px}
+.srch{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:0 12px;min-height:44px}
+.srch input{all:unset;flex:1;font:500 15px var(--ui);color:var(--ink);min-width:0}
+.srch svg{width:18px;height:18px;color:var(--muted);flex:none}
+.opts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:600 13px var(--ui);color:var(--ink);background:var(--paper);min-height:32px;box-sizing:border-box}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
+.seg button{all:unset;cursor:pointer;padding:6px 12px;font:600 13px var(--ui);color:var(--ink);min-height:32px;box-sizing:border-box}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--on-gold)}
+.seg .lb{padding:6px 4px 6px 10px;font:500 13px var(--ui);color:var(--muted)}
+.chip:focus-visible,.seg button:focus-visible,.enav button:focus-visible,.ev:focus-visible,.more:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+/* شريط العصور */
+.enav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:8px 0;margin:0 0 6px;scrollbar-width:thin;border-bottom:1px solid var(--line)}
+.enav button{all:unset;cursor:pointer;flex:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font:600 13px var(--ui);color:var(--ink);background:var(--paper)}
+.enav button i{width:9px;height:9px;border-radius:50%}
+.enav button[aria-current="true"]{border-color:var(--ink)}
+/* العصر */
+.era{margin:18px 0 4px;scroll-margin-top:56px}
+.era .eh{border-radius:16px;padding:14px 16px;background:var(--paper);border:1px solid var(--line);border-inline-start:6px solid var(--ec)}
+.era h2{font:700 20px/1.4 var(--display);color:var(--heading);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.era h2 small{font:500 13px var(--ui);color:var(--muted)}
+.era .eb{margin:6px 0 0;font-size:14px;color:var(--ink);line-height:1.8}
+.era .cnt{font:500 12px var(--ui);color:var(--muted);margin-top:4px}
+/* الأحداث */
+.tl{position:relative;margin:10px 0 0;padding-inline-start:22px}
+.tl::before{content:"";position:absolute;inset-block:4px;inset-inline-start:7px;width:2px;background:var(--line);border-radius:2px}
+.ev{position:relative;margin:0 0 8px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.ev::before{content:"";position:absolute;inset-inline-start:-21px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:3px solid var(--ec);box-sizing:border-box}
+.ev.g{padding:8px 12px}
+.ev.g::before{width:10px;height:10px;inset-inline-start:-20px;top:13px;border-width:2px}
+.ev.w{background:transparent;border-style:dashed}
+.ev.w::before{border-color:var(--muted);border-radius:2px;transform:rotate(45deg)}
+.ev .yr{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;font:700 13px var(--ui);color:var(--gold);font-variant-numeric:tabular-nums}
+.ev .yr small{font:500 12px var(--ui);color:var(--muted)}
+.ev .tag{font:600 11px var(--ui);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.ev h3{font:700 16px/1.55 var(--ui);color:var(--ink);margin:2px 0 0;text-wrap:pretty}
+.ev.g h3{font-size:15px;font-weight:600}
+.ev.w h3{color:var(--muted)}
+.ev .loc{font-size:13px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px}
+.ev .loc svg{width:14px;height:14px;flex:none}
+.ev .x{margin:6px 0 0;font-size:14.5px;line-height:1.85;color:var(--ink)}
+.ev .lk{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;align-items:center}
+.ev .lk a{color:var(--accent);text-decoration:none;font:500 14px var(--ui);border-bottom:1px solid var(--accent-soft)}
+.ev .lk a:hover{border-bottom-color:var(--accent)}
+.ev .lk a.pd{color:var(--done);border-bottom-color:transparent;font-size:13px;display:inline-flex;align-items:center;gap:3px}
+.ev .lk a.pd svg{width:14px;height:14px}
+.ev .pp{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center}
+.ev .pp .lb{font:600 12px var(--ui);color:var(--muted);margin-inline-end:2px}
+.ev .pp .pc{font:500 13px var(--ui);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+.ev .pp button.pc{all:unset;cursor:pointer;font:600 13px var(--ui);color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent);border-radius:999px;padding:1px 9px}
+.ev .pp button.pc:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+.ev .acts{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px}
+.ev .txt{margin:8px 0 2px;padding:10px 12px;background:var(--bg);border-radius:10px;border-inline-start:3px solid var(--ec);font:400 17px/1.95 var(--script, "Amiri", serif);color:var(--ink)}
+.ev .txt .vn{font:700 11px var(--ui);color:var(--gold);vertical-align:super;margin-inline-end:2px}
+.ev .txt .tm{display:block;margin-top:6px;font:500 13px var(--ui)}
+.ev .txt .tm a{color:var(--accent)}
+.ev .kx{margin:8px 0 2px;font-size:14.5px;line-height:1.9;color:var(--ink);background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.ev .kx small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+/* بطاقة الشخص */
+.scrim{position:fixed;inset:0;background:var(--scrim, rgba(0,0,0,.45));z-index:50;display:none}
+.scrim.on{display:block}
+.sheet{position:fixed;inset-inline:0;bottom:0;z-index:51;max-height:85vh;overflow:auto;background:var(--paper);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:16px 16px 24px;transform:translateY(105%);transition:transform .22s ease;max-width:720px;margin:0 auto}
+.sheet.on{transform:none}
+.sheet .hd{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.sheet h3{font:700 22px var(--display);color:var(--heading);margin:0}
+.sheet .x{all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);font-size:20px;color:var(--ink)}
+.sheet p{font-size:15px;line-height:1.95;margin:10px 0}
+.sheet h4{font:700 14px var(--ui);color:var(--gold);margin:14px 0 6px}
+.sheet ol{margin:0;padding-inline-start:20px;font-size:14.5px;line-height:1.9}
+.sheet ol a,.sheet .inl a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+.sheet .inl{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:14px}
+.sheet .src{font-size:12px;color:var(--muted);margin-top:14px}
+.more{all:unset;cursor:pointer;font:600 13px var(--ui);color:var(--accent);margin-top:4px;display:inline-block}
+.empty{padding:30px 10px;text-align:center;color:var(--muted)}
+mark{background:var(--mark);color:inherit;border-radius:3px}
+.foot{margin-top:24px;font-size:13px;color:var(--muted);line-height:1.8;border-top:1px solid var(--line);padding-top:12px}
+.foot a{color:var(--accent)}
+.foot b{color:var(--ink)}
+</style>
+<!--seo-->
+<meta name="description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK) لكل أسفار الكتاب، مع نص كتاب الحياة وفاندايك وKJV، وقاموس سترونج، وفهرس المواضيع، والبحث، والخرائط الذهنية.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/timeline_test.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="الخط الزمني — جدد وعتقاء">
+<meta property="og:description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK) لكل أسفار الكتاب، مع نص كتاب الحياة وفاندايك وKJV، وقاموس سترونج، وفهرس المواضيع، والبحث، والخرائط الذهنية.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/timeline_test.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="الخط الزمني — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="الخط الزمني — جدد وعتقاء">
+<meta name="twitter:description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK) لكل أسفار الكتاب، مع نص كتاب الحياة وفاندايك وKJV، وقاموس سترونج، وفهرس المواضيع، والبحث، والخرائط الذهنية.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head><body>
+<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
+<main class="cr">
+  <span class="pill">صفحة تجربة — لا تظهر في الموقع</span>
+  <h1><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8v8"/><path d="M16 8v8"/><path d="M12 5v14"/></svg> الخط الزمني</h1>
+  <p class="sub">أحداث الكتاب المقدس من الخليقة إلى نهاية عصر الرسل في عشرة عصور، ومعها أحداث من تاريخ العالم في نفس الوقت، لترى ما كان يحدث حول قصة الكتاب.</p>
+  <div class="howto"><b>كيف تستخدم هذه الصفحة؟</b><p>اختر عصرًا من الشريط أو ابحث عن حدث أو اسم. اضغط على الشاهد لتفتح الأصحاح في المكتبة، أو على «في القراءة الزمنية» لتذهب إلى يومه في خطة القراءة. لكل حدث كتابي سنتان: بحسب التأريخ الشائع وبحسب تأريخ Jones، واختر من الأعلى أيهما يُرتَّب به الخط. اضغط «اقرأ النص» لتقرأ الشاهد داخل البطاقة بنفس نص المكتبة، واضغط على اسم شخص ملوّن لتقرأ سيرته.</p></div>
+  <div class="tools">
+    <label class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="q" type="search" placeholder="ابحث: داود، الهيكل، بابل، يونان…" aria-label="بحث في الأحداث"></label>
+    <div class="opts">
+      <button type="button" class="chip" id="fB" aria-pressed="true">أحداث الكتاب</button>
+      <button type="button" class="chip" id="fW" aria-pressed="true">أحداث العالم</button>
+      <button type="button" class="chip" id="fM" aria-pressed="false">الأحداث الرئيسية فقط</button>
+      <span class="seg" role="group" aria-label="التأريخ"><span class="lb">التأريخ:</span><button type="button" id="cC" aria-pressed="true">الشائع</button><button type="button" id="cJ" aria-pressed="false">Jones</button></span>
+    </div>
+  </div>
+  <nav class="enav" id="enav" aria-label="العصور"></nav>
+  <div id="tl"></div>
+  <div class="foot">
+    <b>عن السنين:</b> تواريخ العهد القديم غير مؤكدة، ويختلف فيها الدارسون. نعرض رأيين:
+    <br>• <b>التأريخ الشائع</b>: الحساب المحافظ التقليدي الذي يضع الخروج نحو ١٤٤٦ ق.م وانقسام المملكة نحو ٩٣٠ ق.م، وهو المعتمد في بيانات <a href="https://github.com/theonize/timeline" target="_blank" rel="noopener">theonize/timeline</a>.
+    <br>• <b>تأريخ Jones</b>: حساب Floyd Nolen Jones الذي تعتمده بيانات <a href="https://github.com/robertrouse/theographic-bible-metadata" target="_blank" rel="noopener">Theographic</a>، ويضع الخروج نحو ١٤٩١ ق.م وانقسام المملكة نحو ٩٧٥ ق.م. وهو التأريخ المستخدم في صفحة <a href="chrono_test.html">القراءة الزمنية</a>.
+    <br>الفرق بينهما في زمن الآباء نحو ١٧٠ سنة، ومن الخروج إلى الملوك نحو ٤٠–٦٠ سنة، ويصغر حتى يكاد يختفي من السبي فما بعد. العلامة <b>≈</b> تعني أن الحدث أصله في Theographic وسنته في التأريخ الشائع مقدّرة بالقياس على أقرب حدث له تاريخ في المصدرين.
+    <br><br>الأحداث الرئيسية وأوصافها وأحداث العالم معرّبة عن <a href="https://github.com/theonize/timeline" target="_blank" rel="noopener">theonize/timeline</a> (MIT)، والأحداث الإضافية (الملوك والقضاة والأنبياء وتفاصيل الأناجيل وسفر الأعمال) من <a href="https://github.com/robertrouse/theographic-bible-metadata" target="_blank" rel="noopener">Theographic</a> (CC BY-SA 4.0)، وأوصافها مكتوبة لهذه الصفحة.
+    <br>نص الشواهد في «اقرأ النص» هو نفس النص المستخدم في صفحات المكتبة. أسماء الأشخاص والأماكن في كل حدث من بيانات Theographic، وقراءتها بالعربية من وسوم <a href="https://github.com/STEPBible/STEPBible-Data" target="_blank" rel="noopener">STEPBible</a> لترجمة فاندايك (CC BY-SA). «الشرح الأوسع» لـ٥٠ حدثًا رئيسيًا وسير ٩٢ شخصية معاد صياغتها بالعربية عن <a href="https://github.com/kennethreitz/kjvstudy.org" target="_blank" rel="noopener">kjvstudy.org</a> (ISC)، مع اقتباس الآيات من فاندايك.
+  </div>
+</main>
+<script src="assets/chrono/timeline.js?v=3"></script>
+<script>
+(function(){
+  "use strict";
+  const D = window.TL, AR = D.ar, ERAS = D.eras;
+  const AN = s => String(s).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const $ = id => document.getElementById(id);
+  const sget = (k, d) => { try { const v = localStorage.getItem("tsklib:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const sset = (k, v) => { try { localStorage.setItem("tsklib:" + k, JSON.stringify(v)); } catch (e) {} };
+  const PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/></svg>';
+  const CAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>';
+  /* السنين: الشائع (y) سالب = ق.م بلا سنة صفر؛ Jones (j) فلكي: ٠ = ١ ق.م */
+  const fC = y => y < 0 ? `${AN(-y)} ق.م` : `${AN(y)} م`;
+  const fJ = y => y <= 0 ? `${AN(1 - y)} ق.م` : `${AN(y)} م`;
+  const cJ = y => y <= 0 ? y - 1 : y;               /* Jones → نفس صيغة الشائع للمقارنة والترتيب */
+  const rng = (a, b) => (a < 0) === (b < 0) ? `${AN(Math.abs(a))}–${AN(Math.abs(b))} ${a < 0 ? "ق.م" : "م"}` : `${fC(a)} – ${fC(b)}`;
+  const refTxt = r => {
+    const [a, c1, v1, c2, v2] = r, n = AR[a];
+    if (v1 == null) return c1 === c2 ? `${n} ${AN(c1)}` : `${n} ${AN(c1)}–${AN(c2)}`;
+    if (c1 === c2) return v1 === v2 ? `${n} ${AN(c1)}: ${AN(v1)}` : `${n} ${AN(c1)}: ${AN(v1)}–${AN(v2)}`;
+    return `${n} ${AN(c1)}: ${AN(v1)} – ${AN(c2)}: ${AN(v2)}`;
+  };
+  const refUrl = r => r[2] == null ? `${r[0]}.html#/${r[0]}/ch/${r[1]}` : `${r[0]}.html#/${r[0]}/${r[1]}:${r[2]}`;
+  const norm = s => String(s).replace(/[\u064B-\u0652\u0640]/g, "").replace(/[أإآ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه").toLowerCase();
+  D.ev.forEach(e => { e.rt = (e.r || []).map(refTxt); e.hay = norm([e.t, e.l || "", e.x || "", e.rt.join(" "), (e.pp || []).map(p => p[0]).join(" "), (e.ll || []).join(" ")].join(" ")); });
+
+  let st = Object.assign({b: true, w: true, m: false, c: "c"}, sget("tl-opts", {}));
+  const pr = (id, v) => $(id).setAttribute("aria-pressed", v);
+  function syncBtns(){ pr("fB", st.b); pr("fW", st.w); pr("fM", st.m); pr("cC", st.c === "c"); pr("cJ", st.c === "j"); }
+
+  function yearHtml(e){
+    if (e.k === "w") return `<span>${e.ye ? rng(e.y, e.ye) : "نحو " + fC(e.y)}</span><span class="tag">تاريخ العالم</span>`;
+    const hasJ = e.j != null, same = hasJ && cJ(e.j) === e.y;
+    const com = (e.est ? "≈ " : "نحو ") + (e.ye ? rng(e.y, e.ye) : fC(e.y));
+    if (!hasJ) return `<span>${com}</span>`;
+    const jon = "نحو " + fJ(e.j);
+    if (same) return `<span>${com}</span><small>(نفس السنة في التأريخين)</small>`;
+    return st.c === "c" ? `<span>${com}</span><small>Jones: ${fJ(e.j)}</small>` : `<span>${jon}</span><small>الشائع: ${e.est ? "≈ " : ""}${e.ye ? rng(e.y, e.ye) : fC(e.y)}</small>`;
+  }
+  function hl(s, q){
+    if (!q) return esc(s);
+    /* تمييز بسيط: نطابق على النص المطبّع ونلوّن نفس الموضع */
+    const n = norm(s); let out = "", i = 0, k;
+    while ((k = n.indexOf(q, i)) >= 0) { out += esc(s.slice(i, k)) + "<mark>" + esc(s.slice(k, k + q.length)) + "</mark>"; i = k + q.length; }
+    return out + esc(s.slice(i));
+  }
+  function card(e, q){
+    const g = /^t\d/.test(e.i);
+    const lk = (e.r || []).map((r, i) => `<a href="${refUrl(r)}">${esc(e.rt[i])}</a>`).join("") + (e.d ? `<a class="pd" href="chrono_test.html#day-${e.d}">${CAL}في القراءة الزمنية · اليوم ${AN(e.d)}</a>` : "");
+    const open = q && e.x && norm(e.x).includes(q);
+    const pp = (e.pp || []).filter(p => p[0] !== "الله");
+    const ppl = pp.length ? `<div class="pp"><span class="lb">الأشخاص:</span>${pp.map(([a, l]) => D.bio[l] ? `<button type="button" class="pc" data-p="${l}" aria-haspopup="dialog">${hl(a, q)}</button>` : `<span class="pc">${hl(a, q)}</span>`).join("")}</div>` : "";
+    const lll = (e.ll || []).length && !e.l ? `<div class="pp"><span class="lb">الأماكن:</span>${e.ll.map(a => `<span class="pc">${hl(a, q)}</span>`).join("")}</div>` : "";
+    const acts = [];
+    if (e.x) acts.push(`<button type="button" class="more" data-t="x" aria-expanded="${!!open}">${open ? "إخفاء الوصف" : "اقرأ الوصف"}</button>`);
+    if (e.kx) acts.push(`<button type="button" class="more" data-t="kx" aria-expanded="false">شرح أوسع</button>`);
+    if (e.r) acts.push(`<button type="button" class="more" data-t="txt" aria-expanded="false">اقرأ النص</button>`);
+    return `<article class="ev ${e.k} ${g ? "g" : ""}" id="ev-${e.i}">
+      <div class="yr">${yearHtml(e)}</div>
+      <h3>${hl(e.t, q)}</h3>
+      ${e.l ? `<div class="loc">${PIN}${hl(e.l, q)}</div>` : ""}
+      ${e.x ? `<p class="x" data-b="x" ${open ? "" : "hidden"}>${hl(e.x, q)}</p>` : ""}
+      ${e.kx ? `<div class="kx" data-b="kx" hidden>${esc(e.kx)}<small>شرح معاد صياغته بالعربية عن kjvstudy.org</small></div>` : ""}
+      ${e.r ? `<div class="txt" data-b="txt" hidden></div>` : ""}
+      ${acts.length ? `<div class="acts">${acts.join("")}</div>` : ""}
+      ${ppl}${lll}
+      ${lk ? `<div class="lk">${lk}</div>` : ""}
+    </article>`;
+  }
+  /* نص الشاهد: يُحمَّل عند أول طلب */
+  let txtP = null;
+  const loadTxt = () => txtP || (txtP = new Promise((ok, no) => { const s = document.createElement("script"); s.src = "assets/chrono/timeline_text.js?v=1"; s.onload = () => ok(window.TLTXT); s.onerror = no; document.head.appendChild(s); }));
+  async function showTxt(box, id){
+    if (box.dataset.ld) return;
+    box.textContent = "جارٍ تحميل النص…";
+    try {
+      const T = (await loadTxt())[id];
+      if (!T) { box.textContent = "النص غير متاح."; return; }
+      const [a, n, vs] = T, e = D.ev.find(x => x.i === id), r = e.r[0];
+      let lastC = null;
+      box.innerHTML = vs.map(([c, v, t]) => { const h = (lastC !== null && c !== lastC) ? `<br><b class="vn">${AN(c)}</b> ` : ""; lastC = c; return `${h}<span class="vn">${AN(v)}</span>${esc(t)} `; }).join("")
+        + (n > vs.length ? `<span class="tm">عرضنا أول ${AN(vs.length)} عددًا من ${AN(n)}. <a href="${refUrl(r)}">اقرأ الشاهد كاملًا في المكتبة</a></span>` : `<span class="tm"><a href="${refUrl(r)}">افتح في المكتبة</a></span>`);
+      box.dataset.ld = 1;
+    } catch (err) { box.textContent = "تعذّر تحميل النص."; }
+  }
+  /* بطاقة الشخص */
+  const scrim = document.createElement("div"); scrim.className = "scrim";
+  const sheet = document.createElement("div"); sheet.className = "sheet"; sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.tabIndex = -1;
+  document.body.append(scrim, sheet);
+  let lastFocus = null;
+  function closeSheet(){ sheet.classList.remove("on"); scrim.classList.remove("on"); if (lastFocus) lastFocus.focus(); }
+  scrim.onclick = closeSheet;
+  document.addEventListener("keydown", k => { if (k.key === "Escape" && sheet.classList.contains("on")) closeSheet(); });
+  function openBio(l, from){
+    const b = D.bio[l]; if (!b) return;
+    const nm = (D.ev.find(e => (e.pp || []).some(p => p[1] === l)).pp.find(p => p[1] === l))[0];
+    const evs = D.ev.filter(e => (e.pp || []).some(p => p[1] === l));
+    sheet.innerHTML = `<div class="hd"><h3 id="bioH">${esc(nm)}</h3><button type="button" class="x" aria-label="إغلاق">×</button></div>
+      <p>${esc(b[0])}</p>
+      <h4>أهم الأحداث في حياته</h4><ol>${b[1].map(([t, r]) => `<li>${esc(t)} — <a href="${refUrl(r)}">${esc(refTxt(r))}</a></li>`).join("")}</ol>
+      ${evs.length ? `<h4>يرد في الخط الزمني (${AN(evs.length)})</h4><div class="inl">${evs.slice(0, 40).map(e => `<a href="#ev-${e.i}" data-go="${e.i}">${esc(e.t)}</a>`).join("")}</div>` : ""}
+      <div class="src">السيرة معاد صياغتها بالعربية عن kjvstudy.org (ISC).</div>`;
+    sheet.setAttribute("aria-labelledby", "bioH");
+    sheet.querySelector(".x").onclick = closeSheet;
+    sheet.querySelectorAll("[data-go]").forEach(a => a.onclick = ev => { ev.preventDefault(); closeSheet(); const t = $("ev-" + a.dataset.go); if (t) { t.scrollIntoView({behavior: "smooth", block: "center"}); t.animate([{boxShadow: "0 0 0 3px var(--brand-gold)"}, {boxShadow: "none"}], {duration: 1600}); } });
+    lastFocus = from; scrim.classList.add("on"); sheet.classList.add("on"); sheet.scrollTop = 0; sheet.focus();
+  }
+  const key = e => st.c !== "j" ? e.y : e.jk != null ? e.jk : e.j != null ? cJ(e.j) : e.y;
+  function render(){
+    const q = norm($("q").value.trim());
+    let h = "", nav = "", total = 0;
+    for (const er of ERAS) {
+      let list = D.ev.filter(e => e.e === er.i && (e.k === "w" ? st.w : st.b) && !(st.m && /^t\d/.test(e.i)) && (!q || e.hay.includes(q)));
+      if (!list.length) continue;
+      list = list.slice().sort((a, b) => key(a) - key(b) || a.s - b.s);
+      total += list.length;
+      const nb = list.filter(e => e.k === "b").length, nw = list.length - nb;
+      nav += `<button type="button" data-e="${er.i}"><i style="background:${er.c}"></i>${esc(er.n)}</button>`;
+      h += `<section class="era" id="era-${er.i}" style="--ec:${er.c}"><div class="eh"><h2>${esc(er.n)} <small>${rng(er.a, er.z)} تقريبًا</small></h2>
+        ${q ? "" : `<p class="eb">${esc(er.b)}</p>`}<div class="cnt">${AN(nb)} حدثًا كتابيًا${nw ? " · " + AN(nw) + " من تاريخ العالم" : ""}</div></div>
+        <div class="tl">${list.map(e => card(e, q)).join("")}</div></section>`;
+    }
+    $("tl").innerHTML = h || `<div class="empty">لا توجد أحداث تطابق البحث.</div>`;
+    $("enav").innerHTML = nav;
+    $("enav").querySelectorAll("button").forEach(b => b.onclick = () => { const s = $("era-" + b.dataset.e); s && s.scrollIntoView({behavior: "smooth", block: "start"}); });
+    const LB = {x: ["اقرأ الوصف", "إخفاء الوصف"], kx: ["شرح أوسع", "إخفاء الشرح"], txt: ["اقرأ النص", "إخفاء النص"]};
+    $("tl").querySelectorAll(".more").forEach(b => b.onclick = () => { const art = b.closest(".ev"), t = b.dataset.t, p = art.querySelector(`[data-b="${t}"]`), o = p.hidden; p.hidden = !o; b.setAttribute("aria-expanded", o); b.textContent = LB[t][o ? 1 : 0]; if (o && t === "txt") showTxt(p, art.id.slice(3)); });
+    $("tl").querySelectorAll("button.pc").forEach(b => b.onclick = () => openBio(b.dataset.p, b));
+    spy();
+  }
+  /* تمييز العصر الظاهر في الشريط */
+  let io;
+  function spy(){
+    if (io) io.disconnect();
+    if (!("IntersectionObserver" in window)) return;
+    io = new IntersectionObserver(ents => { ents.forEach(en => { if (en.isIntersecting) { const id = en.target.id.slice(4); $("enav").querySelectorAll("button").forEach(b => { const on = b.dataset.e === id; b.setAttribute("aria-current", on); if (on) b.scrollIntoView({block: "nearest", inline: "center"}); }); } }); }, {rootMargin: "-60px 0px -70% 0px"});
+    document.querySelectorAll(".era").forEach(s => io.observe(s));
+  }
+  const tog = k => () => { st[k] = !st[k]; if (!st.b && !st.w) st[k === "b" ? "w" : "b"] = true; sset("tl-opts", st); syncBtns(); render(); };
+  $("fB").onclick = tog("b"); $("fW").onclick = tog("w"); $("fM").onclick = tog("m");
+  $("cC").onclick = () => { st.c = "c"; sset("tl-opts", st); syncBtns(); render(); };
+  $("cJ").onclick = () => { st.c = "j"; sset("tl-opts", st); syncBtns(); render(); };
+  let t; $("q").oninput = () => { clearTimeout(t); t = setTimeout(render, 180); };
+  syncBtns(); render();
+})();
+</script>
+</body></html>

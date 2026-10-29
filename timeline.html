@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الخط الزمني — جدد وعتقاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=30d8fd70">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
+<meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
+<script src="assets/brand.js?v=2"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/sitemenu.js" defer></script>
+<style>
+html,body{overflow-x:clip;padding:0}
+body.lock{overflow:hidden}
+.cr{max-width:880px;margin:0 auto;padding:18px 16px 90px}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cr h1{font:700 26px/1.35 var(--display);color:var(--heading);margin:8px 0 4px;display:flex;align-items:center;gap:8px}
+.cr h1 .tic{width:26px;height:26px;color:var(--gold)}
+.cr .sub{color:var(--muted);margin:0 0 14px;font-size:14px;max-width:64ch}
+/* كيف تستخدم: مطوي بعد أول زيارة */
+.howto{padding:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;margin:0 0 14px;font-size:14px}
+.howto summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;font:700 14px var(--ui);color:var(--heading);border-radius:14px}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary svg{width:18px;height:18px;color:var(--gold);flex:none}
+.howto summary .chev{margin-inline-start:auto;color:var(--muted);transition:transform .2s}
+.howto[open] summary .chev{transform:rotate(180deg)}
+.howto summary:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+.howto .in{padding:0 16px 12px}.howto p{margin:0 0 6px}
+/* أدوات */
+:root{--tap:36px}
+@media (pointer:coarse){:root{--tap:44px}}
+.tools{display:grid;gap:10px;margin:0 0 10px}
+.srch{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:0 6px 0 12px;min-height:48px}
+.srch:focus-within{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.srch input{all:unset;flex:1;font:500 16px var(--ui);color:var(--ink);min-width:0;min-height:46px}
+.srch input::-webkit-search-cancel-button{display:none}
+.srch>svg{width:18px;height:18px;color:var(--muted);flex:none}
+.srch kbd{font:600 12px var(--ui);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 6px;line-height:20px}
+@media (pointer:coarse){.srch kbd{display:none}}
+.qx{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.qx svg{width:18px;height:18px}
+.qx:hover{color:var(--ink);background:var(--bg)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:0 14px;font:600 13px var(--ui);color:var(--ink);background:var(--paper);min-height:var(--tap);box-sizing:border-box}
+.chip svg{width:14px;height:14px;display:none}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.chip[aria-pressed="true"] svg{display:inline}
+.seg{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
+.seg button{all:unset;cursor:pointer;padding:0 14px;font:600 13px var(--ui);color:var(--ink);min-height:var(--tap);box-sizing:border-box;display:inline-flex;align-items:center}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--on-gold)}
+.seg .lb{padding:0 4px 0 10px;font:500 13px var(--ui);color:var(--muted)}
+.chip:focus-visible,.seg button:focus-visible,.evx:focus-visible,.qx:focus-visible,.totop:focus-visible,.ev .pp button:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+/* مفتاح الرموز (داخل «كيف تستخدم») */
+.howto .lgd{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;font:500 13px var(--ui);color:var(--muted);margin:8px 0 0}
+.howto .lgd b{color:var(--heading)}
+.lgd span{display:inline-flex;align-items:center;gap:6px}
+.lgd i{display:inline-block;box-sizing:border-box;background:var(--paper)}
+.lgd .m1{width:12px;height:12px;border-radius:50%;border:3px solid var(--gold)}
+.lgd .m2{width:10px;height:10px;border-radius:50%;border:2px solid var(--gold)}
+.lgd .m3{width:10px;height:10px;border-radius:2px;border:2px solid var(--muted);transform:rotate(45deg)}
+.rc{font:600 13px var(--ui);color:var(--muted);margin:2px 0 0;min-height:1em}
+.rc:empty{display:none}
+/* شريط العصور: اسم العصر الحالي + خط رفيع مقسوم على العصور */
+.ebar{position:sticky;top:0;z-index:5;background:var(--bg);margin:6px 0 4px;padding:6px 0 2px;border-bottom:1px solid var(--line)}
+.ebar[hidden]{display:none}
+.ebr{display:flex;align-items:center;gap:4px}
+.enb{all:unset;cursor:pointer;width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--ink)}
+.enb svg{width:20px;height:20px}
+.enb:hover{background:var(--paper)}
+.enb[disabled]{opacity:.3;cursor:default;background:none}
+.ecur{all:unset;cursor:pointer;flex:1;min-width:0;display:flex;align-items:baseline;justify-content:center;gap:8px;min-height:40px;padding:0 8px;border-radius:10px;align-items:center}
+.ecur:hover{background:var(--paper)}
+.ecur i{width:10px;height:10px;border-radius:50%;background:var(--ec);flex:none}
+.ecur b{font:700 16px var(--display);color:var(--heading);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ecur small{font:500 12.5px var(--ui);color:var(--muted);white-space:nowrap}
+.ecur .chv{width:16px;height:16px;color:var(--muted);flex:none;transition:transform .2s}
+.ecur[aria-expanded="true"] .chv{transform:rotate(180deg)}
+@media (max-width:420px){.ecur small{display:none}}
+.estrip{display:flex;gap:2px;margin:2px 4px 0}
+.estrip button{all:unset;cursor:pointer;flex-basis:0;min-width:10px;height:18px;display:flex;align-items:center}
+.estrip button::before{content:"";display:block;width:100%;height:4px;border-radius:2px;background:var(--ec);opacity:.35;transition:height .15s,opacity .15s}
+.estrip button:hover::before{opacity:.7}
+.estrip button[aria-current="true"]::before{height:8px;opacity:1}
+.estrip button[disabled]{cursor:default}
+.estrip button[disabled]::before{opacity:.12}
+.emenu{position:absolute;top:calc(100% + 4px);inset-inline:0;margin:0 auto;max-width:420px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:6px;max-height:min(70vh,520px);overflow:auto;z-index:6}
+.emenu[hidden]{display:none}
+.emenu button{all:unset;cursor:pointer;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 10px;border-radius:10px}
+.emenu button i{width:10px;height:10px;border-radius:50%;background:var(--ec);flex:none}
+.emenu button span{flex:1;font:600 14px var(--ui);color:var(--ink)}
+.emenu button small{font:500 12px var(--ui);color:var(--muted);white-space:nowrap}
+.emenu button:hover,.emenu button:focus-visible{background:var(--bg);outline:none}
+.emenu button[aria-current="true"]{background:color-mix(in srgb,var(--ec) 18%,var(--paper))}
+.emenu button[aria-current="true"] span{color:var(--heading)}
+.enb:focus-visible,.ecur:focus-visible,.estrip button:focus-visible{outline:2px solid var(--brand-gold);outline-offset:1px}
+/* العصر */
+.era{margin:18px 0 4px;scroll-margin-top:84px;content-visibility:auto}
+.era .eh{border-radius:16px;padding:14px 16px;background:var(--paper);border:1px solid var(--line);border-inline-start:6px solid var(--ec)}
+.era h2{font:700 20px/1.4 var(--display);color:var(--heading);margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.era h2 small{font:500 13px var(--ui);color:var(--muted)}
+.era .eb{margin:6px 0 0;font-size:14px;color:var(--ink);line-height:1.8}
+.era .cnt{font:500 12px var(--ui);color:var(--muted);margin-top:4px}
+/* الأحداث */
+.tl{position:relative;margin:10px 0 0;padding-inline-start:22px}
+.tl::before{content:"";position:absolute;inset-block:4px;inset-inline-start:7px;width:2px;background:var(--line);border-radius:2px}
+.ev{position:relative;margin:0 0 8px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px 12px 8px;scroll-margin-top:96px}
+.ev::before{content:"";position:absolute;inset-inline-start:-21px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:3px solid var(--ec);box-sizing:border-box}
+.ev.g{padding:8px 12px 6px}
+.ev.g::before{width:10px;height:10px;inset-inline-start:-20px;top:13px;border-width:2px}
+.ev.w{background:transparent;border-style:dashed}
+.ev.w::before{border-color:var(--muted);border-radius:2px;transform:rotate(45deg)}
+.ev.flash{animation:flash 1.8s ease-out}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--brand-gold)}100%{box-shadow:none}}
+.ev .yr{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;font:700 13px var(--ui);color:var(--gold);font-variant-numeric:tabular-nums}
+.ev .yr small{font:500 12px var(--ui);color:var(--muted)}
+.ev .tag{font:600 11px var(--ui);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 8px}
+.ev h3{font:700 16px/1.55 var(--ui);color:var(--ink);margin:2px 0 0;text-wrap:pretty}
+.ev.g h3{font-size:15px;font-weight:600}
+.ev.w h3{color:var(--muted)}
+.ev .loc{font-size:13px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px}
+.ev .loc svg,.ev .meta svg{width:14px;height:14px;flex:none}
+.ev .x{margin:6px 0 0;font-size:14.5px;line-height:1.85;color:var(--ink)}
+.ev .lk{display:flex;flex-wrap:wrap;gap:0 14px;align-items:center}
+.ev .lk a{color:var(--accent);text-decoration:none;font:500 14px var(--ui);display:inline-flex;align-items:center;gap:4px;min-height:36px}
+.ev .lk a span{border-bottom:1px solid var(--accent-soft)}
+.ev .lk a:hover span{border-bottom-color:var(--accent)}
+.ev .lk a.pd{color:var(--done);font-size:13px}
+.ev .lk a.pd span{border-bottom-color:transparent}
+.ev .lk a svg{width:14px;height:14px}
+/* الأشخاص (أزرار) والأماكن (نص) */
+.ev .pp{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.ev .pp .lb,.ev .meta .lb{font:600 12px var(--ui);color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+.ev .pp button{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font:600 13px var(--ui);color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent);border-radius:999px;padding:0 10px;min-height:32px;box-sizing:border-box}
+.ev .pp button svg{width:14px;height:14px}
+.ev .pp button:hover{background:var(--accent);color:var(--on-accent)}
+.ev .meta{font:500 13px/1.7 var(--ui);color:var(--ink);margin-top:6px;display:flex;flex-wrap:wrap;gap:0 6px;align-items:baseline}
+.ev .meta .sep{color:var(--muted)}
+/* أزرار التوسيع */
+.ev .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.evx{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font:600 13px var(--ui);color:var(--accent);border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:0 12px;min-height:var(--tap);box-sizing:border-box;transition:background .15s,border-color .15s}
+.evx svg{width:15px;height:15px;flex:none}
+.evx .chv{transition:transform .2s;width:14px;height:14px;opacity:.8}
+.evx[aria-expanded="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.evx[aria-expanded="true"] .chv{transform:rotate(180deg)}
+.evx:hover{border-color:var(--accent)}
+.evx.shr{color:var(--muted);margin-inline-start:auto;padding:0;width:var(--tap);justify-content:center}
+.ev .txt{margin:8px 0 2px;padding:10px 12px;background:var(--bg);border-radius:10px;border-inline-start:3px solid var(--ec);font:400 17px/1.95 var(--script, "Amiri", serif);color:var(--ink)}
+.ev .txt .vn{font:700 11px var(--ui);color:var(--gold);vertical-align:super;margin-inline-end:2px}
+.ev .txt .tm{display:block;margin-top:6px;font:500 13px var(--ui)}
+.ev .txt .tm a{color:var(--accent)}
+.ev .kx{margin:8px 0 2px;font-size:14.5px;line-height:1.9;color:var(--ink);background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.ev .kx small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+/* بطاقة الشخص */
+.scrim{position:fixed;inset:0;background:var(--scrim, rgba(0,0,0,.45));z-index:50;opacity:0;pointer-events:none;transition:opacity .22s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;inset-inline:0;bottom:0;z-index:51;max-height:85vh;overflow:auto;overscroll-behavior:contain;background:var(--paper);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:6px 16px 24px;transform:translateY(105%);transition:transform .22s ease;max-width:720px;margin:0 auto;visibility:hidden}
+.sheet.on{transform:none;visibility:visible}
+.sheet .hdl{display:block;width:44px;height:5px;border-radius:999px;background:var(--line);margin:4px auto 8px}
+.sheet .hd{display:flex;align-items:center;gap:10px;justify-content:space-between;position:sticky;top:-6px;background:var(--paper);padding:4px 0;z-index:1}
+.sheet h3{font:700 22px var(--display);color:var(--heading);margin:0}
+.sheet .x{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;border:1px solid var(--line);color:var(--ink);flex:none}
+.sheet .x svg{width:20px;height:20px}
+.sheet .x:focus-visible,.sheet a:focus-visible,.sheet button:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+.sheet p{font-size:15px;line-height:1.95;margin:10px 0}
+.sheet h4{font:700 14px var(--ui);color:var(--gold);margin:14px 0 6px}
+.sheet ol{margin:0;padding-inline-start:20px;font-size:14.5px;line-height:2}
+.sheet ol a,.sheet .inl a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+.sheet .inl{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:14px}
+.sheet .inl a{display:inline-flex;align-items:center;min-height:32px;border-bottom:0}
+.sheet .inl a span{border-bottom:1px solid var(--accent-soft)}
+.sheet .all{all:unset;cursor:pointer;display:inline-flex;align-items:center;min-height:36px;margin-top:4px;font:600 13px var(--ui);color:var(--accent);text-decoration:underline}
+.sheet .src{font-size:12px;color:var(--muted);margin-top:14px}
+.empty{padding:30px 10px;text-align:center;color:var(--muted)}
+.empty button{all:unset;cursor:pointer;color:var(--accent);text-decoration:underline;font-weight:600}
+mark{background:var(--mark);color:inherit;border-radius:3px}
+/* إشعار + للأعلى */
+.toast{position:fixed;inset-inline:16px;bottom:16px;margin:0 auto;max-width:440px;z-index:60;display:flex;align-items:center;background:var(--heading);color:var(--bg);border-radius:14px;padding:0 16px;box-shadow:var(--shadow);font:500 14px var(--ui);transform:translateY(140%);transition:transform .22s ease;min-height:48px}
+.toast.on{transform:none}
+.totop{all:unset;cursor:pointer;position:fixed;bottom:20px;inset-inline-end:20px;z-index:40;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--paper);color:var(--accent);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .2s,transform .2s}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop svg{width:22px;height:22px}
+.foot{margin-top:24px;font-size:13px;color:var(--muted);line-height:1.8;border-top:1px solid var(--line);padding-top:12px}
+.foot a{color:var(--accent)}
+.foot b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim,.toast,.totop,.evx .chv,.howto summary .chev{transition:none}.ev.flash{animation:none}}
+.qx[hidden]{display:none}
+@media (max-width:480px){.evx:not(.shr)>svg:first-child{display:none}.evx{padding:0 10px;gap:3px}.ev .acts{gap:5px}}
+/* زر المشاركة في زاوية البطاقة */
+.evx.shr{position:absolute;top:4px;inset-inline-end:4px;margin:0;border-color:transparent;background:transparent;width:40px;min-height:40px}
+.evx.shr:hover{border-color:var(--line);background:var(--bg)}
+.ev .yr,.ev h3{padding-inline-end:36px}
+</style>
+<!--seo-->
+<meta name="description" content="خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/timeline.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="الخط الزمني — جدد وعتقاء">
+<meta property="og:description" content="خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/timeline.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="الخط الزمني — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="الخط الزمني — جدد وعتقاء">
+<meta name="twitter:description" content="خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head><body>
+<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
+<main class="cr">
+  <h1 id="top"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16"/><path d="M8 8v8"/><path d="M16 8v8"/><path d="M12 5v14"/></svg> الخط الزمني</h1>
+  <p class="sub">أحداث الكتاب المقدس من الخليقة إلى نهاية عصر الرسل في عشرة عصور، ومعها أحداث من تاريخ العالم في نفس الوقت، لترى ما كان يحدث حول قصة الكتاب.</p>
+  <details class="howto" id="howto"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M12 16v.01"/><path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"/></svg>كيف تستخدم هذه الصفحة؟<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"/></svg></summary>
+    <div class="in"><p>اختر عصرًا من الشريط أو ابحث عن حدث أو اسم. اضغط على الشاهد لتفتح الأصحاح في المكتبة، أو على «في القراءة الزمنية» لتذهب إلى يومه في خطة القراءة.</p>
+    <p>تُعرض الأحداث الرئيسية أولًا؛ ألغِ «الأحداث الرئيسية فقط» لترى كل التفاصيل (الملوك والقضاة والأنبياء…). البحث يشمل كل الأحداث دائمًا.</p>
+    <p>لكل حدث كتابي سنتان: بحسب التأريخ الشائع وبحسب تأريخ Jones، واختر من الأعلى أيهما يُرتَّب به الخط. اضغط «اقرأ النص» لتقرأ الشاهد داخل البطاقة بنفس نص المكتبة، واضغط على اسم شخص ملوّن لتقرأ سيرته، وعلى زر المشاركة لتنسخ رابط الحدث.</p>
+    <p class="lgd"><b>الرموز:</b><span><i class="m1"></i>حدث رئيسي</span><span><i class="m2"></i>حدث تفصيلي</span><span><i class="m3"></i>من تاريخ العالم</span></p></div></details>
+  <div class="tools">
+    <label class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><input id="q" type="search" placeholder="ابحث: داود، الهيكل، بابل، يونان…" aria-label="بحث في الأحداث" aria-describedby="rc" enterkeyhint="search" autocomplete="off"><kbd aria-hidden="true">/</kbd><button type="button" class="qx" id="qx" aria-label="مسح البحث" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg></button></label>
+    <div class="opts">
+      <button type="button" class="chip" id="fB" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>أحداث الكتاب</button>
+      <button type="button" class="chip" id="fW" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>أحداث العالم</button>
+      <button type="button" class="chip" id="fM" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>الأحداث الرئيسية فقط</button>
+      <span class="seg" role="group" aria-label="التأريخ"><span class="lb">التأريخ:</span><button type="button" id="cC" aria-pressed="true">الشائع</button><button type="button" id="cJ" aria-pressed="false">Jones</button></span>
+    </div>
+    <div class="rc" id="rc" aria-live="polite"></div>
+  </div>
+  <nav class="ebar" id="ebar" aria-label="العصور">
+    <div class="ebr">
+      <button type="button" class="enb" id="ePrev" aria-label="العصر السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>
+      <button type="button" class="ecur" id="eCur" aria-haspopup="true" aria-expanded="false" aria-controls="eMenu"><i></i><b id="eName"></b><small id="eYrs"></small><svg class="chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"/></svg></button>
+      <button type="button" class="enb" id="eNext" aria-label="العصر التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6l6 6"/></svg></button>
+    </div>
+    <div class="estrip" id="estrip"></div>
+    <div class="emenu" id="eMenu" role="menu" aria-label="اختر عصرًا" hidden></div>
+  </nav>
+  <div id="tl"></div>
+  <div class="foot">
+    شاهد أيضًا <a href="chrono.html">القراءة الزمنية</a>: الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث.
+    <br><br>    <b>عن السنين:</b> تواريخ العهد القديم غير مؤكدة، ويختلف فيها الدارسون. نعرض رأيين:
+    <br>• <b>التأريخ الشائع</b>: الحساب المحافظ التقليدي الذي يضع الخروج نحو ١٤٤٦ ق.م وانقسام المملكة نحو ٩٣٠ ق.م، وهو المعتمد في بيانات <a href="https://github.com/theonize/timeline" target="_blank" rel="noopener">theonize/timeline</a>.
+    <br>• <b>تأريخ Jones</b>: حساب Floyd Nolen Jones الذي تعتمده بيانات <a href="https://github.com/robertrouse/theographic-bible-metadata" target="_blank" rel="noopener">Theographic</a>، ويضع الخروج نحو ١٤٩١ ق.م وانقسام المملكة نحو ٩٧٥ ق.م. وهو التأريخ المستخدم في صفحة <a href="chrono.html">القراءة الزمنية</a>.
+    <br>الفرق بينهما في زمن الآباء نحو ١٧٠ سنة، ومن الخروج إلى الملوك نحو ٤٠–٦٠ سنة، ويصغر حتى يكاد يختفي من السبي فما بعد. العلامة <b>≈</b> تعني أن الحدث أصله في Theographic وسنته في التأريخ الشائع مقدّرة بالقياس على أقرب حدث له تاريخ في المصدرين.
+    <br><br>الأحداث الرئيسية وأوصافها وأحداث العالم معرّبة عن <a href="https://github.com/theonize/timeline" target="_blank" rel="noopener">theonize/timeline</a> (MIT)، والأحداث الإضافية (الملوك والقضاة والأنبياء وتفاصيل الأناجيل وسفر الأعمال) من <a href="https://github.com/robertrouse/theographic-bible-metadata" target="_blank" rel="noopener">Theographic</a> (CC BY-SA 4.0)، وأوصافها مكتوبة لهذه الصفحة.
+    <br>نص الشواهد في «اقرأ النص» هو نفس النص المستخدم في صفحات المكتبة. أسماء الأشخاص والأماكن في كل حدث من بيانات Theographic، وقراءتها بالعربية من وسوم <a href="https://github.com/STEPBible/STEPBible-Data" target="_blank" rel="noopener">STEPBible</a> لترجمة فاندايك (CC BY-SA). «الشرح الأوسع» لـ٥٠ حدثًا رئيسيًا وسير ٩٢ شخصية معاد صياغتها بالعربية عن <a href="https://github.com/kennethreitz/kjvstudy.org" target="_blank" rel="noopener">kjvstudy.org</a> (ISC)، مع اقتباس الآيات من فاندايك.
+  </div>
+</main>
+<button type="button" class="totop" id="totop" aria-label="العودة لأعلى الصفحة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5l0 14"/><path d="M18 11l-6 -6"/><path d="M6 11l6 -6"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/chrono/timeline.js?v=3"></script>
+<script>
+(function(){
+  "use strict";
+  const D = window.TL, AR = D.ar, ERAS = D.eras;
+  const AN = s => String(s).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const $ = id => document.getElementById(id);
+  const sget = (k, d) => { try { const v = localStorage.getItem("tsklib:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const sset = (k, v) => { try { localStorage.setItem("tsklib:" + k, JSON.stringify(v)); } catch (e) {} };
+  const IC = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  const PIN = IC('<path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/>');
+  const CAL = IC('<path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/>');
+  const USER = IC('<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>');
+  const CHV = IC('<path d="M6 9l6 6l6 -6"/>').replace("<svg ", '<svg class="chv" ');
+  const SHARE = IC('<path d="M9 15l6 -6"/><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"/><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"/>');
+  const XIC = IC('<path d="M18 6l-12 12"/><path d="M6 6l12 12"/>');
+  const BTN_IC = {
+    x: IC('<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/>'),
+    kx: IC('<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/>'),
+    txt: IC('<path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6l0 13"/><path d="M12 6l0 13"/><path d="M21 6l0 13"/>')
+  };
+  const LB = {x: ["اقرأ الوصف", "إخفاء الوصف"], kx: ["شرح أوسع", "إخفاء الشرح"], txt: ["اقرأ النص", "إخفاء النص"]};
+  /* السنين: الشائع (y) سالب = ق.م بلا سنة صفر؛ Jones (j) فلكي: ٠ = ١ ق.م */
+  const fC = y => y < 0 ? `${AN(-y)} ق.م` : `${AN(y)} م`;
+  const fJ = y => y <= 0 ? `${AN(1 - y)} ق.م` : `${AN(y)} م`;
+  const cJ = y => y <= 0 ? y - 1 : y;               /* Jones → نفس صيغة الشائع للمقارنة والترتيب */
+  const rng = (a, b) => (a < 0) === (b < 0) ? `${AN(Math.abs(a))}–${AN(Math.abs(b))} ${a < 0 ? "ق.م" : "م"}` : `${fC(a)} – ${fC(b)}`;
+  const refTxt = r => {
+    const [a, c1, v1, c2, v2] = r, n = AR[a];
+    if (v1 == null) return c1 === c2 ? `${n} ${AN(c1)}` : `${n} ${AN(c1)}–${AN(c2)}`;
+    if (c1 === c2) return v1 === v2 ? `${n} ${AN(c1)}: ${AN(v1)}` : `${n} ${AN(c1)}: ${AN(v1)}–${AN(v2)}`;
+    return `${n} ${AN(c1)}: ${AN(v1)} – ${AN(c2)}: ${AN(v2)}`;
+  };
+  const refUrl = r => r[2] == null ? `${r[0]}.html#/${r[0]}/ch/${r[1]}` : `${r[0]}.html#/${r[0]}/${r[1]}:${r[2]}`;
+  /* تطبيع البحث: حذف التشكيل والتطويل وتوحيد الهمزات — مع خريطة مواضع للنص الأصلي */
+  const DIA = /[ً-ْٰـ]/;
+  const MAPC = {"أ": "ا", "إ": "ا", "آ": "ا", "ٱ": "ا", "ى": "ي", "ة": "ه"};
+  function normMap(s){
+    s = String(s); let n = "", map = [];
+    for (let i = 0; i < s.length; i++) { const c = s[i]; if (DIA.test(c)) continue; n += (MAPC[c] || c).toLowerCase(); map.push(i); }
+    return {n, map};
+  }
+  const norm = s => normMap(s).n;
+  const isMain = e => !/^t\d/.test(e.i);
+  D.ev.forEach(e => { e.rt = (e.r || []).map(refTxt); e.hay = norm([e.t, e.l || "", e.x || "", e.rt.join(" "), (e.pp || []).map(p => p[0]).join(" "), (e.ll || []).join(" ")].join(" ")); });
+
+  const saved = sget("tl-opts", null);
+  /* أول زيارة: الأحداث الرئيسية فقط، حتى لا تكون الصفحة طويلة جدًا */
+  let st = Object.assign({b: true, w: true, m: true, c: "c"}, saved || {});
+  const pr = (id, v) => $(id).setAttribute("aria-pressed", v);
+  function syncBtns(){ pr("fB", st.b); pr("fW", st.w); pr("fM", st.m); pr("cC", st.c === "c"); pr("cJ", st.c === "j"); }
+
+  function yearHtml(e){
+    if (e.k === "w") return `<span>${e.ye ? rng(e.y, e.ye) : "نحو " + fC(e.y)}</span><span class="tag">تاريخ العالم</span>`;
+    const hasJ = e.j != null, same = hasJ && cJ(e.j) === e.y;
+    const com = (e.est ? "≈ " : "نحو ") + (e.ye ? rng(e.y, e.ye) : fC(e.y));
+    if (!hasJ) return `<span>${com}</span>`;
+    const jon = "نحو " + fJ(e.j);
+    if (same) return `<span>${com}</span><small>(نفس السنة في التأريخين)</small>`;
+    return st.c === "c" ? `<span>${com}</span><small>Jones: ${fJ(e.j)}</small>` : `<span>${jon}</span><small>الشائع: ${e.est ? "≈ " : ""}${e.ye ? rng(e.y, e.ye) : fC(e.y)}</small>`;
+  }
+  /* التمييز: نطابق على النص المطبَّع ثم نرجع لمواضع النص الأصلي، فيبقى التشكيل داخل التمييز */
+  function hl(s, q){
+    if (!q) return esc(s);
+    const {n, map} = normMap(s); let out = "", i = 0, k = 0, from = 0;
+    while ((k = n.indexOf(q, from)) >= 0) {
+      const a = map[k]; let b = map[k + q.length - 1] + 1;
+      while (b < s.length && DIA.test(s[b])) b++;
+      out += esc(s.slice(i, a)) + "<mark>" + esc(s.slice(a, b)) + "</mark>"; i = b; from = k + q.length;
+    }
+    return out + esc(s.slice(i));
+  }
+  function card(e, q){
+    const g = !isMain(e);
+    const lk = (e.r || []).map((r, i) => `<a href="${refUrl(r)}"><span>${esc(e.rt[i])}</span></a>`).join("") + (e.d ? `<a class="pd" href="chrono.html#day-${e.d}">${CAL}<span>في القراءة الزمنية · اليوم ${AN(e.d)}</span></a>` : "");
+    const open = q && e.x && norm(e.x).includes(q);
+    const pp = (e.pp || []).filter(p => p[0] !== "الله");
+    const bio = pp.filter(p => D.bio[p[1]]), plain = pp.filter(p => !D.bio[p[1]]);
+    const ppl = pp.length ? `<div class="pp"><span class="lb">الأشخاص:</span>${bio.map(([a, l]) => `<button type="button" data-p="${l}" aria-haspopup="dialog" aria-label="سيرة ${esc(a)}">${USER}${hl(a, q)}</button>`).join("")}${plain.length ? `<span class="meta" style="margin:0">${plain.map(([a]) => hl(a, q)).join('<span class="sep"> · </span>')}</span>` : ""}</div>` : "";
+    const lll = (e.ll || []).length && !e.l ? `<div class="meta"><span class="lb">${PIN}الأماكن:</span>${e.ll.map(a => hl(a, q)).join('<span class="sep"> · </span>')}</div>` : "";
+    const acts = [];
+    const xb = (t, on) => `<button type="button" class="evx" data-t="${t}" aria-expanded="${on}">${BTN_IC[t]}<span>${LB[t][on ? 1 : 0]}</span>${CHV}</button>`;
+    if (e.x) acts.push(xb("x", !!open));
+    if (e.kx) acts.push(xb("kx", false));
+    if (e.r) acts.push(xb("txt", false));
+    acts.push(`<button type="button" class="evx shr" data-share="${e.i}" aria-label="نسخ رابط الحدث: ${esc(e.t)}" title="نسخ رابط الحدث">${SHARE}</button>`);
+    return `<article class="ev ${e.k} ${g ? "g" : ""}" id="ev-${e.i}" aria-labelledby="h-${e.i}">
+      <div class="yr">${yearHtml(e)}</div>
+      <h3 id="h-${e.i}">${hl(e.t, q)}</h3>
+      ${e.l ? `<div class="loc">${PIN}${hl(e.l, q)}</div>` : ""}
+      ${e.x ? `<p class="x" data-b="x" ${open ? "" : "hidden"}>${hl(e.x, q)}</p>` : ""}
+      ${e.kx ? `<div class="kx" data-b="kx" hidden>${esc(e.kx)}<small>شرح معاد صياغته بالعربية عن kjvstudy.org</small></div>` : ""}
+      ${e.r ? `<div class="txt" data-b="txt" hidden></div>` : ""}
+      ${ppl}${lll}
+      ${lk ? `<div class="lk">${lk}</div>` : ""}
+      <div class="acts">${acts.join("")}</div>
+    </article>`;
+  }
+  /* نص الشاهد: يُحمَّل عند أول طلب */
+  let txtP = null;
+  const loadTxt = () => txtP || (txtP = new Promise((ok, no) => { const s = document.createElement("script"); s.src = "assets/chrono/timeline_text.js?v=1"; s.onload = () => ok(window.TLTXT); s.onerror = () => { txtP = null; no(); }; document.head.appendChild(s); }));
+  async function showTxt(box, id){
+    if (box.dataset.ld) return;
+    box.textContent = "جارٍ تحميل النص…";
+    try {
+      const T = (await loadTxt())[id];
+      if (!T) { box.textContent = "النص غير متاح."; return; }
+      const [a, n, vs] = T, e = D.ev.find(x => x.i === id), r = e.r[0];
+      let lastC = null;
+      box.innerHTML = vs.map(([c, v, t]) => { const h = (lastC !== null && c !== lastC) ? `<br><b class="vn">${AN(c)}</b> ` : ""; lastC = c; return `${h}<span class="vn">${AN(v)}</span>${esc(t)} `; }).join("")
+        + (n > vs.length ? `<span class="tm">عرضنا أول ${AN(vs.length)} عددًا من ${AN(n)}. <a href="${refUrl(r)}">اقرأ الشاهد كاملًا في المكتبة</a></span>` : `<span class="tm"><a href="${refUrl(r)}">افتح في المكتبة</a></span>`);
+      box.dataset.ld = 1;
+    } catch (err) { box.textContent = "تعذّر تحميل النص. تحقّق من الاتصال وحاول مرة أخرى."; }
+  }
+  /* إشعار */
+  let toastT;
+  function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 3000); }
+  async function share(id){
+    const e = D.ev.find(x => x.i === id), url = location.href.split("#")[0].split("?")[0] + "#ev-" + id;
+    if (navigator.share && matchMedia("(pointer:coarse)").matches) { try { await navigator.share({title: e.t + " — الخط الزمني", url}); return; } catch (err) { if (err && err.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(url); toast("تم نسخ رابط الحدث"); }
+    catch (err) { history.replaceState(null, "", "#ev-" + id); toast("الرابط الآن في شريط العنوان، انسخه من هناك"); }
+  }
+
+  /* بطاقة الشخص */
+  const scrim = document.createElement("div"); scrim.className = "scrim";
+  const sheet = document.createElement("div"); sheet.className = "sheet"; sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.tabIndex = -1;
+  document.body.append(scrim, sheet);
+  let lastFocus = null;
+  function closeSheet(){
+    if (!sheet.classList.contains("on")) return;
+    sheet.classList.remove("on"); scrim.classList.remove("on"); sheet.style.transform = ""; document.body.classList.remove("lock");
+    if (lastFocus && document.contains(lastFocus)) lastFocus.focus({preventScroll: true});
+  }
+  scrim.onclick = closeSheet;
+  document.addEventListener("keydown", k => {
+    if (!sheet.classList.contains("on")) return;
+    if (k.key === "Escape") { closeSheet(); return; }
+    if (k.key === "Tab") {                              /* حصر التركيز داخل البطاقة */
+      const f = [...sheet.querySelectorAll("a[href],button:not([disabled])")].filter(x => x.offsetParent !== null);
+      if (!f.length) return;
+      const a = f[0], z = f[f.length - 1];
+      if (k.shiftKey && (document.activeElement === a || document.activeElement === sheet)) { k.preventDefault(); z.focus(); }
+      else if (!k.shiftKey && document.activeElement === z) { k.preventDefault(); a.focus(); }
+    }
+  });
+  /* السحب للأسفل للإغلاق */
+  let dragY = null;
+  sheet.addEventListener("touchstart", t => { if (sheet.scrollTop <= 0) dragY = t.touches[0].clientY; }, {passive: true});
+  sheet.addEventListener("touchmove", t => { if (dragY == null) return; const dy = t.touches[0].clientY - dragY; if (dy > 0) { sheet.style.transition = "none"; sheet.style.transform = `translateY(${dy}px)`; } }, {passive: true});
+  sheet.addEventListener("touchend", t => { if (dragY == null) return; const dy = t.changedTouches[0].clientY - dragY; dragY = null; sheet.style.transition = ""; if (dy > 90) closeSheet(); else sheet.style.transform = ""; });
+  function openBio(l, from){
+    const b = D.bio[l]; if (!b) return;
+    const nm = (D.ev.find(e => (e.pp || []).some(p => p[1] === l)).pp.find(p => p[1] === l))[0];
+    const evs = D.ev.filter(e => (e.pp || []).some(p => p[1] === l));
+    const evLink = e => `<a href="#ev-${e.i}" data-go="${e.i}"><span>${esc(e.t)}</span></a>`;
+    sheet.innerHTML = `<span class="hdl" aria-hidden="true"></span><div class="hd"><h3 id="bioH">${esc(nm)}</h3><button type="button" class="x" aria-label="إغلاق">${XIC}</button></div>
+      <p>${esc(b[0])}</p>
+      <h4>أهم الأحداث في حياته</h4><ol>${b[1].map(([t, r]) => `<li>${esc(t)} — <a href="${refUrl(r)}">${esc(refTxt(r))}</a></li>`).join("")}</ol>
+      ${evs.length ? `<h4>يرد في الخط الزمني (${AN(evs.length)})</h4><div class="inl" id="bioEv">${evs.slice(0, 30).map(evLink).join("")}</div>${evs.length > 30 ? `<button type="button" class="all" id="bioAll">عرض الكل (${AN(evs.length)})</button>` : ""}` : ""}
+      <div class="src">السيرة معاد صياغتها بالعربية عن kjvstudy.org (ISC).</div>`;
+    sheet.setAttribute("aria-labelledby", "bioH");
+    sheet.querySelector(".x").onclick = closeSheet;
+    const wire = () => sheet.querySelectorAll("[data-go]").forEach(a => a.onclick = ev => { ev.preventDefault(); closeSheet(); goEvent(a.dataset.go); });
+    const all = $("bioAll"); if (all) all.onclick = () => { $("bioEv").innerHTML = evs.map(evLink).join(""); all.remove(); wire(); $("bioEv").querySelectorAll("a")[30].focus(); };
+    wire();
+    lastFocus = from; document.body.classList.add("lock"); scrim.classList.add("on"); sheet.classList.add("on"); sheet.scrollTop = 0; sheet.focus({preventScroll: true});
+  }
+
+
+  const key = e => st.c !== "j" ? e.y : e.jk != null ? e.jk : e.j != null ? cJ(e.j) : e.y;
+  const qNow = () => norm($("q").value.trim());
+  function visible(e, q){
+    if (!(e.k === "w" ? st.w : st.b)) return false;
+    if (q) return e.hay.includes(q);                      /* البحث يشمل كل الأحداث */
+    return !(st.m && !isMain(e));
+  }
+  let curEra = null;
+  function render(){
+    const q = qNow();
+    let h = "", strip = "", menu = "", total = 0; shown = [];
+    for (const er of ERAS) {
+      let list = D.ev.filter(e => e.e === er.i && visible(e, q));
+      strip += `<button type="button" data-e="${er.i}" style="--ec:${er.c};flex-grow:${Math.sqrt(er.z - er.a).toFixed(1)}" aria-label="${esc(er.n)}" title="${esc(er.n)}" ${list.length ? "" : "disabled"}></button>`;
+      if (!list.length) continue;
+      list = list.slice().sort((a, b) => key(a) - key(b) || a.s - b.s);
+      total += list.length;
+      const nb = list.filter(e => e.k === "b").length, nw = list.length - nb;
+      shown.push(er);
+      menu += `<button type="button" role="menuitem" data-e="${er.i}" style="--ec:${er.c}"><i></i><span>${esc(er.n)}</span><small>${rng(er.a, er.z)} · ${AN(list.length)}</small></button>`;
+      h += `<section class="era" id="era-${er.i}" style="--ec:${er.c};contain-intrinsic-size:auto ${120 + list.length * (q ? 190 : 150)}px" aria-labelledby="eh-${er.i}"><div class="eh"><h2 id="eh-${er.i}">${esc(er.n)} <small>${rng(er.a, er.z)} تقريبًا</small></h2>
+        ${q ? "" : `<p class="eb">${esc(er.b)}</p>`}<div class="cnt">${AN(nb)} حدثًا كتابيًا${nw ? " · " + AN(nw) + " من تاريخ العالم" : ""}</div></div>
+        <div class="tl">${list.map(e => card(e, q)).join("")}</div></section>`;
+    }
+    const raw = $("q").value.trim();
+    $("tl").innerHTML = h || `<div class="empty">لا توجد أحداث تطابق «${esc(raw)}».<br><button type="button" id="emptyClr">مسح البحث</button></div>`;
+    const ec = $("emptyClr"); if (ec) ec.onclick = () => { $("q").value = ""; onQ(true); $("q").focus(); };
+    $("rc").textContent = raw && total ? `${total === 1 ? "حدث واحد يطابق" : total === 2 ? "حدثان يطابقان" : total <= 10 ? AN(total) + " أحداث تطابق" : AN(total) + " حدثًا يطابق"} «${raw}»` : "";
+    $("estrip").innerHTML = strip;
+    $("eMenu").innerHTML = menu;
+    $("estrip").querySelectorAll("button").forEach(b => b.onclick = () => jumpEra(b.dataset.e));
+    $("eMenu").querySelectorAll("button").forEach(b => b.onclick = () => { closeMenu(false); jumpEra(b.dataset.e); });
+    $("tl").querySelectorAll(".evx[data-t]").forEach(b => b.onclick = () => {
+      const art = b.closest(".ev"), t = b.dataset.t, p = art.querySelector(`[data-b="${t}"]`), o = p.hidden;
+      p.hidden = !o; b.setAttribute("aria-expanded", o); b.querySelector("span").textContent = LB[t][o ? 1 : 0];
+      if (o && t === "txt") showTxt(p, art.id.slice(3));
+    });
+    $("tl").querySelectorAll("[data-share]").forEach(b => b.onclick = () => share(b.dataset.share));
+    $("tl").querySelectorAll(".pp button").forEach(b => b.onclick = () => openBio(b.dataset.p, b));
+    curEra = null; $("ebar").hidden = !shown.length; if (shown.length) setEra(shown[0].i); spy();
+  }
+  /* مع content-visibility تكون أطوال العصور البعيدة تقديرية، فنصحّح الموضع بعد أن تُرسم */
+  function scrollToEl(el, block){
+    el.scrollIntoView({block});
+    requestAnimationFrame(() => { el.scrollIntoView({block}); setTimeout(() => el.scrollIntoView({block}), 120); });
+  }
+  /* تمييز العصر الظاهر في الشريط والخريطة */
+  let io;
+  let shown = [];
+  function jumpEra(id){ const s = $("era-" + id); if (s) { setEra(id); scrollToEl(s, "start"); } }
+  function setEra(id){
+    if (id === curEra) return; curEra = id;
+    const er = ERAS.find(x => x.i === id), k = shown.findIndex(x => x.i === id);
+    $("ebar").style.setProperty("--ec", er.c);
+    $("eName").textContent = er.n; $("eYrs").textContent = rng(er.a, er.z);
+    $("eCur").setAttribute("aria-label", `العصر الحالي: ${er.n}، ${rng(er.a, er.z)}. اختر عصرًا آخر`);
+    $("ePrev").disabled = k <= 0; $("eNext").disabled = k < 0 || k >= shown.length - 1;
+    $("estrip").querySelectorAll("button").forEach(b => b.setAttribute("aria-current", b.dataset.e === id));
+    $("eMenu").querySelectorAll("button").forEach(b => b.setAttribute("aria-current", b.dataset.e === id));
+  }
+  function spy(){
+    if (io) io.disconnect();
+    if (!("IntersectionObserver" in window)) return;
+    io = new IntersectionObserver(ents => { ents.forEach(en => { if (en.isIntersecting) setEra(en.target.id.slice(4)); }); }, {rootMargin: "-90px 0px -60% 0px"});
+    document.querySelectorAll(".era").forEach(s => io.observe(s));
+  }
+  /* الروابط: #ev-… و#era-… و#day-N (من القراءة الزمنية) */
+  function goEvent(id){
+    const e = D.ev.find(x => x.i === id); if (!e) return false;
+    let changed = false;
+    if (!visible(e, qNow())) {
+      if (qNow() && !e.hay.includes(qNow())) { $("q").value = ""; syncURL(); }
+      if (e.k === "w" && !st.w) { st.w = true; changed = true; }
+      if (e.k !== "w" && !st.b) { st.b = true; changed = true; }
+      if (!qNow() && st.m && !isMain(e)) { st.m = false; changed = true; }
+      if (changed) sset("tl-opts", st);
+      syncBtns(); render();
+    }
+    const el = $("ev-" + id); if (!el) return false;
+    history.replaceState(null, "", location.pathname + location.search + "#ev-" + id);
+    requestAnimationFrame(() => { scrollToEl(el, "center"); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); });
+    return true;
+  }
+  function handleHash(){
+    const h = decodeURIComponent(location.hash);
+    let m;
+    if ((m = h.match(/^#ev-(.+)$/))) return goEvent(m[1]);
+    if ((m = h.match(/^#era-(.+)$/))) { const s = $("era-" + m[1]); if (s) requestAnimationFrame(() => scrollToEl(s, "start")); return; }
+    if ((m = h.match(/^#day-(\d+)$/))) {
+      const n = +m[1], withD = D.ev.filter(e => e.d);
+      let best = withD.filter(e => e.d === n);
+      if (!best.length) { const before = withD.filter(e => e.d < n); best = before.length ? before.filter(e => e.d === Math.max(...before.map(x => x.d))) : withD.filter(e => e.d === Math.min(...withD.map(x => x.d))); }
+      best.sort((a, b) => (isMain(b) - isMain(a)) || key(a) - key(b));
+      if (best[0]) { goEvent(best[0].i); toast(`أحداث يوم ${AN(n)} من القراءة الزمنية`); }
+    }
+  }
+
+  /* البحث: عدد النتائج، زر مسح، «/» للتركيز، وحفظه في الرابط */
+  function syncURL(){
+    const v = $("q").value.trim(), u = new URL(location.href);
+    if (v) u.searchParams.set("q", v); else u.searchParams.delete("q");
+    history.replaceState(null, "", u.pathname + u.search + u.hash);
+  }
+  let t;
+  function onQ(now){ $("qx").hidden = !$("q").value; clearTimeout(t); const go = () => { syncURL(); render(); }; if (now) go(); else t = setTimeout(go, 180); }
+  $("q").oninput = () => onQ(false);
+  $("q").addEventListener("keydown", k => { if (k.key === "Escape" && $("q").value) { k.stopPropagation(); $("q").value = ""; onQ(true); } });
+  $("qx").onclick = () => { $("q").value = ""; onQ(true); $("q").focus(); };
+  document.addEventListener("keydown", k => {
+    if (k.key === "/" && !k.ctrlKey && !k.metaKey && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && !sheet.classList.contains("on")) { k.preventDefault(); $("q").focus(); $("q").select(); }
+  });
+
+  const tog = k => () => { st[k] = !st[k]; if (!st.b && !st.w) st[k === "b" ? "w" : "b"] = true; sset("tl-opts", st); syncBtns(); render(); };
+  $("fB").onclick = tog("b"); $("fW").onclick = tog("w"); $("fM").onclick = tog("m");
+  $("cC").onclick = () => { st.c = "c"; sset("tl-opts", st); syncBtns(); render(); };
+  $("cJ").onclick = () => { st.c = "j"; sset("tl-opts", st); syncBtns(); render(); };
+
+  /* «كيف تستخدم» مفتوح في أول زيارة فقط */
+  const ht = $("howto"); if (!sget("tl-howto-seen", false)) { ht.open = true; sset("tl-howto-seen", true); }
+  /* زر العودة للأعلى */
+  const tt = $("totop");
+  addEventListener("scroll", () => tt.classList.toggle("on", scrollY > 1400), {passive: true});
+  tt.onclick = () => { scrollTo({top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); $("q").focus({preventScroll: true}); };
+  /* شريط العصور: السابق/التالي وقائمة العصور */
+  const step = d => { const k = shown.findIndex(x => x.i === curEra) + d; if (shown[k]) jumpEra(shown[k].i); };
+  $("ePrev").onclick = () => step(-1); $("eNext").onclick = () => step(1);
+  function openMenu(){ $("eMenu").hidden = false; $("eCur").setAttribute("aria-expanded", "true"); const c = $("eMenu").querySelector('[aria-current="true"]') || $("eMenu").querySelector("button"); c && c.focus(); }
+  function closeMenu(refocus){ if ($("eMenu").hidden) return; $("eMenu").hidden = true; $("eCur").setAttribute("aria-expanded", "false"); if (refocus) $("eCur").focus(); }
+  $("eCur").onclick = () => $("eMenu").hidden ? openMenu() : closeMenu(true);
+  document.addEventListener("click", ev => { if (!$("ebar").contains(ev.target)) closeMenu(false); });
+  $("eMenu").addEventListener("keydown", k => {
+    const b = [...$("eMenu").querySelectorAll("button")], i = b.indexOf(document.activeElement);
+    if (k.key === "Escape") { k.preventDefault(); closeMenu(true); }
+    else if (k.key === "ArrowDown") { k.preventDefault(); b[(i + 1) % b.length].focus(); }
+    else if (k.key === "ArrowUp") { k.preventDefault(); b[(i - 1 + b.length) % b.length].focus(); }
+    else if (k.key === "Tab") closeMenu(false);
+  });
+  addEventListener("hashchange", handleHash);
+
+  { const q0 = new URLSearchParams(location.search).get("q"); if (q0) { $("q").value = q0; $("qx").hidden = false; } }
+  syncBtns(); render(); handleHash();
+})();
+</script>
+</body></html>

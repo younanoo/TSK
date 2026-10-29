@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>القراءة الزمنية — جدد وعتقاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=30d8fd70">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
+<meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
+<script src="assets/brand.js?v=2"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/sitemenu.js" defer></script>
+<style>
+html,body{overflow-x:clip;padding:0}
+.cr{max-width:880px;margin:0 auto;padding:18px 16px 90px}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cr h1{font:700 26px/1.35 var(--display);color:var(--heading);margin:8px 0 4px;display:flex;align-items:center;gap:8px}
+.cr h1 .tic{width:26px;height:26px;color:var(--gold)}
+.cr .sub{color:var(--muted);margin:0 0 14px;font-size:14px;max-width:64ch}
+/* كيف تستخدم: مطوي بعد أول زيارة */
+.howto{padding:0;background:var(--paper);border:1px solid var(--line);border-radius:14px;margin:0 0 16px;font-size:14px}
+.howto summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;font:700 14px var(--ui);color:var(--heading);border-radius:14px}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary svg{width:18px;height:18px;color:var(--gold);flex:none}
+.howto summary .chev{margin-inline-start:auto;color:var(--muted);transition:transform .2s}
+.howto[open] summary .chev{transform:rotate(180deg)}
+.howto summary:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+.howto .in{padding:0 16px 12px}.howto p{margin:0 0 6px}
+/* اليوم الحالي */
+.today{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px;margin:0 0 14px;position:relative;overflow:hidden;scroll-margin-top:12px}
+.today::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:5px;background:linear-gradient(var(--accent),var(--gold))}
+.today .hd{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
+.today .dn{font:700 14px var(--ui);color:var(--gold)}
+.today .yr{font:500 13px var(--ui);color:var(--muted)}
+.today h2{font:700 24px/1.4 var(--display);color:var(--heading);margin:6px 0 12px;text-wrap:balance}
+.rdg{display:flex;flex-wrap:wrap;gap:8px}
+.rdg a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:8px 14px;font:600 15px var(--ui);min-height:44px;box-sizing:border-box}
+.rdg a:hover{background:var(--accent);color:var(--on-accent)}
+.rdg a.done{border-color:var(--done);background:transparent;color:var(--done)}
+.today .act{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.today .act .pri{grid-column:1/-1;justify-content:center}
+.today .act .sec{justify-content:center}
+.today .tlk{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:12px;font-size:14px}
+.today .tlk a{color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:5px;min-height:32px;border-bottom:1px solid var(--accent-soft)}
+.today .tlk a svg{width:16px;height:16px}
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border-radius:12px;padding:9px 16px;font:600 15px var(--ui);min-height:48px;box-sizing:border-box;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.pri{background:var(--accent);color:var(--on-accent)}
+.btn.pri.is-done{background:transparent;color:var(--done);border:1px solid var(--done)}
+.btn.sec{border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.btn:focus-visible,.rdg a:focus-visible,.dy button:focus-visible,.tlk a:focus-visible{outline:2px solid var(--brand-gold);outline-offset:2px}
+.btn[disabled]{opacity:.45;cursor:default}
+/* التقدم */
+.prog{display:flex;justify-content:space-between;font:500 13px var(--ui);color:var(--muted);margin:0 0 6px}
+.prog b{color:var(--done)}
+/* شريط الشهور: اسم الشهر + خط تقدّم مقسوم على ١٢ شهرًا */
+.mbar{position:relative;margin:0 0 6px;padding:2px 0 0}
+.mbr{display:flex;align-items:center;gap:4px}
+.mnb{all:unset;cursor:pointer;width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--ink)}
+.mnb svg{width:20px;height:20px}
+.mnb:hover{background:var(--paper)}
+.mnb[disabled]{opacity:.3;cursor:default;background:none}
+.mcur{all:unset;cursor:pointer;flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 8px;border-radius:10px}
+.mcur:hover{background:var(--paper)}
+.mcur b{font:700 17px var(--display);color:var(--heading);white-space:nowrap}
+.mcur small{font:500 12.5px var(--ui);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.mcur .chv{width:16px;height:16px;color:var(--muted);flex:none;transition:transform .2s}
+.mcur[aria-expanded="true"] .chv{transform:rotate(180deg)}
+.mstrip{display:flex;gap:3px;margin:2px 4px 0}
+.mstrip button{all:unset;cursor:pointer;position:relative;flex:1;height:22px;display:flex;align-items:center}
+.mstrip button::before{content:"";position:absolute;inset-inline:0;top:50%;height:5px;margin-top:-2.5px;border-radius:3px;background:var(--line);transition:height .15s,margin .15s}
+.mstrip button i{position:absolute;inset-inline-start:0;top:50%;height:5px;margin-top:-2.5px;border-radius:3px;background:var(--done);transition:height .15s,margin .15s,width .3s}
+.mstrip button[aria-current="true"]::before{height:10px;margin-top:-5px;background:color-mix(in srgb,var(--gold) 35%,var(--line))}
+.mstrip button[aria-current="true"] i{height:10px;margin-top:-5px}
+.mstrip button.rd::after{content:"";position:absolute;inset-inline-start:50%;top:-1px;width:5px;height:5px;margin-inline-start:-2.5px;border-radius:50%;background:var(--accent)}
+.mstrip button:hover::before{background:color-mix(in srgb,var(--gold) 25%,var(--line))}
+.mmenu{position:absolute;top:calc(100% + 4px);inset-inline:0;margin:0 auto;max-width:440px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:6px;max-height:min(70vh,560px);overflow:auto;z-index:6}
+.mmenu[hidden]{display:none}
+.mmenu button{all:unset;cursor:pointer;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:4px 12px;border-radius:10px}
+.mmenu button span{font:600 14px var(--ui);color:var(--ink);white-space:nowrap}
+.mmenu button em{font:600 11px var(--ui);font-style:normal;color:var(--on-accent);background:var(--accent);border-radius:999px;padding:1px 8px;margin-inline-start:6px}
+.mmenu button small{font:500 12px var(--ui);color:var(--muted);text-align:end}
+.mmenu button:hover,.mmenu button:focus-visible{background:var(--bg);outline:none}
+.mmenu button[aria-current="true"]{background:var(--gold-soft)}
+.mnb:focus-visible,.mcur:focus-visible,.mstrip button:focus-visible{outline:2px solid var(--brand-gold);outline-offset:1px}
+.mhd{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;margin:4px 0 10px;min-height:36px}
+.mhd h2{font:700 17px var(--display);color:var(--heading);margin:0}
+.mhd h2 small{font:500 13px var(--ui);color:var(--muted)}
+.mhd .back{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:600 13px var(--ui);color:var(--accent);border:1px solid var(--accent);background:var(--accent-soft);border-radius:999px;padding:0 12px;min-height:36px}
+.mhd .back svg{width:16px;height:16px}
+.list{display:grid;gap:8px}
+.dy{display:grid;grid-template-columns:auto 1fr;gap:0 6px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:4px 8px 6px 12px;scroll-margin-top:80px}
+.dy.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.dy.ok{background:var(--bg)}
+.dy.flash{animation:flash 1.8s ease-out}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--brand-gold)}100%{box-shadow:none}}
+/* مساحة لمس ٤٤×٤٤ حول مربع ٢٨ */
+.dy .ck{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;border-radius:10px;margin-inline-start:-6px}
+.dy .ck span{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;color:transparent;transition:background .15s,border-color .15s}
+.dy .ck:hover span{border-color:var(--done)}
+.dy.ok .ck span{background:var(--done);border-color:var(--done);color:var(--on-done)}
+.dy .ck svg{width:18px;height:18px}
+.dy .body{min-width:0;padding-top:6px}
+.dy .top{all:unset;cursor:pointer;display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;border-radius:8px;min-height:32px}
+.dy .top:hover .th{color:var(--accent)}
+.dy .n{font:700 13px var(--ui);color:var(--gold);font-variant-numeric:tabular-nums}
+.dy .th{font:700 16px/1.5 var(--ui);color:var(--ink)}
+.dy .y{font-size:12px;color:var(--muted)}
+.dy .cu{font:600 11px var(--ui);color:var(--on-accent);background:var(--accent);border-radius:999px;padding:1px 8px}
+.dy .lk{display:flex;flex-wrap:wrap;gap:0 14px}
+.dy .lk a{color:var(--accent);text-decoration:none;font:500 14px var(--ui);display:inline-flex;align-items:center;min-height:36px}
+.dy .lk a span{border-bottom:1px solid var(--accent-soft)}
+.dy .lk a:hover span{border-bottom-color:var(--accent)}
+.dy.ok .th,.dy.ok .lk a{color:var(--muted)}
+/* إشعار مع تراجع */
+.toast{position:fixed;inset-inline:16px;bottom:16px;margin:0 auto;max-width:440px;z-index:60;display:flex;align-items:center;gap:12px;background:var(--heading);color:var(--bg);border-radius:14px;padding:6px 8px 6px 16px;box-shadow:var(--shadow);font:500 14px var(--ui);transform:translateY(140%);transition:transform .22s ease;min-height:52px;box-sizing:border-box}
+.toast.on{transform:none}
+.toast span{flex:1}
+.toast button{all:unset;cursor:pointer;font:700 14px var(--ui);color:inherit;text-decoration:underline;text-underline-offset:4px;padding:0 12px;min-height:44px;display:inline-flex;align-items:center;border-radius:10px}
+.toast button:focus-visible{outline:2px solid var(--brand-gold);outline-offset:0}
+.foot{margin-top:24px;font-size:13px;color:var(--muted);line-height:1.8;border-top:1px solid var(--line);padding-top:12px}
+.foot a{color:var(--accent)}
+.foot button{all:unset;cursor:pointer;color:var(--red);text-decoration:underline;min-height:36px;display:inline-flex;align-items:center}
+@media (prefers-reduced-motion:reduce){.toast,.btn,.dy .ck span{transition:none}.dy.flash{animation:none}}
+</style>
+<!--seo-->
+<meta name="description" content="خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/chrono.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="القراءة الزمنية — جدد وعتقاء">
+<meta property="og:description" content="خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/chrono.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="القراءة الزمنية — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="القراءة الزمنية — جدد وعتقاء">
+<meta name="twitter:description" content="خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head><body>
+<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
+<main class="cr">
+  <h1><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M8 15h2v2h-2z"/></svg> القراءة الزمنية</h1>
+  <p class="sub">الكتاب المقدس كله في ٣٦٥ يومًا، مرتّبًا بحسب وقت حدوث الأحداث: أيوب مع زمن الآباء، والمزامير مع حياة داود، والأنبياء مع الملوك الذين عاصروهم، والأناجيل الأربعة معًا، والرسائل في مكانها من رحلات بولس.</p>
+  <details class="howto" id="howto"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M12 16v.01"/><path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483"/></svg>كيف تستخدم هذه الصفحة؟<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"/></svg></summary>
+    <div class="in"><p>اضغط على أي قراءة لتفتح الأصحاح في المكتبة. بعد أن تنتهي من قراءات اليوم، اضغط «قرأت قراءة اليوم»، وإن ضغطت بالخطأ اختر «تراجع» من الإشعار الذي يظهر أسفل الشاشة.</p>
+    <p>تستطيع أن تبدأ من أي يوم: اضغط على عنوان أي يوم في القائمة ليصبح «قراءة اليوم».</p>
+    <p>يُحفظ تقدّمك في هذا المتصفح فقط.</p></div></details>
+
+  <section class="today" id="today" aria-labelledby="todayH"></section>
+  <div class="vh" id="live" aria-live="polite"></div>
+  <div class="prog" id="prog"></div>
+
+  <nav class="mbar" id="mbar" aria-label="شهور الخطة">
+    <div class="mbr">
+      <button type="button" class="mnb" id="mPrev" aria-label="الشهر السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></button>
+      <button type="button" class="mcur" id="mCur" aria-haspopup="true" aria-expanded="false" aria-controls="mMenu"><b id="mName"></b><small id="mInfo"></small><svg class="chv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"/></svg></button>
+      <button type="button" class="mnb" id="mNext" aria-label="الشهر التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6l6 6"/></svg></button>
+    </div>
+    <div class="mstrip" id="mstrip"></div>
+    <div class="mmenu" id="mMenu" role="menu" aria-label="اختر شهرًا" hidden></div>
+  </nav>
+  <div class="mhd" id="mhd"></div>
+  <div class="list" id="list"></div>
+
+  <div class="foot">
+    ترتيب القراءات مبني على تواريخ الآيات في بيانات <a href="https://github.com/robertrouse/theographic-bible-metadata" target="_blank" rel="noopener">Theographic</a> (CC BY-SA 4.0)، وترتيب الأناجيل الأربعة على خطة <a href="https://github.com/kennethreitz/kjvstudy.org" target="_blank" rel="noopener">kjvstudy.org</a> (ISC) بعد إكمال الأعداد الناقصة منها. عناوين الأيام معرّبة ومعدّلة عن عناوين kjvstudy.org حيث تغطي نفس الشواهد، والباقي مكتوب لهذه الخطة.<br>السنوات تقريبية بحسب تسلسل Floyd Nolen Jones الذي تعتمده Theographic، وهو رأي من عدة آراء في التأريخ؛ لذلك لا تُعرض سنة لأيام البدايات وسفر أيوب والأناجيل.
+    <br>شاهد أيضًا <a href="timeline.html">الخط الزمني</a>: أحداث الكتاب المقدس في عشرة عصور مع أحداث العالم في نفس الوقت.
+    <br><button type="button" id="reset">مسح تقدّمي والبدء من جديد</button>
+  </div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastT"></span><button type="button" id="toastU">تراجع</button></div>
+<script src="assets/chrono/plan.js?v=3"></script>
+<script>
+(function(){
+  "use strict";
+  const P = window.CHRONO, DAYS = P.days, AR = P.ar, N = DAYS.length;
+  const AN = s => String(s).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const $ = id => document.getElementById(id);
+  const sget = (k, d) => { try { const v = localStorage.getItem("tsklib:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const sset = (k, v) => { try { if (v == null) localStorage.removeItem("tsklib:" + k); else localStorage.setItem("tsklib:" + k, JSON.stringify(v)); } catch (e) {} };
+  let done = new Set(sget("chrono-done", []));
+  let cur = sget("chrono-cur", null);
+  const IC = (p, w) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w || 2}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+  const CHECK = IC('<path d="M5 12l5 5l10 -10"/>', 3);
+  const BOOKIC = IC('<path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6l0 13"/><path d="M12 6l0 13"/><path d="M21 6l0 13"/>').replace("<svg ", '<svg style="width:16px;height:16px" ');
+  const UNDO = IC('<path d="M9 14l-4 -4l4 -4"/><path d="M5 10h11a4 4 0 1 1 0 8h-1"/>');
+  const NEXT = IC('<path d="M5 12h14"/><path d="M5 12l6 6"/><path d="M5 12l6 -6"/>');   /* في RTL «التالي» يشير لليسار */
+  const PREV = IC('<path d="M5 12h14"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/>');
+  const TLIC = IC('<path d="M4 12h16"/><path d="M8 8v8"/><path d="M16 8v8"/><path d="M12 5v14"/>');
+  const TODAYIC = IC('<path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/><path d="M8 15h2v2h-2z"/>');
+
+  /* r = [سفر، أصحاح البداية، عدد البداية أو null، أصحاح النهاية، عدد النهاية أو null] */
+  const refTxt = r => {
+    const [a, c1, v1, c2, v2] = r, n = AR[a];
+    if (v1 == null) return c1 === c2 ? `${n} ${AN(c1)}` : `${n} ${AN(c1)}–${AN(c2)}`;
+    if (c1 === c2) return `${n} ${AN(c1)}: ${AN(v1)}–${AN(v2)}`;
+    return `${n} ${AN(c1)}: ${AN(v1)} – ${AN(c2)}: ${AN(v2)}`;
+  };
+  const refUrl = r => r[2] == null ? `${r[0]}.html#/${r[0]}/ch/${r[1]}` : `${r[0]}.html#/${r[0]}/${r[1]}:${r[2]}`;
+  const yearTxt = (e, y) => y == null ? e : `${e} · ${y <= 0 ? `نحو ${AN(1 - y)} ق.م` : `نحو ${AN(y)} م`}`;
+  const theme = d => DAYS[d - 1][2] || DAYS[d - 1][3].map(refTxt).join("، ");
+  const firstOpen = () => { for (let i = 1; i <= N; i++) if (!done.has(i)) return i; return N; };
+  if (!cur || cur < 1 || cur > N) cur = firstOpen();
+
+  /* الشهور: ١٢ جزءًا متقاربة */
+  const MONTHS = ["الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر","الحادي عشر","الثاني عشر"];
+  const mStart = m => Math.round(m * N / 12) + 1, mEnd = m => Math.round((m + 1) * N / 12);
+  const monthOf = d => { for (let m = 0; m < 12; m++) if (d <= mEnd(m)) return m; return 11; };
+  let month = monthOf(cur);
+  /* الرابط #day-N يفتح اليوم ويميّزه دون أن يغيّر موضع قراءتك */
+  let flashDay = null;
+  { const hm = location.hash.match(/^#day-(\d+)$/); if (hm && +hm[1] >= 1 && +hm[1] <= N) { flashDay = +hm[1]; month = monthOf(flashDay); } }
+
+  function save(){ sset("chrono-done", [...done]); sset("chrono-cur", cur); }
+  const live = t => { $("live").textContent = ""; setTimeout(() => $("live").textContent = t, 30); };
+
+
+  /* إشعار مع تراجع */
+  let toastT, undoFn = null;
+  function toast(msg, undo){
+    $("toastT").textContent = msg; undoFn = undo || null; $("toastU").hidden = !undo;
+    $("toast").classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => $("toast").classList.remove("on"), 6000);
+  }
+  $("toastU").onclick = () => { if (undoFn) undoFn(); undoFn = null; $("toast").classList.remove("on"); };
+
+  function renderToday(){
+    const [e, y, , rs, n] = DAYS[cur - 1];
+    const isDone = done.has(cur);
+    $("today").innerHTML = `<div class="hd"><span class="dn">قراءة اليوم · اليوم ${AN(cur)} من ${AN(N)}</span><span class="yr">${yearTxt(e, y)} · ${AN(n)} عددًا</span></div>
+      <h2 id="todayH">${esc(theme(cur))}</h2>
+      <div class="rdg">${rs.map(r => `<a href="${refUrl(r)}" class="${isDone ? "done" : ""}">${BOOKIC}${esc(refTxt(r))}</a>`).join("")}</div>
+      <div class="act">
+        <button type="button" class="btn pri ${isDone ? "is-done" : ""}" id="mark" aria-pressed="${isDone}">${isDone ? CHECK + "قرأتها — اضغط للإلغاء" : CHECK + "قرأت قراءة اليوم"}</button>
+        <button type="button" class="btn sec" id="prev" ${cur <= 1 ? "disabled" : ""}>${PREV}اليوم السابق</button>
+        <button type="button" class="btn sec" id="next" ${cur >= N ? "disabled" : ""}>اليوم التالي${NEXT}</button>
+      </div>
+      <div class="tlk"><a href="timeline.html#day-${cur}">${TLIC}ماذا كان يحدث وقتها؟ افتح الخط الزمني</a></div>`;
+    $("mark").onclick = () => {
+      const was = cur;
+      if (done.has(cur)) { done.delete(cur); save(); renderAll(); live(`ألغيت تعليم اليوم ${AN(was)}`); }
+      else {
+        done.add(cur); if (cur < N) cur++; save(); month = monthOf(cur); renderAll();
+        live(`تم تعليم اليوم ${AN(was)} كمقروء. قراءة اليوم الآن: اليوم ${AN(cur)}`);
+        toast(`أحسنت! تم تعليم اليوم ${AN(was)} كمقروء.`, () => { done.delete(was); cur = was; save(); month = monthOf(cur); renderAll(); live(`تراجعت. قراءة اليوم: اليوم ${AN(cur)}`); });
+      }
+      $("mark").focus();
+    };
+    $("prev").onclick = () => go(cur - 1, "prev");
+    $("next").onclick = () => go(cur + 1, "next");
+  }
+  function go(d, focusId){
+    if (d < 1 || d > N) return;
+    cur = d; save(); month = monthOf(cur); renderAll();
+    live(`قراءة اليوم: اليوم ${AN(cur)}، ${theme(cur)}`);
+    const f = focusId && $(focusId); if (f && !f.disabled) f.focus(); else $("mark").focus();
+  }
+  function renderProg(){
+    const k = done.size, pc = Math.round(k * 100 / N);
+    $("prog").innerHTML = `<span>قرأت <b>${AN(k)}</b> من ${AN(N)} يومًا</span><span>${AN(pc)}٪</span>`;
+  }
+  function booksIn(m){ const s = []; for (let d = mStart(m); d <= mEnd(m); d++) DAYS[d - 1][3].forEach(r => { if (!s.includes(r[0])) s.push(r[0]); }); return s; }
+  const monthDone = m => { let k = 0; for (let d = mStart(m); d <= mEnd(m); d++) if (done.has(d)) k++; return k; };
+  function chipCount(m){ const k = monthDone(m), all = mEnd(m) - mStart(m) + 1; return k === all ? "✓ مكتمل" : AN(k) + "/" + AN(all); }
+  const monthAll = m => mEnd(m) - mStart(m) + 1;
+  const mBooks = m => booksIn(m).slice(0, 2).map(x => AR[x]).join("، ");
+  function renderMonths(){
+    const cm = monthOf(cur);
+    $("mName").textContent = "الشهر " + MONTHS[month];
+    $("mInfo").textContent = `${mBooks(month)} · ${chipCount(month)}`;
+    $("mCur").setAttribute("aria-label", `الشهر ${MONTHS[month]}: ${mBooks(month)}، ${chipCount(month)}. اختر شهرًا آخر`);
+    $("mPrev").disabled = month <= 0; $("mNext").disabled = month >= 11;
+    $("mstrip").innerHTML = MONTHS.map((t, m) => {
+      const k = monthDone(m), pc = Math.round(k * 100 / monthAll(m));
+      return `<button type="button" data-m="${m}" aria-current="${m === month}" class="${m === cm ? "rd" : ""}" aria-label="الشهر ${t}: قرأت ${AN(k)} من ${AN(monthAll(m))}" title="الشهر ${t} · ${AN(k)}/${AN(monthAll(m))}"><i style="width:${pc}%"></i></button>`;
+    }).join("");
+    $("mMenu").innerHTML = MONTHS.map((t, m) => `<button type="button" role="menuitem" data-m="${m}" aria-current="${m === month}"><span>الشهر ${t}${m === cm ? ' <em>قراءة اليوم</em>' : ""}</span><small>${esc(mBooks(m))} · ${chipCount(m)}</small></button>`).join("");
+    $("mstrip").querySelectorAll("button").forEach(b => b.onclick = () => setMonth(+b.dataset.m));
+    $("mMenu").querySelectorAll("button").forEach(b => b.onclick = () => { closeMenu(false); setMonth(+b.dataset.m); $("mCur").focus(); });
+  }
+  function setMonth(m){ if (m < 0 || m > 11) return; month = m; renderMonths(); renderList(); live(`الشهر ${MONTHS[m]}: ${mBooks(m)}`); }
+  function openMenu(){ $("mMenu").hidden = false; $("mCur").setAttribute("aria-expanded", "true"); const c = $("mMenu").querySelector('[aria-current="true"]'); c && (c.scrollIntoView({block: "nearest"}), c.focus()); }
+  function closeMenu(refocus){ if ($("mMenu").hidden) return; $("mMenu").hidden = true; $("mCur").setAttribute("aria-expanded", "false"); if (refocus) $("mCur").focus(); }
+  function rowHtml(d){
+    const [e, y, th, rs] = DAYS[d - 1], ok = done.has(d);
+    return `<div class="dy ${ok ? "ok" : ""} ${d === cur ? "cur" : ""}" id="d${d}">
+      <button type="button" class="ck" data-d="${d}" role="checkbox" aria-checked="${ok}" aria-label="اليوم ${AN(d)} مقروء"><span>${CHECK}</span></button>
+      <div class="body"><button type="button" class="top" data-go="${d}" title="اجعله قراءة اليوم" aria-label="اليوم ${AN(d)}: ${esc(th || "")}. اجعله قراءة اليوم"><span class="n">اليوم ${AN(d)}</span>${th ? `<span class="th">${esc(th)}</span>` : ""}<span class="y">${yearTxt(e, y)}</span>${d === cur ? `<span class="cu">قراءة اليوم</span>` : ""}</button>
+      <div class="lk">${rs.map(r => `<a href="${refUrl(r)}"><span>${esc(refTxt(r))}</span></a>`).join("")}</div></div></div>`;
+  }
+  function renderList(){
+    const bs = booksIn(month), a = mStart(month), b = mEnd(month), cm = monthOf(cur);
+    $("mhd").innerHTML = `<h2><span class="vh">الشهر ${MONTHS[month]}: </span><small>الأيام ${AN(a)}–${AN(b)} · ${esc(bs.slice(0, 5).map(x => AR[x]).join("، "))}${bs.length > 5 ? "…" : ""}</small></h2>${month !== cm ? `<button type="button" class="back" id="backCur">${TODAYIC}ارجع لقراءة اليوم</button>` : ""}`;
+    const bc = $("backCur"); if (bc) bc.onclick = () => { month = cm; renderMonths(); renderList(); const r = $("d" + cur); if (r) { r.scrollIntoView({behavior: "smooth", block: "center"}); r.querySelector(".top").focus({preventScroll: true}); } };
+    let h = ""; for (let d = a; d <= b; d++) h += rowHtml(d);
+    $("list").innerHTML = h;
+    wireRows($("list"));
+  }
+  function wireRows(root){
+    root.querySelectorAll(".ck").forEach(c => c.onclick = () => toggleDay(+c.dataset.d));
+    root.querySelectorAll(".top").forEach(t => t.onclick = () => { go(+t.dataset.go); $("today").scrollIntoView({behavior: "smooth", block: "start"}); $("mark").focus({preventScroll: true}); });
+  }
+  /* تعليم يوم من القائمة: نحدّث الصف وحده — لا قفز ولا ضياع للتركيز */
+  function toggleDay(d){
+    const ok = !done.has(d); ok ? done.add(d) : done.delete(d); save();
+    const row = $("d" + d);
+    if (row) { row.classList.toggle("ok", ok); const c = row.querySelector(".ck"); c.setAttribute("aria-checked", ok); }
+    renderProg();
+    renderMonths();
+    if (d === cur) renderToday();
+    live(`اليوم ${AN(d)}: ${ok ? "مقروء" : "غير مقروء"}`);
+  }
+  function renderAll(){ renderToday(); renderProg(); renderMonths(); renderList(); }
+
+  /* «كيف تستخدم» مفتوح في أول زيارة فقط */
+  const ht = $("howto"); if (!sget("chrono-howto-seen", false)) { ht.open = true; sset("chrono-howto-seen", true); }
+
+  $("mPrev").onclick = () => setMonth(month - 1);
+  $("mNext").onclick = () => setMonth(month + 1);
+  $("mCur").onclick = () => $("mMenu").hidden ? openMenu() : closeMenu(true);
+  document.addEventListener("click", ev => { if (!$("mbar").contains(ev.target)) closeMenu(false); });
+  $("mMenu").addEventListener("keydown", k => {
+    const b = [...$("mMenu").querySelectorAll("button")], i = b.indexOf(document.activeElement);
+    if (k.key === "Escape") { k.preventDefault(); closeMenu(true); }
+    else if (k.key === "ArrowDown") { k.preventDefault(); b[(i + 1) % b.length].focus(); }
+    else if (k.key === "ArrowUp") { k.preventDefault(); b[(i - 1 + b.length) % b.length].focus(); }
+    else if (k.key === "Tab") closeMenu(false);
+  });
+  $("reset").onclick = () => {
+    const b = $("reset");
+    if (b.dataset.sure) {
+      const old = [new Set(done), cur];
+      done = new Set(); cur = 1; month = 0; save(); delete b.dataset.sure; b.textContent = "مسح تقدّمي والبدء من جديد"; renderAll();
+      toast("تم مسح تقدّمك.", () => { [done, cur] = old; month = monthOf(cur); save(); renderAll(); });
+    } else { b.dataset.sure = 1; b.textContent = "اضغط مرة أخرى للتأكيد"; setTimeout(() => { delete b.dataset.sure; b.textContent = "مسح تقدّمي والبدء من جديد"; }, 4000); }
+  };
+  renderAll();
+  function showDay(d){ month = monthOf(d); renderMonths(); renderList(); const r = $("d" + d); if (r) requestAnimationFrame(() => { r.scrollIntoView({block: "center"}); r.classList.remove("flash"); void r.offsetWidth; r.classList.add("flash"); }); }
+  if (flashDay) showDay(flashDay);
+  addEventListener("hashchange", () => { const hm = location.hash.match(/^#day-(\d+)$/); if (hm && +hm[1] >= 1 && +hm[1] <= N) showDay(+hm[1]); });
+})();
+</script>
+</body></html>
