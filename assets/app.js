@@ -116,11 +116,20 @@ function gotoRef(q){
   if(!c1)return false;
   location.href=pageOf(c1.abbr,"/"+c1.abbr+"/"+c+":"+v);return true}
 function sideTools(){
-  if(!$("#findSec")){const h=$("#home");h&&h.insertAdjacentHTML("afterend",`<div class="side-sec" id="findSec" data-sec="find"><h4 class="sh">الانتقال والبحث</h4><div class="sbody"><form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="اذهب إلى عدد: إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off"></form>
-<a id="srchLink" class="tool" target="tsksearch" href="search.html" style="text-decoration:none;display:block;margin-top:8px">${ic("search")} بحث في الكتاب المقدس (فاندايك)</a><a class="tool" target="tskstrong" href="strong.html" style="text-decoration:none;display:block;margin-top:8px">${ic("language")} بحث في قاموس سترونج (برقم الكلمة)</a><a class="tool" target="tskarword" href="arword.html" style="text-decoration:none;display:block;margin-top:8px">${ic("language")} بحث بكلمة عربية (الجذر والأصل)</a><a class="tool" target="_blank" href="grammar.html" style="text-decoration:none;display:block;margin-top:8px">${ic("microscope")} بحث نحوي باللغات الأصلية</a><a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none;display:block;margin-top:8px">${ic("topology-star-3")} الخريطة الذهنية للشواهد</a><a class="tool" target="tsktopics" href="topics.html" style="text-decoration:none;display:block;margin-top:8px">${ic("tags")} فهرس المواضيع (٤٦ ألف موضوع)</a><a class="tool" target="_blank" href="sources.html" style="text-decoration:none;display:block;margin-top:8px">${ic("books")} المصادر والمراجع</a><a class="tool" href="chrono.html" style="text-decoration:none;display:block;margin-top:8px">${ic("calendar")} القراءة الزمنية (٣٦٥ يومًا)</a><a class="tool" href="timeline.html" style="text-decoration:none;display:block;margin-top:8px">${ic("timeline")} الخط الزمني للأحداث</a><button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button></div></div>`);
+  /* القائمة الجانبية الموحّدة — نفس ترتيب assets/sitemenu.js:
+     ١) اذهب إلى عدد  ٢) الأسفار (موجودة في الصفحة)  ٣) الكتاب عبر الزمن  ٤) أدوات البحث  ٥) صفحات أخرى */
+  if($("#findSec"))return;
+  const L=(h,i,t,x="")=>`<a class="tool" href="${h}"${x} style="text-decoration:none;display:block;margin-top:8px">${ic(i)} ${t}</a>`;
+  const sec=(id,k,t,body)=>`<div class="side-sec" id="${id}" data-sec="${k}"><h4 class="sh">${t}</h4><div class="sbody">${body}</div></div>`;
+  const h=$("#home");
+  h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","اذهب إلى عدد",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="مثال: يو ٣:١٦ أو إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off" enterkeyhint="go"></form>`));
+  const after=sec("timeSec","time","الكتاب عبر الزمن",L("chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)")+L("timeline.html","timeline","الخط الزمني للأحداث"))
+    +sec("toolSec","tools","أدوات البحث",L("search.html","search","بحث في الكتاب المقدس (فاندايك)",' id="srchLink" target="tsksearch"')+L("strong.html","language","بحث في قاموس سترونج (برقم الكلمة)",' target="tskstrong"')+L("arword.html","language","بحث بكلمة عربية (الجذر والأصل)",' target="tskarword"')+L("grammar.html","microscope","بحث نحوي باللغات الأصلية",' target="_blank"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
+    +sec("otherSec","other","صفحات أخرى",L("sources.html","books","المصادر والمراجع",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
+  const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
+  bk&&bk.insertAdjacentHTML("afterend",after);
 }
-}
-function mmFix(){if(!$("#mmLink")){const g=document.querySelector('#findSec a[href="grammar.html"]');g&&g.insertAdjacentHTML("afterend",`<a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none;display:block;margin-top:8px">${ic("topology-star-3")} الخريطة الذهنية للشواهد</a>`)}}
+function mmFix(){if(!$("#mmLink")){const g=document.querySelector('#toolSec a[href="grammar.html"]');g&&g.insertAdjacentHTML("afterend",`<a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none;display:block;margin-top:8px">${ic("topology-star-3")} الخريطة الذهنية للشواهد</a>`)}}
 function sidebar(){
   sideTools();mmFix();
   const old=new Set([...document.querySelectorAll("#booksel details[open]")].map(x=>x.dataset.g));
@@ -350,7 +359,7 @@ function olLoad(abbr){if(!OLB.includes(abbr))return null;if(window.OL&&window.OL
 const olIn=(r,c,v)=>(c>r[3]||(c===r[3]&&v>=r[4]))&&(c<r[5]||(c===r[5]&&v<=r[6]));
 const olFmt=r=>r[3]===r[5]?`${n(r[3])}: ${n(r[4])}–${n(r[6])}`:`${n(r[3])}: ${n(r[4])} – ${n(r[5])}: ${n(r[6])}`;
 function olRow(b,r,c){const v=r[3]<c?1:r[4];return `<a class="olr l${r[0]}" href="#/${b.abbr}/${c}:${v}" data-go="${b.id}.${c}:${v}"><span class="ort">${esc(r[2]||r[1])}</span><span class="ore ltr">${esc(r[1])}</span><span class="orn">${olFmt(r)}</span></a>`}
-const NOTES=["Lev","Jos","Jdg","Rut","1Sa","2Sa","1Ki","2Ki","1Ch","Ezr","Neh","Est","Ecc","Son","Lam","Dan","Hos","Joe","Amo","Oba","Jon","Mic","Nah","Hab","Zep","Hag","Zec","Mal","Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
+const NOTES=["Exo","Lev","Num","Deu","Jos","Jdg","Rut","1Sa","2Sa","1Ki","2Ki","1Ch","2Ch","Ezr","Neh","Est","Pro","Ecc","Son","Lam","Dan","Hos","Joe","Amo","Oba","Jon","Mic","Nah","Hab","Zep","Hag","Zec","Mal","Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
 function notesLink(b){return NOTES.includes(b.abbr)?`<a class="notelink" href="notes.html?b=${b.abbr}" target="tsknotes">${ic("note")} ملاحظات على الترجمات في هذا السفر ${ic("external-link")}</a>`:""}
 function olBook(b){const O=olLoad(b.abbr);if(!O)return "";
   return `<details class="olbox" open><summary>${ic("bookmarks")} مخطط السفر</summary>${O.map(r=>olRow(b,r,r[3])).join("")}<a class="olall" href="outline.html?b=${b.abbr}" target="tskoutline">صفحة المخطط كاملة ${ic("external-link")}</a></details>`}

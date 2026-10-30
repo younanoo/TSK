@@ -38,5 +38,5 @@ for(const w of Object.keys(IDX)){
   const e=IDX[w],dd=DSP[w],disp=Object.keys(dd).sort((a,b)=>dd[b]-dd[a])[0];
   out[w]=[disp,Object.keys(e).map(n=>[n,e[n][0],e[n][1]]).sort((a,b)=>(b[1]+b[2])-(a[1]+a[2]))];
 }
-fs.writeFileSync(A("arstrong.js"),"window.ARS="+JSON.stringify(out)+";");
+{const _f=A("arstrong.js"),_t=_f+".~tmp",_s="window.ARS="+JSON.stringify(out)+";";for(let i=0;;i++){try{fs.writeFileSync(_t,_s);fs.renameSync(_t,_f);break;}catch(e){if(!["EINVAL","EBUSY","EPERM","EACCES"].includes(e.code)||i>20)throw e;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,700);}}}
 console.log("segments",seg,"single",single,"multi(skipped)",multi,"life",life,"forms",Object.keys(out).length,"bytes",fs.statSync(A("arstrong.js")).size);

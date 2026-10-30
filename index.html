@@ -15,6 +15,7 @@
 <meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
 <script src="assets/brand.js?v=2"></script>
 <script src="assets/nav.js"></script>
+<script src="assets/sitemenu.js" defer></script>
 <style>
 /* ===== الصفحة الرئيسية — كل التنسيقات هنا محصورة بالبادئة h- ===== */
 html{scroll-behavior:smooth;scroll-padding-top:76px}
@@ -311,9 +312,15 @@ body.h{background:var(--bg)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 /* ---------- تحسينات الرئيسية (UX، أكتوبر ٢٠٢٦) ---------- */
 /* ---------- ١) قائمة الموبايل ---------- */
-.uxh-menu{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);
+.uxh-menu{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);
   background:var(--paper);color:var(--ink);border-radius:12px;cursor:pointer;flex:none}
 .uxh-menu svg{width:22px;height:22px}
+/* على الكمبيوتر: سطر الأقسام ظاهر فوق، فلا داعي لتكراره داخل القائمة */
+@media (min-width:821px){.sm-panel .sm-extra{display:none}}
+/* زر ☰ ظاهر على الكمبيوتر كمان: نمنع التفاف لينكات الأقسام ونضيّقها لو المساحة قليلة */
+.h-nav a,.h-inst{white-space:nowrap}
+@media (min-width:821px){.h-top .h-wrap{gap:10px}.h-nav{gap:0}.h-nav a{padding:8px 9px}}
+@media (min-width:821px) and (max-width:1060px){.h-inst{padding:0;width:40px;justify-content:center}.h-inst span{display:none}.h-nav a{padding:8px 6px;font-size:13.5px}}
 @media (max-width:820px){
   .uxh-menu{display:inline-flex}
   .h-top .h-iconbtn{margin-inline-start:0!important}
@@ -1006,23 +1013,12 @@ dd.querySelectorAll("[data-om]").forEach(b=>b.addEventListener("click",()=>{dd.c
   const menuBtn=el("button",{class:"uxh-menu",type:"button","aria-label":"القائمة","aria-haspopup":"dialog","aria-expanded":"false"},
     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`);
   top.append(menuBtn);
-  const scrim=el("div",{class:"uxh-scrim"});
+  /* القائمة نفسها هي القائمة الموحّدة لكل الصفحات (assets/sitemenu.js)، ونضيف لها أقسام الصفحة الرئيسية */
   /* ترتيب لينكات الأقسام زي الترتيب الجديد للصفحة */
   const nav=$(".h-nav"); ["#books","#votd","#firsts","#features","#time","#how","#faq"].forEach(h=>{const a=nav&&nav.querySelector(`a[href="${h}"]`);if(a)nav.append(a)});
   const sections=$$(".h-nav a").map(a=>`<a href="${a.getAttribute("href")}">${a.textContent}</a>`).join("");
-  const TOOLS=[["search.html","البحث في النص"],["strong.html","قاموس سترونج"],["arword.html","بحث بكلمة عربية"],["grammar.html","البحث النحوي"],
-    ["topics.html","فهرس المواضيع"],["mindmap.html","الخريطة الذهنية"],["outline.html","مخطط الأسفار"],["chrono.html","القراءة الزمنية"],["timeline.html","الخط الزمني"],["sources.html","المصادر"]];
-  const sheet=el("div",{class:"uxh-sheet",role:"dialog","aria-modal":"true","aria-label":"القائمة"},
-    `<div class="grab"></div><div class="shd"><h3>القائمة</h3><button class="uxh-x" type="button" aria-label="إغلاق">✕</button></div>
-     <h4>أقسام الصفحة</h4><div class="uxh-links">${sections}</div>
-     <h4>أدوات الدراسة</h4><div class="uxh-links">${TOOLS.map(([h,t])=>`<a href="${h}">${t}</a>`).join("")}</div>`);
-  document.body.append(scrim,sheet);
-  const open=()=>{sheet.classList.add("on");scrim.classList.add("on");menuBtn.setAttribute("aria-expanded","true");setTimeout(()=>$(".uxh-x",sheet).focus(),50)};
-  const close=()=>{sheet.classList.remove("on");scrim.classList.remove("on");menuBtn.setAttribute("aria-expanded","false")};
-  menuBtn.addEventListener("click",open);
-  scrim.addEventListener("click",close);
-  sheet.addEventListener("click",e=>{if(e.target.closest(".uxh-x")||e.target.closest("a"))close()});
-  addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+  window.TSK_MENU_EXTRA={title:"أقسام الصفحة الرئيسية",html:`<div class="uxh-links">${sections}</div>`};
+  menuBtn.addEventListener("click",()=>{if(window.TSKMenu)window.TSKMenu.open()});
 
   /* ---------- ٢) «تابع من حيث توقفت» في الواجهة (لو فيه تقدّم محفوظ) ---------- */
   const res=$("#hResume"), heroCol=$(".h-hero .h-wrap > div");
