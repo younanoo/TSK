@@ -125,7 +125,7 @@ function sideTools(){
   h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","اذهب إلى عدد",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="مثال: يو ٣:١٦ أو إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off" enterkeyhint="go"></form>`));
   const after=sec("timeSec","time","الكتاب عبر الزمن",L("chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)")+L("timeline.html","timeline","الخط الزمني للأحداث"))
     +sec("toolSec","tools","أدوات البحث",L("search.html","search","بحث في الكتاب المقدس (فاندايك)",' id="srchLink" target="tsksearch"')+L("strong.html","language","بحث في قاموس سترونج (برقم الكلمة)",' target="tskstrong"')+L("arword.html","language","بحث بكلمة عربية (الجذر والأصل)",' target="tskarword"')+L("grammar.html","microscope","بحث نحوي باللغات الأصلية",' target="_blank"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
-    +sec("otherSec","other","صفحات أخرى",L("sources.html","books","المصادر والمراجع",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
+    +sec("otherSec","other","صفحات أخرى",L("copy.html","bookmarks","صفحة النسخ (الآيات المختارة) <b class=\"cpy-count\" hidden></b>",' target="tskcopy"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }
@@ -160,7 +160,7 @@ function refRow(r,k,q){
     return `<span class="txp" data-tx="${tk}|${R.bk}|${chOf[i]}:${vn}"${t?` data-fb="${esc(t)}"`:""}>…</span>`};
   const body=r.vs.length===1?`<p>${vt(r.vs[0][0],r.vs[0][1],0)}</p>`:r.vs.map(([vn,t],i)=>`<p><span class="vn">${n(vn)}</span>${vt(vn,t,i)}</p>`).join("");
   return `<div class="r" data-key="${esc(k)}">
-    <div class="lbl"><span class="nmr">${hl(R.name+" "+R.num,q)}${r.n?` <small>${MARK[r.n]||esc(r.n)}</small>`:""}</span><span class="en ltr">${esc(r.l)}</span>${self}</div>
+    <div class="lbl"><span class="nmr">${hl(R.name+" "+R.num,q)}${r.n?` <small>${MARK[r.n]||esc(r.n)}</small>`:""}</span><span class="en ltr">${esc(r.l)}</span>${self}${cpyBtn("r",r.l,R.name+" "+R.num)}</div>
     <div class="txt ar" ${kjv?'dir="ltr" style="text-align:left"':""}>${body}</div></div>`;
 }
 const crumbs=(title,sub,nav,bar)=>(bar||"")+`<div class="crumbs${bar?" nomenu":""}"><button class="menu-btn" id="menu">${ic("menu-2")}</button><div class="ref">${sub?`<small>${sub}</small>`:""}${title}</div>${bar?"<span></span>":(nav||"<span></span>")}</div>`;
@@ -168,7 +168,7 @@ function stickBar(b,c,v,nav){
   const bo=CAT.map(x=>`<option value="${x.abbr}" ${x.abbr===b.abbr?"selected":""}>${AR[x.abbr]}</option>`).join("");
   const co=b.chapters.map(x=>`<option value="${x}" ${x===c?"selected":""}>${n(x)}</option>`).join("");
   const vo=v?`<select class="sbV" aria-label="العدد">${inCh(b,c).map(d=>`<option value="${d.v}" ${d.v===v?"selected":""}>${n(d.v)}</option>`).join("")}</select>`:"";
-  return `<div class="stickbar"><button class="menu-btn" id="menu">${ic("menu-2")}</button><select class="sbBook" aria-label="السفر">${bo}</select><select class="sbCh" aria-label="الأصحاح">${co}</select>${vo}<span class="sp"></span>${nav}</div>`}
+  return `<div class="stickbar"><button class="menu-btn" id="menu">${ic("menu-2")}</button><select class="sbBook" aria-label="السفر">${bo}</select><select class="sbCh" aria-label="الأصحاح">${co}</select>${vo}<span class="sp"></span>${cpyTop()}${nav}</div>`}
 
 const fromLink=(d,label)=>`<a data-go="${d.b}.${d.c}:${d.v}">${label||"من"} ${vref(d)} ←</a>`;
 const kwTitle=g=>{const c=trCur();if(c==="kjv"&&g.kw)return g.kw;
@@ -359,7 +359,7 @@ function olLoad(abbr){if(!OLB.includes(abbr))return null;if(window.OL&&window.OL
 const olIn=(r,c,v)=>(c>r[3]||(c===r[3]&&v>=r[4]))&&(c<r[5]||(c===r[5]&&v<=r[6]));
 const olFmt=r=>r[3]===r[5]?`${n(r[3])}: ${n(r[4])}–${n(r[6])}`:`${n(r[3])}: ${n(r[4])} – ${n(r[5])}: ${n(r[6])}`;
 function olRow(b,r,c){const v=r[3]<c?1:r[4];return `<a class="olr l${r[0]}" href="#/${b.abbr}/${c}:${v}" data-go="${b.id}.${c}:${v}"><span class="ort">${esc(r[2]||r[1])}</span><span class="ore ltr">${esc(r[1])}</span><span class="orn">${olFmt(r)}</span></a>`}
-const NOTES=["Gen","Exo","Lev","Num","Deu","Jos","Jdg","Rut","1Sa","2Sa","1Ki","2Ki","1Ch","2Ch","Ezr","Neh","Est","Pro","Ecc","Son","Jer","Lam","Eze","Dan","Hos","Joe","Amo","Oba","Jon","Mic","Nah","Hab","Zep","Hag","Zec","Mal","Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
+const NOTES=["Gen","Exo","Lev","Num","Deu","Jos","Jdg","Rut","1Sa","2Sa","1Ki","2Ki","1Ch","2Ch","Ezr","Neh","Est","Job","Psa","Pro","Ecc","Son","Isa","Jer","Lam","Eze","Dan","Hos","Joe","Amo","Oba","Jon","Mic","Nah","Hab","Zep","Hag","Zec","Mal","Mat","Mar","Luk","Joh","Act","Rom","1Co","2Co","Gal","Eph","Phi","Col","1Th","2Th","1Ti","2Ti","Tit","Phm","Heb","Jam","1Pe","2Pe","1Jo","2Jo","3Jo","Jud","Rev"];
 function notesLink(b){return NOTES.includes(b.abbr)?`<a class="notelink" href="notes.html?b=${b.abbr}" target="tsknotes">${ic("note")} ملاحظات على الترجمات في هذا السفر ${ic("external-link")}</a>`:""}
 function olBook(b){const O=olLoad(b.abbr);if(!O)return "";
   return `<details class="olbox" open><summary>${ic("bookmarks")} مخطط السفر</summary>${O.map(r=>olRow(b,r,r[3])).join("")}<a class="olall" href="outline.html?b=${b.abbr}" target="tskoutline">صفحة المخطط كاملة ${ic("external-link")}</a></details>`}
@@ -402,8 +402,8 @@ function viewChapter(){
   const CMP=`<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">${ic("arrows-left-right")} مقارنة الترجمات الثلاث لهذا الأصحاح</a>`;
   $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
   ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}<div class="cvlist" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
-    return `<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
-      <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span>`}<span class="cvm">${rc?n(rc)+" شاهدًا":"—"}</span></button>`}).join("")}</div>
+    return `<div class="cvw"><button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
+      <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${trCur()==="kjv"?'dir="ltr" style="text-align:left"':""}>${esc(trText(d)||d.text)}</span>`}</button><div class="cvf"><button type="button" class="cvm" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد والشواهد">${rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),"pl")}</div></div>`}).join("")}</div>
   ${fnChapter(b,vs)}
   <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
@@ -446,7 +446,7 @@ function viewVerse(){
       <div class="verse-meta">
         <span class="pill">${plural(d.groups.length,"كلمة واحدة","كلمتان","كلمات","كلمة")}</span>
         <span class="pill">${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>
-        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${!origOn()&&((d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d))?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
+        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),true)}${!origOn()&&((d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d))?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
       </div>
     </div>${vArrow(prev,"vprev","العدد السابق",'<path d="M9 6l6 6l-6 6"/>')}${vArrow(next,"vnext","العدد التالي",'<path d="M15 6l-6 6l6 6"/>')}</div>
     ${tpChips(d)}${fnBox(d,true)}
@@ -505,6 +505,7 @@ function viewStrongSearch(num){
 function render(){
   sidebar();
   ({home:viewHome,book:viewBook,chapter:viewChapter,verse:viewVerse,search:viewSearch})[S.view]();
+  try{CPY_LAST=-1;cpyCount()}catch(e){}
 }
 
 /* ---------- navigation ---------- */
@@ -830,3 +831,80 @@ fromHash();
   MQ.addEventListener("change",()=>{closeSheet();try{render()}catch(e){}});
 })();
 /* ==== UX LAYER END ==== */
+
+/* ==== COPY LIST (صفحة النسخ copy.html) ====
+   زرار «نسخ» جنب كل آية (الأصحاح، العدد، الشواهد): يضيف «نص الآية — الشاهد (الترجمة)» إلى قائمة
+   محفوظة في المتصفح (localStorage: tsklib:copylist) تُعرض في copy.html لنسخها كلها مرة واحدة.
+   زرار صفحة النسخ + العدد في الشريط العلوي (stickBar)، ويتحدّث فورًا في كل التابات (حدث storage). */
+var CPY_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>';
+var CPY_OK='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>';
+function cpyList(){const a=store.get("copylist",[]);return Array.isArray(a)?a:[]}
+function cpyHas(ref,tr){return cpyList().some(x=>x.ref===ref&&x.tr===tr)}
+function cpyLbl(k){return k?`صفحة النسخ — ${plural(k,"آية واحدة","آيتان","آيات","آية")}`:"صفحة النسخ"}
+function cpyBtnInner(on,big){return (on?CPY_OK:CPY_IC)+(big==="pl"?`<span>${on?"منسوخة":"نسخ"}</span>`:big?`<span>${on?"في صفحة النسخ":"نسخ للصفحة"}</span>`:"")}
+/* اسم «الترجمة» اللي هيتكتب بين القوسين: لو «اللغة الأصلية» شغالة، نص العدد نفسه بيتاخد من العبري/اليوناني (الشواهد بتفضل بالترجمة) */
+function cpyTrOf(kind){if(kind==="v"&&origOn())return book().id>39?"النص اليوناني":"النص العبري";return TRN[trCur()]}
+function cpyBtn(kind,id,ref,big){
+  const on=cpyHas(ref,cpyTrOf(kind));
+  return `<span class="cpy${big==="pl"?" pl":big?" big":""}${on?" on":""}" role="button" tabindex="0" aria-pressed="${on}" data-cpy="${kind}" data-cid="${esc(id)}" data-cref="${esc(ref)}" title="${on?"مضافة لصفحة النسخ — اضغط للإزالة":"أضف نص الآية لصفحة النسخ"}">${cpyBtnInner(on,big)}</span>`}
+/* زرار الشريط العلوي: يظهر بعد أول آية */
+function cpyTop(){const k=cpyList().length;
+  return `<a class="cpy-top" href="copy.html" target="tskcopy" ${k?"":"hidden"} aria-label="${cpyLbl(k)}" title="${cpyLbl(k)}">${CPY_IC}<b class="cpy-count">${k?n(k):""}</b></a>`}
+function cpyText(el){
+  const kind=el.dataset.cpy;
+  if(kind==="v"){const p=parseGo(el.dataset.cid);if(!p)return "";const b=BY[p[0]],d=b&&b.verses[b.idx[p[1]+":"+p[2]]];if(!d)return "";
+    if(origOn()){const O=window.ORIG&&window.ORIG[b.abbr];if(!O)return null;return (O[d.c+":"+d.v]||"").trim()}
+    return (trText(d)||d.text||"").trim()}
+  const row=el.closest(".r"); if(!row) return "";
+  const ps=[...row.querySelectorAll(".txt p")];
+  if(ps.some(p=>p.querySelector(".txp"))) return null; /* لسه بيتحمّل */
+  if(row.querySelector(".txna")) return "";
+  return ps.map(p=>{const vn=p.querySelector(".vn");const t=[...p.childNodes].filter(x=>x!==vn).map(x=>x.textContent).join("").trim();return vn?`(${vn.textContent.trim()}) ${t}`:t}).join(" ").trim();
+}
+/* الرسالة: نص + أزرار (تراجع / افتح صفحة النسخ)، تقف لما الماوس أو التركيز عليها */
+var CPY_T={h:null,undo:null};
+function cpyToast(msg,opt){opt=opt||{};let t=document.getElementById("cpyToast");
+  if(!t){t=document.createElement("div");t.id="cpyToast";t.className="cpy-toast";t.setAttribute("role","status");t.setAttribute("aria-live","polite");document.body.appendChild(t);
+    const hold=()=>clearTimeout(CPY_T.h), go=()=>{clearTimeout(CPY_T.h);CPY_T.h=setTimeout(cpyToastHide,2500)};
+    t.addEventListener("mouseenter",hold);t.addEventListener("mouseleave",go);t.addEventListener("focusin",hold);t.addEventListener("focusout",go);
+    t.addEventListener("click",e=>{const b=e.target.closest("[data-ct]");if(!b)return;
+      if(b.dataset.ct==="undo"&&CPY_T.undo){const u=CPY_T.undo;CPY_T.undo=null;store.set("copylist",u.list);cpySync();cpyToast(u.msg)}
+      else if(b.dataset.ct==="x")cpyToastHide();
+      else if(b.dataset.ct==="open")cpyToastHide()})}
+  CPY_T.undo=opt.undo||null;
+  t.classList.toggle("bad",!!opt.bad);
+  t.innerHTML=`<span class="ct-msg">${msg}</span>`+
+    (opt.undo?`<button type="button" class="ct-btn" data-ct="undo">تراجع</button>`:"")+
+    (opt.open?`<a class="ct-btn ct-main" data-ct="open" href="copy.html" target="tskcopy">افتح صفحة النسخ${opt.k?` (${n(opt.k)})`:""}</a>`:"")+
+    `<button type="button" class="ct-x" data-ct="x" aria-label="إغلاق">${ic("x")}</button>`;
+  t.classList.add("on");clearTimeout(CPY_T.h);CPY_T.h=setTimeout(cpyToastHide,opt.open||opt.undo?6000:3000)}
+function cpyToastHide(){const t=document.getElementById("cpyToast");if(t)t.classList.remove("on");CPY_T.undo=null}
+/* تحديث كل الأزرار والعدادات من القائمة المحفوظة (نفس التاب أو تاب تاني) */
+var CPY_LAST=-1;
+function cpyCount(){const k=cpyList().length, grew=CPY_LAST>=0&&k>CPY_LAST; CPY_LAST=k;
+  document.querySelectorAll(".cpy-count").forEach(x=>{x.textContent=k?n(k):"";x.hidden=!k});
+  document.querySelectorAll(".cpy-top").forEach(a=>{a.hidden=!k;a.setAttribute("aria-label",cpyLbl(k));a.title=cpyLbl(k);
+    if(grew){a.classList.remove("bump");void a.offsetWidth;a.classList.add("bump")}})}
+function cpySync(){
+  document.querySelectorAll(".cpy").forEach(b=>{const tr=cpyTrOf(b.dataset.cpy),on=cpyHas(b.dataset.cref,tr),big=b.classList.contains("pl")?"pl":b.classList.contains("big");
+    if(b.classList.contains("on")===on&&b.firstChild)return;
+    b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);
+    b.title=on?"مضافة لصفحة النسخ — اضغط للإزالة":"أضف نص الآية لصفحة النسخ";b.innerHTML=cpyBtnInner(on,big)});
+  cpyCount()}
+function cpyToggle(el){
+  const tr=cpyTrOf(el.dataset.cpy), ref=el.dataset.cref, before=cpyList(), list=before.slice(), i=list.findIndex(x=>x.ref===ref&&x.tr===tr);
+  if(i>=0){list.splice(i,1);store.set("copylist",list);cpySync();
+    cpyToast(`أُزيلت <b>${esc(ref)}</b> من صفحة النسخ`,{undo:{list:before,msg:`رجعت <b>${esc(ref)}</b> لصفحة النسخ`},open:list.length>0,k:list.length})}
+  else{const t=cpyText(el);
+    if(t===null){cpyToast("النص لسه بيتحمّل… حاول تاني بعد لحظة",{bad:true});return}
+    if(!t){cpyToast(el.dataset.cpy==="v"&&origOn()?"العدد ده مش موجود في النص الأصلي":"نص الشاهد ده مش متاح دلوقتي (محتاج إنترنت)",{bad:true});return}
+    list.push({t,ref,tr,at:Date.now()});store.set("copylist",list);cpySync();
+    cpyToast(`${CPY_OK} أُضيفت <b>${esc(ref)}</b> <span class="ct-tr">(${esc(tr)})</span>`,{undo:{list:before,msg:`اتشالت <b>${esc(ref)}</b>`},open:true,k:list.length})}
+}
+/* capture: قبل ما مستمع data-go / صف الشاهد يفتح العدد */
+document.addEventListener("click",e=>{const c=e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const c=e.target.closest&&e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
+addEventListener("storage",e=>{if(e.key==="tsklib:copylist"||e.key===null)cpySync()});
+addEventListener("pageshow",()=>{try{cpySync()}catch(x){}});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)try{cpySync()}catch(x){}});
+/* ==== COPY LIST END ==== */

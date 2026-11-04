@@ -6,10 +6,18 @@
    البيانات: assets/geo/geo_<السفر>.js (من OpenBible.info + STEP Bible)، والخريطة: Leaflet + Esri. */
 (function(){
   "use strict";
-  const m0 = location.pathname.match(/\/([1-3]?[A-Za-z]{2,3})\.html$/);
+  const m0 = location.pathname.match(/\/([1-3]?[A-Za-z]{2,3})(?:_maptest)?\.html$/);  // _maptest: صفحات التجربة
   const BOOK = m0 && m0[1];
-  /* الأسفار التي لها بيانات أماكن حتى الآن (الاسم كما يُكتب في سؤال Google AI) */
+  /* الأسفار التي لها بيانات أماكن (الاسم كما يُكتب في سؤال Google AI). سفر بلا ملف geo_ لا يُحمَّل له شيء. */
   const BOOKS = {
+    Gen: "سفر التكوين", Exo: "سفر الخروج", Lev: "سفر اللاويين", Num: "سفر العدد", Deu: "سفر التثنية",
+    Jos: "سفر يشوع", Jdg: "سفر القضاة", Rut: "سفر راعوث", "1Sa": "سفر صموئيل الأول", "2Sa": "سفر صموئيل الثاني",
+    "1Ki": "سفر الملوك الأول", "2Ki": "سفر الملوك الثاني", "1Ch": "سفر أخبار الأيام الأول", "2Ch": "سفر أخبار الأيام الثاني", Ezr: "سفر عزرا",
+    Neh: "سفر نحميا", Est: "سفر أستير", Job: "سفر أيوب", Psa: "سفر المزامير", Pro: "سفر الأمثال",
+    Ecc: "سفر الجامعة", Son: "سفر نشيد الأنشاد", Isa: "سفر إشعياء", Jer: "سفر إرميا", Lam: "سفر مراثي إرميا",
+    Eze: "سفر حزقيال", Dan: "سفر دانيال", Hos: "سفر هوشع", Joe: "سفر يوئيل", Amo: "سفر عاموس",
+    Oba: "سفر عوبديا", Jon: "سفر يونان", Mic: "سفر ميخا", Nah: "سفر ناحوم", Hab: "سفر حبقوق",
+    Zep: "سفر صفنيا", Hag: "سفر حجي", Zec: "سفر زكريا", Mal: "سفر ملاخي",
     Mat: "إنجيل متى", Mar: "إنجيل مرقس", Luk: "إنجيل لوقا", Joh: "إنجيل يوحنا", Act: "سفر أعمال الرسل",
     Rom: "رسالة رومية", "1Co": "رسالة كورنثوس الأولى", "2Co": "رسالة كورنثوس الثانية", Gal: "رسالة غلاطية",
     Eph: "رسالة أفسس", Phi: "رسالة فيلبي", Col: "رسالة كولوسي", "1Th": "رسالة تسالونيكي الأولى",
@@ -18,7 +26,7 @@
     Jud: "رسالة يهوذا", Rev: "سفر الرؤيا"
   };
   if (!BOOK || !BOOKS[BOOK]) return;
-  const BASE = "assets/geo/", VER = "2";
+  const BASE = "assets/geo/", VER = "3";
 
   const AN = s => String(s).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -195,16 +203,19 @@
         .on("click", () => openPlace(id));
       labels.push({pr: st ? 1 : 2, t: mk});
     });
-    const pts = shown.map(id => P[id].ll);
+    /* الأقاليم والبحار الكبيرة لا تحدد إطار الخريطة إذا كان في الأصحاح ٣ أماكن نقطية أو أكثر (قوائم المدن في العهد القديم) */
+    const ptOnly = shown.filter(id => !P[id].poly).map(id => P[id].ll);
+    const pts = ptOnly.length >= 3 ? ptOnly : shown.map(id => P[id].ll);
     const tb = L.latLngBounds(hasRoute ? route.map(id => P[id].ll) : pts).pad(.12), ab = L.latLngBounds(pts).pad(.08);
-    map.fitBounds(tb, {maxZoom: 8});
+    const MZ = ptOnly.length >= 3 && !hasRoute ? 10 : 8;   // قوائم المدن المتقاربة تحتاج تكبيرًا أكثر
+    map.fitBounds(tb, {maxZoom: MZ});
     labels.sort((a, b) => a.pr - b.pr);
     const dc = () => declutter(labels.map(x => ({el: x.t.getTooltip() && x.t.getTooltip().getElement()})));
     map.on("zoomend moveend", dc);
     /* بعد ما الصفحة تاخد مقاسها النهائي: نعيد الحساب علشان كل محطات الرحلة تبان */
-    setTimeout(() => { map.invalidateSize(); map.fitBounds(tb, {maxZoom: 8}); dc(); }, 80);
+    setTimeout(() => { map.invalidateSize(); map.fitBounds(tb, {maxZoom: MZ}); dc(); }, 80);
     card.querySelectorAll("[data-fit]").forEach(b => b.onclick = () => {
-      map.flyToBounds(b.dataset.fit === "all" ? ab : tb, {duration: .6, maxZoom: 8});
+      map.flyToBounds(b.dataset.fit === "all" ? ab : tb, {duration: .6, maxZoom: MZ});
       card.querySelectorAll("[data-fit]").forEach(x => x.classList.toggle("on", x === b));
     });
   }

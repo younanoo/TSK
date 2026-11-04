@@ -1013,6 +1013,57 @@ html body .cheads{color:var(--gold)}
 
 /* ==== UX LAYER END ==== */
 
+/* ==== COPY LIST (زرار النسخ جنب الآية → copy.html) ==== */
+.cpy{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:28px;height:28px;border:1px solid var(--line);border-radius:8px;color:var(--muted);background:transparent;cursor:pointer;vertical-align:middle;transition:color .15s,border-color .15s,background .15s}
+.cpy .tic{width:16px;height:16px}
+.cpy:hover,.cpy:focus-visible{color:var(--gold);border-color:var(--gold);outline:none}
+.cpy.on{color:var(--on-gold);background:var(--gold);border-color:var(--gold)}
+.cpy.big{width:auto;height:auto;padding:3px 12px;border-radius:999px;font:500 13px var(--ui);border-color:var(--gold);color:var(--gold)}
+.cpy.big.on{color:var(--on-gold)}
+/* عرض الأصحاح: الصف (.cv) يفتح العدد، وتحته سطر فيه زرارين منفصلين بنفس الشكل: «N شاهدًا ←» و«نسخ» */
+.cvw{position:relative;border-bottom:1px solid var(--line)}
+.cvw:last-child{border-bottom:0}
+.cvw>.cv{border-bottom:0;padding-bottom:62px}
+.cvf{position:absolute;bottom:14px;inset-inline-end:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cvf .cvm,.cvf .cpy.pl{display:inline-flex!important;align-items:center;gap:5px;width:auto;height:auto;min-height:34px;margin:0;padding:4px 14px;border-radius:999px;border:1px solid var(--gold);background:var(--paper);color:var(--gold);font:600 13px var(--ui)!important;white-space:nowrap;cursor:pointer}
+.cvf .cvm::after{content:"←";font-size:14px}
+.cvf .cpy.pl .tic{width:16px;height:16px}
+.cvf .cvm:hover,.cvf .cvm:focus-visible,.cvw:has(>.cv:hover) .cvf .cvm{background:var(--gold);color:var(--on-gold);outline:none}
+.cvf .cpy.pl:hover,.cvf .cpy.pl:focus-visible{background:var(--gold-soft);outline:none}
+.cvf .cpy.pl.on{background:var(--gold);color:var(--on-gold)}
+@media (max-width:880px){.cvw>.cv{padding-bottom:58px}.cvf{bottom:12px;inset-inline-end:14px}.cvf .cvm,.cvf .cpy.pl{min-height:38px}}
+@media print{.cvw{border-bottom:0}.cvf{display:none}.cvw>.cv{padding-bottom:14px}}
+.r .lbl .cpy{display:inline-flex;margin-top:4px;margin-inline-start:6px}
+.cpy-count{display:inline-block;min-width:20px;padding:0 6px;margin-inline-start:4px;border-radius:999px;background:var(--gold);color:var(--on-gold);font:600 12px/20px var(--ui);text-align:center}
+.cpy-count[hidden]{display:none}
+.cpy-top{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;height:44px;padding:0 10px;border:1px solid var(--gold);border-radius:10px;background:var(--gold-soft);color:var(--gold);text-decoration:none;flex-shrink:0;font:700 14px var(--ui);transition:background .15s,color .15s}
+.cpy-top[hidden]{display:none!important}
+.cpy-top .tic{width:20px;height:20px}
+.cpy-top:hover,.cpy-top:focus-visible{background:var(--gold);color:var(--on-gold);outline:none}
+.cpy-top .cpy-count{background:none;color:inherit;padding:0;margin:0;min-width:0;font:700 14px/1 var(--ui)}
+.cpy-top.bump{animation:cpyBump .45s ease}
+@keyframes cpyBump{0%{transform:scale(1)}35%{transform:scale(1.18)}70%{transform:scale(.96)}100%{transform:scale(1)}}
+.cpy-toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);width:max-content;max-width:calc(100vw - 32px);display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;background:var(--accent);color:var(--on-accent,#fff);padding:8px 8px 8px 16px;padding-inline-start:18px;border-radius:16px;font:500 15px var(--ui);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility 0s .25s;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.cpy-toast.on{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);transition:opacity .25s,transform .25s}
+.cpy-toast.bad{background:var(--bad,#8a2b2b)}
+.cpy-toast .ct-msg{display:inline-flex;align-items:center;gap:6px}
+.cpy-toast .ct-msg .tic{width:18px;height:18px}
+.cpy-toast .ct-tr{opacity:.8}
+.cpy-toast .ct-btn{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:10px;border:1px solid rgba(255,255,255,.45);background:transparent;color:inherit;font:600 14px var(--ui);text-decoration:none;cursor:pointer}
+.cpy-toast .ct-btn:hover,.cpy-toast .ct-btn:focus-visible{background:rgba(255,255,255,.14);outline:none}
+.cpy-toast .ct-main{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.cpy-toast .ct-main:hover,.cpy-toast .ct-main:focus-visible{background:var(--gold);filter:brightness(1.08)}
+.cpy-toast .ct-x{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:inherit;opacity:.75;cursor:pointer}
+.cpy-toast .ct-x:hover{opacity:1;background:rgba(255,255,255,.12)}
+@media(max-width:600px){.cpy-toast{bottom:14px;left:16px;right:16px;transform:translateY(20px);width:auto;max-width:none}.cpy-toast.on{transform:translateY(0)}.cpy-toast .ct-msg{flex:1 1 100%}}
+/* الموبايل: الشريط ضيق — الزرار أيقونة + شارة، واسم الترجمة جنب Aa يختفي طول ما زرار النسخ ظاهر */
+.ux-on .stickbar .cpy-top{width:44px;padding:0}
+.ux-on .stickbar .cpy-top .cpy-count{position:absolute;top:-7px;inset-inline-end:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--gold);color:var(--on-gold);font:700 12px/20px var(--ui);text-align:center;box-shadow:0 0 0 2px var(--paper)}
+.ux-on .stickbar:has(.cpy-top:not([hidden])) .uxt-aa small{display:none}
+@media(max-width:380px){.ux-on .stickbar:has(.cpy-top:not([hidden])){gap:4px;padding-inline:6px}.ux-on .stickbar:has(.cpy-top:not([hidden])) .uxt-pick{min-width:72px}}
+@media(prefers-reduced-motion:reduce){.cpy-top.bump{animation:none}.cpy-toast,.cpy-toast.on{transition:none}}
+@media print{.cpy,.cpy-top,.cpy-toast{display:none!important}}
+
 /* pre:start — نص مكتوب مسبقًا في الصفحة لمحركات البحث (يستبدله التطبيق فور تحميله) */
 .pre{max-width:820px;margin:0 auto;padding:28px 20px 60px;line-height:2.1;color:var(--ink)}
 .pre h1{font-family:"El Messiri",serif;color:var(--heading);font-size:2rem;margin:.2em 0 .3em}
