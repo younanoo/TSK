@@ -43,6 +43,7 @@
 
   function render(src,ar){
     const L=(window.ABBOTT&&window.ABBOTT.L)||{}, D=(window.ABBOTT&&window.ABBOTT.D)||{};
+    if(ar) src=src.replace(/(^|>)([^<]+)/g,(m,a,t)=>a+t.replace(/\d/g,d=>ARD[d]));   /* أرقام عربية في النص العربي */
     return src
       .replace(/<r v="([^"]*)"><\/r>/g,(m,v)=>refLabel(v,ar))
       .replace(/<x>(.*?)<\/x>/g,(m,inner)=>{const lem=inner.replace(/<[^>]+>/g,"").trim(),g=L[lem];

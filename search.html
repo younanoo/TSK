@@ -23,6 +23,9 @@ html,body{overflow-x:clip;padding:0}
 .sform a{color:var(--muted);text-decoration:none;font-size:13.5px}
 .opts{display:flex;gap:14px;flex-wrap:wrap;width:100%;font-size:14px}
 .opts label{cursor:pointer;display:flex;gap:6px;align-items:center}
+.trs{display:flex;gap:6px;flex-wrap:wrap;width:100%;align-items:center;font-size:14px}.trs>span{color:var(--muted);margin-inline-end:4px}.trs label{cursor:pointer;display:flex;gap:5px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--paper)}.trs label:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}.trs input{margin:0}
+.opts label.dis{opacity:.45;cursor:not-allowed}
+.hit.en .t{font:17px/1.75 "Noto Serif",Georgia,serif;direction:ltr;text-align:left;display:block}
 .meta{color:var(--muted);font-size:13.5px;margin:0 0 10px}
 .bk{margin:18px 0 6px;font:700 15px var(--ui);color:var(--gold);display:flex;gap:8px;align-items:baseline}
 .bk small{color:var(--muted);font-weight:500}
@@ -66,19 +69,19 @@ mark{background:var(--gold-soft);color:inherit;box-shadow:0 0 0 2px var(--gold-s
 
 <div class="srch">
 <h1><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg> البحث عن كلمة</h1>
-<p class="sub">في نص فاندايك فقط</p>
-<div class="howto"><b>ما وظيفة هذه الصفحة؟</b><p>تبحث هذه الصفحة عن أي كلمة أو عبارة في نص فاندايك كله، وتعرض كل آية ورد فيها ما كتبته. اكتب الكلمة في الخانة، واختر طريقة المطابقة: جزء من الكلمة، أو الكلمة كما كتبتها تمامًا. اضغط على أي نتيجة لتفتح الآية في صفحة السفر.</p></div>
+<p class="sub">في فاندايك أو كتاب الحياة أو KJV</p>
+<div class="howto"><b>ما وظيفة هذه الصفحة؟</b><p>تبحث هذه الصفحة عن أي كلمة أو عبارة في الترجمة التي تختارها (فاندايك، كتاب الحياة، أو KJV الإنجليزية)، وتعرض كل آية ورد فيها ما كتبته. اكتب الكلمة في الخانة، واختر طريقة المطابقة: جزء من الكلمة، أو الكلمة كما كتبتها تمامًا، أو بالجذر (للترجمات العربية فقط). اضغط على أي نتيجة لتفتح الآية في صفحة السفر.</p></div>
 <form class="sform" id="f" action="search.html" method="get">
 <input type="search" id="q" name="q" placeholder="اكتب الكلمة أو العبارة" autocomplete="off" aria-label="كلمة البحث">
 <button type="submit"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg> بحث</button><a href="index.html">← المكتبة</a>
-<div class="opts"><label><input type="radio" name="m" value="part"> جزء من الكلمة (يحتوي النص)</label><label><input type="radio" name="m" value="exact"> الكلمة كما كتبتها تمامًا</label><label><input type="radio" name="m" value="root"> بالجذر (كل اشتقاقات الكلمة)</label></div>
+<div class="trs" id="trs"><span>الترجمة:</span><label><input type="radio" name="t" value="svd"> فاندايك</label><label><input type="radio" name="t" value="alab"> كتاب الحياة</label><label><input type="radio" name="t" value="kjv"> KJV (إنجليزي)</label></div>
+<div class="opts"><label><input type="radio" name="m" value="part"> جزء من الكلمة (يحتوي النص)</label><label><input type="radio" name="m" value="exact"> الكلمة كما كتبتها تمامًا</label><label id="rootopt"><input type="radio" name="m" value="root"> بالجذر (كل اشتقاقات الكلمة)</label></div>
 <details class="bks" id="bks"><summary id="bksum">الأسفار: الكل</summary><div class="tools"><button type="button" id="ball">تحديد الكل</button><button type="button" id="bnone">إلغاء الكل</button></div><div id="bgrps"></div></details>
 <input type="hidden" name="b" id="bval">
 </form>
-<p class="meta" id="meta">جاري تحميل نص فاندايك…</p>
+<p class="meta" id="meta">جاري تحميل النص…</p>
 <div id="res"></div>
 </div>
-<script src="assets/tx_svd.js"></script>
 <script>
 const ABBR="Gen Exo Lev Num Deu Jos Jdg Rut 1Sa 2Sa 1Ki 2Ki 1Ch 2Ch Ezr Neh Est Job Psa Pro Ecc Son Isa Jer Lam Eze Dan Hos Joe Amo Oba Jon Mic Nah Hab Zep Hag Zec Mal Mat Mar Luk Joh Act Rom 1Co 2Co Gal Eph Phi Col 1Th 2Th 1Ti 2Ti Tit Phm Heb Jam 1Pe 2Pe 1Jo 2Jo 3Jo Jud Rev".split(" ");
 const AR = {Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
@@ -106,17 +109,30 @@ const SEL=new Set(selParam.length?selParam:ABBR);
   if(selParam.length&&selParam.length<ABBR.length)$("#bks").open=true;
   sync();
 })();
+const TRS={svd:{n:"فاندايك",ar:1},alab:{n:"كتاب الحياة",ar:1},kjv:{n:"KJV",ar:0}};
+let TR=sp.get("t");if(!TRS[TR]){try{TR=JSON.parse(localStorage.getItem("tsklib:str"))}catch(e){}}
+if(!TRS[TR])TR="svd";
+try{localStorage.setItem("tsklib:str",JSON.stringify(TR))}catch(e){}
+const TRN=TRS[TR].n,ISAR=!!TRS[TR].ar;
+document.querySelector('input[name=t][value='+TR+']').checked=true;
+function syncTr(){const t=document.querySelector('input[name=t]:checked').value,ar=!!TRS[t].ar,ro=$("#rootopt"),ri=ro.querySelector("input");
+  ri.disabled=!ar;ro.classList.toggle("dis",!ar);ro.title=ar?"":"البحث بالجذر متاح للترجمات العربية فقط";
+  if(!ar&&ri.checked)document.querySelector('input[name=m][value=part]').checked=true;
+  $("#q").placeholder=ar?"اكتب الكلمة أو العبارة":"Type a word or phrase";$("#q").dir=ar?"rtl":"auto";
+  try{localStorage.setItem("tsklib:str",JSON.stringify(t))}catch(e){}}
+document.querySelectorAll("input[name=t]").forEach(r=>r.addEventListener("change",syncTr));
 let mode=sp.get("m"); if(!["exact","part","root"].includes(mode)){try{mode=JSON.parse(localStorage.getItem("tsklib:smode"))||"part"}catch(e){mode="part"}}
 if(!["exact","part","root"].includes(mode))mode="part";
+if(mode==="root"&&!ISAR)mode="part";
 try{localStorage.setItem("tsklib:smode",JSON.stringify(mode))}catch(e){}
 const Q=(sp.get("q")||"").trim();
-$("#q").value=Q; document.querySelector('input[name=m][value='+mode+']').checked=true;
+$("#q").value=Q; document.querySelector('input[name=m][value='+mode+']').checked=true;syncTr();
 document.querySelectorAll("input[name=m]").forEach(r=>r.addEventListener("change",()=>{try{localStorage.setItem("tsklib:smode",JSON.stringify(r.value))}catch(e){}}));
 /* تطبيع: إزالة التشكيل والتطويل، وتوحيد الألف والياء والتاء المربوطة */
 const MAP={"أ":"ا","إ":"ا","آ":"ا","ٱ":"ا","ى":"ي","ة":"ه","ؤ":"و","ئ":"ي"};
 const DROP=/[\u064B-\u065F\u0670\u0640]/;
 const isL=c=>/[\u0621-\u064A0-9A-Za-z]/.test(c);
-function norm(s){let o="",m=[];for(let i=0;i<s.length;i++){const c=s[i];if(DROP.test(c))continue;o+=MAP[c]||c;m.push(i)}return [o,m]}
+function norm(s){let o="",m=[];for(let i=0;i<s.length;i++){const c=s[i];if(DROP.test(c))continue;o+=MAP[c]||(c>="A"&&c<="Z"?c.toLowerCase():c);m.push(i)}return [o,m]}
 
 /* بحث بالجذر: roots.js يحوي خريطة كلمة→جذور */
 const MN={part:"جزء من الكلمة",exact:"الكلمة كما هي",root:"بالجذر"};
@@ -131,7 +147,7 @@ function qRoots(q){let rs=new Set();const m=window.RT[q];if(m)m.split(",").forEa
   if(q.length>=2&&q.length<=4&&!m){/* قد يكون المستخدم كتب الجذر نفسه */}
   return [...rs]}
 function runRoot(){
-  const meta=$("#meta"),res=$("#res"),T=window.TX.svd;
+  const meta=$("#meta"),res=$("#res"),T=window.TX[TR];
   const qs=norm(Q)[0].split(/[^ء-ي0-9A-Za-z]+/).filter(Boolean);
   if(!qs.length){meta.textContent="نص البحث غير صالح.";return}
   buildRev();
@@ -152,14 +168,14 @@ function runRoot(){
     const list=verses.map(v=>({...v,use:v.hits.filter(t=>ok(t[0]))})).filter(v=>v.use.length);
     const by={};list.forEach(v=>{(by[v.a]=by[v.a]||[]).push(v)});
     const occ=list.reduce((s,v)=>s+v.use.length,0);
-    meta.textContent=list.length?("وُجد «"+Q+"» بالجذر"+(rootsTxt.length?" ("+rootsTxt.join("، ")+")":"")+" في "+nAr(list.length)+" آية ("+nAr(occ)+" موضع)"):("لا توجد نتائج لـ «"+Q+"» بالجذر.");
+    meta.textContent=list.length?("وُجد «"+Q+"» بالجذر"+(rootsTxt.length?" ("+rootsTxt.join("، ")+")":"")+" في "+TRN+" في "+nAr(list.length)+" آية ("+nAr(occ)+" موضع)"):("لا توجد نتائج لـ «"+Q+"» بالجذر في "+TRN+".");
     const flat=[];ABBR.forEach(a=>{if(!by[a])return;flat.push({head:a,count:by[a].length});by[a].sort((x,y)=>{const[c1,v1]=x.k.split(":"),[c2,v2]=y.k.split(":");return c1-c2||v1-v2}).forEach(v=>flat.push({a,v}))});
     res.innerHTML="";let shown=0;const STEP=150;
     function more(){let html="",cnt=0;const b=document.getElementById("moreBtn");if(b)b.remove();
       while(shown<flat.length&&cnt<STEP){const it=flat[shown++];
         if(it.head){html+='<div class="bk">'+esc(AR[it.head])+'<small>'+nAr(it.count)+' آية</small></div>'}
         else{cnt++;const v=it.v,sp=v.use.map(t=>[v.mp[t[1]],v.mp[t[2]-1]+1]).sort((x,y)=>x[0]-y[0]);let h="",p=0;sp.forEach(([s,e])=>{if(s<p)return;h+=esc(v.raw.slice(p,s))+"<mark>"+esc(v.raw.slice(s,e))+"</mark>";p=e});h+=esc(v.raw.slice(p));
-          const [c,vv]=v.k.split(":");html+='<a class="hit" target="_blank" rel="noopener" href="'+it.a+'.html#/'+it.a+'/'+c+':'+vv+'"><b>'+esc(AR[it.a])+' '+nAr(c)+': '+nAr(vv)+'</b><span class="t">'+h+'</span></a>'}}
+          const [c,vv]=v.k.split(":");html+='<a class="hit'+(ISAR?'':' en')+'" target="_blank" rel="noopener" href="'+it.a+'.html?tr='+TR+'#/'+it.a+'/'+c+':'+vv+'"><b>'+esc(AR[it.a])+' '+nAr(c)+': '+nAr(vv)+'</b><span class="t">'+h+'</span></a>'}}
       res.insertAdjacentHTML("beforeend",html);
       if(shown<flat.length){res.insertAdjacentHTML("beforeend",'<button class="more" id="moreBtn">عرض المزيد</button>');document.getElementById("moreBtn").addEventListener("click",more)}}
     more();
@@ -172,10 +188,16 @@ function runRoot(){
   drawResults();
 }
 function run(){
+  const meta=$("#meta");
+  if(!Q){meta.textContent="اكتب كلمة أو عبارة للبحث عنها، واختر الترجمة وطريقة المطابقة والأسفار من الأعلى.";$("#q").focus();return}
+  document.title="بحث: "+Q+" ("+TRN+") — مكتبة دراسة الشواهد";
+  if(window.TX&&window.TX[TR])return search();
+  meta.textContent="جاري تحميل نص "+TRN+"…";
+  const s=document.createElement("script");s.src="assets/tx_"+TR+".js";s.onload=search;s.onerror=()=>{meta.textContent="تعذر تحميل نص "+TRN+"."};document.head.appendChild(s);
+}
+function search(){
   const meta=$("#meta"),res=$("#res");
-  if(!Q){meta.textContent="اكتب كلمة أو عبارة للبحث عنها في نص فاندايك، واختر طريقة المطابقة والأسفار من الأعلى.";$("#q").focus();return}
-  document.title="بحث: "+Q+" — مكتبة دراسة الشواهد";
-  const T=window.TX&&window.TX.svd; if(!T){meta.textContent="تعذر تحميل نص فاندايك.";return}
+  const T=window.TX&&window.TX[TR]; if(!T){meta.textContent="تعذر تحميل نص "+TRN+".";return}
   if(mode==="root"){loadRoots(runRoot);return}
   const qn=norm(Q)[0].replace(/\s+/g," ").trim(); if(!qn){meta.textContent="نص البحث غير صالح.";return}
   const hits=[]; let total=0;
@@ -188,14 +210,14 @@ function run(){
         const [c,v]=k.split(":");list.push({k,c:+c,v:+v,h,n:spans.length})}});
     if(list.length){list.sort((x,y)=>x.c-y.c||x.v-y.v);hits.push([a,list]);total+=list.length}});
   const occ=hits.reduce((s,[,l])=>s+l.reduce((t,x)=>t+x.n,0),0);
-  const scope=SEL.size===ABBR.length?"":" — في "+nAr(SEL.size)+" من "+nAr(ABBR.length)+" سفرًا";
+  const scope=" — "+TRN+(SEL.size===ABBR.length?"":" — في ")+(SEL.size===ABBR.length?"":+nAr(SEL.size)+" من "+nAr(ABBR.length)+" سفرًا");
   meta.textContent=total?("وُجد «"+Q+"» في "+nAr(total)+" آية ("+nAr(occ)+" موضع) — "+(mode==="exact"?"الكلمة كما هي":"جزء من الكلمة")+scope):("لا توجد نتائج لـ «"+Q+"» ("+(mode==="exact"?"الكلمة كما هي":"جزء من الكلمة")+")"+scope+".");
   const flat=[];hits.forEach(([a,l])=>{flat.push({head:a,count:l.length});l.forEach(x=>flat.push({a,x}))});
   let shown=0;const STEP=150;
   function more(){let html="",cnt=0;const b=document.getElementById("moreBtn");if(b)b.remove();
     while(shown<flat.length&&cnt<STEP){const it=flat[shown++];
       if(it.head){html+='<div class="bk">'+esc(AR[it.head])+'<small>'+nAr(it.count)+' آية</small></div>'}
-      else{cnt++;html+='<a class="hit" target="_blank" rel="noopener" href="'+it.a+'.html#/'+it.a+'/'+it.x.c+':'+it.x.v+'"><b>'+esc(AR[it.a])+' '+nAr(it.x.c)+': '+nAr(it.x.v)+'</b><span class="t">'+it.x.h+'</span></a>'}}
+      else{cnt++;html+='<a class="hit'+(ISAR?'':' en')+'" target="_blank" rel="noopener" href="'+it.a+'.html?tr='+TR+'#/'+it.a+'/'+it.x.c+':'+it.x.v+'"><b>'+esc(AR[it.a])+' '+nAr(it.x.c)+': '+nAr(it.x.v)+'</b><span class="t">'+it.x.h+'</span></a>'}}
     res.insertAdjacentHTML("beforeend",html);
     if(shown<flat.length){res.insertAdjacentHTML("beforeend",'<button class="more" id="moreBtn">عرض المزيد</button>');document.getElementById("moreBtn").addEventListener("click",more)}}
   more();

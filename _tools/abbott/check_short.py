@@ -17,6 +17,9 @@ for k in en:
     if Counter(re.findall(r'<s\b[^>]*>', a)) != Counter(re.findall(r'<s\b[^>]*>', b)): probs.append((k, 'senses changed'))
     plain = re.sub(r'<(g|l|i|o)>.*?</\1>', '', b); plain = re.sub(r'<[^>]+>', ' ', plain)
     if len(re.findall(r'\b(the|and|of|with|which|in|to)\b', plain)) > 1: probs.append((k, 'english left'))
+    for t in ['b','i','g','h','o','f','x','r','e','l','s']:
+        if len(re.findall(r'<'+t+r'(\s[^>]*)?>',b))!=len(re.findall('</'+t+'>',b)): probs.append((k,'unbalanced <'+t+'>'))
+    if re.search(r'(?<!<)(?<!</)\b[a-z]{1,2}>', re.sub(r'<[^>]*>','',b)): probs.append((k,'broken tag text'))
 for k in ar:
     if k not in en: probs.append((k, 'extra key'))
 print(len(en), 'entries;', len(probs), 'problems')

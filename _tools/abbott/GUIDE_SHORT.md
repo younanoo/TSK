@@ -19,3 +19,12 @@ Keep Greek words `<g>` / `<x>` where they are part of the meaning or usage (e.g.
 
 Output: the same JSON shape, `{"G26": "<short Arabic markup>"}`.
 Checker: python3 -I SCRIPTS/check_short.py EN.json AR.json. It checks that all refs are kept, no new Greek or Hebrew appears, and no English is left.
+
+## Additional rules (from the Ephesians/Philemon pilots)
+1. Classical-only meanings: keep the label. Some senses or glosses describe a meaning found ONLY in classical/extra-biblical Greek ("in cl.", "Hom.", "Att." with only classical authors and no NT reference). Drop the author names, but START that sense with «في اليونانية الكلاسيكية:» so it does not read as a New Testament meaning. Use «عند الكتّاب المتأخرين:» for later writers and «في السبعينية:» for LXX-only usage. If the English contrasts "in cl. X; in NT Y", keep both halves briefly: «(في الكلاسيكية: X)؛ وفي العهد الجديد Y». Most classical remarks are incidental and are simply dropped.
+2. Hebrew verb stems, if they appear: قال (qal) · نِفْعَل (ni.) · بِعِّيل (pi.) · بُعَّل (pu.) · هِفْعِيل (hi.) · هُفْعَل (ho.) · هِتْفَعِّيل (hith.). Always write the Arabic name followed by the Latin abbreviation in brackets, e.g. «بِعِّيل (pi.)».
+3. "Tr." is Tregelles (a text edition, a textual note, so drop it). "Tr., Syn." / "Trench, Syn." is Trench's Synonyms, a scholarly work, so drop it too.
+4. "π." in Greek letters is the abbreviation for papyri, so drop it with the remark.
+5. Refs that sat inside a dropped remark stay, with «قارن» before them.
+6. Copy Greek/Hebrew/Latin strings from the source PROGRAMMATICALLY (Unicode must be byte-identical). Never retype them.
+7. Name every helper/temp file with your batch prefix (e.g. "s1b07_"). Other agents work in the same folder.
