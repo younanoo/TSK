@@ -25,14 +25,14 @@ const TOOLS = {
   "strong.html":  { desc: "قاموس سترونج للكلمات العبرية واليونانية في الكتاب المقدس، بشرح عربي وإنجليزي ونطق كل كلمة، مع الأعداد التي ترد فيها.", sitemap: 1 },
   "dictcopy.html":{ desc: "صفحة نسخ القاموس: مداخل قاموس سترونج وBDB العبري وأبوت-سميث اليوناني اللي اخترتها، بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية، جاهزة للنسخ إلى Word أو ملف نصي." },
   "copy.html":    { desc: "صفحة النسخ: الآيات اللي اخترتها من صفحات الأسفار بالشكل «نص الآية — الشاهد (الترجمة)» جاهزة للنسخ إلى Word أو ملف نصي." },
-  "compare.html": { desc: "قارن نص أي أصحاح في ثلاث ترجمات جنبًا إلى جنب: كتاب الحياة وفاندايك وKJV." },
-  "outline.html": { desc: "مخطط تفصيلي لكل سفر من أسفار الكتاب المقدس بالعربية والإنجليزية مع الأعداد." },
-  "mindmap.html": { desc: "خريطة ذهنية تفاعلية لشواهد كل كلمة في الكتاب المقدس من «كنز معرفة الكتاب المقدس» (TSK)." },
+  "compare.html": { desc: "قارن نص أي أصحاح في ثلاث ترجمات جنبًا إلى جنب: كتاب الحياة وفاندايك وKJV.", sitemap: 1 },
+  "outline.html": { desc: "مخطط تفصيلي لكل سفر من أسفار الكتاب المقدس بالعربية والإنجليزية مع الأعداد.", sitemap: 1 },
+  "mindmap.html": { desc: "خريطة ذهنية تفاعلية لشواهد كل كلمة في الكتاب المقدس من «كنز معرفة الكتاب المقدس» (TSK).", sitemap: 1 },
   "chrono.html":  { desc: "خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.", sitemap: 1 },
   "timeline.html":{ desc: "خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.", sitemap: 1 },
   "sources.html": { desc: "مصادر المكتبة ومراجعها: النصوص والترجمات والشواهد والفهارس وبيانات الكلمة بكلمة، مع ترخيص كل مصدر وحقوق Biblica لكتاب الحياة.", sitemap: 1 },
   "notes.html":   { desc: "ملاحظات على الفروق بين الترجمات العربية والإنجليزية في المكتبة، خصوصًا ما سببه اختلاف النص اليوناني الذي بُنيت عليه كل ترجمة، سفرًا سفرًا.", sitemap: 1 },
-  "grammar.html": { desc: "بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible." },
+  "grammar.html": { desc: "بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.", sitemap: 1 },
 };
 
 function headBlock(o) {
@@ -80,20 +80,21 @@ const SIDEBAR = groupedLinks();
 
 function bookPre(c, LIB) {
   const g = M.BKGRP.find(x => c.id >= x[1] && c.id <= x[2]);
-  const vs = LIB[0].verses, chs = [...new Set(vs.map(d => d.c))];
+  let SVD = {}; try { SVD = M.runJS(`assets/tx/svd_${c.abbr}.js`).TXB["svd/" + c.abbr] || {}; } catch (e) {}
+  const vs = LIB[0].verses.map(d => Object.assign({}, d, { text: SVD[d.c + ":" + d.v] || d.text })), chs = [...new Set(vs.map(d => d.c))];
   const body = chs.map(ch => `<section><h2>${M.AR[c.abbr]} ${n(ch)}</h2><p>${vs.filter(d => d.c === ch)
     .map(d => `<sup>${n(d.v)}</sup>${esc(d.text)}`).join(" ")}</p></section>`).join("");
   return `<article class="pre"><p class="pre-bc"><a href="index.html">${SITE}</a> ‹ ${g ? g[0] : ""}</p>` +
     `<h1>${M.fullName(c)}</h1><p class="pre-desc">${esc(M.bookDesc(c))}</p>` +
     `<nav class="pre-ch" aria-label="الأصحاحات">${chs.map(ch => `<a href="#/${c.abbr}/ch/${ch}">${n(ch)}</a>`).join("")}</nav>${body}` +
-    `<p class="pre-src">نص الآيات من «كتاب الحياة» (ALAB)، والشواهد من «كنز معرفة الكتاب المقدس» (TSK).</p></article>`;
+    `<p class="pre-src">نص الآيات من ترجمة فاندايك، والشواهد من «كنز معرفة الكتاب المقدس» (TSK).</p></article>`;
 }
 const indexPre = () => `<article class="pre"><h1>${SITE} — ${TAGLINE}</h1><p class="pre-desc">${esc(M.SITE_DESC)}</p>` +
   `<nav class="pre-books">${groupedLinks()}</nav>` +
   `<p><a href="search.html">البحث في الكتاب المقدس</a> · <a href="topics.html">فهرس المواضيع</a> · <a href="strong.html">قاموس سترونج</a></p></article>`;
 
 /* ---------- pages ---------- */
-const htmlFiles = fs.readdirSync(ROOT).filter(f => f.endsWith(".html") && !["404.html", "offline.html"].includes(f));
+const htmlFiles = fs.readdirSync(ROOT).filter(f => f.endsWith(".html") && !["404.html", "offline.html"].includes(f) && !/(_test\.html|^test_)/i.test(f));
 const sitemap = [];
 for (const f of htmlFiles) {
   let h = read(f);
@@ -109,6 +110,7 @@ for (const f of htmlFiles) {
         { "@type": "ListItem", position: 2, name: g ? g[0] : "", item: BASE + "index.html" },
         { "@type": "ListItem", position: 3, name: M.fullName(c), item: BASE + f }] } });
     h = setInner(h, '<main id="main">', bookPre(c, LIB));
+    if (!h.includes(`assets/tx/svd_${c.abbr}.js`)) h = h.replace(new RegExp(`(<script src="assets/lib_${c.abbr}\\.js[^"]*"></script>)`), `$1\n<script src="assets/tx/svd_${c.abbr}.js"></script>`);
     h = setInner(h, '<div class="booksel" id="booksel">', SIDEBAR);
     sitemap.push([BASE + f, "0.8"]);
   } else {
@@ -144,6 +146,50 @@ css += `
 /* pre:end */
 `;
 write("assets/style.css", css);
+
+/* ---------- mind map: assets/mm_data.js (the source the review tools edit) → one small file per chapter ----------
+   mindmap.html loads assets/mm/idx.js (which verses exist + verse-range ends) and then only the chapters a map needs
+   (assets/mm/<Book>_<chapter>.js: cross-references R, Ketab El Hayat text T, Van Dyck text S). Files are rewritten only when they change. */
+(function () {
+  if (!fs.existsSync(A("assets/mm_data.js"))) return;
+  const MM = M.runJS("assets/mm_data.js").MM, AB = {}; CAT.forEach(c => AB[c.id] = c.abbr);
+  const writeIf = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return 0; } catch (e) {} write(p, s); return 1; };
+  const SVD = {}, svdOf = ab => { if (!(ab in SVD)) { try { SVD[ab] = M.runJS(`assets/tx/svd_${ab}.js`).TXB["svd/" + ab] || {}; } catch (e) { SVD[ab] = {}; } } return SVD[ab]; };
+  const dec = id => [Math.floor(id / 1e6), Math.floor(id % 1e6 / 1e3), id % 1e3];
+  const CH = {}, I = {};
+  const ch = id => { const [b, c] = dec(+id), k = AB[b] + "_" + c; return CH[k] = CH[k] || { R: {}, T: {}, S: {} }; };
+  for (const id in MM.R) { ch(id).R[id] = MM.R[id]; const [b, c, v] = dec(+id); ((I[b] = I[b] || {})[c] = I[b][c] || []).push(v); }
+  for (const id in MM.T) ch(id).T[id] = MM.T[id];
+  for (const k in CH) { const ab = k.split("_")[0], s = svdOf(ab), d = CH[k];
+    for (const id of new Set([...Object.keys(d.R), ...Object.keys(d.T)])) { const [, c, v] = dec(+id), t = s[c + ":" + v]; if (t) d.S[id] = t; } }
+  Object.values(I).forEach(o => Object.values(o).forEach(a => a.sort((x, y) => x - y)));
+  fs.mkdirSync(A("assets/mm"), { recursive: true });
+  let changed = writeIf("assets/mm/idx.js", "window.MMI=" + JSON.stringify({ I, E: MM.E, C: Object.keys(CH) }) + ";\n");
+  for (const k in CH) changed += writeIf(`assets/mm/${k}.js`, `MMC(${JSON.stringify(k)},${JSON.stringify(CH[k])});\n`);
+  console.log(`mind map: ${Object.keys(CH).length} chapter files (${changed} updated)`);
+})();
+
+/* ---------- Strong's page: assets/strong.js + assets/sidx.js (the sources other pages and the review tools use) → small chunks ----------
+   assets/strong/<G|H><n÷100>.js holds, for 100 numbers, the dictionary entry (e) and where the word occurs (o: [book, chapter, verse, "word|word"],
+   in Bible order). strong.html loads only the chunk it needs and shows the verse text from assets/tx/alab_<Book>.js. Rewritten only on change. */
+(function () {
+  if (!fs.existsSync(A("assets/strong.js")) || !fs.existsSync(A("assets/sidx.js"))) return;
+  const STRONG = M.runJS("assets/strong.js").STRONG, SIDX = M.runJS("assets/sidx.js").SIDX;
+  const writeIf = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return 0; } catch (e) {} write(p, s); return 1; };
+  const ORD = {}; CAT.forEach(c => ORD[c.abbr] = c.id);
+  const rows = SIDX.filter(r => r[4]).sort((a, b) => (ORD[a[0]] - ORD[b[0]]) || (a[1] - b[1]) || (a[2] - b[2]));
+  const OCC = {};
+  for (const r of rows) { const by = {};
+    for (const [w, ns] of r[4]) for (const x of ns) (by[x] = by[x] || []).push(w);
+    for (const x in by) (OCC[x] = OCC[x] || []).push([r[0], r[1], r[2], by[x].join("|")]); }
+  const CH = {}, key = num => num[0] + Math.floor(+num.slice(1) / 100);
+  for (const num of new Set([...Object.keys(STRONG), ...Object.keys(OCC)])) { if (!/^[GH]\d+$/.test(num)) continue;
+    (CH[key(num)] = CH[key(num)] || {})[num] = { e: STRONG[num] || null, o: OCC[num] || [] }; }
+  fs.mkdirSync(A("assets/strong"), { recursive: true });
+  let changed = 0;
+  for (const k in CH) changed += writeIf(`assets/strong/${k}.js`, `STRC(${JSON.stringify(k)},${JSON.stringify(CH[k])});\n`);
+  console.log(`strong: ${Object.keys(CH).length} chunk files (${changed} updated)`);
+})();
 
 /* ---------- robots / sitemap ---------- */
 write("robots.txt", `User-agent: *\nAllow: /\nDisallow: ${BASE_PATH}_tools/\n\nSitemap: ${BASE}sitemap.xml\n`);
@@ -229,21 +275,26 @@ bj += `
 `;
 write("assets/brand.js", bj);
 
-const SKIP_DIR = new Set(["_tools", ".git", "node_modules", ".vscode"]);
+/* backups, raw sources, tests and the 11 legacy per-book folders (pre-flattening) are not part of the published site */
+const SKIP_DIR = new Set(["_tools", ".git", "node_modules", ".vscode", "backup", "Bibles", "geo_test",
+  "1Jo", "1Pe", "1Th", "2Jo", "2Pe", "3Jo", "Col", "Heb", "Jam", "Jud", "Rev"]);
+const SKIP_FILE = p => /(^|\/)([^/]*_test\.html|test_[^/]*)$|\.bak$/i.test(p) || p === "assets/mm_data.js";
 const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
 /* ---------- assets/offline.json: packages the user can download for offline use (sizes = what is sent over the wire) ---------- */
 (function () {
   const zlib = require("zlib");
   const GROUPS = [
-    { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بنص كتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
-    { id: "tr", title: "ترجمتا فاندايك وKJV", desc: "نصوص الترجمات الإضافية لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
-    { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) },
+    { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بترجمة فاندايك وكتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
+    { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
+    { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) || /^assets\/strong\//.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },
+    { id: "abbott", title: "قاموس أبوت-سميث اليوناني", desc: "معاني الكلمات اليونانية في العهد الجديد من قاموس أبوت-سميث.", test: p => p === "assets/abbott.js" || /^assets\/abbott\//.test(p) },
+    { id: "geo", title: "الأماكن والخرائط", desc: "أماكن الكتاب المقدس وخرائطها لكل سفر.", test: p => /^assets\/geo\/geo_/.test(p) },
     { id: "il", title: "كلمة بكلمة والبحث النحوي", desc: "بيانات Berean بالعبرية واليونانية مع التحليل النحوي.", test: p => /^assets\/(bsb|orig)_/.test(p) },
     { id: "search", title: "البحث في نص الكتاب", desc: "نصوص كاملة للبحث (كتاب الحياة وفاندايك وKJV).", test: p => /^assets\/tx_[a-z]+\.js$/.test(p) },
     { id: "topics", title: "فهرس المواضيع", desc: "٤٦ ألف موضوع مع آياتها.", test: p => /^assets\/tp_/.test(p) },
-    { id: "mm", title: "الخريطة الذهنية للشواهد", desc: "بيانات الخريطة الذهنية.", test: p => p === "assets/mm_data.js" },
+    { id: "mm", title: "الخريطة الذهنية للشواهد", desc: "بيانات الخريطة الذهنية.", test: p => /^assets\/mm\//.test(p) },
     { id: "img_m", title: "الصور — جودة متوسطة (٨٠٠ بكسل)", desc: "صور الأصحاحات المناسبة للجوال.", test: p => /^img\/web\/.*-800\.webp$/.test(p) },
     { id: "img_h", title: "الصور — جودة عالية (١٦٠٠ بكسل)", desc: "للشاشات الكبيرة؛ تُحمَّل مع المتوسطة للحصول على كل الأحجام.", test: p => /^img\/web\/.*-1600\.webp$/.test(p) }
   ];
@@ -252,7 +303,7 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
     for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
       const p = dir ? dir + "/" + e.name : e.name;
       if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
-      if (p === "sw.js" || p === "assets/offline.json" || !OK_EXT.test(p) || dir === "img") continue;
+      if (p === "sw.js" || p === "assets/offline.json" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;
       files.push(p);
     }
   })("");
@@ -289,7 +340,7 @@ const HC2 = {}; let HASHED = 0;
   for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
     const p = dir ? dir + "/" + e.name : e.name;
     if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
-    if (p === "sw.js" || !OK_EXT.test(p) || dir === "img") continue;      // img/*.jpg originals are not published (only img/web)
+    if (p === "sw.js" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;      // img/*.jpg originals are not published (only img/web)
     const st = fs.statSync(A(p)), ck = st.size + ":" + Math.round(st.mtimeMs), hit = HC[p];       // hash cache: re-hash only files that changed
     if (hit && hit[0] === ck) REV[p] = hit[1];
     else { REV[p] = crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 10); }

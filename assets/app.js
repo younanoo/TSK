@@ -183,13 +183,17 @@ const linkRefs = h => h.replace(/\b([GH]\d+)\b/g,(m)=>STRONG[m]?`<span class="sr
 let DICT={cur:null, hist:[], trail:[]};   // per-verse state
 const TRN={alab:"كتاب الحياة",svd:"فاندايك",kjv:"KJV"};
 function trAvail(){const b=book();if(b.trs)return ["alab",...b.trs];const t=window.TR&&window.TR[b.abbr];return t?Object.keys(TRN).filter(k=>k==="alab"||t[k]):[]}
-function trCur(){const c=store.get("tr","alab");return trAvail().includes(c)?c:"alab"}
+function trCur(){const c=store.get("tr","svd"),av=trAvail();return av.includes(c)?c:(av.includes("svd")?"svd":"alab")}
 function hasDia(){const b=book();if(b.dia!=null)return b.dia;const t=window.TR&&window.TR[b.abbr];return !!(t&&t.svdD)}
 function hasKD(){return trCur()==="alab"}
 function kdGet(d){const ab=book().abbr,src="assets/kd_"+ab+".js";if(LOADED[src]===undefined){loadJS(src,()=>render());return null}const m=window.KD&&window.KD[ab];return (m&&m[d.c+":"+d.v])||null}
 function kdArS(d){const t=kdGet(d);if(!t)return null;const ab=book().abbr,m=window.KDS&&window.KDS[ab],ns=m&&m[d.c+":"+d.v];if(!ns)return null;const out=[];t.split(" ").forEach((w,i)=>{if(i)out.push([" ",[]]);const mm=w.match(/^([^\u0621-\u064A]*)(.*?)([^\u0621-\u064A\u064B-\u065F\u0670]*)$/s);const a=mm[1],c=mm[2],e=mm[3];if(a)out.push([a,[]]);if(c)out.push([c,ns[i]||[]]);if(e)out.push([e,[]])});return out}
 function diaOn(){return store.get("dia",false)===true&&((trCur()==="svd"&&hasDia())||hasKD())}
-function trText(d){const c=trCur();if(c==="alab")return diaOn()?kdGet(d):null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];return (t[c]&&t[c][k])||null}
+/* نص فاندايك الخفيف (assets/tx/svd_<السفر>.js) يكفي لعرض النص؛ الملف الكامل tr_<السفر>.js (أرقام سترونج والتشكيل وKJV) يُحمَّل عند الحاجة فقط */
+function trLite(){const ab=book().abbr,L=window.TXB["svd/"+ab];if(L)return L;const src=`assets/tx/svd_${ab}.js`;if(JSFAIL[src])return false;if(LOADED[src]===undefined)loadJS(src,()=>render());return null}
+function trText(d){const c=trCur();if(c==="alab")return diaOn()?kdGet(d):null;
+  if(c==="svd"&&!(window.TR&&window.TR[book().abbr])&&!diaOn()){const L=trLite();if(L)return L[d.c+":"+d.v]||null;if(L===null)return null}
+  const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];return (t[c]&&t[c][k])||null}
 /* ---- اللغة الأصلية (عرض الأصحاح): نص Berean (WLC / Nestle) بترتيب الكلمات الأصلي ---- */
 function origView(){return S.view==="chapter"||S.view==="verse"}
 function origOn(){return origView()&&store.get("corig",false)===true}

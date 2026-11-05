@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="stylesheet" href="assets/style.css?v=057ce5a7">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -65,10 +65,15 @@ html,body{overflow-x:clip;padding:0}
 <div class="tf"><input id="q" type="search" placeholder="ابحث في المواضيع (عربي أو English)…"><select id="src"><option value="">كل المصادر</option><option value="Nav">Nave</option><option value="TTT">Torrey</option><option value="Top">BibleHub</option></select><select id="bk"><option value="">كل الأسفار</option></select><a href="index.html">← المكتبة</a></div>
 <div class="cols"><div class="list" id="list"></div><div class="det" id="det"><div class="note">اختر موضوعًا من القائمة لعرض آياته.</div></div></div>
 </div>
-<script src="assets/tx_svd.js"></script>
 <script src="assets/tp_idx.js"></script>
 <script>
 const $=s=>document.querySelector(s);
+/* نص فاندايك لكل سفر (assets/tx/svd_<السفر>.js، ضمن حزمة الأساس) يُحمَّل عند الحاجة بدل ملف الكتاب كله tx_svd.js */
+window.TXB=window.TXB||{};const TXQ={};
+function svdNeed(books,cb){const miss=[...new Set(books)].filter(b=>!window.TXB["svd/"+b]&&TXQ[b]!==2);let left=miss.length+1;const d=()=>{if(--left===0)cb()};
+  miss.forEach(b=>{if(Array.isArray(TXQ[b]))return TXQ[b].push(d);TXQ[b]=[d];const s=document.createElement("script");s.src="assets/tx/svd_"+b+".js";
+    s.onload=s.onerror=e=>{const q=TXQ[b];TXQ[b]=e.type==="error"?2:1;q.forEach(f=>f())};document.head.appendChild(s)});d()}
+const svdText=(b,k)=>(window.TXB["svd/"+b]||{})[k];
 const nAr=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const AR={Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
@@ -85,7 +90,7 @@ function filt(){const q=norm($("#q").value.trim()),s=$("#src").value,b=$("#bk").
 function drawList(reset){if(reset){lim=200;filt()}
   const part=ls.slice(0,lim);
   $("#list").innerHTML=ls.length?part.map(t=>'<a class="ti '+(cur===t[0]?"on":"")+'" data-id="'+t[0]+'"><span class="a">'+esc(t[3])+'<span class="src">'+SRC[t[1]]+'</span></span><span class="e">'+esc(t[2])+'</span><small>'+nAr(t[4])+' مقطعًا</small></a>').join("")+(ls.length>lim?'<button class="more" id="more">عرض المزيد ('+nAr(ls.length-lim)+' متبقٍ)</button>':"")+"":'<div class="note" style="margin:10px">لا توجد مواضيع مطابقة.</div>'}
-function verses(r){const [ab,c,v,c2,v2]=r;const T=window.TX.svd[ab]||{};const out=[];
+function verses(r){const [ab,c,v,c2,v2]=r;const T=window.TXB["svd/"+ab]||{};const out=[];
   for(let cc=c;cc<=c2;cc++){const a=cc===c?v:1;const b=cc===c2?v2:999;for(let vv=a;vv<=b;vv++){const k=cc+":"+vv;if(T[k])out.push([cc,vv,T[k]]);else if(vv>a&&b===999)break}}
   return out}
 function ranges(id,cb){const k=Math.floor(id/2000),src="assets/tp_r"+k+".js";
@@ -93,14 +98,14 @@ function ranges(id,cb){const k=Math.floor(id/2000),src="assets/tp_r"+k+".js";
   loadJS(src,()=>cb((window.TPR||{})[id]||[]))}
 function show(id){cur=id;const t=TS.find(x=>x[0]===id);if(!t)return;
   $("#det").innerHTML='<div class="note">جارٍ التحميل…</div>';
-  ranges(id,rg=>{
+  ranges(id,rg=>svdNeed(rg.map(r=>r[0]),()=>{if(cur!==id)return;
   const by={};rg.forEach(r=>(by[r[0]]=by[r[0]]||[]).push(r));
   let h='<h2>'+esc(t[3])+'<span class="src">'+SRC[t[1]]+'</span></h2><div class="en">'+esc(t[2])+'</div>';
   ORD.filter(a=>by[a]).forEach(a=>{h+='<div class="bk">'+AR[a]+'<small>'+nAr(by[a].length)+'</small></div>';
     by[a].forEach(r=>{const vs=verses(r);if(!vs.length)return;const [c,v]=[vs[0][0],vs[0][1]];
       const ref=vs.length>1?(r[1]===r[3]?nAr(r[1])+": "+nAr(r[2])+"–"+nAr(r[4]):nAr(r[1])+": "+nAr(r[2])+" – "+nAr(r[3])+": "+nAr(r[4])):nAr(c)+": "+nAr(v);
       h+='<a class="v" target="_blank" href="'+a+'.html#/'+a+'/'+c+':'+v+'"><b>'+AR[a]+' '+ref+'</b><span class="t">'+vs.map(x=>(vs.length>1?'<sup>'+nAr(x[1])+'</sup>':"")+esc(x[2])).join(" ")+'</span></a>'})});
-  $("#det").innerHTML=h;drawList();history.replaceState(null,"","#t="+id)})}
+  $("#det").innerHTML=h;drawList();history.replaceState(null,"","#t="+id)}))}
 let tm;$("#q").addEventListener("input",()=>{clearTimeout(tm);tm=setTimeout(()=>drawList(true),180)});
 $("#src").addEventListener("change",()=>drawList(true));
 $("#bk").addEventListener("change",()=>{const b=$("#bk").value;

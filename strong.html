@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="stylesheet" href="assets/style.css?v=057ce5a7">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -58,17 +58,26 @@
 <header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
 
 <div class="spage"><div class="top"><a href="index.html">← مكتبة دراسة الشواهد</a><span id="stt" class="pill str"></span></div><div class="howto"><b>ما وظيفة هذه الصفحة؟</b><p>قاموس سترونج يشرح الكلمات الأصلية (العبرية واليونانية) التي كُتب بها الكتاب المقدس، ولكل كلمة رقم يبدأ بحرف G لليوناني وH للعبري. اكتب الرقم لتعرف معنى الكلمة ونطقها، وكل الآيات التي وردت فيها. إن لم تعرف الرقم فجرّب البحث بكلمة عربية من الصفحة المجاورة.</p></div><form id="sf" class="sform" autocomplete="off"><label for="sq">ابحث برقم الكلمة</label><div class="sfr"><input id="sq" inputmode="latin" dir="ltr" placeholder="G25 أو H7225 أو ٢٥" aria-label="رقم سترونج"><button type="submit">بحث</button></div><p class="sfe" id="sfe" role="alert"></p><div class="sfx">أمثلة: <a href="#G25">G25</a> <a href="#G26">G26</a> <a href="#G3056">G3056</a> <a href="#H430">H430</a> <a href="#H7225">H7225</a></div></form><p class="sfx" style="margin:10px 0 0">تريد البحث بكلمة عربية؟ <a href="arword.html">افتح صفحة البحث بالكلمة العربية ←</a></p><div id="out"></div></div>
-<script src="assets/strong.js"></script>
-<script src="assets/sidx.js"></script>
 <script src="assets/askai.js?v=3" defer></script>
 <script>
 const AR={"Gen": "التكوين", "Exo": "الخروج", "Lev": "اللاويين", "Num": "العدد", "Deu": "التثنية", "Jos": "يشوع", "Jdg": "القضاة", "Rut": "راعوث", "1Sa": "صموئيل الأول", "2Sa": "صموئيل الثاني", "1Ki": "الملوك الأول", "2Ki": "الملوك الثاني", "1Ch": "أخبار الأيام الأول", "2Ch": "أخبار الأيام الثاني", "Ezr": "عزرا", "Neh": "نحميا", "Est": "أستير", "Job": "أيوب", "Psa": "المزامير", "Pro": "الأمثال", "Ecc": "الجامعة", "Son": "نشيد الأنشاد", "Isa": "إشعياء", "Jer": "إرميا", "Lam": "مراثي إرميا", "Eze": "حزقيال", "Dan": "دانيال", "Hos": "هوشع", "Joe": "يوئيل", "Amo": "عاموس", "Oba": "عوبديا", "Jon": "يونان", "Mic": "ميخا", "Nah": "ناحوم", "Hab": "حبقوق", "Zep": "صفنيا", "Hag": "حجي", "Zec": "زكريا", "Mal": "ملاخي", "Mat": "متى", "Mar": "مرقس", "Luk": "لوقا", "Joh": "يوحنا", "Act": "أعمال الرسل", "Rom": "رومية", "1Co": "كورنثوس الأولى", "2Co": "كورنثوس الثانية", "Gal": "غلاطية", "Eph": "أفسس", "Phi": "فيلبي", "Col": "كولوسي", "1Th": "تسالونيكي الأولى", "2Th": "تسالونيكي الثانية", "1Ti": "تيموثاوس الأولى", "2Ti": "تيموثاوس الثانية", "Tit": "تيطس", "Phm": "فليمون", "Heb": "العبرانيين", "Jam": "يعقوب", "1Pe": "بطرس الأولى", "2Pe": "بطرس الثانية", "1Jo": "يوحنا الأولى", "2Jo": "يوحنا الثانية", "3Jo": "يوحنا الثالثة", "Jud": "يهوذا", "Rev": "الرؤيا"};
+/* القاموس مقسّم: كل ١٠٠ رقم في ملف (assets/strong/<G|H><الرقم÷١٠٠>.js، تولّدها _tools/build_seo_pwa.js من strong.js وsidx.js)
+   فيه معنى الكلمة ومواضعها؛ يُحمَّل الملف المطلوب فقط، ونص الأعداد من assets/tx/alab_<السفر>.js (ضمن حزمة الأساس) */
+window.STRONG=window.STRONG||{};window.TXB=window.TXB||{};
+const OCC={},SC={},TQ={};
+window.STRC=(k,d)=>{for(const num in d){if(d[num].e)STRONG[num]=d[num].e;OCC[num]=d[num].o}};
+const ckey=num=>"assets/strong/"+num[0]+Math.floor(+num.slice(1)/100)+".js";
+const CMAX={G:5624,H:8674};  /* آخر رقم في كل قاموس: أرقام بعده غير موجودة، فلا يُطلب لها ملف */
+function need(src,st,cb){if(st[src]===1||st[src]===2)return cb();if(Array.isArray(st[src]))return st[src].push(cb);
+  st[src]=[cb];const x=document.createElement("script");x.src=src;x.onload=x.onerror=e=>{const q=st[src];st[src]=e.type==="error"?2:1;q.forEach(f=>f())};document.body.appendChild(x)}
+function needAll(srcs,st,cb){let left=srcs.length+1;const d=()=>{if(--left===0)cb()};srcs.forEach(s=>need(s,st,d));d()}
+const vtx=x=>(window.TXB["alab/"+x[0]]||{})[x[1]+":"+x[2]];
 const PS=30;
 const $=s=>document.querySelector(s);
 const n=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const isHeb=x=>x[0]==="H";
-const link=h=>h.replace(/\b([GH]\d+)\b/g,m=>STRONG[m]?`<a class="sref" href="#${m}">${m}</a>`:m);
+const link=h=>h.replace(/\b([GH]\d+)\b/g,m=>`<a class="sref" href="#${m}">${m}</a>`);
 const plural=(k,one,two,few,many)=>k===1?one:k===2?two:(k>=3&&k<=10)?`${n(k)} ${few}`:`${n(k)} ${many}`;
 let S={num:"",book:"all",page:1,rows:[]};
 function hl(text,words){let t=esc(text);for(const w of words){const e=esc(w);if(e)t=t.split(e).join("<mark>"+e+"</mark>")}return t}
@@ -78,6 +87,9 @@ function load(){
   $("#sq").value=raw;$("#sfe").textContent="";
   if(!raw){S.num="";$("#stt").textContent="";document.title="قاموس سترونج — جدد وعتقاء";
     $("#out").innerHTML='<p class="shome">اكتب رقم الكلمة في الخانة أعلاه لتظهر لك الكلمة الأصلية ونطقها ومعناها بالعربية والإنجليزية، مع الأعداد التي ترد فيها. الأرقام التي تبدأ بـ <b>G</b> يونانية (العهد الجديد)، والتي تبدأ بـ <b>H</b> عبرية (العهد القديم).</p>';return}
+  {const ks=/^\d+$/.test(raw)?["G"+raw,"H"+raw]:/^[GH]\d+$/.test(raw)?[raw]:[],srcs=[...new Set(ks.filter(k=>+k.slice(1)<=CMAX[k[0]]).map(ckey))];
+   if(srcs.some(s=>SC[s]!==1&&SC[s]!==2)){$("#out").innerHTML='<p class="shome">جارٍ التحميل…</p>';needAll(srcs,SC,load);return}
+   if(srcs.length&&srcs.every(s=>SC[s]===2)){$("#sfe").textContent="تعذّر تحميل القاموس — غالبًا الجهاز غير متصل بالإنترنت، ولم يُنزَّل قاموس سترونج للاستخدام دون إنترنت بعد.";S.num="";$("#out").innerHTML="";$("#stt").textContent="";return}}
   if(/^\d+$/.test(raw)){
     const g="G"+raw,h="H"+raw,hg=STRONG[g],hh=STRONG[h];
     if(hg&&hh){S.num="";$("#stt").textContent="";$("#out").innerHTML='<p class="shome">الرقم '+n(raw)+' موجود في القاموسين، اختر الكلمة التي تقصدها:</p><div class="spick">'+[[g,hg,"يونانية"],[h,hh,"عبرية"]].map(([k,e,l])=>'<a href="#'+k+'"><span class="num">'+k+'</span><span class="o">'+esc(e.o)+'</span><small>'+esc(e.tr)+" · "+l+'</small></a>').join("")+'</div>';return}
@@ -86,7 +98,7 @@ function load(){
   if(!/^[GH]\d+$/.test(raw)){$("#sfe").textContent="اكتب الرقم بصيغة صحيحة، مثل G25 أو H7225 أو ٢٥.";S.num="";$("#out").innerHTML="";$("#stt").textContent="";return}
   if(!STRONG[raw]){$("#sfe").textContent="لا توجد كلمة بالرقم "+raw+". جرّب رقمًا آخر.";S.num="";$("#out").innerHTML="";$("#stt").textContent="";return}
   S.num=raw;S.page=1;S.book="all";
-  S.rows=(window.SIDX||[]).filter(x=>x[4]).map(x=>({x,ws:x[4].filter(a=>a[1].includes(raw)).map(a=>a[0])})).filter(o=>o.ws.length);
+  S.rows=(OCC[raw]||[]).map(o=>({x:[o[0],o[1],o[2]],ws:o[3].split("|")}));
   render();
 }
 $("#sf").addEventListener("submit",e=>{e.preventDefault();const v=$("#sq").value.trim();if(!v){$("#sfe").textContent="اكتب رقم الكلمة أولًا.";return}
@@ -113,6 +125,8 @@ function render(){
   const rows=S.book==="all"?S.rows:S.rows.filter(o=>o.x[0]===S.book);
   const pages=Math.max(1,Math.ceil(rows.length/PS)); if(S.page>pages)S.page=pages;
   const cur=rows.slice((S.page-1)*PS,S.page*PS);
+  {const nb=[...new Set(cur.map(o=>o.x[0]))].map(b=>"assets/tx/alab_"+b+".js").filter(s=>TQ[s]!==1&&TQ[s]!==2);
+   if(nb.length)needAll(nb,TQ,()=>{if(S.num===num)render()})}
   const dent=e?`<div class="dent"><div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span><button type="button" class="stai" data-askai data-num="${num}" title="اسأل وضع الذكاء الاصطناعي في Google عن هذه الكلمة" style="margin-inline-start:auto"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"/></svg> اسأل Google AI</button></div>
     <div class="cols"><div class="col arc"><h5>المعنى بالعربية</h5><div class="tx">${e.ar?link(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد.</span>`}</div></div>
     <div class="col enc"><h5>Strong's Dictionary (English)</h5><div class="tx">${link(e.d)}</div></div></div></div>`
@@ -124,7 +138,7 @@ function render(){
     pg=`<div class="pager"><button data-p="${S.page-1}" ${S.page<=1?"disabled":""}>السابق →</button>`+ps.map(i=>{const gap=prev&&i-prev>1?"<span>…</span>":"";prev=i;return gap+`<button data-p="${i}" class="${i===S.page?"on":""}">${n(i)}</button>`}).join("")+`<button data-p="${S.page+1}" ${S.page>=pages?"disabled":""}>← التالي</button></div>`}
   $("#out").innerHTML=`<section class="dict">${dent}</section>
     <div class="sum"><b>${plural(rows.length,"عدد واحد","عددان","أعداد","عددًا")}</b><span class="pill">تَرِد فيها هذه الكلمة</span><select id="bk">${opts}</select><span class="pill">صفحة ${n(S.page)} من ${n(pages)}</span></div>`+
-    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${hl(x[3],o.ws)}</div>${origHTML(x,num)}</div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg;
+    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${vtx(x)!=null?hl(vtx(x),o.ws):(TQ["assets/tx/alab_"+x[0]+".js"]===2?"":"…")}</div>${origHTML(x,num)}</div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg;
 }
 document.addEventListener("click",e=>{const b=e.target.closest(".pager button");if(b&&!b.disabled){S.page=+b.dataset.p;render();window.scrollTo({top:0,behavior:"smooth"})}});
 document.addEventListener("change",e=>{if(e.target.id==="bk"){S.book=e.target.value;S.page=1;render()}});

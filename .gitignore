@@ -32,3 +32,19 @@ _review/
 # backups (folder) and source Bible files — not part of the published site
 backup/
 Bibles/
+
+# test pages and the 11 old per-book folders (not part of the site; kept on disk only)
+*_test.html
+test_map.html
+assets/geo_test/
+/1Jo/
+/1Pe/
+/1Th/
+/2Jo/
+/2Pe/
+/3Jo/
+/Col/
+/Heb/
+/Jam/
+/Jud/
+/Rev/

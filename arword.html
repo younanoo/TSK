@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="stylesheet" href="assets/style.css?v=057ce5a7">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -171,7 +171,7 @@ function arRender(){
     <p class="meta">تُرجمت إلى: <b>${fs}</b></p>
     <div class="cols"><div class="col arc"><h5>المعنى بالعربية</h5><div class="tx clamp">${e.ar?link(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد.</span>`}</div></div>
     <div class="col enc"><h5>Strong's Dictionary (English)</h5><div class="tx clamp">${link(e.d)}</div></div></div>
-    <button type="button" class="more" data-more>عرض المزيد</button> <a class="open" href="#${x.n}" data-from="${esc(location.hash)}">افتح الكلمة وكل الأعداد التي ترد فيها ←</a></div></section>`};
+    <button type="button" class="more" data-more>عرض المزيد</button> <a class="open" href="strong.html#${x.n}" data-from="${esc(location.hash)}">افتح الكلمة وكل الأعداد التي ترد فيها ←</a></div></section>`};
   let pg="";
   if(pages>1){const set=new Set([1,pages]);for(let i=A.page-2;i<=A.page+2;i++)if(i>=1&&i<=pages)set.add(i);let prev=0;
     pg=`<div class="apager"><button data-ap="${A.page-1}" ${A.page<=1?"disabled":""}>السابق →</button>`+[...set].sort((a,b)=>a-b).map(i=>{const g=prev&&i-prev>1?"<span>…</span>":"";prev=i;return g+`<button data-ap="${i}" class="${i===A.page?"on":""}">${n(i)}</button>`}).join("")+`<button data-ap="${A.page+1}" ${A.page>=pages?"disabled":""}>← التالي</button></div>`}

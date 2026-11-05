@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="stylesheet" href="assets/style.css?v=057ce5a7">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -433,12 +433,12 @@ body.h{background:var(--bg)}
   <div class="h-wrap">
     <a class="h-logo" href="index.html" aria-label="جدد وعتقاء"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="133" height="40"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="" width="133" height="40"></a>
     <nav class="h-nav" aria-label="أقسام الصفحة">
-      <a href="#firsts">لأول مرة</a>
+      <a href="#books">الأسفار</a>
       <a href="#votd">آية اليوم</a>
+      <a href="#firsts">لأول مرة</a>
       <a href="#features">الإمكانيات</a>
       <a href="#time">عبر الزمن</a>
       <a href="#how">طريقة الاستخدام</a>
-      <a href="#books">الأسفار</a>
       <a href="#faq">أسئلة شائعة</a>
     </nav>
     <button class="h-inst" type="button" data-dl title="تنزيل التطبيق"><svg class="ic"><use href="#i-download"/></svg><span>تنزيل التطبيق</span></button>
@@ -485,6 +485,15 @@ body.h{background:var(--bg)}
     <svg class="ic" style="color:var(--accent)"><use href="#i-arrow"/></svg>
   </a>
 </div>
+<!-- ============ الأسفار ============ -->
+<section class="h-sec uxh-moved uxh-books" id="books">
+  <div class="h-wrap">
+    <p class="h-kick">الأسفار</p>
+    <h2 class="h-h2">ستة وستون سفرًا… اختر من أين تبدأ</h2>
+    <p class="h-lead">الأسفار مقسّمة حسب نوعها. اضغط على أي سفر لتبدأ.</p>
+    <div class="h-books" id="hBooks"></div>
+  </div>
+</section>
 
 <!-- ============ آية اليوم ============ -->
 <section class="h-sec" id="votd">
@@ -581,12 +590,6 @@ body.h{background:var(--bg)}
         <h3>مقارنة الترجمات</h3>
         <p>فاندايك وكتاب الحياة وKJV جنبًا إلى جنب، لتلاحظ الفروق الدقيقة في المعنى.</p>
         <span class="go">قارن <svg class="ic"><use href="#i-arrow"/></svg></span>
-      </a>
-      <a class="h-feat" href="strong.html#G25" target="_blank">
-        <span class="fi"><svg class="ic"><use href="#i-lang"/></svg></span>
-        <h3>قاموس سترونج بالعربية</h3>
-        <p>لأول مرة بالعربية: أصل كل كلمة العبري أو اليوناني، ونطقها، ومعناها. ويمكنك البحث فيه برقم الكلمة، مثل <span dir="ltr">G25</span> أو <span dir="ltr">H7225</span>.</p>
-        <span class="go">افتح القاموس <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <button class="h-feat gold" type="button" data-askai data-num="G25" data-o="ἀγαπάω" data-tr="agapaō" data-ref="يوحنا ٣: ١٦" data-words="أحب" style="font:inherit;text-align:start;cursor:pointer">
         <span class="fi"><svg class="ic"><use href="#i-sparkles"/></svg></span>
@@ -699,15 +702,6 @@ body.h{background:var(--bg)}
   </div>
 </section>
 
-<!-- ============ الأسفار ============ -->
-<section class="h-sec" id="books">
-  <div class="h-wrap">
-    <p class="h-kick">الأسفار</p>
-    <h2 class="h-h2">ستة وستون سفرًا… اختر من أين تبدأ</h2>
-    <p class="h-lead">الأسفار مقسّمة حسب نوعها. افتح أي قسم واختر السفر.</p>
-    <div class="h-books" id="hBooks"></div>
-  </div>
-</section>
 
 <!-- ============ أسئلة شائعة ============ -->
 <section class="h-sec" id="faq">
@@ -932,7 +926,7 @@ document.getElementById("fcKh").innerHTML=demoSeg([["لأنه هكذا ",[]],["�
 const BKGRP=[["التوراة",1,5,"Exo14"],["الأسفار التاريخية",6,17,"Jdg6"],["الشعر والحكمة",18,22,"Job38"],["الأنبياء الكبار",23,27,"Eze37"],["الأنبياء الصغار",28,39,"Mal3"],["الأناجيل وأعمال الرسل",40,44,"Mat5"],["رسائل بولس",45,57,"Phi1"],["الرسائل العامة",58,65,"1Jo4"],["الرؤيا",66,66,"Rev21"]];
 document.getElementById("hBooks").innerHTML=BKGRP.map(([t,a,z,img])=>{const bs=CAT.filter(c=>c.id>=a&&c.id<=z);
   return `<div class="h-bk"><a class="cov" href="${page(bs[0].abbr,"/"+bs[0].abbr)}" aria-label="افتح ${t}: ابدأ من ${AR[bs[0].abbr]}">${img?`<img loading="lazy" src="img/web/${img}-800.webp" alt="" onerror="this.remove()">`:`<span class="mk"><img src="assets/brand/mark-on-navy.svg" alt=""></span>`}<h3>${t}<small>${bs.length===1?"سفر واحد":N(bs.length)+" "+(bs.length<=10?"أسفار":"سفرًا")}</small></h3></a>
-   <details><summary>عرض الأسفار</summary><div class="bl">${bs.map(c=>`<a href="${page(c.abbr,"/"+c.abbr)}">${AR[c.abbr]}</a>`).join("")}</div></details></div>`}).join("");
+   <details open><summary>عرض الأسفار</summary><div class="bl">${bs.map(c=>`<a href="${page(c.abbr,"/"+c.abbr)}">${AR[c.abbr]}</a>`).join("")}</div></details></div>`}).join("");
 
 /* ---------- اسأل Google AI (assets/askai.js بيتحمّل أول ضغطة بس) ---------- */
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-askai]");if(!b||window.AskAI)return;e.preventDefault();
@@ -1014,8 +1008,6 @@ dd.querySelectorAll("[data-om]").forEach(b=>b.addEventListener("click",()=>{dd.c
     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`);
   top.append(menuBtn);
   /* القائمة نفسها هي القائمة الموحّدة لكل الصفحات (assets/sitemenu.js)، ونضيف لها أقسام الصفحة الرئيسية */
-  /* ترتيب لينكات الأقسام زي الترتيب الجديد للصفحة */
-  const nav=$(".h-nav"); ["#books","#votd","#firsts","#features","#time","#how","#faq"].forEach(h=>{const a=nav&&nav.querySelector(`a[href="${h}"]`);if(a)nav.append(a)});
   const sections=$$(".h-nav a").map(a=>`<a href="${a.getAttribute("href")}">${a.textContent}</a>`).join("");
   window.TSK_MENU_EXTRA={title:"أقسام الصفحة الرئيسية",html:`<div class="uxh-links">${sections}</div>`};
   menuBtn.addEventListener("click",()=>{if(window.TSKMenu)window.TSKMenu.open()});
@@ -1026,17 +1018,7 @@ dd.querySelectorAll("[data-om]").forEach(b=>b.addEventListener("click",()=>{dd.c
     const hint=$(".h-hint",heroCol); (hint||$(".h-go",heroCol)).after(res); res.classList.add("uxh-in");
   }
 
-  /* ---------- ٣) الأسفار بعد الأرقام مباشرة + الأسماء ظاهرة ---------- */
-  const books=$("#books"), stats=$("#hStats");
-  if(books&&stats){ stats.parentElement.after(books); books.classList.add("uxh-moved","uxh-books");
-    $$(".h-bk details",books).forEach(d=>d.open=true);
-    const lead=$(".h-lead",books); if(lead) lead.textContent="الأسفار مقسّمة حسب نوعها. اضغط على أي سفر لتبدأ.";
-    /* لينك الأسفار في القائمة يروح للمكان الجديد تلقائيًا (نفس الـ id) */
-  }
-
-  /* ---------- ٤) الإمكانيات: إزالة الكارت المكرر مع «لأول مرة» ---------- */
-  const firstTitles=new Set($$(".h-firsts h3").map(h=>h.textContent.trim()));
-  $$(".h-feats > .h-feat").forEach(f=>{const t=$("h3",f);if(t&&firstTitles.has(t.textContent.trim()))f.remove()});
+  /* الأسفار بعد الأرقام، وقائمة الأقسام بترتيبها، وحذف الكارت المكرر: صارت كلها في HTML نفسه */
 
   /* ---------- ٥) طيّ الأقسام الطويلة على الموبايل ---------- */
   function fold(box,keep,label){

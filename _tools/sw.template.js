@@ -55,17 +55,19 @@ self.addEventListener("fetch", e => {
   if (url.origin !== SCOPE.origin || !url.pathname.startsWith(SCOPE.pathname)) return;
   let p = rel(url); if (p === "") p = "index.html";
 
-  /* pages: network first */
+  /* pages: network first — but when a saved copy exists and the network is slow (weak mobile data),
+     show the saved copy after 3 s instead of a blank screen; the network answer still refreshes the cache */
   if (req.mode === "navigate" || p.endsWith(".html")) {
+    const net = fetch(req);
+    e.waitUntil(net.then(r => { if (r.ok && REV[p]) return store(p, r.clone()); }).catch(() => {}));
     e.respondWith((async () => {
+      const c = await caches.open(FILES);
+      const saved = (REV[p] && await c.match(keyOf(p))) || await c.match(req, { ignoreSearch: true });
       try {
-        const r = await fetch(req);
-        if (r.ok && REV[p]) { const copy = r.clone(); e.waitUntil(store(p, copy)); }
-        return r;
+        if (!saved) return await net;
+        return await Promise.race([net, new Promise(res => setTimeout(() => res(saved), 3000))]);
       } catch (err) {
-        const c = await caches.open(FILES);
-        return (REV[p] && await c.match(keyOf(p))) || await c.match(req, { ignoreSearch: true }) ||
-               await c.match(keyOf("offline.html")) || Response.error();
+        return saved || await c.match(keyOf("offline.html")) || Response.error();
       }
     })());
     return;

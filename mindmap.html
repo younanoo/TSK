@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="stylesheet" href="assets/style.css?v=057ce5a7">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -58,7 +58,7 @@
   <div id="tbl" hidden></div>
   <div id="panel" hidden></div>
 </div>
-<script src="assets/mm_data.js"></script>
+<script src="assets/mm/idx.js"></script>
 <script>
 const ABBR="Gen Exo Lev Num Deu Jos Jdg Rut 1Sa 2Sa 1Ki 2Ki 1Ch 2Ch Ezr Neh Est Job Psa Pro Ecc Son Isa Jer Lam Eze Dan Hos Joe Amo Oba Jon Mic Nah Hab Zep Hag Zec Mal Mat Mar Luk Joh Act Rom 1Co 2Co Gal Eph Phi Col 1Th 2Th 1Ti 2Ti Tit Phm Heb Jam 1Pe 2Pe 1Jo 2Jo 3Jo Jud Rev".split(" ");
 const AR = {Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
@@ -70,16 +70,25 @@ const get=(k,d)=>{try{const v=localStorage.getItem("tsklib:"+k);return v==null?d
 const set=(k,v)=>{try{localStorage.setItem("tsklib:"+k,JSON.stringify(v))}catch(e){}};
 const th=get("theme",null); if(th) document.documentElement.dataset.theme=th;
 $("#themeBtn").onclick=()=>{const c=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const nx=c==="dark"?"light":"dark";document.documentElement.dataset.theme=nx;set("theme",nx)};
-const {R,T,E}=window.MM;
+/* بيانات الخريطة مقسّمة لكل أصحاح (assets/mm/<السفر>_<الأصحاح>.js، تولّدها _tools/build_seo_pwa.js من mm_data.js) وتُحمَّل عند الحاجة فقط.
+   الفهرس الصغير assets/mm/idx.js فيه الأعداد الموجودة (I) ونهايات المقاطع (E) وقائمة ملفات الأصحاحات (C). */
+const {I:IDX,E}=window.MMI, HASF=new Set(window.MMI.C), R={}, T={}, TS={}, CH={}, MISS=new Set();
+window.MMC=(k,d)=>{Object.assign(R,d.R);Object.assign(T,d.T);Object.assign(TS,d.S||{})};
+const chKey=id=>ABBR[Math.floor(id/1e6)-1]+"_"+Math.floor(id%1e6/1e3);
+const chReady=k=>CH[k]===1||CH[k]===2||!HASF.has(k);   /* 1 = loaded, 2 = failed (offline), or no file at all */
+function loadCh(keys,cb){let left=1;const done=()=>{if(--left===0)cb()};
+  keys.forEach(k=>{if(chReady(k))return;left++;if(Array.isArray(CH[k])){CH[k].push(done);return}
+    CH[k]=[done];const s=document.createElement("script");s.src="assets/mm/"+k+".js";
+    s.onload=s.onerror=e=>{const q=CH[k];CH[k]=e.type==="error"?2:1;q.forEach(f=>f())};document.head.appendChild(s)});
+  done()}
 const BID=a=>ABBR.indexOf(a)+1, ABB=i=>ABBR[i-1];
 const dec=id=>({b:Math.floor(id/1e6),c:Math.floor(id%1e6/1e3),v:id%1e3});
 const label=id=>{const d=dec(id);return AR[ABB(d.b)]+" "+n(d.c)+": "+n(d.v)+(E[id]?"–"+n(E[id]):"")};
 const short=id=>{const d=dec(id);return SH[ABB(d.b)]+" "+n(d.c)+": "+n(d.v)+(E[id]?"–"+n(E[id]):"")};
-const inLib=id=>!!R[id];
-const useSvd=()=>get("tr","alab")==="svd";
+const inLib=id=>{const b=IDX[Math.floor(id/1e6)],c=b&&b[Math.floor(id%1e6/1e3)];return !!c&&c.includes(id%1e3)};
+const useSvd=()=>get("tr","svd")==="svd";
+const vt=id=>(useSvd()&&TS[id])||T[id]||"";
 const wTitle=g=>(useSvd()?(g[1]||g[0]):(g[0]||g[1]))||g[2]||"الشواهد";
-const IDX={};Object.keys(R).forEach(k=>{const d=dec(+k);((IDX[d.b]=IDX[d.b]||{})[d.c]=IDX[d.b][d.c]||[]).push(d.v)});
-Object.values(IDX).forEach(o=>Object.values(o).forEach(a=>a.sort((x,y)=>x-y)));
 const books=Object.keys(IDX).map(Number).sort((a,b)=>a-b);
 const CAPS=[[8,3,2],[14,4,3],[24,6,4]];
 let S={vid:null,gi:-1,N:1,view:get("mmview","m")};
@@ -87,14 +96,18 @@ const selB=$("#selB"),selC=$("#selC"),selV=$("#selV"),selW=$("#selW");
 selB.innerHTML=books.map(b=>`<option value="${b}">${AR[ABB(b)]}</option>`).join("");
 function fillC(){const b=+selB.value;selC.innerHTML=Object.keys(IDX[b]).map(Number).sort((a,b)=>a-b).map(c=>`<option value="${c}">${n(c)}</option>`).join("")}
 function fillV(){const b=+selB.value,c=+selC.value;selV.innerHTML=IDX[b][c].map(v=>`<option value="${v}">${n(v)}</option>`).join("")}
-function fillW(){const id=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);const gs=R[id]||[];selW.innerHTML=`<option value="-1">كل كلمات العدد (${n(gs.reduce((a,g)=>a+g[3].length,0))})</option>`+gs.map((g,i)=>`<option value="${i}">${esc(wTitle(g))} (${n(g[3].length)})</option>`).join("")}
+const curV=()=>(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);
+function fillW(){const id=curV();
+  if(!R[id]&&!chReady(chKey(id))){selW.innerHTML=`<option value="-1">جارٍ التحميل…</option>`;
+    loadCh([chKey(id)],()=>{if(curV()!==id)return;const g=S.wantGi;fillW();if(g!=null){selW.value=String(g);S.wantGi=null}if(S.vid===id){S.gi=+selW.value;hash();draw()}});return}
+  const gs=R[id]||[];selW.innerHTML=`<option value="-1">كل كلمات العدد (${n(gs.reduce((a,g)=>a+g[3].length,0))})</option>`+gs.map((g,i)=>`<option value="${i}">${esc(wTitle(g))} (${n(g[3].length)})</option>`).join("")}
 selB.onchange=()=>{fillC();selC.onchange()};selC.onchange=()=>{fillV();selV.onchange()};
 selV.onchange=()=>{fillW();selW.value="-1";pick()};selW.onchange=pick;$("#selN").onchange=()=>{S.N=+$("#selN").value;draw()};
 function pick(){S.vid=(+selB.value)*1e6+(+selC.value)*1e3+(+selV.value);S.gi=+selW.value;hash();draw()}
 function chLink(d){const a=document.getElementById("mmCh");if(a){a.href="index.html#/"+ABB(d.b)+"/ch/"+d.c;a.innerHTML="<svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M9 14l-4 -4l4 -4' /> <path d='M5 10h11a4 4 0 1 1 0 8h-1' /></svg> صفحة الأصحاح "+n(d.c)}}
 function hash(){const d=dec(S.vid);chLink(d);try{history.replaceState(null,"","#"+ABB(d.b)+"/"+d.c+":"+d.v+(S.gi>=0?"/g"+S.gi:""))}catch(e){}}
-function setSel(id,gi){const d=dec(id);if(!IDX[d.b]||!IDX[d.b][d.c]||!IDX[d.b][d.c].includes(d.v))return false;selB.value=d.b;fillC();selC.value=d.c;fillV();selV.value=d.v;fillW();selW.value=String(gi);return true}
-function refsOf(id,gi){const gs=R[id];if(!gs)return[];const out=[];(gi!=null&&gi>=0?[gs[gi]]:gs).forEach(g=>g&&g[3].forEach(r=>{if(!out.includes(r))out.push(r)}));return out}
+function setSel(id,gi){const d=dec(id);if(!IDX[d.b]||!IDX[d.b][d.c]||!IDX[d.b][d.c].includes(d.v))return false;selB.value=d.b;fillC();selC.value=d.c;fillV();selV.value=d.v;fillW();selW.value=String(gi);if(selW.value!==String(gi))S.wantGi=gi;return true}
+function refsOf(id,gi){const gs=R[id];if(!gs){if(!chReady(chKey(id)))MISS.add(chKey(id));return[]}const out=[];(gi!=null&&gi>=0?[gs[gi]]:gs).forEach(g=>g&&g[3].forEach(r=>{if(!out.includes(r))out.push(r)}));return out}
 function build(){
   const [c1,c2,c3]=CAPS[S.N],seen=new Set([S.vid]);
   const gs=R[S.vid]||[];
@@ -111,7 +124,8 @@ const ROW=34,W=s=>Math.max(78,s.length*7.4+26);
 let B={w:1,h:1,cx:0,cy:0},V={x:0,y:0,k:1};const svgEl=$("#svg");
 function draw(){chLink(dec(S.vid));
   if(S.vid==null)return;
-  const root=build(),vp=$("#vp");
+  MISS.clear();const root=build(),vp=$("#vp");
+  if(MISS.size){loadCh([...MISS],draw);return}
   document.body.classList.toggle("istbl",S.view==="t");$("#vMap").classList.toggle("on",S.view!=="t");$("#vTbl").classList.toggle("on",S.view==="t");
   if(S.view==="t"){renderTable(root);return}
   $("#tbl").hidden=true;
@@ -138,9 +152,12 @@ function draw(){chLink(dec(S.vid));
   nodes.forEach(nd=>{
     if(nd.lv===0){const w=colW[0];svg+=`<g class="mmn c0" data-id="${nd.id}" transform="translate(0,${nd.y})"><rect x="${-w/2-8}" y="-30" width="${w+16}" height="60" rx="30"/><text y="-3" class="t0">${esc(nd.txt)}</text><text y="18" class="s0">${esc(nd.sub)}</text></g>`;return}
     const w=colW[nd.lv],sg=nd.x>0?1:-1,more=nd.all>nd.kids.length?`<text class="more" x="${sg*(w/2+(nd.lv<3?30:8))}" y="4" text-anchor="${sg>0?"start":"end"}">+${n(nd.all-nd.kids.length)}</text>`:"";
-    svg+=`<g class="mmn c${nd.lv}${inLib(nd.id)?"":" ext"}" data-id="${nd.id}" transform="translate(${nd.x},${nd.y})" style="--bc:${col(nd.br)}"><title>${esc(label(nd.id))} — ${esc((T[nd.id]||"").slice(0,160))}</title><rect x="${-w/2}" y="-13" width="${w}" height="26" rx="13"/><text y="4.5">${esc(short(nd.id))}</text>${more}</g>`});
+    svg+=`<g class="mmn c${nd.lv}${inLib(nd.id)?"":" ext"}" data-id="${nd.id}" transform="translate(${nd.x},${nd.y})" style="--bc:${col(nd.br)}"><title>${esc(label(nd.id))} — ${esc(vt(nd.id).slice(0,160))}</title><rect x="${-w/2}" y="-13" width="${w}" height="26" rx="13"/><text y="4.5">${esc(short(nd.id))}</text>${more}</g>`});
   if(!root.kids.length)svg+=`<text class="empty" x="0" y="${H/2+70}">لا توجد شواهد لهذه الكلمة</text>`;
   vp.innerHTML=svg;
+  /* نص الأعداد في الطرف الأخير (المستوى ٣) يُحمَّل بعد الرسم، ثم تُملأ تلميحاتها دون إعادة رسم */
+  {const need=[...new Set(nodes.filter(nd=>!vt(nd.id)).map(nd=>chKey(nd.id)).filter(k=>!chReady(k)))];
+   if(need.length)loadCh(need,()=>vp.querySelectorAll(".mmn[data-id]").forEach(g=>{const t=g.querySelector("title"),id=+g.dataset.id;if(t&&vt(id)&&!/ — ./.test(t.textContent))t.textContent=label(id)+" — "+vt(id).slice(0,160)}))}
   const ext=x0[3]+colW[3]+60;B={w:kids.length>1?2*ext:ext*1.2,h:H+90,cx:0,cy:H/2};
   fit();$("#panel").hidden=true}
 function renderTable(root){
@@ -152,7 +169,7 @@ function renderTable(root){
     nd.kids.forEach((k,i)=>emit(k,i?[]:row))};
   root.kids.forEach(k=>emit(k,[]));
   // pad rows that stop early so every row has 3 columns
-  t.innerHTML=`<div class="tblhead"><h2>${esc(root.txt)}</h2><div class="sub">${esc(root.sub)}</div><div class="ar vt">${esc(T[root.id]||"")}</div></div>
+  t.innerHTML=`<div class="tblhead"><h2>${esc(root.txt)}</h2><div class="sub">${esc(root.sub)}</div><div class="ar vt">${esc(vt(root.id))}</div></div>
   <table><thead><tr><th>المستوى ١ — شواهد الكلمة</th><th>المستوى ٢ — شواهد الشواهد</th><th>المستوى ٣</th></tr></thead><tbody>${rows||'<tr><td colspan="3" class="muted">لا توجد شواهد لهذه الكلمة</td></tr>'}</tbody></table>`;
   t.hidden=false;$("#panel").hidden=true}
 function apply(){$("#vp").setAttribute("transform",`translate(${V.x},${V.y}) scale(${V.k})`)}
@@ -168,9 +185,10 @@ $("#zin").onclick=zi;$("#zout").onclick=zo;$("#zfit").onclick=fit;$("#zin2").onc
 $("#vMap").onclick=()=>{S.view="m";set("mmview","m");draw()};$("#vTbl").onclick=()=>{S.view="t";set("mmview","t");draw()};addEventListener("resize",fit);
 function show(id){
   const d=dec(id),ab=ABB(d.b),p=$("#panel");
-  p.innerHTML=`<button class="x" aria-label="إغلاق"><svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M18 6l-12 12' /> <path d='M6 6l12 12' /></svg></button><h3>${esc(label(id))}</h3><div class="ar vt">${esc(T[id]||"")}</div>
+  p.innerHTML=`<button class="x" aria-label="إغلاق"><svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M18 6l-12 12' /> <path d='M6 6l12 12' /></svg></button><h3>${esc(label(id))}</h3><div class="ar vt">${esc(vt(id))}</div>
   <div class="acts">${inLib(id)?`<button id="recenter">اجعله مركز الخريطة</button><a href="${ab}.html#/${ab}/${d.c}:${d.v}" target="_blank">افتحه في الدراسة <svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:`<span class="muted">هذا السفر لم يُضف إلى المكتبة بعد، فلا يمكن التوسع منه.</span>`}</div>`;
-  p.hidden=false;p.querySelector(".x").onclick=()=>p.hidden=true;
+  p.hidden=false;p.dataset.id=id;p.querySelector(".x").onclick=()=>p.hidden=true;
+  if(!vt(id)&&!chReady(chKey(id)))loadCh([chKey(id)],()=>{const e=p.querySelector(".vt");if(e&&p.dataset.id==String(id))e.textContent=vt(id)});
   const rc=$("#recenter");if(rc)rc.onclick=()=>{setSel(id,-1);pick()}}
 (function init(){
   S.N=+$("#selN").value;

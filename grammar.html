@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="stylesheet" href="assets/style.css?v=057ce5a7">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -69,7 +69,6 @@ html,body{overflow-x:clip;padding:0}
 <div class="gb"><button id="go"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg> بحث</button><button id="rs" style="background:none">مسح</button><a href="index.html">← المكتبة</a></div></div>
 <div class="gm" id="gm"></div><div class="lem" id="lem"></div><div id="res"></div>
 </div>
-<script src="assets/tx_svd.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const nAr=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
@@ -159,9 +158,16 @@ function show(abs,flt,wq){
   const ls=Object.values(lem).sort((x,y)=>y.c-x.c).slice(0,24);
   $("#lem").innerHTML=ls.map(l=>'<span><span class="o">'+esc(l.o)+'</span>'+esc(l.t||"")+' <small>'+(l.id||"")+' · '+nAr(l.c)+'</small></span>').join("");
   window._out=out;draw(300)}
+/* نص فاندايك لكل سفر (assets/tx/svd_<السفر>.js، ضمن حزمة الأساس) يُحمَّل عند الحاجة بدل ملف الكتاب كله tx_svd.js */
+window.TXB=window.TXB||{};const TXQ={};
+function svdNeed(books,cb){const miss=[...new Set(books)].filter(b=>!window.TXB["svd/"+b]&&TXQ[b]!==2);let left=miss.length+1;const d=()=>{if(--left===0)cb()};
+  miss.forEach(b=>{if(Array.isArray(TXQ[b]))return TXQ[b].push(d);TXQ[b]=[d];const s=document.createElement("script");s.src="assets/tx/svd_"+b+".js";
+    s.onload=s.onerror=e=>{const q=TXQ[b];TXQ[b]=e.type==="error"?2:1;q.forEach(f=>f())};document.head.appendChild(s)});d()}
+const svdText=(b,k)=>(window.TXB["svd/"+b]||{})[k];
 function draw(lim){const res=$("#res");let cur="",html="";
+  {const bs=window._out.slice(0,lim).map(h=>h.a);if(bs.some(b=>!window.TXB["svd/"+b]&&TXQ[b]!==2))return svdNeed(bs,()=>draw(lim))}
   window._out.slice(0,lim).forEach(h=>{if(h.a!==cur){cur=h.a;html+='<div class="bk">'+AR[h.a]+'</div>'}
-    const [c,v]=h.k.split(":");const T=window.TX.svd[h.a][h.k]||"";
+    const [c,v]=h.k.split(":");const T=svdText(h.a,h.k)||"";
     html+='<a class="hit" target="_blank" href="'+h.a+'.html#/'+h.a+'/'+c+':'+v+'"><b>'+AR[h.a]+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+esc(T)+'</span><div class="chips">'+h.hits.map(w=>'<span class="chip"><span class="o">'+esc(w[0])+'</span><span class="tr">'+esc(w[1])+'</span><span class="en">'+esc(w[4]||"—")+'</span><span class="pc">'+esc(w[3])+'</span></span>').join("")+'</div></a>'});
   if(window._out.length>lim)html+='<button id="more" style="margin:10px 0;padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--gold-soft);font:600 13px var(--ui);cursor:pointer">عرض المزيد ('+nAr(window._out.length-lim)+' آية متبقية)</button>';
   res.innerHTML=html;const mb=$("#more");if(mb)mb.onclick=()=>draw(lim+300)}
