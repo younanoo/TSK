@@ -14,7 +14,7 @@
   var TOOLS=[["search.html","search","بحث في الكتاب المقدس"],["strong.html","language","بحث في قاموس سترونج (برقم الكلمة)"],
     ["arword.html","language","بحث بكلمة عربية (الجذر والأصل)"],["grammar.html","microscope","بحث نحوي باللغات الأصلية"],
     ["mindmap.html","topology-star-3","الخريطة الذهنية للشواهد"],["topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)"]];
-  var OTHER=[["copy.html","copy","صفحة النسخ (الآيات المختارة)"],["sources.html","books","المصادر والمراجع"]];
+  var OTHER=[["copy.html","copy","صفحة النسخ (الآيات المختارة)"],["dictcopy.html","copy","صفحة نسخ القاموس (المداخل المختارة)"],["sources.html","books","المصادر والمراجع"]];
 
   /* ---------- اذهب إلى عدد: «يو ٣: ١٦» أو «مز ٢٣» أو كلمة → البحث ---------- */
   var nz=function(x){return String(x).replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[ً-ْ\s.]/g,"").toLowerCase()};

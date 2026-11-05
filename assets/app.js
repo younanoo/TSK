@@ -125,7 +125,7 @@ function sideTools(){
   h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","اذهب إلى عدد",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="مثال: يو ٣:١٦ أو إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off" enterkeyhint="go"></form>`));
   const after=sec("timeSec","time","الكتاب عبر الزمن",L("chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)")+L("timeline.html","timeline","الخط الزمني للأحداث"))
     +sec("toolSec","tools","أدوات البحث",L("search.html","search","بحث في الكتاب المقدس",' id="srchLink" target="tsksearch"')+L("strong.html","language","بحث في قاموس سترونج (برقم الكلمة)",' target="tskstrong"')+L("arword.html","language","بحث بكلمة عربية (الجذر والأصل)",' target="tskarword"')+L("grammar.html","microscope","بحث نحوي باللغات الأصلية",' target="_blank"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
-    +sec("otherSec","other","صفحات أخرى",L("copy.html","bookmarks","صفحة النسخ (الآيات المختارة) <b class=\"cpy-count\" hidden></b>",' target="tskcopy"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
+    +sec("otherSec","other","صفحات أخرى",L("copy.html","bookmarks","صفحة النسخ (الآيات المختارة) <b class=\"cpy-count\" hidden></b>",' target="tskcopy"')+L("dictcopy.html","bookmarks","صفحة نسخ القاموس (المداخل المختارة)",' target="tskdict"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }
@@ -505,7 +505,7 @@ function viewStrongSearch(num){
 function render(){
   sidebar();
   ({home:viewHome,book:viewBook,chapter:viewChapter,verse:viewVerse,search:viewSearch})[S.view]();
-  try{CPY_LAST=-1;cpyCount()}catch(e){}
+  try{CPY_LAST=-1;DICT_LAST=-1;cpyCount()}catch(e){}
 }
 
 /* ---------- navigation ---------- */
@@ -840,7 +840,11 @@ var CPY_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColo
 var CPY_OK='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>';
 function cpyList(){const a=store.get("copylist",[]);return Array.isArray(a)?a:[]}
 function cpyHas(ref,tr){return cpyList().some(x=>x.ref===ref&&x.tr===tr)}
-function cpyLbl(k){return k?`صفحة النسخ — ${plural(k,"آية واحدة","آيتان","آيات","آية")}`:"صفحة النسخ"}
+function cpyLbl(k){return k?`صفحة نسخ الآيات — ${plural(k,"آية واحدة","آيتان","آيات","آية")}`:"صفحة نسخ الآيات"}
+/* قائمة صفحة نسخ القاموس (dictcopy.js يكتبها في tsklib:dictlist) */
+var CPY_BOOK='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" /><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" /><path d="M3 6l0 13" /><path d="M12 6l0 13" /><path d="M21 6l0 13" /></svg>';
+function dictList(){const a=store.get("dictlist",[]);return Array.isArray(a)?a:[]}
+function dictLbl(k){return k?`صفحة نسخ القاموس — ${plural(k,"مدخل واحد","مدخلان","مداخل","مدخلًا")}`:"صفحة نسخ القاموس"}
 function cpyBtnInner(on,big){return (on?CPY_OK:CPY_IC)+(big==="pl"?`<span>${on?"منسوخة":"نسخ"}</span>`:big?`<span>${on?"في صفحة النسخ":"نسخ للصفحة"}</span>`:"")}
 /* اسم «الترجمة» اللي هيتكتب بين القوسين: لو «اللغة الأصلية» شغالة، نص العدد نفسه بيتاخد من العبري/اليوناني (الشواهد بتفضل بالترجمة) */
 function cpyTrOf(kind){if(kind==="v"&&origOn())return book().id>39?"النص اليوناني":"النص العبري";return TRN[trCur()]}
@@ -848,8 +852,12 @@ function cpyBtn(kind,id,ref,big){
   const on=cpyHas(ref,cpyTrOf(kind));
   return `<span class="cpy${big==="pl"?" pl":big?" big":""}${on?" on":""}" role="button" tabindex="0" aria-pressed="${on}" data-cpy="${kind}" data-cid="${esc(id)}" data-cref="${esc(ref)}" title="${on?"مضافة لصفحة النسخ — اضغط للإزالة":"أضف نص الآية لصفحة النسخ"}">${cpyBtnInner(on,big)}</span>`}
 /* زرار الشريط العلوي: يظهر بعد أول آية */
-function cpyTop(){const k=cpyList().length;
-  return `<a class="cpy-top" href="copy.html" target="tskcopy" ${k?"":"hidden"} aria-label="${cpyLbl(k)}" title="${cpyLbl(k)}">${CPY_IC}<b class="cpy-count">${k?n(k):""}</b></a>`}
+/* زرارين في الشريط العلوي: «آيات» (ذهبي، أيقونة كتاب) و«قاموس» (كحلي، أيقونة لغات)؛ على الموبايل لو الاتنين ظاهرين يتجمعوا في زرار واحد بقائمة */
+function cpyTop(){const k=cpyList().length,m=dictList().length;
+  return `<span class="cpy-tops" data-n="${(k?1:0)+(m?1:0)}"><a class="cpy-top vs" href="copy.html" target="tskcopy" ${k?"":"hidden"} aria-label="${cpyLbl(k)}" title="${cpyLbl(k)}">${CPY_BOOK}<span class="ct-l">آيات</span><b class="cpy-count">${k?n(k):""}</b></a>`+
+    `<a class="cpy-top dc" href="dictcopy.html" target="tskdict" ${m?"":"hidden"} aria-label="${dictLbl(m)}" title="${dictLbl(m)}">${ic("language")}<span class="ct-l">قاموس</span><b class="dict-count">${m?n(m):""}</b></a>`+
+    `<button type="button" class="cpy-more" aria-haspopup="true" aria-expanded="false" aria-label="صفحات النسخ: الآيات والقاموس">${CPY_IC}<b class="cpy-sum">${n(k+m)}</b></button>`+
+    `<span class="cpy-menu" hidden><a class="vs" href="copy.html" target="tskcopy">${CPY_BOOK} صفحة نسخ الآيات <b class="cpy-count">${n(k)}</b></a><a class="dc" href="dictcopy.html" target="tskdict">${ic("language")} صفحة نسخ القاموس <b class="dict-count">${n(m)}</b></a></span></span>`}
 function cpyText(el){
   const kind=el.dataset.cpy;
   if(kind==="v"){const p=parseGo(el.dataset.cid);if(!p)return "";const b=BY[p[0]],d=b&&b.verses[b.idx[p[1]+":"+p[2]]];if(!d)return "";
@@ -880,11 +888,23 @@ function cpyToast(msg,opt){opt=opt||{};let t=document.getElementById("cpyToast")
   t.classList.add("on");clearTimeout(CPY_T.h);CPY_T.h=setTimeout(cpyToastHide,opt.open||opt.undo?6000:3000)}
 function cpyToastHide(){const t=document.getElementById("cpyToast");if(t)t.classList.remove("on");CPY_T.undo=null}
 /* تحديث كل الأزرار والعدادات من القائمة المحفوظة (نفس التاب أو تاب تاني) */
-var CPY_LAST=-1;
-function cpyCount(){const k=cpyList().length, grew=CPY_LAST>=0&&k>CPY_LAST; CPY_LAST=k;
+var CPY_LAST=-1, DICT_LAST=-1;
+function cpyBump(el){if(!el)return;el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}
+function cpyCount(){const k=cpyList().length, m=dictList().length, gk=CPY_LAST>=0&&k>CPY_LAST, gm=DICT_LAST>=0&&m>DICT_LAST; CPY_LAST=k; DICT_LAST=m;
   document.querySelectorAll(".cpy-count").forEach(x=>{x.textContent=k?n(k):"";x.hidden=!k});
-  document.querySelectorAll(".cpy-top").forEach(a=>{a.hidden=!k;a.setAttribute("aria-label",cpyLbl(k));a.title=cpyLbl(k);
-    if(grew){a.classList.remove("bump");void a.offsetWidth;a.classList.add("bump")}})}
+  document.querySelectorAll(".dict-count").forEach(x=>{x.textContent=m?n(m):"";x.hidden=!m});
+  document.querySelectorAll(".cpy-tops").forEach(w=>{w.dataset.n=(k?1:0)+(m?1:0);
+    const v=w.querySelector(".cpy-top.vs"),d=w.querySelector(".cpy-top.dc"),s=w.querySelector(".cpy-sum");
+    if(v){v.hidden=!k;v.setAttribute("aria-label",cpyLbl(k));v.title=cpyLbl(k)}
+    if(d){d.hidden=!m;d.setAttribute("aria-label",dictLbl(m));d.title=dictLbl(m)}
+    if(s)s.textContent=n(k+m);
+    if(gk)cpyBump(v); if(gm)cpyBump(d); if(gk||gm)cpyBump(w.querySelector(".cpy-more"))})}
+/* قائمة الموبايل */
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".cpy-more");
+  document.querySelectorAll(".cpy-menu:not([hidden])").forEach(mn=>{if(!b||mn.parentElement!==b.parentElement){mn.hidden=true;const x=mn.parentElement.querySelector(".cpy-more");if(x)x.setAttribute("aria-expanded","false")}});
+  if(!b)return;const mn=b.parentElement.querySelector(".cpy-menu");mn.hidden=!mn.hidden;b.setAttribute("aria-expanded",String(!mn.hidden))});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".cpy-menu:not([hidden])").forEach(mn=>{mn.hidden=true})});
+document.addEventListener("tsk:dictlist",()=>{try{cpyCount()}catch(x){}});
 function cpySync(){
   document.querySelectorAll(".cpy").forEach(b=>{const tr=cpyTrOf(b.dataset.cpy),on=cpyHas(b.dataset.cref,tr),big=b.classList.contains("pl")?"pl":b.classList.contains("big");
     if(b.classList.contains("on")===on&&b.firstChild)return;
@@ -904,7 +924,7 @@ function cpyToggle(el){
 /* capture: قبل ما مستمع data-go / صف الشاهد يفتح العدد */
 document.addEventListener("click",e=>{const c=e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
 document.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const c=e.target.closest&&e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
-addEventListener("storage",e=>{if(e.key==="tsklib:copylist"||e.key===null)cpySync()});
+addEventListener("storage",e=>{if(e.key==="tsklib:copylist"||e.key===null)cpySync();else if(e.key==="tsklib:dictlist")cpyCount()});
 addEventListener("pageshow",()=>{try{cpySync()}catch(x){}});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)try{cpySync()}catch(x){}});
 /* ==== COPY LIST END ==== */

@@ -23,6 +23,7 @@ const TOOLS = {
   "topics.html":  { desc: "فهرس مواضيع الكتاب المقدس بالعربية: أكثر من ٤٦ ألف موضوع من فهارس Nave وTorrey، لكل موضوع مواضعه في الأسفار ونصوصها.", sitemap: 1 },
   "arword.html":  { desc: "ابحث بكلمة عربية، فنعرض جذرها والكلمات العبرية واليونانية التي ترجمها فاندايك وكتاب الحياة إلى كلمات من هذا الجذر، بشرح عربي وإنجليزي لكل كلمة.", sitemap: 1 },
   "strong.html":  { desc: "قاموس سترونج للكلمات العبرية واليونانية في الكتاب المقدس، بشرح عربي وإنجليزي ونطق كل كلمة، مع الأعداد التي ترد فيها.", sitemap: 1 },
+  "dictcopy.html":{ desc: "صفحة نسخ القاموس: مداخل قاموس سترونج وBDB العبري وأبوت-سميث اليوناني اللي اخترتها، بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية، جاهزة للنسخ إلى Word أو ملف نصي." },
   "copy.html":    { desc: "صفحة النسخ: الآيات اللي اخترتها من صفحات الأسفار بالشكل «نص الآية — الشاهد (الترجمة)» جاهزة للنسخ إلى Word أو ملف نصي." },
   "compare.html": { desc: "قارن نص أي أصحاح في ثلاث ترجمات جنبًا إلى جنب: كتاب الحياة وفاندايك وKJV." },
   "outline.html": { desc: "مخطط تفصيلي لكل سفر من أسفار الكتاب المقدس بالعربية والإنجليزية مع الأعداد." },
@@ -235,7 +236,7 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بنص كتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy)\.(js|css)$/.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "ترجمتا فاندايك وKJV", desc: "نصوص الترجمات الإضافية لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },

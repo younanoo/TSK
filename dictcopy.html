@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>صفحة نسخ القاموس — جدد وعتقاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=06feb2ea">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
+<meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
+<script src="assets/brand.js?v=2"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/sitemenu.js" defer></script>
+<style>
+html,body{overflow-x:clip;padding:0}
+.cpp{max-width:960px;margin:0 auto;padding:18px 16px 60px}
+.cpp h1{font:700 22px var(--ui);margin:0 0 4px}.cpp .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.cbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+.cbar button,.cbar a{font:inherit;font-size:14px;min-height:40px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.cbar button:hover,.cbar a:hover{border-color:var(--gold)}
+.cbar button:disabled{opacity:.5;cursor:default}
+.cbar .main{background:var(--accent);color:var(--on-accent,#fff);border-color:var(--accent);font-weight:600}
+.cbar .danger{color:var(--bad,#a33)}
+.cbar .sp{flex:1}
+.flds{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 14px;padding:10px 0 12px;border-bottom:1px solid var(--line);font-size:14px}
+.flds b{font:600 13px var(--ui);color:var(--muted);margin-inline-end:4px}
+.flds label{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}
+.flds label:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}
+.flds input{accent-color:var(--gold)}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.it{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.it .top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.it .dn{font:600 12px var(--ui);color:var(--muted);background:var(--chip,var(--bg));border-radius:999px;padding:2px 10px}
+.it .num{font:700 13px var(--ui);color:var(--on-gold);background:var(--gold);border-radius:7px;padding:2px 9px;direction:ltr}
+.it .og{font:600 28px/1.3 "Noto Serif","Noto Serif Hebrew","Times New Roman",serif;color:var(--accent)}
+.it .og.he{font-family:"Noto Serif Hebrew","SBL Hebrew",serif}
+.it .trn{font:italic 14px "Noto Serif",Georgia,serif;color:var(--muted)}
+.it .trn.occ{font:500 13px var(--ui)}
+.it .acts{display:flex;gap:4px;margin-inline-start:auto}
+.it .acts button{border:1px solid var(--line);background:transparent;border-radius:8px;min-width:36px;height:36px;padding:0 8px;cursor:pointer;color:var(--muted);font:600 13px var(--ui);line-height:1}
+.it .acts button:hover{border-color:var(--gold);color:var(--gold)}
+.it .acts button:disabled{opacity:.35;cursor:default}
+.it .ref{margin:10px 0 0;font:500 14px var(--ui);color:var(--accent)}
+.it .ref span{color:var(--ink);font-family:var(--script);font-size:17px}
+.it .blk{margin-top:10px}
+.it .blk h5{margin:0 0 4px;font:600 12px var(--ui);color:var(--muted)}
+.it .blk .tx{white-space:pre-line;line-height:1.9}
+.it .blk.ar .tx{font:18px/1.95 var(--script)}
+.it .blk.en{direction:ltr;text-align:left}
+.it .blk.en .tx{font:15px/1.75 "Noto Serif",Georgia,serif}
+.it .hidden{display:none}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:28px 18px;text-align:center;color:var(--muted);line-height:2}
+.done{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:var(--on-accent,#fff);padding:10px 18px;border-radius:999px;font:600 14px var(--ui);opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.done.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media print{.sitebar,.cbar,.flds,.howto,.acts,.sub{display:none!important}.it{border:0;padding:6px 0}}
+</style>
+<!--seo-->
+<meta name="description" content="صفحة نسخ القاموس: مداخل قاموس سترونج وBDB العبري وأبوت-سميث اليوناني اللي اخترتها، بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية، جاهزة للنسخ إلى Word أو ملف نصي.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/dictcopy.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="صفحة نسخ القاموس — جدد وعتقاء">
+<meta property="og:description" content="صفحة نسخ القاموس: مداخل قاموس سترونج وBDB العبري وأبوت-سميث اليوناني اللي اخترتها، بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية، جاهزة للنسخ إلى Word أو ملف نصي.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/dictcopy.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="صفحة نسخ القاموس — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="صفحة نسخ القاموس — جدد وعتقاء">
+<meta name="twitter:description" content="صفحة نسخ القاموس: مداخل قاموس سترونج وBDB العبري وأبوت-سميث اليوناني اللي اخترتها، بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية، جاهزة للنسخ إلى Word أو ملف نصي.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head><body>
+<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
+
+<div class="cpp">
+<h1>صفحة نسخ القاموس</h1>
+<p class="sub">مداخل القواميس اللي اخترتها (سترونج · BDB العبري · أبوت-سميث اليوناني)، جاهزة للنسخ إلى Word أو ملف نصي</p>
+<div class="howto"><b>ما وظيفة هذه الصفحة؟</b><p>في أي مدخل قاموس في الموقع (لوحة القاموس في صفحات الأسفار، صفحة قاموس سترونج، صفحة البحث بالكلمة العربية) اضغط زرار «نسخ» في رأس المدخل، فيتضاف هنا بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية. اختار من «الحقول» اللي عايز تنسخه، وبعدين اضغط «نسخ الكل» والصقه في Word أو أي ملف. القائمة محفوظة في هذا المتصفح.</p></div>
+<div class="cbar">
+<button class="main" id="copyAll" type="button">نسخ الكل</button>
+<button id="dlTxt" type="button">تنزيل ملف نصي (.txt)</button>
+<a href="copy.html" target="tskcopy">صفحة نسخ الآيات</a>
+<span class="sp"></span>
+<button class="danger" id="clear" type="button">مسح الكل</button>
+</div>
+<div class="flds" role="group" aria-label="الحقول اللي تتنسخ"><b>الحقول:</b>
+<label><input type="checkbox" data-f="tr" checked> النطق</label>
+<label><input type="checkbox" data-f="occ" checked> عدد مرات الورود</label>
+<label><input type="checkbox" data-f="ref" checked> الموضع في الآية</label>
+<label><input type="checkbox" data-f="ar" checked> المعنى بالعربية</label>
+<label><input type="checkbox" data-f="en" checked> الإنجليزي</label>
+<label><input type="checkbox" data-f="gap" checked> سطر فارغ بين المداخل</label>
+</div>
+<ol class="items" id="items"></ol>
+</div>
+<div class="done" id="done" role="status" aria-live="polite"></div>
+<script>
+(function(){
+"use strict";
+var KEY="tsklib:dictlist", FK="tsklib:dictfields";
+var DICTS={strong:"قاموس سترونج",bdb:"قاموس BDB العبري",abbott:"قاموس أبوت-سميث اليوناني"};
+var $=function(s){return document.querySelector(s)};
+function get(){try{var a=JSON.parse(localStorage.getItem(KEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return []}}
+function put(a){try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+var esc=function(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+var nAr=function(x){return String(x).replace(/\d/g,function(d){return "٠١٢٣٤٥٦٧٨٩"[d]})};
+var isHe=function(t){return /[֐-׿]/.test(t)};
+/* الحقول المختارة (محفوظة) */
+var F={tr:1,occ:1,ref:1,ar:1,en:1,gap:1};
+try{var sv=JSON.parse(localStorage.getItem(FK)||"null");if(sv)for(var k in F)if(k in sv)F[k]=sv[k]}catch(e){}
+document.querySelectorAll(".flds input").forEach(function(i){i.checked=!!F[i.dataset.f];i.onchange=function(){F[i.dataset.f]=i.checked?1:0;try{localStorage.setItem(FK,JSON.stringify(F))}catch(e){}draw()}});
+function head(x){return x.num+" — "+x.orig+(F.tr&&x.tr?" ("+x.tr+")":"")+" — "+(DICTS[x.dict]||"")+(F.occ&&x.occ?" — "+x.occ:"")}
+function refLine(x){return x.ref?"الموضع: "+x.ref+(x.words?" — «"+x.words+"»":""):""}
+function plainOne(x){var L=[head(x)];
+  if(F.ref&&x.ref)L.push(refLine(x));
+  if(F.ar&&x.ar)L.push("المعنى بالعربية:\r\n"+x.ar.replace(/\n/g,"\r\n"));
+  if(F.en&&x.en)L.push("English:\r\n"+x.en.replace(/\n/g,"\r\n"));
+  return L.join("\r\n")}
+function plain(a){return (a||get()).map(plainOne).join(F.gap?"\r\n\r\n":"\r\n")}
+var AR_P="direction:rtl;text-align:right;font-family:'Traditional Arabic','Simplified Arabic',Arial,sans-serif;font-size:14pt;margin:0";
+var EN_P="direction:ltr;text-align:left;font-family:'Times New Roman',serif;font-size:12pt;margin:0";
+function lines(t,st,dir){return t.split("\n").map(function(l){return '<p dir="'+dir+'" style="'+st+'">'+esc(l)+'</p>'}).join("")}
+function htmlOne(x){var he=isHe(x.orig),h='<p dir="rtl" style="'+AR_P+';margin-top:0"><b dir="ltr">'+esc(x.num)+'</b> — <span lang="'+(he?"he":"grc")+'" style="font-family:'+(he?"\'SBL Hebrew\',\'Ezra SIL\',\'Times New Roman\'":"\'SBL Greek\',\'Gentium Plus\',\'Times New Roman\'")+',serif;font-size:16pt">'+esc(x.orig)+'</span>'+
+    (F.tr&&x.tr?' <span dir="ltr" style="font-family:\'Times New Roman\',serif;font-style:italic">('+esc(x.tr)+')</span>':"")+' — '+esc(DICTS[x.dict]||"")+(F.occ&&x.occ?' — <span style="color:#666">'+esc(x.occ)+'</span>':"")+'</p>';
+  if(F.ref&&x.ref)h+='<p dir="rtl" style="'+AR_P+'"><b>الموضع:</b> '+esc(x.ref)+(x.words?" — «"+esc(x.words)+"»":"")+'</p>';
+  if(F.ar&&x.ar)h+='<p dir="rtl" style="'+AR_P+'"><b>المعنى بالعربية:</b></p>'+lines(x.ar,AR_P,"rtl");
+  if(F.en&&x.en)h+='<p dir="ltr" style="'+EN_P+'"><b>English:</b></p>'+lines(x.en,EN_P,"ltr");
+  return '<div style="margin:0 0 '+(F.gap?"14pt":"4pt")+'">'+h+'</div>'}
+function html(a){return '<div dir="rtl">'+(a||get()).map(htmlOne).join("")+'</div>'}
+function draw(){
+  var a=get(), box=$("#items");
+  document.title=(a.length?"("+nAr(a.length)+") ":"")+"صفحة نسخ القاموس — جدد وعتقاء";
+  $("#copyAll").disabled=$("#dlTxt").disabled=$("#clear").disabled=!a.length;
+  if(!a.length){box.innerHTML='<li class="empty">لسه مفيش مداخل هنا.<br>افتح أي كلمة في القاموس واضغط زرار «نسخ» في رأس المدخل.<br><a href="strong.html">قاموس سترونج</a> · <a href="arword.html">البحث بالكلمة العربية</a> · <a href="index.html">المكتبة</a></li>';return}
+  box.innerHTML=a.map(function(x,i){var he=isHe(x.orig);
+    return '<li class="it" data-i="'+i+'"><div class="top"><span class="num">'+esc(x.num)+'</span><span class="og'+(he?' he':'')+'" lang="'+(he?"he":"grc")+'" dir="'+(he?"rtl":"ltr")+'">'+esc(x.orig)+'</span>'+
+      (x.tr?'<span class="trn'+(F.tr?'':' hidden')+'" dir="ltr">'+esc(x.tr)+'</span>':'')+'<span class="dn">'+esc(DICTS[x.dict]||"")+'</span>'+(x.occ?'<span class="trn occ'+(F.occ?'':' hidden')+'">'+esc(x.occ)+'</span>':'')+
+      '<span class="acts"><button data-a="one" title="نسخ هذا المدخل فقط">نسخ</button><button data-a="up" title="لأعلى" '+(i?"":"disabled")+'>↑</button><button data-a="dn" title="لأسفل" '+(i<a.length-1?"":"disabled")+'>↓</button><button data-a="rm" title="حذف" aria-label="حذف">✕</button></span></div>'+
+      (x.ref&&F.ref?'<p class="ref">الموضع: '+esc(x.ref)+(x.words?' — <span>«'+esc(x.words)+'»</span>':'')+'</p>':'')+
+      (x.ar&&F.ar?'<div class="blk ar"><h5>المعنى بالعربية</h5><div class="tx">'+esc(x.ar)+'</div></div>':'')+
+      (x.en&&F.en?'<div class="blk en"><h5>English</h5><div class="tx">'+esc(x.en)+'</div></div>':'')+'</li>'}).join("");
+}
+function flash(m){var d=$("#done");d.textContent=m;d.classList.add("on");clearTimeout(flash.h);flash.h=setTimeout(function(){d.classList.remove("on")},2200)}
+function fallbackCopy(txt){var t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}t.remove();return ok}
+function copy(a,msg){var p=plain(a),h=html(a);
+  if(navigator.clipboard&&window.ClipboardItem){
+    navigator.clipboard.write([new ClipboardItem({"text/plain":new Blob([p],{type:"text/plain"}),"text/html":new Blob([h],{type:"text/html"})})])
+      .then(function(){flash(msg)},function(){flash(fallbackCopy(p)?msg:"تعذّر النسخ — حدّد النص يدويًا وانسخه")});
+  } else flash(fallbackCopy(p)?msg:"تعذّر النسخ — حدّد النص يدويًا وانسخه")}
+$("#copyAll").onclick=function(){var k=get().length;copy(null,"تم نسخ "+nAr(k)+" "+(k===1?"مدخل":k===2?"مدخلين":"مداخل")+" — الصقها في Word أو أي ملف")};
+$("#dlTxt").onclick=function(){var b=new Blob(["﻿"+plain()],{type:"text/plain;charset=utf-8"}),u=URL.createObjectURL(b),l=document.createElement("a");
+  l.href=u;l.download="مداخل-القاموس.txt";document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000)};
+$("#clear").onclick=function(){if(!get().length)return;if(confirm("مسح كل المداخل من صفحة نسخ القاموس؟")){put([]);draw()}};
+$("#items").onclick=function(e){var b=e.target.closest("button[data-a]");if(!b)return;var i=+b.closest(".it").dataset.i,a=get();
+  if(b.dataset.a==="one"){copy([a[i]],"تم نسخ "+a[i].num);return}
+  if(b.dataset.a==="rm")a.splice(i,1);
+  else{var j=b.dataset.a==="up"?i-1:i+1;if(j<0||j>=a.length)return;var t=a[i];a[i]=a[j];a[j]=t}
+  put(a);draw()};
+addEventListener("storage",function(e){if(e.key===KEY||e.key===null)draw()});
+addEventListener("pageshow",draw);
+draw();
+})();
+</script></body></html>
