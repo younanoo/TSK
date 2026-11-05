@@ -3,12 +3,23 @@
    Re-run after ANY change to the site (data, app.js, style.css, images): it refreshes sw.js
    so visitors' browsers pick up exactly the files that changed.
    Safe to re-run: everything it writes into pages sits between <!--seo-->…<!--/seo--> / <!--pre-->…<!--/pre--> markers.
-   Needs assets/og/*.jpg and assets/brand/maskable-*.png from make_og_images.js (run that when the brand or book list changes). */
+   Needs assets/og/*.jpg and assets/brand/maskable-*.png from make_og_images.js (run that when the brand or book list changes).
+   سريع افتراضيًا: لا يعيد كتابة ملف لم يتغير محتواه، ولا يعيد بناء جزء لم تتغير مصادره (_tools/.stamps.json)،
+   ولا يفحص الصور (img/web) ولا الملفات التي يولّدها بنفسه إلا الجديد منها (الأسماء تُقرأ دائمًا، فالصور المضافة أو المحذوفة تُكتشف).
+   استخدم  node _tools/build_seo_pwa.js --full  بعد تعديل صورة موجودة بنفس اسمها، أو إن شككت في أي نتيجة (يعيد كل شيء من الصفر). */
 const fs = require("fs"), path = require("path"), crypto = require("crypto");
 const M = require("./site_meta.js");
 const { ROOT, BASE, SITE, TAGLINE, esc, n, nk } = M;
 const A = p => path.join(ROOT, p);
-const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => { const f = A(p), t = f + ".~tmp"; for (let i = 0; ; i++) { try { fs.writeFileSync(t, s); fs.renameSync(t, f); return; } catch (e) { if (!["EINVAL","EBUSY","EPERM","EACCES"].includes(e.code) || i > 20) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700); } } };
+const FULL = process.argv.includes("--full");
+const TOUCHED = new Set();                               // files this run actually rewrote
+const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return; } catch (e) {} TOUCHED.add(p); const f = A(p), t = f + ".~tmp"; for (let i = 0; ; i++) { try { fs.writeFileSync(t, s); fs.renameSync(t, f); return; } catch (e) { if (!["EINVAL","EBUSY","EPERM","EACCES"].includes(e.code) || i > 20) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700); } } };
+/* stamps: a step is skipped when its source files have the same size+mtime as last time (saved right away, so a cut-off run keeps its progress) */
+const ST_FILE = path.join(__dirname, ".stamps.json"); let STAMPS = {}; try { if (!FULL) STAMPS = JSON.parse(fs.readFileSync(ST_FILE, "utf8")); } catch (e) {}
+const sig = files => files.map(f => { try { const st = fs.statSync(A(f)); return st.size + ":" + Math.round(st.mtimeMs); } catch (e) { return "-"; } }).join("|");
+const fresh = (key, files) => STAMPS[key] === sig(files);
+const stampSave = (key, files) => { STAMPS[key] = sig(files); try { fs.writeFileSync(ST_FILE, JSON.stringify(STAMPS)); } catch (e) {} };
+const SELF = ["_tools/build_seo_pwa.js", "_tools/site_meta.js", "assets/catalog.js"];
 const hashOf = p => crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 8);
 /* app.js and style.css versions follow their content, so browsers never reuse a stale copy after a change */
 const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "2", APP_VER = hashOf("assets/app.js");
@@ -30,7 +41,7 @@ const TOOLS = {
   "mindmap.html": { desc: "خريطة ذهنية تفاعلية لشواهد كل كلمة في الكتاب المقدس من «كنز معرفة الكتاب المقدس» (TSK).", sitemap: 1 },
   "chrono.html":  { desc: "خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.", sitemap: 1 },
   "timeline.html":{ desc: "خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.", sitemap: 1 },
-  "sources.html": { desc: "مصادر المكتبة ومراجعها: النصوص والترجمات والشواهد والفهارس وبيانات الكلمة بكلمة، مع ترخيص كل مصدر وحقوق Biblica لكتاب الحياة.", sitemap: 1 },
+  "sources.html": { desc: "مصادر المكتبة ومراجعها: النصوص والترجمات والشواهد وقواميس سترونج وBDB وأبوت-سميث، وبيانات الخرائط والخط الزمني، ومصادر التدقيق، مع ترخيص كل مصدر وحقوق Biblica لكتاب الحياة.", sitemap: 1 },
   "notes.html":   { desc: "ملاحظات على الفروق بين الترجمات العربية والإنجليزية في المكتبة، خصوصًا ما سببه اختلاف النص اليوناني الذي بُنيت عليه كل ترجمة، سفرًا سفرًا.", sitemap: 1 },
   "grammar.html": { desc: "بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.", sitemap: 1 },
 };
@@ -100,7 +111,7 @@ for (const f of htmlFiles) {
   let h = read(f);
   const c = CAT.find(x => x.abbr + ".html" === f);
   if (c) {
-    const LIB = M.runJS(`assets/lib_${c.abbr}.js`).LIB;
+    const PS = [...SELF, `assets/lib_${c.abbr}.js`, `assets/tx/svd_${c.abbr}.js`], keep = fresh("pre:" + c.abbr, PS) && h.includes('<article class="pre">');
     const g = M.BKGRP.find(x => c.id >= x[1] && c.id <= x[2]);
     h = applyHead(h, {
       title: M.bookTitle(c), ogTitle: `${M.fullName(c)} — ${SITE}`, desc: M.bookDesc(c),
@@ -109,7 +120,7 @@ for (const f of htmlFiles) {
         { "@type": "ListItem", position: 1, name: SITE, item: BASE },
         { "@type": "ListItem", position: 2, name: g ? g[0] : "", item: BASE + "index.html" },
         { "@type": "ListItem", position: 3, name: M.fullName(c), item: BASE + f }] } });
-    h = setInner(h, '<main id="main">', bookPre(c, LIB));
+    if (!keep) { h = setInner(h, '<main id="main">', bookPre(c, M.runJS(`assets/lib_${c.abbr}.js`).LIB)); stampSave("pre:" + c.abbr, PS); }
     if (!h.includes(`assets/tx/svd_${c.abbr}.js`)) h = h.replace(new RegExp(`(<script src="assets/lib_${c.abbr}\\.js[^"]*"></script>)`), `$1\n<script src="assets/tx/svd_${c.abbr}.js"></script>`);
     h = setInner(h, '<div class="booksel" id="booksel">', SIDEBAR);
     sitemap.push([BASE + f, "0.8"]);
@@ -152,6 +163,8 @@ write("assets/style.css", css);
    (assets/mm/<Book>_<chapter>.js: cross-references R, Ketab El Hayat text T, Van Dyck text S). Files are rewritten only when they change. */
 (function () {
   if (!fs.existsSync(A("assets/mm_data.js"))) return;
+  const SRC = [...SELF, "assets/mm_data.js", ...CAT.map(c => `assets/tx/svd_${c.abbr}.js`)];
+  if (fresh("mm", SRC)) { console.log("mind map: unchanged"); return; }
   const MM = M.runJS("assets/mm_data.js").MM, AB = {}; CAT.forEach(c => AB[c.id] = c.abbr);
   const writeIf = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return 0; } catch (e) {} write(p, s); return 1; };
   const SVD = {}, svdOf = ab => { if (!(ab in SVD)) { try { SVD[ab] = M.runJS(`assets/tx/svd_${ab}.js`).TXB["svd/" + ab] || {}; } catch (e) { SVD[ab] = {}; } } return SVD[ab]; };
@@ -167,6 +180,7 @@ write("assets/style.css", css);
   let changed = writeIf("assets/mm/idx.js", "window.MMI=" + JSON.stringify({ I, E: MM.E, C: Object.keys(CH) }) + ";\n");
   for (const k in CH) changed += writeIf(`assets/mm/${k}.js`, `MMC(${JSON.stringify(k)},${JSON.stringify(CH[k])});\n`);
   console.log(`mind map: ${Object.keys(CH).length} chapter files (${changed} updated)`);
+  stampSave("mm", SRC);
 })();
 
 /* ---------- Strong's page: assets/strong.js + assets/sidx.js (the sources other pages and the review tools use) → small chunks ----------
@@ -174,6 +188,8 @@ write("assets/style.css", css);
    in Bible order). strong.html loads only the chunk it needs and shows the verse text from assets/tx/alab_<Book>.js. Rewritten only on change. */
 (function () {
   if (!fs.existsSync(A("assets/strong.js")) || !fs.existsSync(A("assets/sidx.js"))) return;
+  const SRC = [...SELF, "assets/strong.js", "assets/sidx.js"];
+  if (fresh("strong", SRC)) { console.log("strong: unchanged"); return; }
   const STRONG = M.runJS("assets/strong.js").STRONG, SIDX = M.runJS("assets/sidx.js").SIDX;
   const writeIf = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return 0; } catch (e) {} write(p, s); return 1; };
   const ORD = {}; CAT.forEach(c => ORD[c.abbr] = c.id);
@@ -188,7 +204,34 @@ write("assets/style.css", css);
   fs.mkdirSync(A("assets/strong"), { recursive: true });
   let changed = 0;
   for (const k in CH) changed += writeIf(`assets/strong/${k}.js`, `STRC(${JSON.stringify(k)},${JSON.stringify(CH[k])});\n`);
-  console.log(`strong: ${Object.keys(CH).length} chunk files (${changed} updated)`);
+  /* assets/strong/e/<k>.js: نفس التقسيم لكن المداخل فقط (بدون مواضع الورود) — لنافذة سترونج الصغيرة في عرض الأصحاح (assets/chstrong.js) */
+  fs.mkdirSync(A("assets/strong/e"), { recursive: true });
+  let changedE = 0;
+  for (const k in CH) { const E = {}; for (const num in CH[k]) if (CH[k][num].e) E[num] = CH[k][num].e;
+    changedE += writeIf(`assets/strong/e/${k}.js`, `STRE(${JSON.stringify(k)},${JSON.stringify(E)});\n`); }
+  console.log(`strong: ${Object.keys(CH).length} chunk files (${changed} updated) + entries-only chunks (${changedE} updated)`);
+  stampSave("strong", SRC);
+})();
+
+/* ---------- أرقام سترونج في عرض الأصحاح: assets/tr_<Book>.js (الملف الكامل: فاندايك + KJV + الأرقام + التشكيل) → assets/sg/svd_<Book>.js ----------
+   أرقام سترونج على كلمات فاندايك فقط (svdS)، مضغوطة: لكل عدد قائمة، النص بلا رقم "نص" والكلمة برقمها ["كلمة","H1 H2"].
+   صفحة الأصحاح تحمّله فقط لما القارئ يشغّل «أرقام سترونج» (بدل tr_<Book>.js الكامل). يُعاد كتابته عند التغيير فقط. */
+(function () {
+  const writeIf = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return 0; } catch (e) {} write(p, s); return 1; };
+  fs.mkdirSync(A("assets/sg"), { recursive: true });
+  let books = 0, changed = 0;
+  for (const c of CAT) {
+    const f = `assets/tr_${c.abbr}.js`; if (!fs.existsSync(A(f))) continue;
+    const SRC = [...SELF, f]; if (fresh("sg:" + c.abbr, SRC) && fs.existsSync(A(`assets/sg/svd_${c.abbr}.js`))) { books++; continue; }
+    const T = M.runJS(f).TR, S = T && T[c.abbr] && T[c.abbr].svdS; if (!S) continue;
+    const out = {};
+    for (const k in S) { const a = [];
+      for (const [t, ns] of S[k]) { if (ns && ns.length) a.push([t, ns.join(" ")]); else if (typeof a[a.length - 1] === "string") a[a.length - 1] += t; else a.push(t); }
+      out[k] = a; }
+    books++; changed += writeIf(`assets/sg/svd_${c.abbr}.js`, `window.SG=window.SG||{};SG[${JSON.stringify("svd/" + c.abbr)}]=${JSON.stringify(out)};\n`);
+    stampSave("sg:" + c.abbr, SRC);
+  }
+  console.log(`chapter Strong (Van Dyck): ${books} book files (${changed} updated)`);
 })();
 
 /* ---------- robots / sitemap ---------- */
@@ -280,13 +323,31 @@ const SKIP_DIR = new Set(["_tools", ".git", "node_modules", ".vscode", "backup",
   "1Jo", "1Pe", "1Th", "2Jo", "2Pe", "3Jo", "Col", "Heb", "Jam", "Jud", "Rev"]);
 const SKIP_FILE = p => /(^|\/)([^/]*_test\.html|test_[^/]*)$|\.bak$/i.test(p) || p === "assets/mm_data.js";
 const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
+/* the published files, listed once (names only — reading a folder is fast; asking each file for its size/date is what is slow) */
+const PUB = [];
+(function walk(dir) {
+  for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
+    const p = dir ? dir + "/" + e.name : e.name;
+    if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
+    if (p === "sw.js" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;      // img/*.jpg originals are not published (only img/web)
+    PUB.push(p);
+  }
+})("");
+/* size+date of a file. Images and the folders this script generates itself are trusted from last run's cache unless this run rewrote them
+   (or --full): those are thousands of files, and checking each one is what made the build take minutes. */
+const FAST = /^(img\/web|assets\/(mm|strong|strong\/e|sg))\/[^/]+$/;
+let PREV = {}; try { if (!FULL) PREV = JSON.parse(fs.readFileSync(path.join(__dirname, ".hashcache.json"), "utf8")); } catch (e) {}
+const CK = {};
+const ckOf = p => { if (CK[p]) return CK[p];
+  if (!FULL && FAST.test(p) && !TOUCHED.has(p) && PREV[p]) return CK[p] = PREV[p][0];
+  const st = fs.statSync(A(p)); return CK[p] = st.size + ":" + Math.round(st.mtimeMs); };
 /* ---------- assets/offline.json: packages the user can download for offline use (sizes = what is sent over the wire) ---------- */
 (function () {
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بترجمة فاندايك وكتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
-    { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
+    { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) || /^assets\/sg\//.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) || /^assets\/strong\//.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },
     { id: "abbott", title: "قاموس أبوت-سميث اليوناني", desc: "معاني الكلمات اليونانية في العهد الجديد من قاموس أبوت-سميث.", test: p => p === "assets/abbott.js" || /^assets\/abbott\//.test(p) },
@@ -298,24 +359,16 @@ const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
     { id: "img_m", title: "الصور — جودة متوسطة (٨٠٠ بكسل)", desc: "صور الأصحاحات المناسبة للجوال.", test: p => /^img\/web\/.*-800\.webp$/.test(p) },
     { id: "img_h", title: "الصور — جودة عالية (١٦٠٠ بكسل)", desc: "للشاشات الكبيرة؛ تُحمَّل مع المتوسطة للحصول على كل الأحجام.", test: p => /^img\/web\/.*-1600\.webp$/.test(p) }
   ];
-  const files = [];
-  (function walk(dir) {
-    for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
-      const p = dir ? dir + "/" + e.name : e.name;
-      if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
-      if (p === "sw.js" || p === "assets/offline.json" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;
-      files.push(p);
-    }
-  })("");
+  const files = PUB.filter(p => p !== "assets/offline.json");
   const orphans = [];
   const SZ_FILE = path.join(__dirname, ".sizecache.json"); let SZ = {}; try { SZ = JSON.parse(fs.readFileSync(SZ_FILE, "utf8")); } catch (e) {} const SZ2 = {};
   const out = GROUPS.map(g => ({ id: g.id, title: g.title, desc: g.desc, req: g.req ? 1 : 0, files: [], bytes: 0 }));
   for (const p of files) {
     const gi = GROUPS.findIndex(g => g.test(p)); if (gi < 0) { if (!/^assets\/(og)\//.test(p) && !/^img\/web\/.*\.jpe?g$/.test(p) && !/^(offline|sitemap)/.test(p)) orphans.push(p); continue; }
     const txt = /\.(html|js|css|svg|webmanifest)$/i.test(p);
-    const st = fs.statSync(A(p)), ck = st.size + ":" + Math.round(st.mtimeMs);
+    const ck = ckOf(p);
     let b;
-    if (!txt) b = st.size;
+    if (!txt) b = +ck.split(":")[0];
     else if (SZ[p] && SZ[p][0] === ck) b = SZ[p][1];
     else b = zlib.gzipSync(fs.readFileSync(A(p)), { level: 6 }).length;
     SZ2[p] = [ck, b];
@@ -336,18 +389,13 @@ const REV = {};
 const HC_FILE = path.join(__dirname, ".hashcache.json");
 let HC = {}; try { HC = JSON.parse(fs.readFileSync(HC_FILE, "utf8")); } catch (e) {}
 const HC2 = {}; let HASHED = 0;
-(function walk(dir) {
-  for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
-    const p = dir ? dir + "/" + e.name : e.name;
-    if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
-    if (p === "sw.js" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;      // img/*.jpg originals are not published (only img/web)
-    const st = fs.statSync(A(p)), ck = st.size + ":" + Math.round(st.mtimeMs), hit = HC[p];       // hash cache: re-hash only files that changed
+for (const p of PUB) {
+    const ck = ckOf(p), hit = HC[p];       // hash cache: re-hash only files that changed
     if (hit && hit[0] === ck) REV[p] = hit[1];
     else { REV[p] = crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 10); }
     HC2[p] = [ck, REV[p]];
     if (!hit || hit[0] !== ck) { if (++HASHED % 150 === 0) try { fs.writeFileSync(HC_FILE, JSON.stringify(Object.assign({}, HC, HC2))); } catch (e) {} }
-  }
-})("");
+}
 try { fs.writeFileSync(HC_FILE, JSON.stringify(HC2)); } catch (e) {}
 const SHELL = ["index.html", "offline.html", "manifest.webmanifest", "assets/style.css", "assets/app.js", "assets/catalog.js",
   "assets/brand.js", "assets/bookimg.js", "assets/imgs.js", "assets/brand/favicon.ico", "assets/brand/mark-micro.svg",

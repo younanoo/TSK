@@ -25,6 +25,9 @@ const CHECKS = [
   { name: "chapter",         url: "Gen.html#/Gen/ch/1",         expect: [has(".cvt", 31), text(".cvt", "في البدء خلق الله"), has(".trbar .trb.on")] },
   { name: "chapter (alab)",  url: "Gen.html?tr=alab#/Gen/ch/1", expect: [text(".trbar .trb.on", "كتاب الحياة")] },
   { name: "verse",           url: "Gen.html#/Gen/1:1",          expect: [text("#main", "Genesis 1:1"), has("#strTgl")] },
+  { name: "chapter strong",  url: "Isa.html#/Isa/ch/11",        act: async p => { await p.click("#cstrBtn"); await p.waitForSelector(".cvlist.cstr .sw sup"); await p.click(".cvlist.cstr .sw[data-n='H5342']"); await p.waitForSelector("#chsPop.on .chs-e"); },
+    expect: [has(".cvlist.cstr .sw", 100), text("#chsPop", "H5342"), has("#chsPop a.chs-more[href='#/Isa/11:1/H5342']")] },
+  { name: "verse + strong",  url: "Isa.html#/Isa/11:1/H5342",   expect: [text("#dict", "H5342"), has(".verse-card .sw.on")] },
   { name: "NT chapter",      url: "Joh.html#/Joh/ch/3",         expect: [has(".cvt", 36)] },
   { name: "search",          url: "search.html?q=محبة",         expect: [has(".hit", 10)] },
   { name: "strong",          url: "strong.html#G25",            expect: [text("#out", "agap"), text("#out", "G25")] },
@@ -69,6 +72,7 @@ const server = http.createServer((req, res) => {
     try {
       await page.goto(base + c.url, { waitUntil: "networkidle", timeout: 60000 });
       await page.waitForTimeout(700);                                            // late renders (data loaded after first paint)
+      if (c.act) { await c.act(page); await page.waitForTimeout(300); }            // optional clicks before the checks
       for (const e of c.expect) { const msg = await page.evaluate(e); if (msg) problems.push(msg); }
     } catch (e) { problems.push("did not load: " + e.message.split("\n")[0]); }
     const ms = Date.now() - s;
