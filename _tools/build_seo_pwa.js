@@ -27,6 +27,20 @@ const CAT = M.catalog();
 const today = new Date().toISOString().slice(0, 10);
 const BASE_PATH = new URL(BASE).pathname;               // "/TSK/"
 
+/* ---------- الشواهد مقسّمة بالأصحاح ----------
+   assets/lib_<سفر>.js يفضل هو المصدر (أدوات البناء بتقراه زي ما هو). للأسفار اللي هنا، صفحة السفر تحمّل
+   assets/lib/<سفر>/index.js (هيكل صغير) وملف لكل أصحاح وقت الحاجة. التقسيم بيتعاد بس للسفر اللي ملفه اتغيّر.
+   للتأكد إن الملفات المقسّمة تطابق الأصل حرف بحرف:  node _tools/verify_split.js --all */
+const SPLIT_BOOKS = new Set(["Eph", "Psa"]);             // التجربة؛ عند التعميم: كل الأسفار
+const { splitBook } = require("./split_lib.js");
+const splitOn = c => SPLIT_BOOKS.has(c.abbr);
+for (const c of CAT.filter(splitOn)) {
+  const r = splitBook(ROOT, c.abbr);
+  r.files.forEach(f => TOUCHED.add(f.split(path.sep).join("/")));
+  if (r.changed) console.log(`split: ${c.abbr} → assets/lib/${c.abbr}/ (${r.files.length} ملف اتكتب)`);
+}
+const LIBTAG = c => splitOn(c) ? `<script src="assets/lib/${c.abbr}/index.js?v=${hashOf(`assets/lib/${c.abbr}/index.js`)}"></script>` : null;
+
 /* ---------- per-page meta ---------- */
 const TOOLS = {
   "index.html":   { title: `${SITE} — ${TAGLINE}`, desc: M.SITE_DESC, sitemap: 1 },
@@ -125,6 +139,10 @@ for (const f of htmlFiles) {
         { "@type": "ListItem", position: 3, name: M.fullName(c), item: BASE + f }] } });
     if (!keep) { h = setInner(h, '<main id="main">', bookPre(c, M.runJS(`assets/lib_${c.abbr}.js`).LIB)); stampSave("pre:" + c.abbr, PS); }
     if (!h.includes(`assets/tx/svd_${c.abbr}.js`)) h = h.replace(new RegExp(`(<script src="assets/lib_${c.abbr}\\.js[^"]*"></script>)`), `$1\n<script src="assets/tx/svd_${c.abbr}.js"></script>`);
+    if (splitOn(c)) {                                      // هيكل السفر بدل الملف الكامل + الشعار (فاتح/داكن) يتحمّل للوضع الظاهر بس
+      h = h.replace(new RegExp(`<script src="assets/lib(?:_${c.abbr}|/${c.abbr}/index)\\.js[^"]*"></script>`), LIBTAG(c));
+      h = h.replace(/(<img class="logo logo-[ld]" src="assets\/brand\/logo-horizontal-(?:light|dark)\.svg")(?! loading=)/g, '$1 loading="lazy"');
+    }
     h = setInner(h, '<div class="booksel" id="booksel">', SIDEBAR);
     sitemap.push([BASE + f, "0.8"]);
   } else {
@@ -332,13 +350,14 @@ const PUB = [];
   for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
     const p = dir ? dir + "/" + e.name : e.name;
     if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
-    if (p === "sw.js" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;      // img/*.jpg originals are not published (only img/web)
+    if (p === "sw.js" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;
+    { const m = p.match(/^assets\/lib_([1-3]?[A-Za-z]+)\.js$/); if (m && SPLIT_BOOKS.has(m[1])) continue; }   // مصدر التقسيم؛ الصفحة بتستخدم assets/lib/<سفر>/      // img/*.jpg originals are not published (only img/web)
     PUB.push(p);
   }
 })("");
 /* size+date of a file. Images and the folders this script generates itself are trusted from last run's cache unless this run rewrote them
    (or --full): those are thousands of files, and checking each one is what made the build take minutes. */
-const FAST = /^(img\/web|assets\/(mm|strong|strong\/e|sg))\/[^/]+$/;
+const FAST = /^(img\/web|assets\/(mm|strong|strong\/e|sg|lib\/[^/]+))\/[^/]+$/;
 let PREV = {}; try { if (!FULL) PREV = JSON.parse(fs.readFileSync(path.join(__dirname, ".hashcache.json"), "utf8")); } catch (e) {}
 const CK = {};
 const ckOf = p => { if (CK[p]) return CK[p];
@@ -349,7 +368,7 @@ const ckOf = p => { if (CK[p]) return CK[p];
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بترجمة فاندايك وكتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|screenctl)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/lib\//.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|screenctl)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) || /^assets\/sg\//.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) || /^assets\/strong\//.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },

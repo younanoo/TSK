@@ -400,6 +400,14 @@
     anchor.parentNode.insertBefore(d, anchor);
   }
 
+  /* مكتبة الخرائط (Leaflet) تتحمّل لما مكان الخريطة يقرب من الشاشة بس، عشان ما تزاحمش نص الأصحاح على الموبايل */
+  function whenNear(main, cb){
+    const anchor = main.querySelector(".cvlist") || main.querySelector(".ilist");
+    if (!anchor || !("IntersectionObserver" in window) || loaded[BASE + "leaflet.js?v=1.9.4"] === true) return cb();
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); cb(); } }, {rootMargin: "300px 0px"});
+    io.observe(anchor);
+  }
+
   /* ---------- التشغيل بعد كل render ---------- */
   let busy = false;
   function apply(){
@@ -409,7 +417,7 @@
     dataReady(() => {
       if (!chOf(w.c)) return;
       if (!isOn()) { if (w.view === "chapter") offBar(main); return; }
-      if (w.view === "chapter") { markChapter(main, w.c); mapReady(() => { if (isOn()) chapterCard(main, w.c); }); }
+      if (w.view === "chapter") { markChapter(main, w.c); whenNear(main, () => { const w2 = where(); if (w2.view !== "chapter" || w2.c !== w.c) return; mapReady(() => { if (isOn()) chapterCard(main, w.c); }); }); }
       else markVerse(main, w.c, w.v);
     });
   }

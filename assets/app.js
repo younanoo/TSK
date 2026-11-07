@@ -6,6 +6,18 @@ const LIB = window.LIB;
 const LOADED={};
 const JSFAIL={}; /* الملفات اللي فشل تحميلها (مثلًا offline قبل التنزيل) */
 function retryJS(src){if(JSFAIL[src]){delete LOADED[src];delete JSFAIL[src]}}
+/* الشواهد مقسّمة بالأصحاح: الصفحة تحمّل هيكل السفر (assets/lib/<abbr>/index.js — الأصحاحات والأعداد فقط)،
+   ثم ملف الأصحاح المفتوح assets/lib/<abbr>/<c>.js (نص كتاب الحياة + الشواهد + أرقام سترونج) وقت الحاجة.
+   الصفحات اللي لسه بتحمّل lib_<abbr>.js كامل (من غير LIBSPLIT) بتشتغل زي الأول بالظبط. */
+const SPLIT=!!window.LIBSPLIT;
+let CHWAIT=null;
+const chSrc=c=>`assets/lib/${LIB[0].abbr}/${c}.js`;
+function chHas(c){if(!SPLIT)return true;const b=LIB[0],a=window.LIBCH&&window.LIBCH[b.abbr+"/"+c];if(!a)return false;
+  if(!a.merged){a.forEach(x=>{const i=b.idx[x.c+":"+x.v];if(i!=null)Object.assign(b.verses[i],x)});a.merged=true}return true}
+const chFailed=c=>!!JSFAIL[chSrc(c)]||(LOADED[chSrc(c)]===true&&!chHas(c));
+/* يرجّع true لو الأصحاح جاهز؛ وإلا يبدأ تحميله (مرة واحدة) ويستدعي cb بعد ما يخلص */
+function chEnsure(c,cb){if(chHas(c))return true;if(chFailed(c))return false;loadJS(chSrc(c),()=>{chHas(c);cb&&cb()});return false}
+window.chEnsure=chEnsure;
 function loadJS(src,cb){if(LOADED[src]===true){cb&&cb();return}if(LOADED[src]){LOADED[src].push(cb);return}
   LOADED[src]=[cb];const s=document.createElement("script");s.src=src;s.onload=s.onerror=ev=>{if(ev&&ev.type==="error")JSFAIL[src]=true;const q=LOADED[src];LOADED[src]=true;q.forEach(f=>f&&f())};document.body.appendChild(s)}
 /* نصوص الشواهد: ملف صغير لكل سفر ولكل ترجمة (assets/tx/alab_Mat.js …) يُحمَّل فقط حين يُعرض شاهد من ذلك السفر */
@@ -51,8 +63,8 @@ const BY = {}; LIB.forEach(b=>{ b.idx={}; b.verses.forEach((d,i)=>{d.b=b.id;b.id
 const BY_ABBR = {}; LIB.forEach(b=>BY_ABBR[b.abbr]=b);
 const ALL = LIB.flatMap(b=>b.verses);
 const GIDX = {}; ALL.forEach((d,i)=>GIDX[d.b+"."+d.c+":"+d.v]=i);
-const refCount = d => d.groups.reduce((a,g)=>a+g.refs.length,0);
-const verseCount = d => d.groups.reduce((a,g)=>a+g.refs.reduce((x,r)=>x+r.vs.length,0),0);
+const refCount = d => (d.groups||[]).reduce((a,g)=>a+g.refs.length,0);
+const verseCount = d => (d.groups||[]).reduce((a,g)=>a+g.refs.reduce((x,r)=>x+r.vs.length,0),0);
 const K = (b,c,v)=>b+"."+c+":"+v;
 const bname = b => AR[b.abbr];
 const vref = d => `${AR[BY[d.b].abbr]} ${n(d.c)}: ${n(d.v)}`;
@@ -441,15 +453,15 @@ function viewChapter(){
   const nextBtn=nc!=null?`<button data-gc="${b.id}.${nc}" title="الأصحاح التالي"><span class="lb">${n(nc)}</span> ←</button>`
     :nb?`<a class="xnav" href="${pageOf(nb.abbr,"/"+nb.abbr+"/ch/1")}" title="السفر التالي"><span class="lb">${SH[nb.abbr]} ${n(1)}</span> ←</a>`
     :`<button disabled>←</button>`;
-  const refs=vs.reduce((a,x)=>a+refCount(x),0), CS=cstrOn();
+  const refs=vs.reduce((a,x)=>a+refCount(x),0), CS=cstrOn(), PEND=SPLIT&&!chHas(c), PFAIL=PEND&&chFailed(c);
   const CMP=`<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">${ic("arrows-left-right")} مقارنة الترجمات الثلاث لهذا الأصحاح</a>`;
-  $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
-  ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}" title="اعرض آيات الأصحاح بملء الشاشة، آية في كل شريحة">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"} title="الصفحة هنا للتحكم، والعرض بملء الشاشة على الشاشة الخارجية (بروجكتور أو تلفزيون)">${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}<div class="cvlist ${CS?"cstr":""}" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
+  $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${PEND?"…":n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
+  ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}" title="اعرض آيات الأصحاح بملء الشاشة، آية في كل شريحة">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"} title="الصفحة هنا للتحكم، والعرض بملء الشاشة على الشاشة الخارجية (بروجكتور أو تلفزيون)">${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}${PEND?(PFAIL?`<div class="chload fail">تعذّر تحميل شواهد هذا الأصحاح — غالبًا الجهاز غير متصل بالإنترنت. <button type="button" class="trb" data-chretry="${c}">إعادة المحاولة</button></div>`:`<div class="chload" role="status">جارٍ تحميل الشواهد…</div>`):""}<div class="cvlist ${CS?"cstr":""}" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
     const kj=trCur()==="kjv"?'dir="ltr" style="text-align:left"':"";
-    const row=CS?`<div class="cv cvs" data-go="${d.b}.${d.c}:${d.v}"><button type="button" class="cvn" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">${n(d.v)}</button><span class="cvt ar" ${kj}>${(sg=>sg?segHTML(sg):esc(trText(d)||d.text))(cstrSeg(d))}</span></div>`
+    const row=CS?`<div class="cv cvs" data-go="${d.b}.${d.c}:${d.v}"><button type="button" class="cvn" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">${n(d.v)}</button><span class="cvt ar" ${kj}>${(sg=>sg?segHTML(sg):esc(trText(d)||d.text||""))(cstrSeg(d))}</span></div>`
       :`<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
-      <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${kj}>${esc(trText(d)||d.text)}</span>`}</button>`;
-    return `<div class="cvw">${row}<div class="cvf">${presOK()?`<button type="button" class="cvp" data-pres="${d.b}.${d.c}:${d.v}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}<span class="cvp-l">اعرض على الشاشة</span><span class="cvp-n">معروضة الآن</span></button>`:""}<button type="button" class="cvm" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد والشواهد">${rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),"pl")}</div></div>`}).join("")}</div>
+      <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${kj}>${esc(trText(d)||d.text||"")}</span>`}</button>`;
+    return `<div class="cvw">${row}<div class="cvf">${presOK()?`<button type="button" class="cvp" data-pres="${d.b}.${d.c}:${d.v}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}<span class="cvp-l">اعرض على الشاشة</span><span class="cvp-n">معروضة الآن</span></button>`:""}<button type="button" class="cvm" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد والشواهد">${PEND?"…":rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),"pl")}</div></div>`}).join("")}</div>
   ${fnChapter(b,vs)}
   <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
@@ -550,10 +562,32 @@ function viewStrongSearch(num){
     :`<div class="empty">${has?"لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.":"لم يُضف قاموس سترونج إلى أي سفر بعد."}</div>`);
 }
 
+/* الأصحاحات اللي العرض الحالي محتاجها من ملفات الشواهد */
+function chNeed(){const b=book();if(S.view==="search")return b.chapters;if(S.view==="chapter")return [S.c];
+  if(S.view==="home")return [cur().c];
+  if(S.view==="verse"){const d=cur(),gi=GIDX[K(d.b,d.c,d.v)],o=[d.c];[ALL[gi-1],ALL[gi+1]].forEach(x=>{if(x&&x.b===d.b&&!o.includes(x.c))o.push(x.c)});return o}
+  return []}
+/* نص الأصحاح يظهر فورًا من ملف الترجمة لو مش محتاج نص كتاب الحياة من ملف الشواهد */
+const chTextFirst=()=>S.view==="chapter"&&(trCur()!=="alab"||diaOn()||origOn());
+function chGate(){
+  const miss=chNeed().filter(c=>!chHas(c));if(!miss.length){CHWAIT=null;return true}
+  const bad=miss.filter(chFailed);
+  if(bad.length){CHWAIT=null;if(chTextFirst()&&miss.length===1)return true;
+    $("#main").innerHTML=crumbs("تعذّر التحميل","")+loadFail("الشواهد",`data-chretry="${bad.join(" ")}"`);return false}
+  const key=S.view+"|"+S.c+"|"+S.v+"|"+S.q;CHWAIT=key;let left=miss.length;
+  miss.forEach(c=>chEnsure(c,()=>{if(--left===0&&CHWAIT===key){CHWAIT=null;render()}}));
+  if(chTextFirst())return true;
+  $("#main").innerHTML=crumbs(S.view==="search"?"جارٍ تحميل الشواهد للبحث…":"جارٍ تحميل الشواهد…","");return false}
+/* بعد ما الأصحاح يظهر: تحميل الأصحاح التالي في الخلفية (إلا لو المستخدم مفعّل توفير البيانات) */
+function chPrefetch(){if(!SPLIT||S.view!=="chapter"||!chHas(S.c))return;const b=book(),nc=b.chapters[b.chapters.indexOf(S.c)+1];if(nc==null||chHas(nc))return;
+  const cn=navigator.connection;if(cn&&(cn.saveData||/(^|-)2g$/.test(cn.effectiveType||"")))return;
+  const go_=()=>chEnsure(nc);("requestIdleCallback" in window)?requestIdleCallback(go_,{timeout:4000}):setTimeout(go_,1500)}
 function render(){
   sidebar();
+  if(SPLIT&&!chGate()){try{CPY_LAST=-1;cpyCount()}catch(e){}return}
   ({home:viewHome,book:viewBook,chapter:viewChapter,verse:viewVerse,search:viewSearch})[S.view]();
   try{CPY_LAST=-1;cpyCount()}catch(e){}
+  chPrefetch();
 }
 
 /* ---------- navigation ---------- */
@@ -590,6 +624,7 @@ document.addEventListener("click",e=>{
     loadJS("assets/presfit.js",()=>loadJS("assets/present.js",()=>window.PRES&&window.PRES.open(...p)));return}}
   if(e.target.closest("[data-scr]")){loadJS("assets/presfit.js",()=>loadJS("assets/screenctl.js",()=>window.SCR&&SCR.toggle()));return}
   if(e.target.closest("#cstrBtn")){store.set("cstr",!cstrOn());render();return}
+  const cr=e.target.closest("[data-chretry]"); if(cr){cr.dataset.chretry.split(" ").forEach(c=>retryJS(chSrc(+c)));render();return}
   const jr=e.target.closest("[data-jsretry]"); if(jr){retryJS(jr.dataset.jsretry); if(!jr.dataset.dn){render();return}}
   const sr=e.target.closest(".sref"); if(sr){ if($("#dict")) showEntry(sr.dataset.sn,{fromRef:true}); return }
   if(e.target.closest("#dback")){const p=DICT.trail.pop(); DICT.cur=p; $("#dict").innerHTML=dictInner(); return}

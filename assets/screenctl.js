@@ -64,6 +64,7 @@
   /* ---- الآية ---- */
   function segsOf(d){
     if(src&&src.foreign){const a=src.segs(d,cstrOn(),trCur());return a?{a,str:cstrOn()&&trCur()==="svd"}:null}
+    if(window.chEnsure&&!chEnsure(d.c))return null;   /* الأصحاح لسه بيتحمّل — sendVerse بيعيد المحاولة */
     if(cstrOn()){const sg=cstrSeg(d);if(sg)return {a:sg,str:true};return null}
     const t=trText(d)||(trCur()==="alab"&&!diaOn()?d.text:null);if(!t)return null;
     return {a:t.split(/(\s+)/).filter(Boolean).map(x=>[x,[]]),str:false};

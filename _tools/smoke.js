@@ -52,6 +52,15 @@ const CHECKS = [
       await p.click(".cvp[data-pres='49.1:3']"); await w.waitForSelector(".pres-txt:not(.wait)"); await p.keyboard.press("ArrowLeft"); await p.waitForTimeout(400);
       const t = await w.innerText(".pres-ref"); if (!t.includes("أفسس ١: ٤")) throw new Error("screen shows «" + t + "» instead of أفسس ١: ٤"); },
     expect: [text(".scr-bar", "الشاشة الخارجية"), has(".cvw.scr-cur")] },   /* الشريط بيقول «مش بملء الشاشة» لحد ما حد يضغط على نافذة العرض */
+  /* ---- split-library robustness (Psa/Eph load per-chapter files on demand) ---- */
+  { name: "split Psa 119",   url: "Psa.html#/Psa/ch/119",       expect: [has(".cvt", 176), "(document.querySelector('.chload') ? 'still showing .chload' : '')", has(".cvm", 176), text(".cvm", "شاهدًا"), "(document.querySelector('.cvm').innerText.includes('…') ? 'count still …' : '')"] },
+  { name: "split text-first (blocked chapter)", url: "Psa.html#/Psa/ch/23", block: "assets/lib/Psa/23\\.js",
+    expect: [has(".cvt", 6), text(".cvt", "الرب"), has(".chload.fail", 1), has(".chload.fail [data-chretry]", 1)] },
+  { name: "split verse groups", url: "Psa.html#/Psa/23:1",     expect: [has("section.group", 1), has("section.group .ghead h3"), has("#dict", 1), text("#main", "الرب")] },
+  { name: "split present crosses chapters", url: "Eph.html#/Eph/ch/1", act: async p => { await p.click(".cvp[data-pres='49.1:23']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.waitForTimeout(300); await p.keyboard.press("ArrowLeft"); await p.waitForFunction(() => /٢/.test((document.querySelector("#pres .pres-ref") || {}).innerText || "")); await p.waitForTimeout(300); },
+    expect: [text("#pres .pres-ref", "أفسس ٢: ١")] },
+  { name: "split Eph map",   url: "Eph.html#/Eph/ch/1",         act: async p => { await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 3)); await p.waitForSelector(".geo-card", { state: "attached", timeout: 15000 }); },
+    expect: [has(".geo-card", 1)] },
   { name: "NT chapter",      url: "Joh.html#/Joh/ch/3",         expect: [has(".cvt", 36)] },
   { name: "search",          url: "search.html?q=محبة",         expect: [has(".hit", 10)] },
   { name: "strong",          url: "strong.html#G25",            expect: [text("#out", "agap"), text("#out", "G25")] },
@@ -88,9 +97,10 @@ const server = http.createServer((req, res) => {
   for (const c of list) {
     const ctx = await browser.newContext({ serviceWorkers: "block" }), page = await ctx.newPage(), problems = [];
     await page.route(u => u.hostname !== "127.0.0.1", r => r.abort());           // no internet needed
+    if (c.block) { const re = new RegExp(c.block); await page.route(u => re.test(u.pathname), r => r.abort()); }   // optional: abort matching requests
     page.on("pageerror", e => problems.push("JS error: " + e.message.split("\n")[0]));
     page.on("response", r => { const u = new URL(r.url());
-      if (r.status() >= 400 && u.hostname === "127.0.0.1" && !u.pathname.startsWith("/img/")) problems.push(`missing file (${r.status()}): ${decodeURIComponent(u.pathname)}`); });
+      if (r.status() >= 400 && !c.block && u.hostname === "127.0.0.1" && !u.pathname.startsWith("/img/")) problems.push(`missing file (${r.status()}): ${decodeURIComponent(u.pathname)}`); });
     const s = Date.now();
     try {
       await page.goto(base + c.url, { waitUntil: "networkidle", timeout: 60000 });

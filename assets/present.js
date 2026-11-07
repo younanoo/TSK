@@ -102,6 +102,7 @@
 
   /* ---- النص: قائمة مقاطع [نص، أرقام] (بدون أرقام = نص عادي مقسوم كلمات) ---- */
   function segsOf(d){
+    if(window.chEnsure&&!chEnsure(d.c))return null;   /* شواهد الأصحاح (نص كتاب الحياة وأرقامه) لسه بتتحمّل — العرض بيعيد المحاولة */
     if(STR()){const sg=cstrSeg(d);if(sg)return sg;}
     const t=trText(d)||(trCur()==="alab"&&!diaOn()?d.text:null);if(!t)return null;
     if(STR()&&trCur()!=="alab")return null;          /* الأرقام لسه بتتحمّل */
