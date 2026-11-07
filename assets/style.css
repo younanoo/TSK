@@ -1305,6 +1305,16 @@ html.pres-on{overflow:hidden}
 .scr-fs[hidden]{display:none}
 .scr-orphan{position:absolute;inset:auto 0 40% 0;text-align:center;font:500 20px var(--ui);color:var(--pm);padding:0 20px}
 @media print{.scr-bar{display:none!important}}
+/* وقت العرض على شاشة خارجية: تحت كل آية يفضل زرار واحد واضح «اعرض على الشاشة» (أزرار «أضف» وعدد الشواهد بتختفي) */
+.cvp-l,.cvp-n{display:none}
+.scr-on .cvf .cvm,.scr-on .cvf .cpy,.scr-on .cvf .cpyg,.scr-on .cvf .cpy-dd{display:none!important}
+.scr-on .cvf .cvp,.scr-on .ilv .cvp{width:auto;height:auto;min-height:40px;padding:0 16px;gap:8px;border-radius:999px;background:#C9A24A;border-color:#C9A24A;color:#111;font:700 15px var(--ui);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.scr-on .cvf .cvp:hover,.scr-on .ilv .cvp:hover{filter:brightness(1.07)}
+.scr-on .cvp .cvp-l{display:inline}
+.scr-on .scr-cur .cvp{background:#1f7a4d!important;border-color:#1f7a4d!important;color:#fff!important}
+.scr-on .scr-cur .cvp .cvp-l{display:none}
+.scr-on .scr-cur .cvp .cvp-n{display:inline}
+@media (max-width:880px){.scr-on .cvf .cvp,.scr-on .ilv .cvp{min-height:38px;font-size:14px;padding:0 12px}}
 /* screen:end */
 
 /* pre:start — نص مكتوب مسبقًا في الصفحة لمحركات البحث (يستبدله التطبيق فور تحميله) */
