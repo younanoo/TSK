@@ -1186,6 +1186,7 @@ html.pres-on{overflow:hidden}
 .pres.ui .pres-bar{opacity:1;pointer-events:auto}
 .pres-trs{display:flex;gap:6px;flex-wrap:wrap}
 .pres-b{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;padding:0 12px;border-radius:999px;border:1px solid rgba(128,128,128,.45);background:rgba(128,128,128,.14);color:inherit;font:600 14px var(--ui);cursor:pointer}
+.pres-b[hidden]{display:none!important}
 .pres-b.on{background:#C9A24A;border-color:#C9A24A;color:#111}
 .pres-b:hover{background:rgba(128,128,128,.3)}
 .pres-x{margin-inline-start:auto;font-size:17px}

@@ -62,8 +62,10 @@
     foreign(r.abbr,x=>x?cb(x,at(x)):cb(src,-1))}
   /* ---- الترجمات الثلاث مع بعض (شريحة آية واحدة): النص من assets/tx/<ترجمة>_<سفر>.js لأي سفر ---- */
   const TRI=[["svd","فاندايك","rtl"],["alab","كتاب الحياة","rtl"],["kjv","KJV","ltr"]];
-  function tri(abbr,d){   /* null = لسه بيتحمّل */
-    let wait=false;const out=TRI.map(([k,l,dir])=>{const t=window.TXB[k+"/"+abbr],f=`assets/tx/${k}_${abbr}.js`;
+  function tri(abbr,d,dia){   /* null = لسه بيتحمّل. dia(d,ترجمة) = النص المشكّل (من app.js: diaTextOf) لو التشكيل شغال */
+    let wait=false;const out=TRI.map(([k,l,dir])=>{
+      if(dia&&k!=="kjv"){const x=dia(d,k);if(x===null){wait=true;return null}if(x)return {l,dir,t:x}}
+      const t=window.TXB[k+"/"+abbr],f=`assets/tx/${k}_${abbr}.js`;
       if(!t){if(LOADED[f]===undefined){loadJS(f,()=>{});wait=true}else if(LOADED[f]!==true)wait=true;return null}
       const s=t[d.c+":"+d.v];return s?{l,dir,t:s}:null});
     return wait?null:out.filter(Boolean)}

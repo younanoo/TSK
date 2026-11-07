@@ -21,12 +21,13 @@
   function ui(){
     if(!bar){bar=document.createElement("div");bar.className="scr-bar";bar.setAttribute("role","toolbar");bar.setAttribute("aria-label","التحكم في الشاشة الخارجية");document.body.append(bar);
       bar.addEventListener("click",e=>{const sn=e.target.closest("[data-sn]");if(sn){setN(+sn.dataset.sn);return}const b=e.target.closest("[data-sa]");if(!b)return;const k=b.dataset.sa;
-        if(k==="undict"){undict();return}if(k==="il"){store.set("pres_il",!IL());store.set("pres_tri",false);if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="tri"){store.set("pres_il",false);store.set("pres_tri",!TRI());if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="next")step(1);else if(k==="prev")step(-1);else if(k==="blank")setBlank(!blank);else if(k==="stop")stop();else if(k==="open")openWin(null);else if(k==="theme"){store.set("pres_theme",theme()==="dark"?"light":"dark");send({t:"theme",theme:theme()})}})}
+        if(k==="undict"){undict();return}if(k==="dia"){store.set("dia",store.get("dia",false)!==true);try{render()}catch(_){}if(idx>=0){part=[0,1];sendVerse("first")}ui();return}if(k==="il"){store.set("pres_il",!IL());store.set("pres_tri",false);if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="tri"){store.set("pres_il",false);store.set("pres_tri",!TRI());if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="next")step(1);else if(k==="prev")step(-1);else if(k==="blank")setBlank(!blank);else if(k==="stop")stop();else if(k==="open")openWin(null);else if(k==="theme"){store.set("pres_theme",theme()==="dark"?"light":"dark");send({t:"theme",theme:theme()})}})}
     const d=list&&list[idx],b={abbr:src?src.abbr:book().abbr};
     const lab=!fsOn&&scr&&!scr.closed&&!jb&&!lost?`<span class="scr-st warn">الشاشة الخارجية مش بملء الشاشة — اضغط عليها مرة، أو أي زرار في الكيبورد/الريموت وهي في المقدمة</span>`:lost&&scr&&!scr.closed&&!jb?`<span class="scr-st warn">الشاشة الخارجية اتفصلت — وصّلها تاني (Win+P ← Extend) أو أوقف العرض</span>`:jb?`<span class="scr-st"><b class="scr-jump">انتقال إلى: ${esc(PRESFIT.ar(jb))}</b> — Enter للانتقال · Esc للإلغاء</span>`:!scr||scr.closed?`<span class="scr-st warn">نافذة العرض غير مفتوحة</span><button type="button" class="scr-b strong" data-sa="open">افتح نافذة العرض</button>`
       :`<span class="scr-st"><i class="scr-dot"></i>على الشاشة الخارجية: <b>${d?`${esc(AR[b.abbr])} ${n(d.c)}: ${n(d.v)}${part[1]>1?` (${n(part[0]+1)}/${n(part[1])})`:""}`:"لم تُختر آية بعد — اضغط زر العرض جنب أي آية"}</b>${dictUp?" · قاموس سترونج":""}${blank?" · شاشة سوداء":""}</span>`;
     bar.innerHTML=`${lab}<span class="scr-gap"></span>
       <span class="scr-ns">${[1,3,5].map(k=>`<button type="button" class="scr-b ${!TRI()&&K()===k?"on":""}" data-sn="${k}" title="${k===1?"آية واحدة":n(k)+" آيات"} في الشريحة">${n(k)}</button>`).join("")}</span>
+      ${src&&src!==cur||!(TRI()||diaAvail())?"":`<button type="button" class="scr-b ${store.get("dia",false)===true?"on":""}" data-sa="dia" title="إظهار التشكيل أو إخفاؤه">تشكيل</button>`}
       <button type="button" class="scr-b ${TRI()?"on":""}" data-sa="tri" title="الآية بالترجمات الثلاث مع بعض">٣ ترجمات</button>
       <button type="button" class="scr-b ${IL()?"on":""}" data-sa="il" title="الآية بالعرض بين السطور">بين السطور</button>
       ${dictUp?`<button type="button" class="scr-b strong" data-sa="undict" title="رجوع للآية على الشاشة الخارجية">رجوع للآية</button>`:""}
@@ -76,14 +77,14 @@
     const d=list&&list[idx];if(!d)return;
     if(IL()&&src===cur){const sl=ilSlide(d);if(!sl){retryT=setTimeout(()=>sendVerse(at),350);return}
       send({t:"il",sl,ref:`${AR[src.abbr]} ${n(d.c)}: ${n(d.v)}`,theme:theme(),at:at||"first"});sig=sigNow();return}
-    if(TRI()){const items=PRESFIT.tri(src.abbr,d);if(!items){retryT=setTimeout(()=>sendVerse(at),350);return}
+    if(TRI()){const items=PRESFIT.tri(src.abbr,d,src===cur&&store.get("dia",false)===true?diaTextOf:null);if(!items){retryT=setTimeout(()=>sendVerse(at),350);return}
       send({t:"tri",items,ref:`${AR[src.abbr]} ${n(d.c)}: ${n(d.v)}`,theme:theme()});sig=sigNow();return}
     const g=grp(),ss=g.map(i=>segsOf(list[i]));if(!ss.every(Boolean)){retryT=setTimeout(()=>sendVerse(at),350);return}
     const b={abbr:src.abbr},e=list[g[g.length-1]];
     send({t:"verse",segs:PRESFIT.join(ss.map((x,j)=>[x.a,n(list[g[j]].v)])),str:ss[0].str,kj:trCur()==="kjv",ref:`${AR[b.abbr]} ${n(d.c)}: ${n(d.v)}${e!==d?"–"+n(e.v):""}`,trn:TRN[trCur()],theme:theme(),at:at||"first"});
     sig=sigNow();
   }
-  const sigNow=()=>[trCur(),diaOn(),cstrOn(),TRI(),IL(),store.get("isrc","ours")].join("|");
+  const sigNow=()=>[trCur(),diaOn(),store.get("dia",false),cstrOn(),TRI(),IL(),store.get("isrc","ours")].join("|");
   function show(bid,c,v){
     if(!on) start();
     cur={abbr:book().abbr,list:book().verses};src=cur;list=cur.list;idx=Math.max(0,list.findIndex(d=>d.c===c&&d.v===v));part=[0,1];

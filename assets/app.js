@@ -193,6 +193,13 @@ function hasDia(){const b=book();if(b.dia!=null)return b.dia;const t=window.TR&&
 function hasKD(){return trCur()==="alab"}
 function kdGet(d){const ab=book().abbr,src="assets/kd_"+ab+".js";if(LOADED[src]===undefined){loadJS(src,()=>render());return null}const m=window.KD&&window.KD[ab];return (m&&m[d.c+":"+d.v])||null}
 function kdArS(d){const t=kdGet(d);if(!t)return null;const ab=book().abbr,m=window.KDS&&window.KDS[ab],ns=m&&m[d.c+":"+d.v];if(!ns)return null;const out=[];t.split(" ").forEach((w,i)=>{if(i)out.push([" ",[]]);const mm=w.match(/^([^\u0621-\u064A]*)(.*?)([^\u0621-\u064A\u064B-\u065F\u0670]*)$/s);const a=mm[1],c=mm[2],e=mm[3];if(a)out.push([a,[]]);if(c)out.push([c,ns[i]||[]]);if(e)out.push([e,[]])});return out}
+/* التشكيل في العرض بملء الشاشة والشاشة الخارجية: diaAvail = الترجمة الحالية ليها نص مشكّل؛
+   diaTextOf = النص المشكّل لترجمة معيّنة (للترجمات الثلاث): undefined = مفيش، null = لسه بيتحمّل. سفر الصفحة فقط. */
+function diaAvail(){return (trCur()==="svd"&&hasDia())||trCur()==="alab"}
+function diaTextOf(d,k){const ab=book().abbr,key=d.c+":"+d.v;
+  if(k==="svd"){if(!hasDia())return undefined;const t=trData();if(!t)return null;return (t.svdD&&t.svdD[key])||undefined}
+  if(k==="alab"){const src="assets/kd_"+ab+".js";if(LOADED[src]===undefined){loadJS(src,()=>{});return null}if(LOADED[src]!==true)return null;const m=window.KD&&window.KD[ab];return (m&&m[key])||undefined}
+  return undefined}
 function diaOn(){return store.get("dia",false)===true&&((trCur()==="svd"&&hasDia())||hasKD())}
 /* نص فاندايك الخفيف (assets/tx/svd_<السفر>.js) يكفي لعرض النص؛ الملف الكامل tr_<السفر>.js (أرقام سترونج والتشكيل وKJV) يُحمَّل عند الحاجة فقط */
 function trLite(){const ab=book().abbr,L=window.TXB["svd/"+ab];if(L)return L;const src=`assets/tx/svd_${ab}.js`;if(JSFAIL[src])return false;if(LOADED[src]===undefined)loadJS(src,()=>render());return null}

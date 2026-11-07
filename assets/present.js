@@ -28,6 +28,7 @@
     box.innerHTML=`<div class="pres-bar">
         <span class="pres-trs"></span>
         <span class="pres-ns" role="group" aria-label="عدد الآيات في الشريحة"><button type="button" class="pres-b" data-pn="1" title="آية واحدة في الشريحة">١</button><button type="button" class="pres-b" data-pn="3" title="٣ آيات في الشريحة">٣</button><button type="button" class="pres-b" data-pn="5" title="٥ آيات في الشريحة">٥</button></span>
+        <button type="button" class="pres-b" data-pa="dia" title="إظهار التشكيل أو إخفاؤه (فاندايك وكتاب الحياة)">تشكيل</button>
         <button type="button" class="pres-b" data-pa="tri" title="الآية بالترجمات الثلاث مع بعض">٣ ترجمات</button>
         <button type="button" class="pres-b" data-pa="il" title="الآية بالعرض بين السطور (كلمة بكلمة)">بين السطور</button>
         <button type="button" class="pres-b" data-pa="jump" title="انتقال إلى عدد (أو اكتب الرقم ثم Enter)">انتقال</button>
@@ -70,6 +71,7 @@
       else if(k==="fs"){enterFs()}
       else if(k==="jump"){jumpOpen(true)}
       else if(k==="tri"){store.set("pres_tri",!TRI());store.set("pres_il",false);part=0;if(dictOn)closeDict();else show()}
+      else if(k==="dia"){store.set("dia",store.get("dia",false)!==true);try{render()}catch(_){}part=0;show()}   /* نفس إعداد الصفحة */
       else if(k==="il"){store.set("pres_il",!IL());store.set("pres_tri",false);part=0;if(dictOn)closeDict();else show()}
       else if(k==="str"){store.set("pres_str",!STR());if(dictOn)closeDict();else show()}
       wakeUi();return}
@@ -112,7 +114,7 @@
   const layout=a=>PRESFIT.layout(stage,txt,a,htmlOf,PRESFIT.minOk(MQ.matches));
 
   function showTri(){   /* الترجمات الثلاث */
-    const d=list[idx],items=PRESFIT.tri(src.abbr,d);
+    const d=list[idx],items=PRESFIT.tri(src.abbr,d,!src.foreign&&store.get("dia",false)===true?diaTextOf:null);
     box.querySelectorAll("[data-pn]").forEach(x=>x.classList.remove("on"));box.querySelector('[data-pa="tri"]').classList.add("on");
     box.dataset.theme=T();box.classList.remove("str");box.classList.add("tri");renderTrs();
     if(!items){txt.style.fontSize="";txt.textContent="جارٍ تحميل الترجمات…";txt.classList.add("wait");waitT=setTimeout(show,400);return}
@@ -182,7 +184,8 @@
     PRESFIT.resolve(str,src,idx,cur,(s2,j)=>{
       if(j<0){f.hidden=false;f.querySelector(".pres-jmsg").textContent=`«${PRESFIT.ar(String(str).trim())}» غير موجود — اكتب رقم العدد، أو أصحاح:عدد، أو سفر وأصحاح وعدد مثل «يو ٣:١٦»`;jb="";clearTimeout(jT);jT=setTimeout(jumpClose,3500);flash();return}
       jumpClose();src=s2;list=s2.list;idx=j;part=0;show()})}
-  function renderTrs(){const sb=box.querySelector('[data-pa="str"]');sb.classList.toggle("on",STR());const av=trAvail(),c=trCur();box.querySelector(".pres-trs").innerHTML=av.length>1?av.map(k=>`<button type="button" class="pres-b ${k===c&&!TRI()?"on":""}" data-ptr="${k}" title="${TRN[k]}">${MQ.matches&&k==="alab"?"الحياة":TRN[k]}</button>`).join(""):""}
+  function renderTrs(){const sb=box.querySelector('[data-pa="str"]');sb.classList.toggle("on",STR());
+    {const db=box.querySelector('[data-pa="dia"]');db.hidden=src.foreign||!(TRI()||diaAvail());db.classList.toggle("on",store.get("dia",false)===true)}const av=trAvail(),c=trCur();box.querySelector(".pres-trs").innerHTML=av.length>1?av.map(k=>`<button type="button" class="pres-b ${k===c&&!TRI()?"on":""}" data-ptr="${k}" title="${TRN[k]}">${MQ.matches&&k==="alab"?"الحياة":TRN[k]}</button>`).join(""):""}
   function next(){if(part<parts.length-1){part++;show();return}const g=PRESFIT.group(list,idx,K()),j=g[g.length-1]+1;if(j<list.length){idx=j;part=0;show()}else flash()}
   function prev(){if(part>0){part--;show();return}const s=PRESFIT.prevStart(list,idx,K());if(s>=0){idx=s;part=-1;show()}else flash()}
   function flash(){box.classList.remove("edge");void box.offsetWidth;box.classList.add("edge")}
