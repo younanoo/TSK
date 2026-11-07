@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التحكم في العرض (تجربة) — جدد وعتقاء</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=e81edc5b">
+<style>
+/* نافذة التحكم في تجربة «طريقة Google Slides» — بتفتحها screen-trial.html على شاشة اللابتوب */
+html,body{height:100%}
+body{margin:0;background:#0F1B26;color:#f4efe6;font:15px/1.7 var(--ui);display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+header h1{font:700 16px var(--ui);margin:0;margin-inline-end:auto;color:#E6C877}
+.b{min-width:40px;height:38px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:inherit;font:600 14px var(--ui);cursor:pointer}
+.b:hover{background:rgba(255,255,255,.18)}
+.b.on,.b.main{background:#C9A24A;border-color:#C9A24A;color:#111}
+.b.stop{border-color:#e5484d;color:#ffb4b4}
+main{flex:1;display:grid;grid-template-columns:1.3fr 1fr;gap:14px;padding:14px;min-height:0}
+.now,.nxt{border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 14px;background:rgba(0,0,0,.25);overflow:auto}
+.lab{font:600 12px var(--ui);color:#9fb3c6;margin-bottom:4px}
+.now .t{font:500 24px/1.8 var(--script,"Amiri"),serif}
+.nxt .t{font:20px/1.8 var(--script,"Amiri"),serif;opacity:.75}
+.ref{font:700 14px var(--ui);color:#E6C877;margin-bottom:6px}
+.side{display:flex;flex-direction:column;gap:14px;min-height:0}
+.list{flex:1;overflow:auto;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(0,0,0,.2)}
+.list button{display:flex;gap:10px;width:100%;text-align:start;border:0;border-bottom:1px solid rgba(255,255,255,.07);background:none;color:inherit;padding:8px 12px;cursor:pointer;font:15px/1.7 var(--script,"Amiri"),serif}
+.list button .lt{flex:1}
+.list button b{font:700 13px var(--ui);color:#E6C877;min-width:44px}
+.list button:hover{background:rgba(255,255,255,.07)}
+.list button.cur{background:rgba(201,162,74,.25)}
+.list h3{position:sticky;top:0;margin:0;padding:6px 12px;background:#0F1B26;font:700 13px var(--ui);color:#9fb3c6}
+footer{padding:8px 14px;border-top:1px solid rgba(255,255,255,.12);color:#9fb3c6;font-size:13px}
+.ended{display:none;position:fixed;inset:0 0 auto 0;z-index:5;background:#5a1e1e;align-items:center;justify-content:center;text-align:center;font:600 18px var(--ui);padding:20px}
+.ended.on{display:flex}
+@media (max-width:760px){main{grid-template-columns:1fr}}
+</style>
+<!--seo-->
+<meta name="description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/screen-trial-ctl.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="التحكم في العرض (تجربة) — جدد وعتقاء">
+<meta property="og:description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/screen-trial-ctl.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="التحكم في العرض (تجربة) — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="التحكم في العرض (تجربة) — جدد وعتقاء">
+<meta name="twitter:description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head>
+<body>
+<header>
+  <h1>التحكم في العرض — تجربة</h1>
+  <span id="trs"></span>
+  <button class="b" data-a="prev" title="السابق (→)">→ السابق</button>
+  <button class="b main" data-a="next" title="التالي (←)">التالي ←</button>
+  <button class="b" data-a="blank" title="شاشة سوداء (B)">■ شاشة سوداء</button>
+  <button class="b" data-a="theme" title="خلفية سوداء / بيضاء">◐</button>
+  <button class="b stop" data-a="stop">إنهاء العرض</button>
+</header>
+<main>
+  <div class="side">
+    <div class="now"><div class="lab">على الشاشة الخارجية الآن</div><div class="ref" id="nowRef"></div><div class="t" id="nowT"></div></div>
+    <div class="nxt"><div class="lab">التالي</div><div class="ref" id="nxtRef"></div><div class="t" id="nxtT"></div></div>
+  </div>
+  <div class="list" id="list"></div>
+</main>
+<pre id="diag" style="margin:0 14px 8px;padding:8px 10px;border:1px dashed rgba(255,255,255,.25);border-radius:10px;font:12px/1.6 var(--ui);white-space:pre-wrap;color:#9fb3c6;max-height:120px;overflow:auto">تشخيص التجربة…</pre>
+<footer>الأسهم / المسافة / الريموت تتحكم في العرض من هنا · B = شاشة سوداء · اضغط على أي آية في القائمة للانتقال لها</footer>
+<div class="ended" id="ended">العرض انتهى. تقدر تقفل النافذة دي.</div>
+<script src="assets/presfit.js"></script>
+<script>
+(function(){
+  "use strict";
+  const ar=PRESFIT.ar,esc=PRESFIT.esc,$=s=>document.querySelector(s),op=window.opener;
+  const send=m=>{try{op&&!op.closed&&op.postMessage(m,"*")}catch(_){}};
+  const TRN={svd:"فاندايك",alab:"كتاب الحياة",kjv:"KJV"};
+  let I=null,st={idx:0,part:0,parts:1,tr:"svd",blank:false};
+  window.TXB=window.TXB||{};
+  function need(tr){const k=tr+"/"+I.ab;if(TXB[k])return TXB[k];if(!document.querySelector(`script[data-tr="${tr}"]`)){const s=document.createElement("script");s.src=`assets/tx/${tr}_${I.ab}.js`;s.dataset.tr=tr;s.onload=draw;document.body.append(s)}return null}
+  function build(){
+    let h="",c=0;I.list.forEach((d,i)=>{if(d.c!==c){c=d.c;h+=`<h3>${esc(I.name)} ${ar(c)}</h3>`}h+=`<button data-i="${i}"><b>${ar(d.c)}: ${ar(d.v)}</b><span class="lt"></span></button>`});
+    $("#list").innerHTML=h;draw()}
+  function draw(){if(!I)return;const T0=need(st.tr),T=T0||{},L=I.list,d=L[st.idx],n=L[st.idx+1];
+    $("#trs").innerHTML=Object.keys(TRN).map(k=>`<button class="b ${k===st.tr?"on":""}" data-tr="${k}">${TRN[k]}</button>`).join(" ");
+    $("#nowRef").textContent=`${I.name} ${ar(d.c)}: ${ar(d.v)}${st.parts>1?` (${ar(st.part+1)}/${ar(st.parts)})`:""}${st.blank?" — الشاشة سوداء":""}`;
+    $("#nowT").textContent=T[d.c+":"+d.v]||"";$("#nowT").dir=st.tr==="kjv"?"ltr":"rtl";
+    $("#nxtRef").textContent=n?`${I.name} ${ar(n.c)}: ${ar(n.v)}`:"— آخر آية —";$("#nxtT").textContent=n?(T[n.c+":"+n.v]||""):"";$("#nxtT").dir=$("#nowT").dir;
+    document.querySelectorAll("#list button").forEach(b=>{const i=+b.dataset.i,x=L[i];b.classList.toggle("cur",i===st.idx);const lt=b.querySelector(".lt");if(T0&&lt.dataset.tr!==st.tr){lt.textContent=T[x.c+":"+x.v]||"";lt.dataset.tr=st.tr;lt.dir=st.tr==="kjv"?"ltr":"rtl";lt.style.textAlign=st.tr==="kjv"?"left":""}});
+    const cur=document.querySelector("#list button.cur");if(cur){const r=cur.getBoundingClientRect(),lr=$("#list").getBoundingClientRect();if(r.top<lr.top+30||r.bottom>lr.bottom)cur.scrollIntoView({block:"center"})}
+  }
+  addEventListener("message",e=>{if(e.source!==op)return;const m=e.data||{};
+    if(m.t==="init"){I=m;st.tr=m.tr;build()}
+    else if(m.t==="state"){st=Object.assign(st,m);draw()}
+    else if(m.t==="ended")$("#ended").classList.add("on");
+    else if(m.t==="log")$("#diag").textContent="تشخيص التجربة (ابعته لـ Claude لو العرض ما ظهرش):\n"+m.log.join("\n")});
+  document.addEventListener("click",e=>{const a=e.target.closest("[data-a]"),t=e.target.closest("[data-tr]"),l=e.target.closest("#list button");
+    if(a){const k=a.dataset.a;if(k==="next")send({t:"step",dir:1});else if(k==="prev")send({t:"step",dir:-1});else send({t:k});if(k==="stop")setTimeout(()=>window.close(),150)}
+    else if(t)send({t:"tr",tr:t.dataset.tr});else if(l)send({t:"go",idx:+l.dataset.i})});
+  addEventListener("keydown",e=>{const k=e.key;if(e.target.tagName==="BUTTON"&&(k===" "||k==="Enter"))return;
+    if(["ArrowLeft","ArrowDown","PageDown"," ","Enter"].includes(k)){e.preventDefault();send({t:"step",dir:1})}
+    else if(["ArrowRight","ArrowUp","PageUp","Backspace"].includes(k)){e.preventDefault();send({t:"step",dir:-1})}
+    else if(k==="b"||k==="B"){send({t:"blank"})}});
+  if(!op)$("#ended").classList.add("on"),$("#ended").textContent="النافذة دي بتتفتح من صفحة التجربة screen-trial.html.";
+  else send({t:"hello"});
+})();
+</script>
+</body>
+</html>

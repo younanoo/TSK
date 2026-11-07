@@ -1,0 +1,14 @@
+جدد وعتقاء — كنوز الكتاب المقدس
+© 2026 سامح يونان انطون (Sameh Younan Anton). تصميم الموقع وتطويره.
+
+1) التصميم والبرمجة (ملفات HTML وCSS وJavaScript وأدوات البناء): جميع الحقوق محفوظة.
+   Design and code: All rights reserved.
+
+2) الترجمات العربية لقواميس سترونج وBDB وأبوت-سميث، وملاحظات الترجمات، والخرائط الذهنية:
+   مرخّصة بترخيص المشاع الإبداعي: نَسب المصنَّف - غير تجاري - الترخيص بالمثل 4.0 دولي (CC BY-NC-SA 4.0).
+   Arabic translations of the Strong's, BDB and Abbott-Smith lexicons, the translation notes and the mind maps:
+   licensed under CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+3) النصوص والبيانات المأخوذة من مصادر أخرى تخضع لتراخيصها الأصلية، والمذكورة في sources.html
+   (ومنها بيانات الخط الزمني المبنية على Theographic، وتبقى بترخيص CC BY-SA 4.0).
+   Third-party texts and data keep their own licenses, listed in sources.html.

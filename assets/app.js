@@ -1,4 +1,4 @@
-const TI={"download":"<path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2\"/><path d=\"M7 11l5 5l5 -5\"/><path d=\"M12 4l0 12\"/>","menu-2":"<path d=\"M4 6l16 0\" /> <path d=\"M4 12l16 0\" /> <path d=\"M4 18l16 0\" />","x":"<path d=\"M18 6l-12 12\" /> <path d=\"M6 6l12 12\" />","sun-moon":"<path d=\"M9.173 14.83a4 4 0 1 1 5.657 -5.657\" /> <path d=\"M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914\" /> <path d=\"M3 12h1\" /> <path d=\"M12 3v1\" /> <path d=\"M5.6 5.6l.7 .7\" /> <path d=\"M3 21l18 -18\" />","printer":"<path d=\"M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2\" /> <path d=\"M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4\" /> <path d=\"M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z\" />","search":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M21 21l-6 -6\" />","calendar":"<path d=\"M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z\" /> <path d=\"M16 3v4\" /> <path d=\"M8 3v4\" /> <path d=\"M4 11h16\" />","timeline":"<path d=\"M4 16l6 -7l5 5l5 -6\" /> <circle cx=\"15\" cy=\"14\" r=\"1.5\" /> <circle cx=\"10\" cy=\"9\" r=\"1.5\" /> <circle cx=\"4\" cy=\"16\" r=\"1.5\" /> <circle cx=\"20\" cy=\"8\" r=\"1.5\" />","tags":"<path d=\"M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z\" /> <path d=\"M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592\" /> <path d=\"M7 10h-.01\" />","books":"<path d=\"M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z\" /> <path d=\"M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z\" /> <path d=\"M5 8h4\" /> <path d=\"M9 16h4\" /> <path d=\"M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z\" /> <path d=\"M14 9l4 -1\" /> <path d=\"M16 16l3.923 -.98\" />","microscope":"<path d=\"M5 21h14\" /> <path d=\"M6 18h2\" /> <path d=\"M7 18v3\" /> <path d=\"M9 11l3 3l6 -6l-3 -3z\" /> <path d=\"M10.5 12.5l-1.5 1.5\" /> <path d=\"M17 3l3 3\" /> <path d=\"M12 21a6 6 0 0 0 3.715 -10.712\" />","topology-star-3":"<path d=\"M10 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M18 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M10 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M6 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M18 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M22 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M6 12h4\" /> <path d=\"M14 12h4\" /> <path d=\"M15 7l-2 3\" /> <path d=\"M9 7l2 3\" /> <path d=\"M11 14l-2 3\" /> <path d=\"M13 14l2 3\" />","bookmarks":"<path d=\"M15 10v11l-5 -3l-5 3v-11a3 3 0 0 1 3 -3h4a3 3 0 0 1 3 3z\" /> <path d=\"M11 3h5a3 3 0 0 1 3 3v11\" />","note":"<path d=\"M13 20l7 -7\" /> <path d=\"M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7\" />","arrows-left-right":"<path d=\"M21 17l-18 0\" /> <path d=\"M6 10l-3 -3l3 -3\" /> <path d=\"M3 7l18 0\" /> <path d=\"M18 20l3 -3l-3 -3\" />","language":"<path d=\"M4 5h7\" /> <path d=\"M9 3v2c0 4.418 -2.239 8 -5 8\" /> <path d=\"M5 9c0 2.144 2.952 3.908 6.7 4\" /> <path d=\"M12 20l4 -9l4 9\" /> <path d=\"M19.1 18h-6.2\" />","chevron-down":"<path d=\"M6 9l6 6l6 -6\" />","chevron-left":"<path d=\"M15 6l-6 6l6 6\" />","external-link":"<path d=\"M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6\" /> <path d=\"M11 13l9 -9\" /> <path d=\"M15 4h5v5\" />","arrow-back-up":"<path d=\"M9 14l-4 -4l4 -4\" /> <path d=\"M5 10h11a4 4 0 1 1 0 8h-1\" />","home":"<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\" /> <path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\" /> <path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\" />","layout-grid":"<path d=\"M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" />","arrows-shuffle":"<path d=\"M18 4l3 3l-3 3\" /> <path d=\"M18 20l3 -3l-3 -3\" /> <path d=\"M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5\" /> <path d=\"M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3\" />","zoom-in":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M7 10l6 0\" /> <path d=\"M10 7l0 6\" /> <path d=\"M21 21l-6 -6\" />","zoom-out":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M7 10l6 0\" /> <path d=\"M21 21l-6 -6\" />","align-left":"<path d=\"M4 6l16 0\" /> <path d=\"M4 12l10 0\" /> <path d=\"M4 18l14 0\" />","align-right":"<path d=\"M4 6l16 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M6 18l14 0\" />"};
+const TI={"flag":"<path d=\"M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z\" /> <path d=\"M5 21v-7\" />","download":"<path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2\"/><path d=\"M7 11l5 5l5 -5\"/><path d=\"M12 4l0 12\"/>","menu-2":"<path d=\"M4 6l16 0\" /> <path d=\"M4 12l16 0\" /> <path d=\"M4 18l16 0\" />","x":"<path d=\"M18 6l-12 12\" /> <path d=\"M6 6l12 12\" />","sun-moon":"<path d=\"M9.173 14.83a4 4 0 1 1 5.657 -5.657\" /> <path d=\"M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914\" /> <path d=\"M3 12h1\" /> <path d=\"M12 3v1\" /> <path d=\"M5.6 5.6l.7 .7\" /> <path d=\"M3 21l18 -18\" />","printer":"<path d=\"M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2\" /> <path d=\"M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4\" /> <path d=\"M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z\" />","search":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M21 21l-6 -6\" />","calendar":"<path d=\"M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z\" /> <path d=\"M16 3v4\" /> <path d=\"M8 3v4\" /> <path d=\"M4 11h16\" />","timeline":"<path d=\"M4 16l6 -7l5 5l5 -6\" /> <circle cx=\"15\" cy=\"14\" r=\"1.5\" /> <circle cx=\"10\" cy=\"9\" r=\"1.5\" /> <circle cx=\"4\" cy=\"16\" r=\"1.5\" /> <circle cx=\"20\" cy=\"8\" r=\"1.5\" />","tags":"<path d=\"M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z\" /> <path d=\"M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592\" /> <path d=\"M7 10h-.01\" />","books":"<path d=\"M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z\" /> <path d=\"M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z\" /> <path d=\"M5 8h4\" /> <path d=\"M9 16h4\" /> <path d=\"M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z\" /> <path d=\"M14 9l4 -1\" /> <path d=\"M16 16l3.923 -.98\" />","microscope":"<path d=\"M5 21h14\" /> <path d=\"M6 18h2\" /> <path d=\"M7 18v3\" /> <path d=\"M9 11l3 3l6 -6l-3 -3z\" /> <path d=\"M10.5 12.5l-1.5 1.5\" /> <path d=\"M17 3l3 3\" /> <path d=\"M12 21a6 6 0 0 0 3.715 -10.712\" />","topology-star-3":"<path d=\"M10 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M18 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M10 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M6 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M18 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M22 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M6 12h4\" /> <path d=\"M14 12h4\" /> <path d=\"M15 7l-2 3\" /> <path d=\"M9 7l2 3\" /> <path d=\"M11 14l-2 3\" /> <path d=\"M13 14l2 3\" />","bookmarks":"<path d=\"M15 10v11l-5 -3l-5 3v-11a3 3 0 0 1 3 -3h4a3 3 0 0 1 3 3z\" /> <path d=\"M11 3h5a3 3 0 0 1 3 3v11\" />","note":"<path d=\"M13 20l7 -7\" /> <path d=\"M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7\" />","arrows-left-right":"<path d=\"M21 17l-18 0\" /> <path d=\"M6 10l-3 -3l3 -3\" /> <path d=\"M3 7l18 0\" /> <path d=\"M18 20l3 -3l-3 -3\" />","language":"<path d=\"M4 5h7\" /> <path d=\"M9 3v2c0 4.418 -2.239 8 -5 8\" /> <path d=\"M5 9c0 2.144 2.952 3.908 6.7 4\" /> <path d=\"M12 20l4 -9l4 9\" /> <path d=\"M19.1 18h-6.2\" />","chevron-down":"<path d=\"M6 9l6 6l6 -6\" />","chevron-left":"<path d=\"M15 6l-6 6l6 6\" />","external-link":"<path d=\"M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6\" /> <path d=\"M11 13l9 -9\" /> <path d=\"M15 4h5v5\" />","arrow-back-up":"<path d=\"M9 14l-4 -4l4 -4\" /> <path d=\"M5 10h11a4 4 0 1 1 0 8h-1\" />","home":"<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\" /> <path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\" /> <path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\" />","layout-grid":"<path d=\"M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" />","arrows-shuffle":"<path d=\"M18 4l3 3l-3 3\" /> <path d=\"M18 20l3 -3l-3 -3\" /> <path d=\"M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5\" /> <path d=\"M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3\" />","zoom-in":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M7 10l6 0\" /> <path d=\"M10 7l0 6\" /> <path d=\"M21 21l-6 -6\" />","zoom-out":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M7 10l6 0\" /> <path d=\"M21 21l-6 -6\" />","align-left":"<path d=\"M4 6l16 0\" /> <path d=\"M4 12l10 0\" /> <path d=\"M4 18l14 0\" />","align-right":"<path d=\"M4 6l16 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M6 18l14 0\" />"};
 const ic=(n,x)=>`<svg class="tic${x?" "+x:""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TI[n]}</svg>`;
 
 const LIB = window.LIB;
@@ -108,13 +108,15 @@ function fsGrp(){return `<span class="fsgrp" role="group" aria-label="حجم ا�
 function setFs(d){const v=Math.min(1.6,Math.max(.8,Math.round(((store.get("fs",1))+d*.1)*10)/10));store.set("fs",v);document.documentElement.style.setProperty("--fs",v)}
 document.documentElement.style.setProperty("--fs",store.get("fs",1));
 const nz=x=>String(x).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[\u064B-\u0652\s.]/g,"").toLowerCase();
-function gotoRef(q){
-  const m=q.trim().replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).match(/^(.*?)\s*(\d+)?\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
-  if(!m)return false;
-  const name=nz(m[1]!=null?m[1]:m[4]),c=m[2]||m[5]||"1",v=m[3]||"1"; if(!name)return false;
+/* «يو ٣:١٦» / «إش 53:5» / «Rom 8» → {abbr,c,v} — يستخدمه «اذهب إلى عدد» وخانة «انتقال» في العرض بملء الشاشة والشاشة الخارجية */
+function parseRef(q){
+  const m=String(q).trim().replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).match(/^(.*?)\s*(\d+)?\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
+  if(!m)return null;
+  const name=nz(m[1]!=null?m[1]:m[4]),c=m[2]||m[5]||"1",v=m[3]||"1"; if(!name)return null;
   const c1=CAT.find(x=>[AR[x.abbr],SH[x.abbr],x.abbr,x.en].some(t=>nz(t)===name))||CAT.find(x=>[AR[x.abbr],x.en].some(t=>nz(t).startsWith(name)));
-  if(!c1)return false;
-  location.href=pageOf(c1.abbr,"/"+c1.abbr+"/"+c+":"+v);return true}
+  if(!c1)return null;
+  return {abbr:c1.abbr,c:+c,v:+v}}
+function gotoRef(q){const r=parseRef(q);if(!r)return false;location.href=pageOf(r.abbr,"/"+r.abbr+"/"+r.c+":"+r.v);return true}
 function sideTools(){
   /* القائمة الجانبية الموحّدة — نفس ترتيب assets/sitemenu.js:
      ١) اذهب إلى عدد  ٢) الأسفار (موجودة في الصفحة)  ٣) الكتاب عبر الزمن  ٤) أدوات البحث  ٥) صفحات أخرى */
@@ -125,7 +127,7 @@ function sideTools(){
   h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","اذهب إلى عدد",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="مثال: يو ٣:١٦ أو إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off" enterkeyhint="go"></form>`));
   const after=sec("timeSec","time","الكتاب عبر الزمن",L("chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)")+L("timeline.html","timeline","الخط الزمني للأحداث"))
     +sec("toolSec","tools","أدوات البحث",L("search.html","search","بحث في الكتاب المقدس",' id="srchLink" target="tsksearch"')+L("strong.html","language","بحث في قاموس سترونج (برقم الكلمة)",' target="tskstrong"')+L("arword.html","language","بحث بكلمة عربية (الجذر والأصل)",' target="tskarword"')+L("grammar.html","microscope","بحث نحوي باللغات الأصلية",' target="_blank"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
-    +sec("otherSec","other","صفحات أخرى",L("copy.html","bookmarks","صفحة النسخ (الآيات المختارة) <b class=\"cpy-count\" hidden></b>",' target="tskcopy"')+L("dictcopy.html","bookmarks","صفحة نسخ القاموس (المداخل المختارة)",' target="tskdict"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
+    +sec("otherSec","other","صفحات أخرى",L("lists.html","bookmarks","قوائمي (الآيات ومداخل القاموس المختارة) <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+L("contact.html","flag","تواصل معنا / أبلغ عن خطأ",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }
@@ -182,6 +184,9 @@ const isHeb = n => n[0]==="H";
 const linkRefs = h => h.replace(/\b([GH]\d+)\b/g,(m)=>STRONG[m]?`<span class="sref" data-sn="${m}">${m}</span>`:m);
 let DICT={cur:null, hist:[], trail:[]};   // per-verse state
 const TRN={alab:"كتاب الحياة",svd:"فاندايك",kjv:"KJV"};
+/* «أبلغ عن خطأ»: يفتح contact.html والنموذج مملوء بالموضع والترجمة */
+const REP_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>';
+const repHref=(place,tr)=>"contact.html?t=c&p="+encodeURIComponent(place)+"&tr="+encodeURIComponent(tr);
 function trAvail(){const b=book();if(b.trs)return ["alab",...b.trs];const t=window.TR&&window.TR[b.abbr];return t?Object.keys(TRN).filter(k=>k==="alab"||t[k]):[]}
 function trCur(){const c=store.get("tr","svd"),av=trAvail();return av.includes(c)?c:(av.includes("svd")?"svd":"alab")}
 function hasDia(){const b=book();if(b.dia!=null)return b.dia;const t=window.TR&&window.TR[b.abbr];return !!(t&&t.svdD)}
@@ -212,6 +217,16 @@ function segHTML(a){return a.map(([t,ns])=>ns.length?`<span class="sw" data-n="$
 /* ---- أرقام سترونج في عرض الأصحاح: الكلمة تفتح نافذة صغيرة بمعناها (assets/chstrong.js، يُحمَّل عند أول ضغطة) ----
    كتاب الحياة: أرقامه موجودة أصلًا في lib_<السفر>.js. فاندايك: assets/sg/svd_<السفر>.js (الأرقام فقط، يبنيه build_seo_pwa.js من tr_<السفر>.js)
    بدل الملف الكامل؛ ومع التشكيل أو KJV يُستخدم tr_<السفر>.js كما في صفحة العدد. */
+/* العرض بملء الشاشة (assets/present.js، يُحمَّل عند أول ضغطة) — متاح في كل الأسفار (جُرّب أولًا على أفسس) */
+function presOK(){return true}
+/* العرض على شاشة خارجية (assets/screenctl.js + screen.html): الزرار يظهر بس لما الجهاز متوصل بشاشة تانية على وضع Extend
+   (screen.isExtended في كروم وإيدج؛ فايرفوكس وسفاري مش بيقولوا فالزرار مش بيظهر) وعلى كمبيوتر (ماوس). نفس الشرط في PRESFIT.ext.
+   بيظهر/يختفي لوحده لما شاشة تتوصل أو تتفصل، ويفضل ظاهر وقت العرض عشان «إيقاف». */
+function extOK(){return !!(window.screen&&screen.isExtended===true)&&matchMedia("(pointer:fine)").matches}
+function extSync(){document.querySelectorAll("[data-scr]").forEach(b=>{b.hidden=!extOK()&&!(window.SCR&&SCR.on)})}
+try{window.screen&&screen.addEventListener&&screen.addEventListener("change",extSync)}catch(e){}
+const SCR_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h12v9h-12z"/><path d="M15 9h6v10h-12v-5"/><path d="M7 18h4"/></svg>';
+const PRES_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18"/><path d="M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-10"/><path d="M12 16v4"/><path d="M9 20h6"/></svg>';
 function cstrOn(){return S.view==="chapter"&&!origOn()&&!store.get("inter",false)&&store.get("cstr",false)===true}
 function sgLite(){const ab=book().abbr,k="svd/"+ab;if(window.SG&&window.SG[k])return window.SG[k];const src=`assets/sg/svd_${ab}.js`;if(JSFAIL[src])return false;if(LOADED[src]===undefined)loadJS(src,()=>{if(S.view==="chapter")render()});return null}
 function cstrSeg(d){const c=trCur();
@@ -221,7 +236,7 @@ function cstrSeg(d){const c=trCur();
 function trSeg(d){const c=trCur();if(c==="alab")return null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdSD&&t.svdSD[k])return t.svdSD[k];const a=t[c+"S"]&&t[c+"S"][k];return a||null}
 function viewSeg(){const INTER=store.get("inter",false);return `<span class="trgrp seg"><button class="trb ${INTER?"":"on"}" data-inter="0">${ic("menu-2")} العرض العادي</button><button class="trb ${INTER?"on":""}" data-inter="1">${ic("language")} العرض بين السطور (Interlinear)</button></span>`}
 function ilOpts(b){return `<div class="ilopts">${BSBB.includes(b.abbr)?`<div class="rg" role="radiogroup"><span class="rgt">المصدر</span><label class="rd ${store.get("isrc","ours")==="bsb"?"":"on"}"><input type="radio" name="isrc" data-isrc="ours" ${store.get("isrc","ours")==="bsb"?"":"checked"}><i></i>مكتبتنا (KJV + فاندايك)</label><label class="rd ${store.get("isrc","ours")==="bsb"?"on":""}"><input type="radio" name="isrc" data-isrc="bsb" ${store.get("isrc","ours")==="bsb"?"checked":""}><i></i>Berean (أصل عبري/يوناني)</label></div>`:""}<div class="rg"><span class="rgt">اتجاه النص</span><span class="dirgrp"><button class="dirb ${store.get("idir","rtl")==="rtl"?"on":""}" data-idir="rtl" title="محاذاة إلى اليمين (من اليمين إلى اليسار)" aria-label="محاذاة إلى اليمين (من اليمين إلى اليسار)" aria-pressed="${store.get("idir","rtl")==="rtl"}">${ic("align-right")}</button><button class="dirb ${store.get("idir","rtl")==="ltr"?"on":""}" data-idir="ltr" title="محاذاة إلى اليسار (من اليسار إلى اليمين)" aria-label="محاذاة إلى اليسار (من اليسار إلى اليمين)" aria-pressed="${store.get("idir","rtl")==="ltr"}">${ic("align-left")}</button></span>${fsGrp()}</div></div>`}
-function ilItem(d,b,lnk){return `<div class="ilv">${lnk===false?`<span class="ilvn">${n(d.v)}</span>`:`<button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button>`}<div class="ilcol"><div class="ilar ar">${esc(ilText(d))}</div><div class="ilrow" dir="${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"&&b.id>39?"ltr":"rtl"}">${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"?interBlockB(d):interBlock(d)}</div>${fnBox(d,true)}</div></div>`}
+function ilItem(d,b,lnk){return `<div class="ilv">${lnk===false?`<span class="ilvn">${n(d.v)}</span>`:`<button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button>${presOK()?`<button type="button" class="cvp" data-pres="${d.b}.${d.c}:${d.v}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}</button>`:""}`}<div class="ilcol"><div class="ilar ar">${esc(ilText(d))}</div><div class="ilrow" dir="${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"&&b.id>39?"ltr":"rtl"}">${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"?interBlockB(d):interBlock(d)}</div>${fnBox(d,true)}</div></div>`}
 function verseHTML(d){
   if(trCur()==="alab"&&diaOn()){const ks=kdArS(d);if(ks)return ks.map(([t,ns])=>ns.length?`<span class="sw" data-n="${ns.join(" ")}">${esc(t)}<sup>${ns.map(x=>`<span class="sn" data-sn="${x}" title="اعرض معنى ${x}">${x}</span>`).join(" ")}</sup></span>`:esc(t)).join("")}
   const sg=trSeg(d); if(sg){const h=segHTML(sg);return trCur()==="kjv"?`<span class="ltr" dir="ltr" style="display:block;text-align:left">${h}</span>`:h}
@@ -241,6 +256,7 @@ function dentHTML(num,d=cur()){
     <div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span>
       <a class="stopen" href="strong.html#${num}" target="_blank" rel="noopener">فتح في صفحة سترونج ${ic("external-link")}</a>
       <button type="button" class="stai" data-askai data-num="${num}" data-ref="${d&&d.c?esc(AR[book().abbr]+" "+n(d.c)+": "+n(d.v)):""}" data-words="${esc(ws.join("، "))}" title="اسأل وضع الذكاء الاصطناعي في Google عن هذه الكلمة">${AI_IC} اسأل Google AI</button>
+      <a class="rep" href="${repHref(num+(d&&d.c?" — "+AR[book().abbr]+" "+n(d.c)+": "+n(d.v):""),"قاموس سترونج")}" target="tskcontact" title="أبلغ عن خطأ في هذا المدخل أو في رقم سترونج لهذه الكلمة">${REP_IC}<span>أبلغ عن خطأ</span></a>
       ${ws.length?`<span class="inv"><small>في النص:</small>${ws.map(esc).join("، ")}</span>`:""}</div>
     <div class="cols">
       <div class="col arc"><h5>المعنى بالعربية</h5><div class="tx">${e.ar?linkRefs(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد (تُترجم حاليًا كلمات أعداد السفر فقط).</span>`}</div></div>
@@ -337,6 +353,12 @@ function interBlock(d){
     out.splice(at+1,0,{si:it.si,h:cell(x,"—",it.w," ilc-s")})});
   return out.map(o=>o.h).join("");
 }
+/* بين السطور في العرض بملء الشاشة والشاشة الخارجية (present.js / screenctl.js): نفس خانات صفحة الأصحاح وبنفس المصدر المختار
+   (مكتبتنا KJV+فاندايك أو Berean). يرجّع {ar, cells:[HTML لكل كلمة], dir} أو null لو لسه بيتحمّل. سفر الصفحة فقط. */
+function ilSlide(d){const b=book(),bsb=BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb";
+  if(!bsb&&!needStrong(()=>{}))return null;   /* الكلمة الأصلية ونطقها من قاموس سترونج */
+  const h=bsb?interBlockB(d):interBlock(d);if(/ilv-none[^>]*>جارٍ التحميل/.test(h))return null;
+  return {ar:ilText(d),cells:h.split(/(?=<div class="ilc)/).filter(Boolean),dir:bsb&&b.id>39?"ltr":"rtl"}}
 /* ---- Interlinear بديل: النص العبري/اليوناني من BSB (تجربة) ---- */
 const BSBB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
 function bsbLoad(abbr){const rr=()=>{if(S.view==="chapter"||S.view==="verse")render()}; /* صفحة العدد كانت بتفضل على «جارٍ التحميل» */
@@ -415,12 +437,12 @@ function viewChapter(){
   const refs=vs.reduce((a,x)=>a+refCount(x),0), CS=cstrOn();
   const CMP=`<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">${ic("arrows-left-right")} مقارنة الترجمات الثلاث لهذا الأصحاح</a>`;
   $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
-  ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}<div class="cvlist ${CS?"cstr":""}" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
+  ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}" title="اعرض آيات الأصحاح بملء الشاشة، آية في كل شريحة">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"} title="الصفحة هنا للتحكم، والعرض بملء الشاشة على الشاشة الخارجية (بروجكتور أو تلفزيون)">${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}<div class="cvlist ${CS?"cstr":""}" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
     const kj=trCur()==="kjv"?'dir="ltr" style="text-align:left"':"";
     const row=CS?`<div class="cv cvs" data-go="${d.b}.${d.c}:${d.v}"><button type="button" class="cvn" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">${n(d.v)}</button><span class="cvt ar" ${kj}>${(sg=>sg?segHTML(sg):esc(trText(d)||d.text))(cstrSeg(d))}</span></div>`
       :`<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
       <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${kj}>${esc(trText(d)||d.text)}</span>`}</button>`;
-    return `<div class="cvw">${row}<div class="cvf"><button type="button" class="cvm" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد والشواهد">${rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),"pl")}</div></div>`}).join("")}</div>
+    return `<div class="cvw">${row}<div class="cvf">${presOK()?`<button type="button" class="cvp" data-pres="${d.b}.${d.c}:${d.v}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}</button>`:""}<button type="button" class="cvm" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد والشواهد">${rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),"pl")}</div></div>`}).join("")}</div>
   ${fnChapter(b,vs)}
   <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
@@ -463,7 +485,7 @@ function viewVerse(){
       <div class="verse-meta">
         <span class="pill">${plural(d.groups.length,"كلمة واحدة","كلمتان","كلمات","كلمة")}</span>
         <span class="pill">${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>
-        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),true)}${!origOn()&&((d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d))?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
+        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),true)}<a class="rep" href="${repHref(vref(d),origOn()?"النص العبري أو اليوناني":TRN[trCur()])}" target="tskcontact" title="أبلغ عن خطأ في نص هذه الآية">${REP_IC}<span>أبلغ عن خطأ</span></a>${!origOn()&&((d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d))?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
       </div>
     </div>${vArrow(prev,"vprev","العدد السابق",'<path d="M9 6l6 6l-6 6"/>')}${vArrow(next,"vnext","العدد التالي",'<path d="M15 6l-6 6l6 6"/>')}</div>
     ${tpChips(d)}${fnBox(d,true)}
@@ -524,7 +546,7 @@ function viewStrongSearch(num){
 function render(){
   sidebar();
   ({home:viewHome,book:viewBook,chapter:viewChapter,verse:viewVerse,search:viewSearch})[S.view]();
-  try{CPY_LAST=-1;DICT_LAST=-1;cpyCount()}catch(e){}
+  try{CPY_LAST=-1;cpyCount()}catch(e){}
 }
 
 /* ---------- navigation ---------- */
@@ -556,6 +578,10 @@ window.addEventListener("popstate",fromHash);
 document.addEventListener("click",e=>{
   {const w=e.target.closest(".cvlist .cvs .sw");if(w){loadJS("assets/chstrong.js",()=>window.CHS&&window.CHS.open(w));return}
    if(e.target.closest(".cvlist .cvs")&&!e.target.closest(".cvn"))return} /* في وضع الأرقام: الضغط على النص لا يفتح العدد، رقم العدد فقط */
+  {const pr=e.target.closest("[data-pres]");if(pr){const p=parseGo(pr.dataset.pres);if(!p)return;
+    if(window.SCR&&SCR.on){SCR.show(...p);return}   /* وضع الشاشة الخارجية: الآية تروح للشاشة الخارجية */
+    loadJS("assets/presfit.js",()=>loadJS("assets/present.js",()=>window.PRES&&window.PRES.open(...p)));return}}
+  if(e.target.closest("[data-scr]")){loadJS("assets/presfit.js",()=>loadJS("assets/screenctl.js",()=>window.SCR&&SCR.toggle()));return}
   if(e.target.closest("#cstrBtn")){store.set("cstr",!cstrOn());render();return}
   const jr=e.target.closest("[data-jsretry]"); if(jr){retryJS(jr.dataset.jsretry); if(!jr.dataset.dn){render();return}}
   const sr=e.target.closest(".sref"); if(sr){ if($("#dict")) showEntry(sr.dataset.sn,{fromRef:true}); return }
@@ -854,32 +880,29 @@ fromHash();
 })();
 /* ==== UX LAYER END ==== */
 
-/* ==== COPY LIST (صفحة النسخ copy.html) ====
-   زرار «نسخ» جنب كل آية (الأصحاح، العدد، الشواهد): يضيف «نص الآية — الشاهد (الترجمة)» إلى قائمة
-   محفوظة في المتصفح (localStorage: tsklib:copylist) تُعرض في copy.html لنسخها كلها مرة واحدة.
-   زرار صفحة النسخ + العدد في الشريط العلوي (stickBar)، ويتحدّث فورًا في كل التابات (حدث storage). */
+/* ==== COPY LIST (قوائمي lists.html) ====
+   زرار «أضف» جنب كل آية (الأصحاح، العدد، الشواهد): يضيف «نص الآية — الشاهد (الترجمة)» لآخر قائمة اتستخدمت،
+   والسهم ▾ جنبه يفتح اختيار القوائم / قائمة جديدة. التخزين والقائمة المنبثقة والرسالة في dictcopy.js (window.TSKLists).
+   زرار «قوائمي» + العدد في الشريط العلوي (stickBar)، ويتحدّث فورًا في كل التابات. */
 var CPY_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>';
 var CPY_OK='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>';
-function cpyList(){const a=store.get("copylist",[]);return Array.isArray(a)?a:[]}
-function cpyHas(ref,tr){return cpyList().some(x=>x.ref===ref&&x.tr===tr)}
-function cpyLbl(k){return k?`صفحة نسخ الآيات — ${plural(k,"آية واحدة","آيتان","آيات","آية")}`:"صفحة نسخ الآيات"}
-/* قائمة صفحة نسخ القاموس (dictcopy.js يكتبها في tsklib:dictlist) */
-var CPY_BOOK='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0" /><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0" /><path d="M3 6l0 13" /><path d="M12 6l0 13" /><path d="M21 6l0 13" /></svg>';
-function dictList(){const a=store.get("dictlist",[]);return Array.isArray(a)?a:[]}
-function dictLbl(k){return k?`صفحة نسخ القاموس — ${plural(k,"مدخل واحد","مدخلان","مداخل","مدخلًا")}`:"صفحة نسخ القاموس"}
-function cpyBtnInner(on,big){return (on?CPY_OK:CPY_IC)+(big==="pl"?`<span>${on?"منسوخة":"نسخ"}</span>`:big?`<span>${on?"في صفحة النسخ":"نسخ للصفحة"}</span>`:"")}
+var CPY_CHEV='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6" /></svg>';
+var CPY_LIST='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l11 0" /><path d="M9 12l11 0" /><path d="M9 18l11 0" /><path d="M5 6l0 .01" /><path d="M5 12l0 .01" /><path d="M5 18l0 .01" /></svg>';
+function cpyKey(kind,ref){return "v|"+ref+"|"+cpyTrOf(kind)}
+function cpySt(kind,ref){const L=window.TSKLists;return L?L.btnState(cpyKey(kind,ref)):{on:false,some:false,names:[],last:"القائمة الرئيسية"}}
+function cpyTitle(st){return window.TSKLists?TSKLists.btnTitle(st,"نص الآية"):"أضف نص الآية لقوائمي"}
+function cpyTotal(){const L=window.TSKLists;return L?L.total():0}
+function cpyLbl(k){return k?`قوائمي — ${plural(k,"عنصر واحد","عنصران","عناصر","عنصرًا")}`:"قوائمي"}
+function cpyBtnInner(on,big){return (on?CPY_OK:CPY_IC)+(big==="pl"?`<span>${on?"مضافة":"أضف"}</span>`:big?`<span>${on?"في القائمة":"أضف للقائمة"}</span>`:"")}
 /* اسم «الترجمة» اللي هيتكتب بين القوسين: لو «اللغة الأصلية» شغالة، نص العدد نفسه بيتاخد من العبري/اليوناني (الشواهد بتفضل بالترجمة) */
 function cpyTrOf(kind){if(kind==="v"&&origOn())return book().id>39?"النص اليوناني":"النص العبري";return TRN[trCur()]}
 function cpyBtn(kind,id,ref,big){
-  const on=cpyHas(ref,cpyTrOf(kind));
-  return `<span class="cpy${big==="pl"?" pl":big?" big":""}${on?" on":""}" role="button" tabindex="0" aria-pressed="${on}" data-cpy="${kind}" data-cid="${esc(id)}" data-cref="${esc(ref)}" title="${on?"مضافة لصفحة النسخ — اضغط للإزالة":"أضف نص الآية لصفحة النسخ"}">${cpyBtnInner(on,big)}</span>`}
-/* زرار الشريط العلوي: يظهر بعد أول آية */
-/* زرارين في الشريط العلوي: «آيات» (ذهبي، أيقونة كتاب) و«قاموس» (كحلي، أيقونة لغات)؛ على الموبايل لو الاتنين ظاهرين يتجمعوا في زرار واحد بقائمة */
-function cpyTop(){const k=cpyList().length,m=dictList().length;
-  return `<span class="cpy-tops" data-n="${(k?1:0)+(m?1:0)}"><a class="cpy-top vs" href="copy.html" target="tskcopy" ${k?"":"hidden"} aria-label="${cpyLbl(k)}" title="${cpyLbl(k)}">${CPY_BOOK}<span class="ct-l">آيات</span><b class="cpy-count">${k?n(k):""}</b></a>`+
-    `<a class="cpy-top dc" href="dictcopy.html" target="tskdict" ${m?"":"hidden"} aria-label="${dictLbl(m)}" title="${dictLbl(m)}">${ic("language")}<span class="ct-l">قاموس</span><b class="dict-count">${m?n(m):""}</b></a>`+
-    `<button type="button" class="cpy-more" aria-haspopup="true" aria-expanded="false" aria-label="صفحات النسخ: الآيات والقاموس">${CPY_IC}<b class="cpy-sum">${n(k+m)}</b></button>`+
-    `<span class="cpy-menu" hidden><a class="vs" href="copy.html" target="tskcopy">${CPY_BOOK} صفحة نسخ الآيات <b class="cpy-count">${n(k)}</b></a><a class="dc" href="dictcopy.html" target="tskdict">${ic("language")} صفحة نسخ القاموس <b class="dict-count">${n(m)}</b></a></span></span>`}
+  const st=cpySt(kind,ref);
+  return `<span class="cpyg"><span class="cpy${big==="pl"?" pl":big?" big":""}${st.on?" on":""}${st.some?" some":""}" role="button" tabindex="0" aria-pressed="${st.on}" data-cpy="${kind}" data-cid="${esc(id)}" data-cref="${esc(ref)}" title="${esc(cpyTitle(st))}">${cpyBtnInner(st.on,big)}</span>`+
+    `<span class="cpy-dd" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="اختار القائمة أو اعمل قائمة جديدة" title="اختار القائمة / قائمة جديدة">${CPY_CHEV}</span></span>`}
+/* زرار الشريط العلوي «قوائمي»: يظهر بعد أول عنصر */
+function cpyTop(){const k=cpyTotal();
+  return `<span class="cpy-tops" data-n="${k?1:0}"><a class="cpy-top vs" href="lists.html" target="tsklists" ${k?"":"hidden"} aria-label="${cpyLbl(k)}" title="${cpyLbl(k)}">${CPY_LIST}<span class="ct-l">قوائمي</span><b class="cpy-count">${k?n(k):""}</b></a></span>`}
 function cpyText(el){
   const kind=el.dataset.cpy;
   if(kind==="v"){const p=parseGo(el.dataset.cid);if(!p)return "";const b=BY[p[0]],d=b&&b.verses[b.idx[p[1]+":"+p[2]]];if(!d)return "";
@@ -891,62 +914,35 @@ function cpyText(el){
   if(row.querySelector(".txna")) return "";
   return ps.map(p=>{const vn=p.querySelector(".vn");const t=[...p.childNodes].filter(x=>x!==vn).map(x=>x.textContent).join("").trim();return vn?`(${vn.textContent.trim()}) ${t}`:t}).join(" ").trim();
 }
-/* الرسالة: نص + أزرار (تراجع / افتح صفحة النسخ)، تقف لما الماوس أو التركيز عليها */
-var CPY_T={h:null,undo:null};
-function cpyToast(msg,opt){opt=opt||{};let t=document.getElementById("cpyToast");
-  if(!t){t=document.createElement("div");t.id="cpyToast";t.className="cpy-toast";t.setAttribute("role","status");t.setAttribute("aria-live","polite");document.body.appendChild(t);
-    const hold=()=>clearTimeout(CPY_T.h), go=()=>{clearTimeout(CPY_T.h);CPY_T.h=setTimeout(cpyToastHide,2500)};
-    t.addEventListener("mouseenter",hold);t.addEventListener("mouseleave",go);t.addEventListener("focusin",hold);t.addEventListener("focusout",go);
-    t.addEventListener("click",e=>{const b=e.target.closest("[data-ct]");if(!b)return;
-      if(b.dataset.ct==="undo"&&CPY_T.undo){const u=CPY_T.undo;CPY_T.undo=null;store.set("copylist",u.list);cpySync();cpyToast(u.msg)}
-      else if(b.dataset.ct==="x")cpyToastHide();
-      else if(b.dataset.ct==="open")cpyToastHide()})}
-  CPY_T.undo=opt.undo||null;
-  t.classList.toggle("bad",!!opt.bad);
-  t.innerHTML=`<span class="ct-msg">${msg}</span>`+
-    (opt.undo?`<button type="button" class="ct-btn" data-ct="undo">تراجع</button>`:"")+
-    (opt.open?`<a class="ct-btn ct-main" data-ct="open" href="copy.html" target="tskcopy">افتح صفحة النسخ${opt.k?` (${n(opt.k)})`:""}</a>`:"")+
-    `<button type="button" class="ct-x" data-ct="x" aria-label="إغلاق">${ic("x")}</button>`;
-  t.classList.add("on");clearTimeout(CPY_T.h);CPY_T.h=setTimeout(cpyToastHide,opt.open||opt.undo?6000:3000)}
-function cpyToastHide(){const t=document.getElementById("cpyToast");if(t)t.classList.remove("on");CPY_T.undo=null}
-/* تحديث كل الأزرار والعدادات من القائمة المحفوظة (نفس التاب أو تاب تاني) */
-var CPY_LAST=-1, DICT_LAST=-1;
+/* تحديث كل الأزرار والعدادات من القوائم المحفوظة (نفس التاب أو تاب تاني) */
+var CPY_LAST=-1;
 function cpyBump(el){if(!el)return;el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}
-function cpyCount(){const k=cpyList().length, m=dictList().length, gk=CPY_LAST>=0&&k>CPY_LAST, gm=DICT_LAST>=0&&m>DICT_LAST; CPY_LAST=k; DICT_LAST=m;
-  document.querySelectorAll(".cpy-count").forEach(x=>{x.textContent=k?n(k):"";x.hidden=!k});
-  document.querySelectorAll(".dict-count").forEach(x=>{x.textContent=m?n(m):"";x.hidden=!m});
-  document.querySelectorAll(".cpy-tops").forEach(w=>{w.dataset.n=(k?1:0)+(m?1:0);
-    const v=w.querySelector(".cpy-top.vs"),d=w.querySelector(".cpy-top.dc"),s=w.querySelector(".cpy-sum");
-    if(v){v.hidden=!k;v.setAttribute("aria-label",cpyLbl(k));v.title=cpyLbl(k)}
-    if(d){d.hidden=!m;d.setAttribute("aria-label",dictLbl(m));d.title=dictLbl(m)}
-    if(s)s.textContent=n(k+m);
-    if(gk)cpyBump(v); if(gm)cpyBump(d); if(gk||gm)cpyBump(w.querySelector(".cpy-more"))})}
-/* قائمة الموبايل */
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".cpy-more");
-  document.querySelectorAll(".cpy-menu:not([hidden])").forEach(mn=>{if(!b||mn.parentElement!==b.parentElement){mn.hidden=true;const x=mn.parentElement.querySelector(".cpy-more");if(x)x.setAttribute("aria-expanded","false")}});
-  if(!b)return;const mn=b.parentElement.querySelector(".cpy-menu");mn.hidden=!mn.hidden;b.setAttribute("aria-expanded",String(!mn.hidden))});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".cpy-menu:not([hidden])").forEach(mn=>{mn.hidden=true})});
-document.addEventListener("tsk:dictlist",()=>{try{cpyCount()}catch(x){}});
+function cpyCount(){const k=cpyTotal(), g=CPY_LAST>=0&&k>CPY_LAST; CPY_LAST=k;
+  document.querySelectorAll(".cpy-count").forEach(c=>{c.textContent=k?n(k):"";c.hidden=!k});
+  document.querySelectorAll(".cpy-tops:not(.sb)").forEach(w=>{w.dataset.n=k?1:0;
+    const v=w.querySelector(".cpy-top");if(v){v.hidden=!k;v.setAttribute("aria-label",cpyLbl(k));v.title=cpyLbl(k);const c=v.querySelector(".cpy-count");if(c)c.textContent=k?n(k):"";if(g)cpyBump(v)}})}
 function cpySync(){
-  document.querySelectorAll(".cpy").forEach(b=>{const tr=cpyTrOf(b.dataset.cpy),on=cpyHas(b.dataset.cref,tr),big=b.classList.contains("pl")?"pl":b.classList.contains("big");
-    if(b.classList.contains("on")===on&&b.firstChild)return;
-    b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);
-    b.title=on?"مضافة لصفحة النسخ — اضغط للإزالة":"أضف نص الآية لصفحة النسخ";b.innerHTML=cpyBtnInner(on,big)});
+  document.querySelectorAll(".cpy").forEach(b=>{const st=cpySt(b.dataset.cpy,b.dataset.cref),big=b.classList.contains("pl")?"pl":b.classList.contains("big");
+    const t=cpyTitle(st);
+    if(b.classList.contains("on")===st.on&&b.classList.contains("some")===st.some&&b.title===t&&b.firstChild)return;
+    b.classList.toggle("on",st.on);b.classList.toggle("some",st.some);b.setAttribute("aria-pressed",st.on);
+    b.title=t;b.innerHTML=cpyBtnInner(st.on,big)});
   cpyCount()}
-function cpyToggle(el){
-  const tr=cpyTrOf(el.dataset.cpy), ref=el.dataset.cref, before=cpyList(), list=before.slice(), i=list.findIndex(x=>x.ref===ref&&x.tr===tr);
-  if(i>=0){list.splice(i,1);store.set("copylist",list);cpySync();
-    cpyToast(`أُزيلت <b>${esc(ref)}</b> من صفحة النسخ`,{undo:{list:before,msg:`رجعت <b>${esc(ref)}</b> لصفحة النسخ`},open:list.length>0,k:list.length})}
-  else{const t=cpyText(el);
-    if(t===null){cpyToast("النص لسه بيتحمّل… حاول تاني بعد لحظة",{bad:true});return}
-    if(!t){cpyToast(el.dataset.cpy==="v"&&origOn()?"العدد ده مش موجود في النص الأصلي":"نص الشاهد ده مش متاح دلوقتي (محتاج إنترنت)",{bad:true});return}
-    list.push({t,ref,tr,at:Date.now()});store.set("copylist",list);cpySync();
-    cpyToast(`${CPY_OK} أُضيفت <b>${esc(ref)}</b> <span class="ct-tr">(${esc(tr)})</span>`,{undo:{list:before,msg:`اتشالت <b>${esc(ref)}</b>`},open:true,k:list.length})}
-}
+function cpyOpts(el){
+  const kind=el.dataset.cpy, tr=cpyTrOf(kind), ref=el.dataset.cref;
+  return {key:"v|"+ref+"|"+tr, label:`<b>${esc(ref)}</b> <span class="ct-tr">(${esc(tr)})</span>`, title:`أضف <b>${esc(ref)}</b> إلى:`,
+    build:()=>{const t=cpyText(el);
+      if(t===null)return {err:"النص لسه بيتحمّل… حاول تاني بعد لحظة"};
+      if(!t)return {err:kind==="v"&&origOn()?"العدد ده مش موجود في النص الأصلي":"نص الشاهد ده مش متاح دلوقتي (محتاج إنترنت)"};
+      return {k:"v",t,ref,tr,at:Date.now()}}}}
+function cpyToggle(el){if(window.TSKLists)TSKLists.quick(cpyOpts(el))}
+function cpyPick(dd){const el=dd.parentElement&&dd.parentElement.querySelector(".cpy");if(el&&window.TSKLists)TSKLists.pick(dd,cpyOpts(el))}
 /* capture: قبل ما مستمع data-go / صف الشاهد يفتح العدد */
-document.addEventListener("click",e=>{const c=e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
-document.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const c=e.target.closest&&e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
-addEventListener("storage",e=>{if(e.key==="tsklib:copylist"||e.key===null)cpySync();else if(e.key==="tsklib:dictlist")cpyCount()});
+document.addEventListener("click",e=>{const d=e.target.closest(".cpy-dd");if(d){e.preventDefault();e.stopPropagation();cpyPick(d);return}
+  const c=e.target.closest(".cpy");if(!c)return;e.preventDefault();e.stopPropagation();cpyToggle(c)},true);
+document.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const t=e.target.closest&&e.target.closest(".cpy,.cpy-dd");if(!t)return;e.preventDefault();e.stopPropagation();
+  if(t.classList.contains("cpy-dd"))cpyPick(t);else cpyToggle(t)},true);
+document.addEventListener("tsk:lists",()=>{try{cpySync()}catch(x){}});
 addEventListener("pageshow",()=>{try{cpySync()}catch(x){}});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)try{cpySync()}catch(x){}});
 /* ==== COPY LIST END ==== */

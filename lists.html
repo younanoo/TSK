@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>قوائمي — جدد وعتقاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=e81edc5b">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
+<meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
+<script src="assets/brand.js?v=3"></script>
+<script src="assets/nav.js"></script>
+<script src="assets/sitemenu.js" defer></script>
+<style>
+html,body{overflow-x:clip;padding:0}
+.cpp{max-width:1220px;margin:0 auto;padding:18px 16px 80px}
+.cpp h1{font:700 22px var(--ui);margin:0 0 4px}.cpp .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.howto summary{cursor:pointer;font:600 13.5px var(--ui);color:var(--accent)}
+.howto[open] summary{margin-bottom:6px}
+.howto ul{margin:6px 0;padding-inline-start:22px;font-size:14px;line-height:1.9}
+.howto li{margin:3px 0}
+.howto li b{display:inline;color:var(--accent);margin:0}
+.howto p+p,.howto ul+p{margin-top:4px}
+/* التابات */
+/* العمود الجانبي (القوائم) */
+.lay{display:grid;grid-template-columns:250px minmax(0,1fr);gap:22px;align-items:start}
+.lay.closed{grid-template-columns:minmax(0,1fr)}
+.lay.closed .side{display:none}
+.side{position:sticky;top:12px;max-height:calc(100vh - 24px);display:flex;flex-direction:column;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px}
+.sd-hd{display:flex;align-items:center;gap:6px;padding:2px 4px}
+.sd-hd b{font:700 15px var(--ui);color:var(--ink)}
+.sd-hd .k{font:600 12px var(--ui);color:var(--muted)}
+.sd-hd .sp{flex:1}
+.sd-x{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.sd-x:hover{border-color:var(--gold);color:var(--gold)}.sd-x .tic{width:18px;height:18px}
+.sd-q{width:100%;box-sizing:border-box;min-height:36px;padding:4px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:500 14px var(--ui)}
+.sd-q:focus{outline:none;border-color:var(--gold)}
+.sd-list{display:flex;flex-direction:column;gap:2px;overflow:auto;min-height:0;margin:0 -4px;padding:0 4px}
+.sd-i{position:relative;display:flex;align-items:center;border-radius:10px}
+.sd-i.main{border-bottom:1px solid var(--line);border-radius:10px 10px 0 0;margin-bottom:4px;padding-bottom:4px}
+.sd-go{flex:1;min-width:0;display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 10px;border:0;border-radius:10px;background:transparent;color:var(--ink);font:600 14px var(--ui);text-align:right;cursor:pointer}
+.sd-go .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sd-go .k{font:600 12px var(--ui);min-width:22px;padding:1px 7px;border-radius:999px;background:var(--bg);color:var(--muted);text-align:center}
+.sd-go .tic{width:16px;height:16px;flex-shrink:0}
+.sd-i:hover .sd-go{background:var(--gold-soft)}
+.sd-i.on .sd-go{background:var(--accent);color:var(--on-accent,#fff)}
+.sd-i.on .sd-go .k{background:rgba(255,255,255,.2);color:inherit}
+.sd-mv{display:none;gap:2px;position:absolute;inset-inline-end:44px;top:50%;transform:translateY(-50%)}
+.sd-i:hover .sd-mv,.sd-i:focus-within .sd-mv{display:flex}
+.sd-mv button{width:26px;height:26px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--muted);font:600 13px var(--ui);cursor:pointer;line-height:1}
+.sd-mv button:hover{border-color:var(--gold);color:var(--gold)}.sd-mv button:disabled{opacity:.35;cursor:default}
+.sd-i[draggable=true] .sd-go{cursor:grab}
+.sd-i.drag{opacity:.45}
+.sd-i.over-b{box-shadow:0 2px 0 0 var(--gold)}.sd-i.over-t{box-shadow:0 -2px 0 0 var(--gold)}
+.sd-empty{padding:10px;color:var(--muted);font:500 13px var(--ui);text-align:center}
+.sd-new{min-height:40px;border:1px dashed var(--accent);border-radius:10px;background:transparent;color:var(--accent);font:600 14px var(--ui);cursor:pointer}
+.sd-new:hover{background:var(--gold-soft)}
+.sd-show{display:none;align-items:center;gap:6px;font:600 13px var(--ui);min-height:36px;padding:4px 12px;border:1px solid var(--gold);border-radius:999px;background:var(--paper);color:var(--gold);cursor:pointer}
+.sd-show .tic{width:16px;height:16px}
+.lay.closed .sd-show{display:inline-flex}
+/* الموبايل: زرار يفتح القوائم تحت بعض */
+.mpick{display:none;width:100%;align-items:center;gap:8px;min-height:46px;padding:6px 14px;margin:0 0 10px;border:1px solid var(--accent);border-radius:12px;background:var(--paper);color:var(--ink);font:700 15px var(--ui);cursor:pointer;text-align:right}
+.mpick .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mpick .k{font:500 12.5px var(--ui);color:var(--muted)}
+.mpick .tic{width:18px;height:18px;transition:transform .2s}
+.mpick[aria-expanded=true] .tic{transform:rotate(180deg)}
+@media(max-width:860px){
+  .lay,.lay.closed{grid-template-columns:minmax(0,1fr)}
+  .mpick{display:flex}
+  .side{display:none;position:static;max-height:none;margin-bottom:12px}
+  .lay.mopen .side{display:flex}
+  .lay.closed .side{display:none}.lay.closed.mopen .side{display:flex}
+  .sd-x,.sd-show,.lay.closed .sd-show{display:none}
+  .sd-mv{display:flex;position:static;transform:none;margin-inline-start:4px}
+  .sd-list{max-height:55vh}
+}
+/* رأس القائمة */
+.lhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:4px 0 6px}
+.lhead h2{margin:0;font:700 20px var(--ui);color:var(--ink)}
+.lhead .lk{font:500 13px var(--ui);color:var(--muted)}
+.lhead button{font:600 13px var(--ui);min-height:36px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);cursor:pointer}
+.lhead button:hover{border-color:var(--gold);color:var(--gold)}
+.lhead button.danger:hover{border-color:var(--bad,#a33);color:var(--bad,#a33)}
+.lhint{margin:0 0 10px;font:500 12.5px var(--ui);color:var(--muted)}
+.lhint b{color:var(--accent)}
+/* الشريط */
+.cbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+.cbar button{font:inherit;font-size:14px;min-height:40px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.cbar button:hover{border-color:var(--gold)}
+.cbar button:disabled{opacity:.5;cursor:default}
+.cbar .main{background:var(--accent);color:var(--on-accent,#fff);border-color:var(--accent);font-weight:600}
+.cbar .note{border-color:var(--gold);color:var(--gold);font-weight:600}
+.cbar .danger{color:var(--bad,#a33)}
+.cbar .sp{flex:1}
+.flds{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 14px;padding:4px 0 12px;border-bottom:1px solid var(--line);font-size:14px}
+.flds b{font:600 13px var(--ui);color:var(--muted);margin-inline-end:4px}
+.flds label{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}
+.flds label:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}
+.flds input{accent-color:var(--gold)}
+/* العناصر */
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.it{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.it .kd{display:inline-block;font:600 11px var(--ui);color:var(--muted);background:var(--bg);border-radius:999px;padding:1px 9px;margin-bottom:4px}
+.it.v .tx{font-family:"Amiri","Noto Naskh Arabic",serif;font-size:21px;line-height:1.9;color:var(--ink)}
+.it.v .tx.ltr{direction:ltr;text-align:left;font-family:"Noto Serif",serif;font-size:16px;line-height:1.7}
+.it.v .tx.he{font-family:"Noto Serif Hebrew","SBL Hebrew",serif;font-size:22px}
+.it.v .tx.gr{font-family:"Noto Serif","SBL Greek",serif;font-size:18px}
+.it.v .rf{font:600 14px var(--ui);color:var(--accent);white-space:nowrap}
+.it .trn{color:var(--muted);font-weight:500}
+.it.d .top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+.it.d .dn{font:600 12px var(--ui);color:var(--muted);background:var(--bg);border-radius:999px;padding:2px 10px}
+.it.d .num{font:700 13px var(--ui);color:var(--on-gold);background:var(--gold);border-radius:7px;padding:2px 9px;direction:ltr}
+.it.d .og{font:600 26px/1.3 "Noto Serif","Noto Serif Hebrew","Times New Roman",serif;color:var(--accent)}
+.it.d .og.he{font-family:"Noto Serif Hebrew","SBL Hebrew",serif}
+.it.d .trn{font:italic 14px "Noto Serif",Georgia,serif}
+.it.d .trn.occ{font:500 13px var(--ui)}
+.it.d .ref{margin:8px 0 0;font:500 14px var(--ui);color:var(--accent)}
+.it.d .ref span{color:var(--ink);font-family:var(--script);font-size:17px}
+.it.d .blk{margin-top:8px}
+.it.d .blk h5{margin:0 0 4px;font:600 12px var(--ui);color:var(--muted)}
+.it.d .blk .tx{white-space:pre-line;line-height:1.9}
+.it.d .blk.ar .tx{font:18px/1.95 var(--script)}
+.it.d .blk.en{direction:ltr;text-align:left}
+.it.d .blk.en .tx{font:15px/1.75 "Noto Serif",Georgia,serif}
+.it .hidden{display:none}
+/* الشرح */
+.it.n{background:var(--gold-soft);border-color:var(--gold);border-inline-start:4px solid var(--gold)}
+.it.n .kd{background:var(--paper);color:var(--gold)}
+.it.n .nt{font:17px/1.95 var(--script,"Amiri"),serif;color:var(--ink);overflow-wrap:anywhere}
+.it.n .nt b{font-weight:700}
+.it.n .nt ul,.it.n .nt ol,.rte ul,.rte ol{margin:.2em 0;padding-inline-start:1.6em}
+.it.n .nt li,.rte li{margin:.1em 0}
+.it.n .nt ul,.rte ul{list-style:disc}.it.n .nt ol,.rte ol{list-style:arabic-indic}
+.rtb{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin:4px 0 6px}
+.rtb button{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:38px;height:36px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:700 15px var(--ui);cursor:pointer}
+.rtb button:hover{border-color:var(--gold);color:var(--gold)}
+.rtb button.on{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.rtb button .tic{width:18px;height:18px}
+.rtb .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.rte{min-height:96px;max-height:60vh;overflow:auto;padding:10px 12px;border:1px solid var(--gold);border-radius:10px;background:var(--paper);color:var(--ink);font:17px/1.9 var(--script,"Amiri"),serif;outline:none;overflow-wrap:anywhere;white-space:pre-wrap}
+.rte:focus{box-shadow:0 0 0 3px var(--gold-soft)}
+.rte:empty::before{content:attr(data-ph);color:var(--muted);pointer-events:none}
+.it.n .ed{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap}
+.it.n .ed button{min-height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:600 13px var(--ui);cursor:pointer}
+.it.n .ed .sv{background:var(--accent);border-color:var(--accent);color:var(--on-accent,#fff)}
+.it.n .ed small{color:var(--muted);font:500 12px var(--ui)}
+.it .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:300px}
+.it .acts button{border:1px solid var(--line);background:transparent;border-radius:8px;min-width:34px;height:34px;padding:0 8px;cursor:pointer;color:var(--muted);font:600 13px var(--ui);line-height:1;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.it .acts button:hover,.it .acts button[aria-expanded=true]{border-color:var(--gold);color:var(--gold)}
+.it .acts button:disabled{opacity:.35;cursor:default}
+.it .acts .tic{width:16px;height:16px}
+.it .acts .an{color:var(--gold);border-color:var(--gold)}
+.it.pres-last{outline:3px solid var(--gold);outline-offset:2px;transition:outline-color 1.2s}
+.cbar #present .tic,.cbar #scr .tic{width:17px;height:17px}
+.cbar #scr[hidden]{display:none!important}
+.cbar #scr.on{background:#C9A24A;border-color:#C9A24A;color:#111;font-weight:600}
+.it.scr-cur{outline:3px solid #C9A24A;outline-offset:2px;box-shadow:0 0 0 6px rgba(201,162,74,.18)}
+.it.scr-cur [data-a=pres]{background:#C9A24A;border-color:#C9A24A;color:#111}
+html.scr-on .cpp{padding-bottom:110px}
+.empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:28px 18px;text-align:center;color:var(--muted);line-height:2}
+/* قائمة النقل/النسخ */
+.mvm .lsp-i{justify-content:space-between}
+.mvm .mv-b{display:flex;gap:4px}
+.mvm .mv-b button{min-height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:600 12.5px var(--ui);cursor:pointer}
+.mvm .mv-b button:hover{border-color:var(--gold);color:var(--gold)}
+.mvm .mv-r{display:flex;align-items:center;gap:8px;min-height:42px;padding:4px 8px;border-radius:10px}
+.mvm .mv-r:hover{background:var(--bg)}
+.mvm .mv-r .lsp-n{flex:1}
+.mvm .mv-e{padding:10px 8px;color:var(--muted);font:500 13px var(--ui)}
+@media(max-width:640px){.it{grid-template-columns:1fr}.it .acts{max-width:none}}
+@media print{.sitebar,.cbar,.flds,.howto,.acts,.sub,.side,.mpick,.sd-show,.lhead button,.lhint{display:none!important}.it{border:0;padding:4px 0;background:none}.it .kd{display:none}}
+</style>
+<!--seo-->
+<meta name="description" content="قوائمي: اجمع الآيات ومداخل قواميس سترونج وBDB وأبوت-سميث في قوائم حسب الموضوع، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو ملف نصي.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/lists.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="قوائمي — جدد وعتقاء">
+<meta property="og:description" content="قوائمي: اجمع الآيات ومداخل قواميس سترونج وBDB وأبوت-سميث في قوائم حسب الموضوع، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو ملف نصي.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/lists.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="قوائمي — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="قوائمي — جدد وعتقاء">
+<meta name="twitter:description" content="قوائمي: اجمع الآيات ومداخل قواميس سترونج وBDB وأبوت-سميث في قوائم حسب الموضوع، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو ملف نصي.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head><body data-page="lists">
+<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
+
+<div class="cpp">
+<h1>قوائمي</h1>
+<p class="sub">الآيات ومداخل القواميس التي اخترتها، مرتبةً في قوائم بحسب الموضوع، مع ما تضيفه إليها من شروح — جاهزة للنسخ إلى Word أو إلى ملف نصي، وللعرض بملء الشاشة.</p>
+<details class="howto"><summary>كيف تستخدم هذه الصفحة؟</summary>
+<p>تجمع هذه الصفحة ما تختاره من الآيات ومداخل القواميس في أثناء القراءة، وتتيح لك تنظيمه في قوائم مستقلة لكل موضوع (مثل: الإيمان، الخلاص)، ثم نسخه أو عرضه.</p>
+<ul>
+<li><b>الإضافة إلى القوائم:</b> في صفحات الأسفار والقواميس وصفحة البحث والخريطة الذهنية، يضيف زر «أضف» الآية أو المدخل مباشرةً إلى القائمة المفتوحة في هذه الصفحة (وهي آخر قائمة استخدمتها). أما السهم الصغير ▾ بجانبه فيتيح لك اختيار قائمة أخرى أو إنشاء قائمة جديدة. ويمكن أن تُضاف الآية الواحدة إلى أكثر من قائمة.</li>
+<li><b>القوائم:</b> تظهر القوائم في العمود الجانبي، وتبقى «القائمة الرئيسية» في أعلاه دائمًا، فلا يمكن حذفها ولا تغيير اسمها. ويمكنك إنشاء قوائم أخرى، والبحث عنها بالاسم، وترتيبها بالسحب أو بالأسهم، وتغيير اسم أي منها أو حذفها من أعلى الصفحة. وعلى الهاتف تُفتح القوائم من الزر الذي يحمل اسم القائمة الحالية.</li>
+<li><b>الشرح:</b> يضيف زر «+ شرح» نصًّا من كتابتك بعد أي عنصر، ويضيف زر «+ شرح في الآخر» نصًّا في نهاية القائمة. ويمكنك تنسيق الشرح بالخط العريض والنقاط والترقيم، وتعديله أو حذفه في أي وقت. أما نصوص الآيات ومداخل القواميس فلا تُعدَّل.</li>
+<li><b>تنظيم العناصر:</b> بجانب كل عنصر أزرار لتحريكه إلى أعلى أو إلى أسفل، ونقله أو نسخه إلى قائمة أخرى، وحذفه من القائمة.</li>
+<li><b>النسخ:</b> ينسخ زر «نسخ القائمة» محتواها كله بتنسيقه، لتلصقه في Word أو في أي ملف، ويحفظه زر «تنزيل ملف نصي» في ملف نصي (txt). وتحدد خيارات «مداخل القاموس» الحقول التي تُنسخ وتُعرض من كل مدخل.</li>
+<li><b>العرض:</b> يعرض زر «عرض بملء الشاشة» عناصر القائمة عنصرًا في كل شريحة، ويمكن بدء العرض من أي عنصر بالزر الذي بجانبه. وإذا كانت هناك شاشة خارجية متصلة، يظهر زر «العرض على شاشة خارجية»، فتصبح هذه الصفحة أداةً للتحكم في العرض.</li>
+</ul>
+<p>تُحفظ القوائم في هذا المتصفح على هذا الجهاز فقط.</p></details>
+
+<button type="button" class="mpick" id="mPick" aria-expanded="false" aria-controls="side"></button>
+<div class="lay" id="lay">
+<div class="side" id="side" role="complementary" aria-label="القوائم">
+<div class="sd-hd"><b>القوائم</b><span class="k" id="sdK"></span><span class="sp"></span><button type="button" class="sd-x" id="sdHide" title="إخفاء العمود" aria-label="إخفاء عمود القوائم"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M15 4v16" /><path d="M10 10l-2 2l2 2" /></svg></button></div>
+<input type="search" class="sd-q" id="sdQ" placeholder="ابحث في القوائم…" aria-label="ابحث في القوائم" autocomplete="off">
+<nav class="sd-list" id="tabs" role="list"></nav>
+<button type="button" class="sd-new" id="newList">+ قائمة جديدة</button>
+</div>
+<div class="mainc">
+<div class="lhead"><button type="button" class="sd-show" id="sdShow" title="إظهار عمود القوائم"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M15 4v16" /><path d="M8 10l2 2l-2 2" /></svg> القوائم</button><h2 id="lname"></h2><span class="lk" id="lcount"></span><button type="button" id="ren">تغيير الاسم</button><button type="button" class="danger" id="del">حذف القائمة</button></div>
+<p class="lhint" id="lhint"></p>
+
+<div class="cbar">
+<button class="main" id="copyAll" type="button">نسخ القائمة</button>
+<button id="present" type="button" title="اعرض عناصر القائمة دي بملء الشاشة، عنصر في كل شريحة"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z" /><path d="M7 20h10" /><path d="M9 16v4" /><path d="M15 16v4" /></svg> عرض بملء الشاشة</button>
+<button id="scr" type="button" hidden title="الصفحة هنا للتحكم، والعرض بملء الشاشة على الشاشة الخارجية (بروجكتور أو تلفزيون)"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19l18 0" /><path d="M5 6m0 1a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z" /></svg> <span>العرض على شاشة خارجية</span></button>
+<button id="dlTxt" type="button">تنزيل ملف نصي (.txt)</button>
+<button class="note" id="addNote" type="button">+ شرح في الآخر</button>
+<span class="sp"></span>
+<button class="danger" id="clear" type="button">مسح محتوى القائمة</button>
+</div>
+<div class="flds" role="group" aria-label="اللي يتنسخ من مداخل القاموس"><b>مداخل القاموس:</b>
+<label><input type="checkbox" data-f="tr" checked> النطق</label>
+<label><input type="checkbox" data-f="occ" checked> عدد مرات الورود</label>
+<label><input type="checkbox" data-f="ref" checked> الموضع في الآية</label>
+<label><input type="checkbox" data-f="ar" checked> المعنى بالعربية</label>
+<label><input type="checkbox" data-f="en" checked> الإنجليزي</label>
+<b style="margin-inline-start:10px">عام:</b>
+<label><input type="checkbox" data-f="gap" checked> سطر فارغ بين العناصر</label>
+</div>
+<ol class="items" id="items"></ol>
+</div></div>
+</div>
+<script src="assets/dictcopy.js?v=4"></script>
+<script src="assets/presfit.js"></script>
+<script src="assets/listpres.js?v=4"></script>
+<script>
+(function(){
+"use strict";
+var L=window.TSKLists;if(!L){document.getElementById("items").innerHTML='<li class="empty">تعذّر تحميل الصفحة — حدّثها.</li>';return}
+var $=function(s){return document.querySelector(s)}, esc=L.esc, nAr=L.nAr, DICTS=L.DICTS, I=L.ICONS;
+var FK="tsklib:listfields";
+var LP=window.LISTPRES||{clean:function(h){return h},noteHTML:function(x){return esc(x.text||"")},noteText:function(h){return h}};
+var IE='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg>';
+var IMV='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10h14l-4 -4" /><path d="M17 14h-14l4 4" /></svg>';
+var IPR='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z" /><path d="M7 20h10" /><path d="M9 16v4" /><path d="M15 16v4" /></svg>';
+var IST='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /></svg>';
+var isGr=function(t){return /[Ͱ-Ͽἀ-῿]/.test(t)}, isHe=function(t){return /[֐-׿]/.test(t)};
+var isLtr=function(t){return isGr(t)||/^[\s("'\d]*[A-Za-z]/.test(t)};
+var fontOf=function(t){return isHe(t)?"'SBL Hebrew','Ezra SIL','Times New Roman',serif":isGr(t)?"'SBL Greek','Gentium Plus','Times New Roman',serif":isLtr(t)?"'Times New Roman',serif":"'Traditional Arabic','Simplified Arabic',Arial,sans-serif"};
+
+/* ---------- الحقول (واحدة لكل القوائم) ---------- */
+var F={tr:1,occ:1,ref:1,ar:1,en:1,gap:1};
+try{var sv=JSON.parse(localStorage.getItem(FK)||"null");if(sv)for(var k in F)if(k in sv)F[k]=sv[k]}catch(e){}
+document.querySelectorAll(".flds input").forEach(function(i){i.checked=!!F[i.dataset.f];i.onchange=function(){F[i.dataset.f]=i.checked?1:0;try{localStorage.setItem(FK,JSON.stringify(F))}catch(e){}draw();try{window.LISTSCR&&LISTSCR.refresh()}catch(e){}}});
+
+/* ---------- القائمة المفتوحة ---------- */
+var cur=null, ED=null;   /* ED: الشرح اللي بيتكتب دلوقتي {id|null, at, text} */
+function pickCur(s){var h=decodeURIComponent((location.hash||"").slice(1));
+  if(cur==null&&h&&L.find(s,h))cur=h;
+  if(cur==null||!L.find(s,cur))cur=s.last;
+  if(!L.find(s,cur))cur=L.MAIN;
+  return L.find(s,cur)}
+function open(id){var s=L.state();if(!L.find(s,id))return;cur=id;ED=null;L.closePick();closeMv();setTimeout(function(){try{window.LISTSCR&&LISTSCR.refresh()}catch(e){}},0);
+  if(s.last!==id){s.last=id;L.save(s)}else draw();
+  try{history.replaceState(null,"","#"+encodeURIComponent(id))}catch(e){location.hash=id}}
+
+/* ---------- النص اللي يتنسخ ---------- */
+function vLine(x){return x.t+" — "+x.ref+" ("+x.tr+")"}
+function dHead(x){return x.num+" — "+x.orig+(F.tr&&x.tr?" ("+x.tr+")":"")+" — "+(DICTS[x.dict]||"")+(F.occ&&x.occ?" — "+x.occ:"")}
+function plainOne(x){
+  if(x.k==="v")return vLine(x);
+  if(x.k==="n")return (x.text||"").replace(/\r?\n/g,"\r\n");
+  var P=[dHead(x)];
+  if(F.ref&&x.ref)P.push("الموضع: "+x.ref+(x.words?" — «"+x.words+"»":""));
+  if(F.ar&&x.ar)P.push("المعنى بالعربية:\r\n"+x.ar.replace(/\n/g,"\r\n"));
+  if(F.en&&x.en)P.push("English:\r\n"+x.en.replace(/\n/g,"\r\n"));
+  return P.join("\r\n")}
+function plain(a){return a.map(plainOne).join(F.gap?"\r\n\r\n":"\r\n")}
+var AR_P="direction:rtl;text-align:right;font-family:'Traditional Arabic','Simplified Arabic',Arial,sans-serif;font-size:14pt;margin:0";
+var EN_P="direction:ltr;text-align:left;font-family:'Times New Roman',serif;font-size:12pt;margin:0";
+function lines(t,st,dir){return t.split("\n").map(function(l){return '<p dir="'+dir+'" style="'+st+'">'+(esc(l)||"&nbsp;")+'</p>'}).join("")}
+function htmlOne(x,last){var mb=last?"0":F.gap?"12pt":"2pt";
+  if(x.k==="v"){var l=isLtr(x.t);
+    return '<p dir="'+(l?"ltr":"rtl")+'" style="direction:'+(l?"ltr":"rtl")+';text-align:'+(l?"left":"right")+';font-family:'+fontOf(x.t)+';font-size:'+(l?"12pt":"14pt")+';margin:0 0 '+mb+'">'+esc(x.t)+' — <b>'+esc(x.ref)+'</b> ('+esc(x.tr)+')</p>'}
+  if(x.k==="n"){var lt=isLtr(x.text||""),st=lt?EN_P:AR_P,dir=lt?"ltr":"rtl";
+    if(!x.html)return '<div style="margin:0 0 '+mb+'">'+lines(x.text||"",st,dir)+'</div>';
+    var t=document.createElement("template");t.innerHTML=LP.noteHTML(x);var o="",run="";
+    var flush=function(){if(run.replace(/<br>/g,"").trim())o+='<p dir="'+dir+'" style="'+st+'">'+run+'</p>';run=""};
+    t.content.childNodes.forEach(function(n){var tg=n.nodeType===1?n.tagName:"";
+      if(tg==="BR"){flush();return}
+      if(tg==="DIV"){flush();o+='<p dir="'+dir+'" style="'+st+'">'+(n.innerHTML.replace(/<br>$/,"")||"&nbsp;")+'</p>';return}
+      if(tg==="UL"||tg==="OL"){flush();var tl=tg.toLowerCase();o+='<'+tl+' dir="'+dir+'" style="margin:0;'+(lt?"margin-left:24pt":"margin-right:24pt")+'">'+[].map.call(n.children,function(li){return '<li dir="'+dir+'" style="'+st+'">'+li.innerHTML+'</li>'}).join("")+'</'+tl+'>';return}
+      run+=n.nodeType===3?esc(n.nodeValue):n.outerHTML});flush();
+    return '<div style="margin:0 0 '+mb+'">'+o+'</div>'}
+  var he=isHe(x.orig),h='<p dir="rtl" style="'+AR_P+'"><b dir="ltr">'+esc(x.num)+'</b> — <span lang="'+(he?"he":"grc")+'" style="font-family:'+(he?"'SBL Hebrew','Ezra SIL','Times New Roman'":"'SBL Greek','Gentium Plus','Times New Roman'")+',serif;font-size:16pt">'+esc(x.orig)+'</span>'+
+    (F.tr&&x.tr?' <span dir="ltr" style="font-family:\'Times New Roman\',serif;font-style:italic">('+esc(x.tr)+')</span>':"")+' — '+esc(DICTS[x.dict]||"")+(F.occ&&x.occ?' — <span style="color:#666">'+esc(x.occ)+'</span>':"")+'</p>';
+  if(F.ref&&x.ref)h+='<p dir="rtl" style="'+AR_P+'"><b>الموضع:</b> '+esc(x.ref)+(x.words?" — «"+esc(x.words)+"»":"")+'</p>';
+  if(F.ar&&x.ar)h+='<p dir="rtl" style="'+AR_P+'"><b>المعنى بالعربية:</b></p>'+lines(x.ar,AR_P,"rtl");
+  if(F.en&&x.en)h+='<p dir="ltr" style="'+EN_P+'"><b>English:</b></p>'+lines(x.en,EN_P,"ltr");
+  return '<div style="margin:0 0 '+mb+'">'+h+'</div>'}
+function html(a){return '<div dir="rtl">'+a.map(function(x,i){return htmlOne(x,i===a.length-1)}).join("")+'</div>'}
+function fallbackCopy(txt){var t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}t.remove();return ok}
+function copy(a,msg){var p=plain(a),h=html(a),bad="تعذّر النسخ — حدّد النص يدويًا وانسخه";
+  if(navigator.clipboard&&window.ClipboardItem){
+    navigator.clipboard.write([new ClipboardItem({"text/plain":new Blob([p],{type:"text/plain"}),"text/html":new Blob([h],{type:"text/html"})})])
+      .then(function(){L.toast(I.ok+" "+msg)},function(){fallbackCopy(p)?L.toast(I.ok+" "+msg):L.toast(bad,{bad:true})});
+  } else fallbackCopy(p)?L.toast(I.ok+" "+msg):L.toast(bad,{bad:true})}
+
+/* ---------- العرض ---------- */
+function kindName(x){return x.k==="v"?"آية":x.k==="d"?"مدخل":"شرح"}
+function kindDef(x){return x.k==="v"?"الآية":x.k==="d"?"المدخل":"الشرح"}
+function bodyOf(x){
+  if(x.k==="v"){var t=x.t||"";return '<span class="kd">آية</span><div class="tx'+(isLtr(t)?' ltr':'')+(isHe(t)?' he':isGr(t)?' gr':'')+'">'+(isHe(t)||isGr(t)?'<span lang="'+(isHe(t)?"he":"grc")+'" dir="'+(isHe(t)?"rtl":"ltr")+'">'+esc(t)+'</span>':esc(t))+' <span class="rf" dir="rtl">— '+esc(x.ref)+' <span class="trn">('+esc(x.tr)+')</span></span></div>'}
+  if(x.k==="n")return '<span class="kd">شرح</span><div class="nt" dir="auto">'+LP.noteHTML(x)+'</div>';
+  var he=isHe(x.orig);
+  return '<div class="top"><span class="num">'+esc(x.num)+'</span><span class="og'+(he?' he':'')+'" lang="'+(he?"he":"grc")+'" dir="'+(he?"rtl":"ltr")+'">'+esc(x.orig)+'</span>'+
+    (x.tr?'<span class="trn'+(F.tr?'':' hidden')+'" dir="ltr">'+esc(x.tr)+'</span>':'')+'<span class="dn">'+esc(DICTS[x.dict]||"")+'</span>'+(x.occ?'<span class="trn occ'+(F.occ?'':' hidden')+'">'+esc(x.occ)+'</span>':'')+'</div>'+
+    (x.ref&&F.ref?'<p class="ref">الموضع: '+esc(x.ref)+(x.words?' — <span>«'+esc(x.words)+'»</span>':'')+'</p>':'')+
+    (x.ar&&F.ar?'<div class="blk ar"><h5>المعنى بالعربية</h5><div class="tx">'+esc(x.ar)+'</div></div>':'')+
+    (x.en&&F.en?'<div class="blk en"><h5>English</h5><div class="tx">'+esc(x.en)+'</div></div>':'')}
+var IUL='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l11 0" /><path d="M9 12l11 0" /><path d="M9 18l11 0" /><path d="M5 6l0 .01" /><path d="M5 12l0 .01" /><path d="M5 18l0 .01" /></svg>';
+var IOL='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6h9" /><path d="M11 12h9" /><path d="M12 18h8" /><path d="M4 16a2 2 0 1 1 4 0c0 .591 -.5 1 -1 1.5l-3 2.5h4" /><path d="M6 10v-6l-2 2" /></svg>';
+function editorLi(){return '<li class="it n ed-li" data-ed="1"><div><span class="kd">'+(ED.id?"تعديل الشرح":"شرح جديد")+'</span>'+
+  '<div class="rtb" role="toolbar" aria-label="تنسيق الشرح"><button type="button" data-cmd="bold" title="عريض (Ctrl+B)" aria-label="عريض"><b>B</b></button><span class="sep"></span>'+
+  '<button type="button" data-cmd="insertUnorderedList" title="نقاط" aria-label="قائمة نقاط">'+IUL+'</button><button type="button" data-cmd="insertOrderedList" title="ترقيم" aria-label="قائمة مرقمة">'+IOL+'</button></div>'+
+  '<div id="edTx" class="rte" contenteditable="true" dir="auto" role="textbox" aria-multiline="true" aria-label="نص الشرح" data-ph="اكتب الشرح أو التوضيح هنا…">'+(ED.html||"")+'</div>'+
+  '<div class="ed"><button type="button" class="sv" data-e="save">حفظ</button><button type="button" data-e="cancel">إلغاء</button><small>Ctrl+Enter للحفظ · Esc للإلغاء</small></div></div><div></div></li>'}
+function actsOf(x,i,n){
+  return '<div class="acts">'+
+    '<button data-a="one" title="نسخ العنصر ده بس">'+I.copy+'</button>'+
+    '<button data-a="pres" title="اعرض بملء الشاشة من العنصر ده" aria-label="اعرض بملء الشاشة من العنصر ده">'+IPR+'</button>'+
+    '<button data-a="up" title="لأعلى" aria-label="لأعلى" '+(i?"":"disabled")+'>↑</button><button data-a="dn" title="لأسفل" aria-label="لأسفل" '+(i<n-1?"":"disabled")+'>↓</button>'+
+    (x.k==="n"?'<button data-a="ed" title="تعديل الشرح" aria-label="تعديل الشرح">'+IE+'</button>':'')+
+    (x.k!=="n"?'<button class="an" data-a="note" title="أضف شرح بعد العنصر ده">+ شرح</button>':'')+
+    '<button data-a="mv" title="نقل أو نسخ لقائمة تانية" aria-label="نقل أو نسخ لقائمة تانية" aria-haspopup="true" aria-expanded="false">'+IMV+'</button>'+
+    '<button data-a="rm" title="حذف من القائمة دي" aria-label="حذف">✕</button></div>'}
+function draw(){
+  var s=L.state(),l=pickCur(s),a=l.items,box=$("#items"),n=L.count(l);
+  drawSide(s,l);
+  $("#lname").textContent=l.name;
+  var notes=a.length-n;
+  $("#lcount").textContent=(n===1?"عنصر واحد":n===2?"عنصرين":n?nAr(n)+" عناصر":"فاضية")+(notes?" · "+(notes===1?"شرح واحد":notes===2?"شرحين":nAr(notes)+" شروحات"):"");
+  $("#ren").hidden=$("#del").hidden=l.id===L.MAIN;
+  $("#lhint").innerHTML=s.last===l.id?'زرار «أضف» في صفحات الأسفار والقواميس بيضيف على <b>القائمة دي</b>.':'';
+  document.title=(n?"("+nAr(n)+") ":"")+l.name+" — قوائمي — جدد وعتقاء";
+  $("#copyAll").disabled=$("#present").disabled=$("#dlTxt").disabled=$("#clear").disabled=!a.length;
+  scrSync();
+  if(!a.length&&!(ED&&!ED.id)){box.innerHTML='<li class="empty">القائمة دي لسه فاضية.<br>افتح أي سفر أو قاموس واضغط «أضف» جنب الآية أو المدخل (والسهم ▾ جنبه لاختيار القائمة).<br>أو اكتب <a href="#" data-a="note0">شرح</a> من عندك.<br><a href="index.html">المكتبة</a> · <a href="strong.html">قاموس سترونج</a> · <a href="arword.html">البحث بالكلمة العربية</a></li>';return}
+  var out=[];
+  a.forEach(function(x,i){
+    if(ED&&ED.id===x.id){out.push(editorLi());return}
+    out.push('<li class="it '+x.k+'" data-i="'+i+'" data-id="'+esc(x.id||"")+'"><div>'+bodyOf(x)+'</div>'+actsOf(x,i,a.length)+'</li>');
+    if(ED&&!ED.id&&ED.after===x.id)out.push(editorLi());
+  });
+  if(ED&&!ED.id&&ED.after==null)out.push(editorLi());
+  box.innerHTML=out.join("");
+  scrMark(window.LISTSCR&&LISTSCR.id);
+  var ta=$("#edTx");if(ta){ta.focus();try{var r=document.createRange();r.selectNodeContents(ta);r.collapse(false);var sl=getSelection();sl.removeAllRanges();sl.addRange(r)}catch(e){}
+    ta.oninput=function(){ED.html=ta.innerHTML;if(!ta.textContent.trim()&&!ta.querySelector("li"))ta.innerHTML="";rtbSync()};
+    ta.onpaste=function(e){e.preventDefault();var t=(e.clipboardData||window.clipboardData).getData("text/plain");document.execCommand("insertText",false,t)};
+    ta.onkeyup=ta.onmouseup=rtbSync;rtbSync()}
+}
+function rtbSync(){document.querySelectorAll(".rtb [data-cmd]").forEach(function(b){var on=false;try{on=document.queryCommandState(b.dataset.cmd)}catch(e){}b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)})}
+document.addEventListener("selectionchange",function(){if(ED&&document.activeElement&&document.activeElement.id==="edTx")rtbSync()});
+function fit(ta){ta.style.height="auto";ta.style.height=Math.min(ta.scrollHeight+4,innerHeight*.6)+"px"}
+
+/* ---------- الشرح ---------- */
+function startNote(afterId){ED={id:null,after:afterId,html:""};draw();var e=$(".ed-li");if(e)e.scrollIntoView({block:"nearest",behavior:"smooth"})}
+function saveNote(){if(!ED)return;var el=$("#edTx"),html=LP.clean(el?el.innerHTML:ED.html||""),txt=LP.noteText(html),s=L.state(),l=L.find(s,cur);
+  if(ED.id){var it=l.items.filter(function(x){return x.id===ED.id})[0];
+    if(it){if(txt.trim()){it.html=html;it.text=txt}else{l.items=l.items.filter(function(x){return x.id!==ED.id})}}
+    ED=null;L.save(s);if(!txt.trim())L.toast("الشرح كان فاضي فاتشال");return}
+  if(!txt.trim()){ED=null;draw();return}
+  var at=ED.after==null?l.items.length:l.items.findIndex(function(x){return x.id===ED.after})+1;
+  L.add(s,cur,{k:"n",html:html,text:txt},at<=0&&ED.after!=null?l.items.length:at);ED=null;L.save(s)}
+function cancelNote(){ED=null;draw()}
+
+/* ---------- النقل / النسخ لقائمة تانية ---------- */
+var MV=null;
+function closeMv(){if(!MV)return;MV.el.remove();MV.btn.setAttribute("aria-expanded","false");MV=null}
+function openMv(btn,id){if(MV&&MV.btn===btn){closeMv();return}closeMv();L.closePick();
+  var s=L.state(),l=L.find(s,cur),x=l.items.filter(function(y){return y.id===id})[0];if(!x)return;
+  var key=L.keyOf(x),others=s.lists.filter(function(o){return o.id!==cur});
+  var el=document.createElement("div");el.className="lsp mvm";el.setAttribute("role","dialog");el.setAttribute("aria-label","نقل أو نسخ");
+  el.innerHTML='<div class="lsp-h">'+kindName(x)+(x.k==="v"?" <b>"+esc(x.ref)+"</b>":x.k==="d"?' <b dir="ltr">'+esc(x.num)+'</b>':"")+' — انقل أو انسخ إلى:</div>'+
+    (others.length?others.map(function(o){var has=x.k!=="n"&&L.inList(o,key);
+      return '<div class="mv-r"><span class="lsp-n">'+esc(o.name)+'</span>'+(has?'<span class="lsp-d">موجود فيها</span>':'<span class="mv-b"><button type="button" data-m="move" data-l="'+esc(o.id)+'">نقل</button><button type="button" data-m="copy" data-l="'+esc(o.id)+'">نسخ</button></span>')+'</div>'}).join(""):'<div class="mv-e">مفيش قوائم تانية لسه.</div>')+
+    '<form class="lsp-new" autocomplete="off"><input type="text" maxlength="60" placeholder="قائمة جديدة…" aria-label="اسم القائمة الجديدة"><button type="submit">نسخ لقائمة جديدة</button></form>';
+  document.body.appendChild(el);MV={el:el,btn:btn,id:id};btn.setAttribute("aria-expanded","true");
+  var r=btn.getBoundingClientRect(),w=el.offsetWidth,h=el.offsetHeight,top=r.bottom+6;if(top+h>innerHeight-8&&r.top-h-6>8)top=r.top-h-6;
+  el.style.top=Math.max(8,Math.min(top,innerHeight-h-8))+"px";el.style.left=Math.max(8,Math.min(r.right-w,innerWidth-w-8))+"px";
+  el.addEventListener("click",function(e){var b=e.target.closest("[data-m]");if(!b)return;doMv(b.dataset.m,b.dataset.l)});
+  el.addEventListener("submit",function(e){e.preventDefault();var s2=L.state(),r2=L.create(s2,el.querySelector("input").value);
+    if(r2.err){L.toast(r2.err,{bad:true});return}doMv("copy",r2.id,s2)})}
+function doMv(mode,to,s){s=s||L.state();var prev=JSON.stringify(L.state()),l=L.find(s,cur),dst=L.find(s,to),x=l&&l.items.filter(function(y){return y.id===MV.id})[0];if(!x||!dst)return;
+  var ok=L.add(s,to,x);if(!ok){L.toast("موجود بالفعل في «"+esc(dst.name)+"»",{bad:true});return}
+  if(mode==="move")l.items=l.items.filter(function(y){return y.id!==x.id});
+  closeMv();
+  if(L.save(s))L.toast(I.ok+" "+(mode==="move"?"اتنقل":"اتنسخ")+" "+kindDef(x)+" إلى «"+esc(dst.name)+"»",{undo:{prev:prev}})}
+document.addEventListener("mousedown",function(e){if(MV&&!MV.el.contains(e.target)&&!MV.btn.contains(e.target))closeMv()},true);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&MV)closeMv()});
+addEventListener("resize",closeMv);addEventListener("scroll",function(e){if(MV&&!(e.target.nodeType===1&&MV.el.contains(e.target)))closeMv()},true);
+
+/* ---------- الأزرار ---------- */
+/* ---------- العمود الجانبي ---------- */
+var IGRIP='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l11 0" /><path d="M9 12l11 0" /><path d="M9 18l11 0" /><path d="M5 6l0 .01" /><path d="M5 12l0 .01" /><path d="M5 18l0 .01" /></svg>';
+var ICHV='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6" /></svg>';
+var SDK="tsklib:lsside";
+var normQ=function(t){return String(t||"").replace(/[ً-ٰٟـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").toLowerCase().trim()};
+function drawSide(s,l){
+  var q=normQ($("#sdQ").value),rest=s.lists.filter(function(x){return x.id!==L.MAIN}),main=s.lists[0];
+  var shown=q?rest.filter(function(x){return normQ(x.name).indexOf(q)>=0}):rest;
+  var item=function(x,i){var on=x.id===l.id,isM=x.id===L.MAIN;
+    return '<div class="sd-i'+(on?" on":"")+(isM?" main":"")+'" role="listitem" data-l="'+esc(x.id)+'"'+(!isM&&!q?' draggable="true"':'')+'>'+
+      '<button type="button" class="sd-go" aria-current="'+(on?"true":"false")+'">'+(isM?IST:"")+'<span class="nm">'+esc(x.name)+'</span><span class="k">'+nAr(L.count(x))+'</span></button>'+
+      (!isM&&!q?'<span class="sd-mv"><button type="button" data-mv="-1" title="لأعلى" aria-label="حرّك القائمة لأعلى" '+(i>0?"":"disabled")+'>↑</button><button type="button" data-mv="1" title="لأسفل" aria-label="حرّك القائمة لأسفل" '+(i<rest.length-1?"":"disabled")+'>↓</button></span>':'')+'</div>'};
+  $("#tabs").innerHTML=item(main,-1)+shown.map(function(x){return item(x,rest.indexOf(x))}).join("")+(q&&!shown.length?'<div class="sd-empty">مفيش قائمة بالاسم ده</div>':"");
+  $("#sdK").textContent="("+nAr(s.lists.length)+")";
+  $("#mPick").innerHTML=(l.id===L.MAIN?IST:IGRIP)+'<span class="nm">'+esc(l.name)+'</span><span class="k">'+nAr(s.lists.length)+(s.lists.length===1?" قائمة":s.lists.length===2?" قائمتين":" قوائم")+'</span>'+ICHV;
+  var t=$("#tabs .sd-i.on");if(t&&!sdUser)try{t.scrollIntoView({block:"nearest"})}catch(e){}
+}
+var sdUser=false;
+function moveList(id,to){var s=L.state(),rest=s.lists.slice(1),i=rest.findIndex(function(x){return x.id===id});if(i<0)return;
+  var x=rest.splice(i,1)[0];to=Math.max(0,Math.min(to,rest.length));rest.splice(to,0,x);s.lists=[s.lists[0]].concat(rest);L.save(s)}
+function setClosed(v){$("#lay").classList.toggle("closed",v);try{localStorage.setItem(SDK,v?"1":"0")}catch(e){}}
+try{setClosed(localStorage.getItem(SDK)==="1")}catch(e){}
+function mobOpen(v){$("#lay").classList.toggle("mopen",v);$("#mPick").setAttribute("aria-expanded",String(v))}
+var MQM=matchMedia("(max-width:860px)");
+$("#mPick").onclick=function(){mobOpen(!$("#lay").classList.contains("mopen"))};
+$("#sdHide").onclick=function(){setClosed(true)};
+$("#sdShow").onclick=function(){setClosed(false)};
+$("#sdQ").oninput=function(){sdUser=true;draw();sdUser=false};
+$("#sdQ").onkeydown=function(e){if(e.key==="Escape"){this.value="";draw()}else if(e.key==="Enter"){var f=$("#tabs .sd-i:not(.main) .sd-go")||$("#tabs .sd-go");if(f)f.click()}};
+$("#tabs").onclick=function(e){var mv=e.target.closest("[data-mv]");
+  if(mv){var it=mv.closest(".sd-i"),s=L.state(),rest=s.lists.slice(1),i=rest.findIndex(function(x){return x.id===it.dataset.l});sdUser=true;moveList(it.dataset.l,i+(+mv.dataset.mv));sdUser=false;
+    requestAnimationFrame(function(){var b=document.querySelector('.sd-i[data-l="'+it.dataset.l+'"] [data-mv="'+mv.dataset.mv+'"]');if(b&&!b.disabled)b.focus()});return}
+  var g=e.target.closest(".sd-go");if(!g)return;open(g.closest(".sd-i").dataset.l);if(MQM.matches)mobOpen(false)};
+/* السحب لترتيب القوائم (الرئيسية ثابتة فوق) */
+var DG=null;
+$("#tabs").addEventListener("dragstart",function(e){var it=e.target.closest(".sd-i[draggable=true]");if(!it)return;DG=it.dataset.l;it.classList.add("drag");try{e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",DG)}catch(x){}});
+$("#tabs").addEventListener("dragend",function(){DG=null;document.querySelectorAll(".sd-i.drag,.sd-i.over-t,.sd-i.over-b").forEach(function(x){x.classList.remove("drag","over-t","over-b")})});
+$("#tabs").addEventListener("dragover",function(e){if(!DG)return;var it=e.target.closest(".sd-i:not(.main)");if(!it||it.dataset.l===DG)return;e.preventDefault();
+  var r=it.getBoundingClientRect(),below=e.clientY>r.top+r.height/2;document.querySelectorAll(".sd-i.over-t,.sd-i.over-b").forEach(function(x){x.classList.remove("over-t","over-b")});it.classList.add(below?"over-b":"over-t")});
+$("#tabs").addEventListener("drop",function(e){if(!DG)return;var it=e.target.closest(".sd-i:not(.main)");if(!it||it.dataset.l===DG)return;e.preventDefault();
+  var r=it.getBoundingClientRect(),below=e.clientY>r.top+r.height/2,s=L.state(),rest=s.lists.slice(1).filter(function(x){return x.id!==DG}),j=rest.findIndex(function(x){return x.id===it.dataset.l})+(below?1:0),id=DG;
+  DG=null;sdUser=true;moveList(id,j);sdUser=false});
+$("#newList").onclick=function(){var nm=prompt("اسم القائمة الجديدة (مثلًا: الإيمان، الخلاص)");if(nm==null)return;var s=L.state(),r=L.create(s,nm);
+  if(r.err){L.toast(r.err,{bad:true});return}s.last=r.id;cur=r.id;ED=null;$("#sdQ").value="";L.save(s);try{history.replaceState(null,"","#"+encodeURIComponent(r.id))}catch(x){}if(MQM.matches)mobOpen(false);L.toast(I.ok+" اتعملت قائمة «"+esc(L.find(s,r.id).name)+"»")};
+$("#ren").onclick=function(){var s=L.state(),l=L.find(s,cur);if(!l||l.id===L.MAIN)return;var nm=prompt("الاسم الجديد للقائمة",l.name);if(nm==null)return;nm=nm.replace(/\s+/g," ").trim();
+  if(!nm){L.toast("اكتب اسم للقائمة",{bad:true});return}if(nm===l.name)return;if(L.nameTaken(s,nm,l.id)){L.toast("فيه قائمة بنفس الاسم",{bad:true});return}
+  l.name=nm.slice(0,60);L.save(s)};
+$("#del").onclick=function(){var s=L.state(),l=L.find(s,cur);if(!l||l.id===L.MAIN)return;
+  if(!confirm("حذف قائمة «"+l.name+"» وكل اللي فيها؟"))return;var prev=JSON.stringify(s);
+  s.lists=s.lists.filter(function(x){return x.id!==l.id});cur=L.MAIN;s.last=s.last===l.id?L.MAIN:s.last;ED=null;
+  try{history.replaceState(null,"","#"+L.MAIN)}catch(x){}
+  if(L.save(s))L.toast("اتحذفت قائمة «"+esc(l.name)+"»",{undo:{prev:prev,msg:"رجعت القائمة"}})};
+$("#clear").onclick=function(){var s=L.state(),l=L.find(s,cur);if(!l.items.length)return;
+  if(!confirm("مسح كل محتوى «"+l.name+"»؟"))return;var prev=JSON.stringify(s);l.items=[];ED=null;
+  if(L.save(s))L.toast("اتمسح محتوى «"+esc(l.name)+"»",{undo:{prev:prev}})};
+$("#copyAll").onclick=function(){var l=L.find(L.state(),cur);if(!l.items.length)return;copy(l.items,"اتنسخت «"+esc(l.name)+"» — الصقها في Word أو أي ملف")};
+$("#dlTxt").onclick=function(){var l=L.find(L.state(),cur);if(!l.items.length)return;
+  var b=new Blob(["﻿"+plain(l.items)],{type:"text/plain;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");
+  a.href=u;a.download=l.name.replace(/[\\\/:*?"<>|]+/g,"-")+".txt";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000)};
+$("#addNote").onclick=function(){startNote(null)};
+/* ---------- العرض بملء الشاشة (assets/listpres.js) ---------- */
+function present(start){var l=L.find(L.state(),cur);if(!l||!l.items.length||!window.LISTPRES)return;ED=null;L.closePick();closeMv();
+  LISTPRES.open(l.items,start||0,{title:l.name,fields:F,onClose:function(i){var x=l.items[i];if(!x)return;draw();
+    var el=document.querySelector('.it[data-id="'+x.id+'"]');if(el){el.scrollIntoView({block:"center"});el.classList.add("pres-last");setTimeout(function(){el.classList.remove("pres-last")},1600)}}})}
+$("#present").onclick=function(){present(0)};
+/* ---------- العرض على شاشة خارجية (assets/listpres.js → LISTSCR + screen.html) ---------- */
+var SCRO={items:function(){var l=L.find(L.state(),cur);return l?l.items:[]},title:function(){var l=L.find(L.state(),cur);return l?l.name:""},
+  fields:function(){return F},onMark:function(id){scrMark(id)},onState:function(){scrSync()}};
+function scrMark(id){document.querySelectorAll(".it.scr-cur").forEach(function(x){x.classList.remove("scr-cur")});if(!id)return;
+  var el=document.querySelector('.it[data-id="'+id+'"]');if(el){el.classList.add("scr-cur");var r=el.getBoundingClientRect();if(r.top<70||r.bottom>innerHeight-110)el.scrollIntoView({block:"center",behavior:"smooth"})}}
+function scrSync(){var b=$("#scr"),on=!!(window.LISTSCR&&LISTSCR.on),l=L.find(L.state(),cur);if(!b)return;b.classList.toggle("on",on);
+  b.querySelector("span").textContent=on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية";b.disabled=!on&&!(l&&l.items.length);
+  b.hidden=!on&&!(window.PRESFIT&&PRESFIT.ext.ok());   /* يظهر بس لو فيه شاشة تانية على وضع Extend (كروم وإيدج) */
+  $("#present").title=on?"اعرض بملء الشاشة هنا (الشاشة الخارجية شغالة — زرار العرض جنب العنصر بيبعته لها)":"اعرض عناصر القائمة دي بملء الشاشة، عنصر في كل شريحة"}
+window.PRESFIT&&PRESFIT.ext.watch(scrSync);
+$("#scr").onclick=function(){if(!window.LISTSCR)return;if(LISTSCR.on){LISTSCR.stop();return}LISTSCR.start(SCRO)};
+$("#items").addEventListener("click",function(e){
+  var z=e.target.closest("[data-a=note0]");if(z){e.preventDefault();startNote(null);return}
+  var eb=e.target.closest("[data-e]");if(eb){eb.dataset.e==="save"?saveNote():cancelNote();return}
+  var b=e.target.closest("button[data-a]");if(!b)return;var li=b.closest(".it"),id=li.dataset.id,s=L.state(),l=L.find(s,cur),i=l.items.findIndex(function(x){return x.id===id});if(i<0)return;var x=l.items[i];
+  var A=b.dataset.a;
+  if(A==="one"){copy([x],"اتنسخ "+kindDef(x));return}
+  if(A==="mv"){openMv(b,id);return}
+  if(A==="pres"){if(window.LISTSCR&&LISTSCR.on)LISTSCR.show(i);else present(i);return}
+  if(A==="note"){startNote(id);return}
+  if(A==="ed"){ED={id:id,html:LP.noteHTML(x)};draw();return}
+  if(A==="rm"){var prev=JSON.stringify(s);l.items.splice(i,1);if(L.save(s))L.toast("اتشال "+kindDef(x)+" من «"+esc(l.name)+"»",{undo:{prev:prev}});return}
+  var j=A==="up"?i-1:i+1;if(j<0||j>=l.items.length)return;l.items[i]=l.items[j];l.items[j]=x;L.save(s);
+  requestAnimationFrame(function(){var nb=document.querySelector('.it[data-id="'+id+'"] button[data-a="'+A+'"]');if(nb&&!nb.disabled)nb.focus({preventScroll:false})})});
+$("#items").addEventListener("mousedown",function(e){if(e.target.closest(".rtb button"))e.preventDefault()});
+$("#items").addEventListener("click",function(e){var b=e.target.closest(".rtb [data-cmd]");if(!b)return;e.stopPropagation();var ta=$("#edTx");if(!ta)return;
+  if(document.activeElement!==ta)ta.focus();document.execCommand(b.dataset.cmd,false,null);ED.html=ta.innerHTML;rtbSync()},true);
+$("#items").addEventListener("keydown",function(e){if(e.target.id!=="edTx")return;
+  if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();saveNote()}else if(e.key==="Escape"){e.preventDefault();e.stopPropagation();cancelNote()}});
+/* تحديث من نفس التاب أو تاب تاني — ما نقاطعش الكتابة */
+L.on(function(){try{window.LISTSCR&&LISTSCR.refresh()}catch(e){}if(!ED)draw();else{var s=L.state();if(!L.find(s,cur)){ED=null;draw()}}});
+addEventListener("hashchange",function(){var h=decodeURIComponent(location.hash.slice(1));if(h&&h!==cur)open(h)});
+addEventListener("pageshow",function(){if(!ED)draw()});
+draw();
+})();
+</script></body></html>

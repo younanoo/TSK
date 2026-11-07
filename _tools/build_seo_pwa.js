@@ -22,7 +22,7 @@ const stampSave = (key, files) => { STAMPS[key] = sig(files); try { fs.writeFile
 const SELF = ["_tools/build_seo_pwa.js", "_tools/site_meta.js", "assets/catalog.js"];
 const hashOf = p => crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 8);
 /* app.js and style.css versions follow their content, so browsers never reuse a stale copy after a change */
-const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "2", APP_VER = hashOf("assets/app.js");
+const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "3", APP_VER = hashOf("assets/app.js");
 const CAT = M.catalog();
 const today = new Date().toISOString().slice(0, 10);
 const BASE_PATH = new URL(BASE).pathname;               // "/TSK/"
@@ -34,14 +34,17 @@ const TOOLS = {
   "topics.html":  { desc: "فهرس مواضيع الكتاب المقدس بالعربية: أكثر من ٤٦ ألف موضوع من فهارس Nave وTorrey، لكل موضوع مواضعه في الأسفار ونصوصها.", sitemap: 1 },
   "arword.html":  { desc: "ابحث بكلمة عربية، فنعرض جذرها والكلمات العبرية واليونانية التي ترجمها فاندايك وكتاب الحياة إلى كلمات من هذا الجذر، بشرح عربي وإنجليزي لكل كلمة.", sitemap: 1 },
   "strong.html":  { desc: "قاموس سترونج للكلمات العبرية واليونانية في الكتاب المقدس، بشرح عربي وإنجليزي ونطق كل كلمة، مع الأعداد التي ترد فيها.", sitemap: 1 },
-  "dictcopy.html":{ desc: "صفحة نسخ القاموس: مداخل قاموس سترونج وBDB العبري وأبوت-سميث اليوناني اللي اخترتها، بالكلمة الأصلية ونطقها والمعنى بالعربية والإنجليزية، جاهزة للنسخ إلى Word أو ملف نصي." },
-  "copy.html":    { desc: "صفحة النسخ: الآيات اللي اخترتها من صفحات الأسفار بالشكل «نص الآية — الشاهد (الترجمة)» جاهزة للنسخ إلى Word أو ملف نصي." },
+  "lists.html":   { desc: "قوائمي: اجمع الآيات ومداخل قواميس سترونج وBDB وأبوت-سميث في قوائم حسب الموضوع، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو ملف نصي." },
+  "dictcopy.html":{ desc: "انتقلت إلى قوائمي." },
+  "copy.html":    { desc: "انتقلت إلى قوائمي." },
   "compare.html": { desc: "قارن نص أي أصحاح في ثلاث ترجمات جنبًا إلى جنب: كتاب الحياة وفاندايك وKJV.", sitemap: 1 },
   "outline.html": { desc: "مخطط تفصيلي لكل سفر من أسفار الكتاب المقدس بالعربية والإنجليزية مع الأعداد.", sitemap: 1 },
   "mindmap.html": { desc: "خريطة ذهنية تفاعلية لشواهد كل كلمة في الكتاب المقدس من «كنز معرفة الكتاب المقدس» (TSK).", sitemap: 1 },
   "chrono.html":  { desc: "خطة لقراءة الكتاب المقدس كله في ٣٦٥ يومًا بترتيب حدوث الأحداث، مع عنوان وعصر وسنة تقريبية لكل يوم، ويُحفظ التقدم على جهازك.", sitemap: 1 },
   "timeline.html":{ desc: "خط زمني لأحداث الكتاب المقدس من الخليقة إلى عصر الرسل في عشرة عصور، مع أحداث العالم في نفس الوقت والشواهد والأشخاص والأماكن، بالتأريخ الشائع وتأريخ Jones.", sitemap: 1 },
   "sources.html": { desc: "مصادر المكتبة ومراجعها: النصوص والترجمات والشواهد وقواميس سترونج وBDB وأبوت-سميث، وبيانات الخرائط والخط الزمني، ومصادر التدقيق، مع ترخيص كل مصدر وحقوق Biblica لكتاب الحياة.", sitemap: 1 },
+  "screen.html":  { desc: "شاشة العرض الخارجية للمكتبة: تُفتح من صفحة الأصحاح لعرض الآيات بملء الشاشة على بروجكتور أو تلفزيون." },
+  "contact.html": { desc: "تواصل مع «جدد وعتقاء»: أبلغ عن خطأ في آية أو في مدخل قاموس، أو أرسل اقتراحًا أو سؤالًا، من خلال نموذج بسيط لا يحتاج إلى تسجيل.", sitemap: 1 },
   "notes.html":   { desc: "ملاحظات على الفروق بين الترجمات العربية والإنجليزية في المكتبة، خصوصًا ما سببه اختلاف النص اليوناني الذي بُنيت عليه كل ترجمة، سفرًا سفرًا.", sitemap: 1 },
   "grammar.html": { desc: "بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.", sitemap: 1 },
 };
@@ -346,7 +349,7 @@ const ckOf = p => { if (CK[p]) return CK[p];
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بترجمة فاندايك وكتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|screenctl)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) || /^assets\/sg\//.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) || /^assets\/strong\//.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },

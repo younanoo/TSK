@@ -7,13 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=f455e6d5">
+<link rel="stylesheet" href="assets/style.css?v=e81edc5b">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
 <meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
-<script src="assets/brand.js?v=2"></script>
+<script src="assets/brand.js?v=3"></script>
 <script src="assets/nav.js"></script>
 <script src="assets/sitemenu.js" defer></script>
 <style>
@@ -309,10 +309,11 @@ body.h{background:var(--bg)}
 .h-dlg .why span{display:flex;gap:8px;align-items:center}
 .h-dlg .why .ic{color:var(--done)}
 .h-foot{padding:36px 0 50px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
-.h-foot .h-wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:flex-start}
-.h-foot p{margin:0 0 6px;max-width:60ch}
-.h-foot a{color:var(--accent)}
-.h-foot nav{display:flex;flex-wrap:wrap;gap:6px 16px}
+.h-foot .h-wrap{display:flex;flex-direction:column;gap:18px}
+.h-foot .h-wrap>div{width:100%}
+.h-foot p{margin:0 0 6px;max-width:none}
+.h-foot a{color:var(--accent);white-space:nowrap}
+.h-foot nav{display:flex;flex-wrap:wrap;gap:6px 16px;padding-top:14px;border-top:1px dashed var(--line)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 /* ---------- تحسينات الرئيسية (UX، أكتوبر ٢٠٢٦) ---------- */
 /* ---------- ١) قائمة الموبايل ---------- */
@@ -655,11 +656,11 @@ body.h{background:var(--bg)}
         <div class="ex-th"><img loading="lazy" src="img/web/Gen1-800.webp" alt="" width="800" height="457"><img loading="lazy" src="img/web/Jon2-800.webp" alt="" width="800" height="457"><img loading="lazy" src="img/web/Rev21-800.webp" alt="" width="800" height="457"></div>
         <span class="go">ابدأ من التكوين <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
-      <a class="h-feat" href="copy.html">
+      <a class="h-feat" href="lists.html">
         <span class="fi"><svg class="ic"><use href="#i-copy"/></svg></span>
-        <h3>صفحتا النسخ</h3>
-        <p>اختر الآيات أو مداخل القواميس أثناء القراءة، فتُجمع في صفحة واحدة بالشكل «نص الآية — الشاهد (الترجمة)»، جاهزة للنسخ إلى Word أو أي ملف.</p>
-        <span class="go">افتح صفحة النسخ <svg class="ic"><use href="#i-arrow"/></svg></span>
+        <h3>قوائمي</h3>
+        <p>اجمع الآيات ومداخل القواميس أثناء القراءة في قوائم حسب الموضوع (الإيمان، الخلاص…)، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو أي ملف.</p>
+        <span class="go">افتح قوائمي <svg class="ic"><use href="#i-arrow"/></svg></span>
       </a>
       <a class="h-feat" href="outline.html?b=Joh" target="_blank">
         <span class="fi"><svg class="ic"><use href="#i-outline"/></svg></span>
@@ -760,8 +761,10 @@ body.h{background:var(--bg)}
       <details><summary>لماذا يختلف نص الترجمات في بعض الآيات؟</summary><div>لأن كل ترجمة بُنيت على نص عبري أو يوناني قد يختلف من مخطوطة إلى أخرى في بعض الكلمات والعبارات. وتشرح صفحة <a href="notes.html">ملاحظات على الترجمات</a> هذه الفروق سفرًا سفرًا، لكل أسفار الكتاب.</div></details>
       <details><summary>ما هما قاموسا BDB وأبوت-سميث؟ وأين أجدهما؟</summary><div>قاموس BDB (براون-درايفر-بريجز) أشهر معجم لعبرية العهد القديم، وقاموس أبوت-سميث معجم ليونانية العهد الجديد، وكلاهما مترجم إلى العربية لأول مرة. اضغط على رقم سترونج لأي كلمة في الآية، فيظهر القاموس المناسب تحت قاموس سترونج مباشرة.</div></details>
       <details><summary>كيف أستخدم خرائط الأماكن أو أخفيها؟</summary><div>في صفحة الأصحاح تظهر أسماء الأماكن مميّزة في النص، وتحت الأصحاح خريطة تجمع أماكنه. اضغط على اسم المكان لترى موقعه ومعلومات عنه. وإن أردت قراءة النص بدون الخرائط، فأخفها بزر الخرائط داخل الصفحة، فتعود الصفحة كما كانت.</div></details>
-      <details><summary>كيف أنسخ آيات أو مداخل القاموس إلى Word؟</summary><div>اضغط على زر النسخ بجانب أي آية أو مدخل قاموس، فيُضاف إلى <a href="copy.html">صفحة نسخ الآيات</a> أو <a href="dictcopy.html">صفحة نسخ القاموس</a>. ومن هناك انسخ كل ما اخترته مرة واحدة والصقه في Word أو أي ملف.</div></details>
+      <details><summary>كيف أنسخ آيات أو مداخل القاموس إلى Word؟</summary><div>اضغط على زر النسخ بجانب أي آية أو مدخل قاموس، فيُضاف إلى آخر قائمة استخدمتها في <a href="lists.html">قوائمي</a>، والسهم الصغير بجانب الزر يتيح لك اختيار قائمة أخرى أو إنشاء قائمة جديدة. ومن هناك انسخ القائمة كلها مرة واحدة والصقها في Word أو أي ملف.</div></details>
       <details><summary>هل نصوص الموقع مُراجَعة؟</summary><div>نعم. رُوجع نص فاندايك على نسخة مشكولة، ونص كتاب الحياة على النسخة المطبوعة المشكولة، وروجعت أرقام سترونج على كتب الترجمة بين السطور، ثم دُققت مرة ثانية على بيانات STEPBible. وإن لاحظت خطأً، فنرحب بتصحيحك.</div></details>
+      <details><summary>كيف أبلغ عن خطأ أو أرسل اقتراحًا؟</summary><div>في صفحة أي آية أو مدخل قاموس اضغط «أبلغ عن خطأ»، فيُفتح نموذج التواصل وقد كُتب فيه الموضع والترجمة، فلا يبقى إلا أن تكتب الخطأ والصواب. ولأي اقتراح أو سؤال آخر استخدم صفحة <a href="contact.html">تواصل معنا</a>. لا تحتاج إلى تسجيل الدخول، والاسم والبريد اختياريان.</div></details>
+      <details><summary>هل يمكنني استخدام ترجمات الموقع في عمل آخر؟</summary><div>نعم، الترجمات العربية للقواميس والملاحظات منشورة بترخيص <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>: يمكنك نسخها ومشاركتها وتعديلها مجانًا، بشرط ذكر المصدر «جدد وعتقاء»، وألا يكون الاستخدام تجاريًا، وأن تُنشر بنفس الترخيص. أما النصوص والبيانات المأخوذة من مصادر أخرى فتخضع لتراخيصها في <a href="sources.html">صفحة المصادر</a>.</div></details>
       <details><summary>ما مصادر الموقع؟</summary><div>جميع المصادر والتراخيص موجودة في <a href="sources.html">صفحة المصادر والمراجع</a>.</div></details>
     </div>
   </div>
@@ -785,9 +788,11 @@ body.h{background:var(--bg)}
     <div>
       <p><b style="color:var(--heading)">جدد وعتقاء</b>: مشروع غير ربحي لخدمة القارئ العربي في دراسة الكتاب المقدس.</p>
       <p>نص «كتاب الحياة» مستخدم بإذن من Biblica, Inc.® لأغراض غير ربحية. التفاصيل الكاملة في <a href="sources.html">المصادر والمراجع</a>.</p>
+      <p>© ٢٠٢٦ <b style="color:var(--heading)">سامح يونان انطون</b> (Sameh Younan Anton) — تصميم الموقع وتطويره. التصميم والبرمجة: جميع الحقوق محفوظة. الترجمات العربية للقواميس والملاحظات: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" target="_blank" rel="noopener license">CC BY-NC-SA 4.0</a>.</p>
+      <p>لاحظت خطأً أو عندك اقتراح؟ <a href="contact.html">تواصل معنا</a>.</p>
     </div>
     <nav aria-label="روابط">
-      <a href="search.html">البحث</a><a href="topics.html">المواضيع</a><a href="strong.html">سترونج</a><a href="arword.html">البحث بكلمة عربية</a><a href="grammar.html">البحث النحوي</a><a href="mindmap.html">الخريطة الذهنية</a><a href="chrono.html">القراءة الزمنية</a><a href="timeline.html">الخط الزمني</a><a href="notes.html">ملاحظات على الترجمات</a><a href="sources.html">المصادر</a>
+      <a href="search.html">البحث</a><a href="topics.html">المواضيع</a><a href="strong.html">سترونج</a><a href="arword.html">البحث بكلمة عربية</a><a href="grammar.html">البحث النحوي</a><a href="mindmap.html">الخريطة الذهنية</a><a href="chrono.html">القراءة الزمنية</a><a href="timeline.html">الخط الزمني</a><a href="notes.html">ملاحظات على الترجمات</a><a href="sources.html">المصادر</a><a href="contact.html">تواصل معنا</a>
     </nav>
   </div>
 </footer>

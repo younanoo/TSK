@@ -28,6 +28,28 @@ const CHECKS = [
   { name: "chapter strong",  url: "Isa.html#/Isa/ch/11",        act: async p => { await p.click("#cstrBtn"); await p.waitForSelector(".cvlist.cstr .sw sup"); await p.click(".cvlist.cstr .sw[data-n='H5342']"); await p.waitForSelector("#chsPop.on .chs-e"); },
     expect: [has(".cvlist.cstr .sw", 100), text("#chsPop", "H5342"), has("#chsPop a.chs-more[href='#/Isa/11:1/H5342']")] },
   { name: "verse + strong",  url: "Isa.html#/Isa/11:1/H5342",   expect: [text("#dict", "H5342"), has(".verse-card .sw.on")] },
+  { name: "present",         url: "Eph.html#/Eph/ch/1",         act: async p => { await p.click(".cvp[data-pres='49.1:3']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.keyboard.press("ArrowLeft"); await p.waitForTimeout(200); },
+    expect: [text("#pres .pres-ref", "أفسس ١: ٤"), text("#pres .pres-txt", "اختارنا")] },
+  { name: "present strong",  url: "Eph.html#/Eph/ch/1",         act: async p => { await p.click(".cvp[data-pres='49.1:4']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.evaluate(() => document.querySelector("#pres [data-pa='str']").click()); await p.waitForSelector("#pres .pres-txt .sw sup"); await p.click("#pres .pres-txt .sw", { force: true });   /* ضغطة ماوس حقيقية (مش element.click) عشان تكشف أي طبقة مغطية الكلمة */ await p.waitForSelector("#pres .pres-de .pres-dnum"); },
+    expect: [has("#pres.dict .pres-back"), has("#pres .pres-dorig")] },
+  { name: "present 3 verses", url: "Eph.html#/Eph/ch/1",        act: async p => { await p.click(".cvp[data-pres='49.1:3']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.evaluate(() => document.querySelector("#pres [data-pn='3']").click()); await p.waitForTimeout(200); await p.keyboard.press("ArrowLeft"); await p.waitForTimeout(200); },
+    expect: [text("#pres .pres-ref", "أفسس ١: ٦–٨"), has("#pres .pres-txt .pres-vn", 3)] },
+  { name: "present jump",    url: "Eph.html#/Eph/ch/1",         act: async p => { await p.click(".cvp[data-pres='49.1:3']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.evaluate(() => store.set("pres_n", 1));
+      for (const k of ["2", ":", "8", "Enter"]) await p.keyboard.press(k); await p.waitForTimeout(300); },
+    expect: [text("#pres .pres-ref", "أفسس ٢: ٨")] },
+  { name: "present jump book", url: "Eph.html#/Eph/ch/1",       act: async p => { await p.click(".cvp[data-pres='49.1:3']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.evaluate(() => store.set("pres_n", 1));
+      await p.evaluate(() => { for (const k of "يو 3:16") window.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true })); }); await p.keyboard.press("Enter");   /* حروف عربية كأنها من كيبورد عربي */ await p.waitForSelector("#pres .pres-txt:not(.wait)"); await p.waitForTimeout(400); },
+    expect: [text("#pres .pres-ref", "يوحنا ٣: ١٦"), text("#pres .pres-txt", "هكذا أحب الله")] },
+  { name: "present 3 translations", url: "Eph.html#/Eph/ch/1",  act: async p => { await p.click(".cvp[data-pres='49.1:3']"); await p.waitForSelector("#pres.on .pres-txt:not(.wait)"); await p.evaluate(() => document.querySelector("#pres [data-pa='tri']").click()); await p.waitForSelector("#pres .pres-tri .pt"); },
+    expect: [has("#pres .pres-tri .pt", 3), text("#pres .pres-tri", "Blessed be the God")] },
+  { name: "present interlinear", url: "Eph.html#/Eph/ch/1",     act: async p => { await p.evaluate(() => { store.set("inter", true); render(); }); await p.waitForSelector(".ilv .cvp"); await p.click(".ilv .cvp[data-pres='49.1:3']"); await p.waitForSelector("#pres .pres-il .ilc", { timeout: 20000 }); await p.click("#pres .pres-il .ilc .iln >> xpath=..", { force: true }); await p.waitForSelector("#pres .pres-dnum"); },
+    expect: [has("#pres [data-pa='il'].on"), has("#pres.dict .pres-back")] },
+  { name: "external hidden", url: "Eph.html#/Eph/ch/1",         expect: ["(document.querySelector('[data-scr]') && !document.querySelector('[data-scr]').hidden) ? 'external-screen button shows with no second screen' : ''"] },
+  { name: "external screen", url: "Eph.html#/Eph/ch/1",         act: async p => { await p.evaluate(() => { Object.defineProperty(Screen.prototype, "isExtended", { get: () => true, configurable: true }); screen.dispatchEvent(new Event("change")); });   /* كأن فيه شاشة تانية على Extend */
+      const pop = p.context().waitForEvent("page"); await p.click("[data-scr]"); const w = await pop; await w.waitForLoadState();
+      await p.click(".cvp[data-pres='49.1:3']"); await w.waitForSelector(".pres-txt:not(.wait)"); await p.keyboard.press("ArrowLeft"); await p.waitForTimeout(400);
+      const t = await w.innerText(".pres-ref"); if (!t.includes("أفسس ١: ٤")) throw new Error("screen shows «" + t + "» instead of أفسس ١: ٤"); },
+    expect: [text(".scr-bar", "أفسس ١: ٤"), has(".cvw.scr-cur")] },
   { name: "NT chapter",      url: "Joh.html#/Joh/ch/3",         expect: [has(".cvt", 36)] },
   { name: "search",          url: "search.html?q=محبة",         expect: [has(".hit", 10)] },
   { name: "strong",          url: "strong.html#G25",            expect: [text("#out", "agap"), text("#out", "G25")] },
@@ -43,8 +65,7 @@ const CHECKS = [
   { name: "chrono plan",     url: "chrono.html",                expect: [text("body", "٣٦٥ يومًا")] },
   { name: "timeline",        url: "timeline.html",              expect: [text("body", "الخط الزمني")] },
   { name: "sources",         url: "sources.html",               expect: [text("body", "المصادر")] },
-  { name: "copy",            url: "copy.html",                  expect: [text("body", "صفحة النسخ")] },
-  { name: "dict copy",       url: "dictcopy.html",              expect: [text("body", "صفحة نسخ القاموس")] },
+  { name: "lists",           url: "lists.html",                 expect: [text("body", "قوائمي")] },
   { name: "offline page",    url: "offline.html",               expect: [text("body", "غير متصل")] },
 ];
 

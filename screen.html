@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>شاشة العرض — جدد وعتقاء</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=e81edc5b">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}</style>
+<!--seo-->
+<meta name="description" content="شاشة العرض الخارجية للمكتبة: تُفتح من صفحة الأصحاح لعرض الآيات بملء الشاشة على بروجكتور أو تلفزيون.">
+<link rel="canonical" href="https://younanoo.github.io/TSK/screen.html">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:site_name" content="جدد وعتقاء">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:type" content="website">
+<meta property="og:title" content="شاشة العرض — جدد وعتقاء">
+<meta property="og:description" content="شاشة العرض الخارجية للمكتبة: تُفتح من صفحة الأصحاح لعرض الآيات بملء الشاشة على بروجكتور أو تلفزيون.">
+<meta property="og:url" content="https://younanoo.github.io/TSK/screen.html">
+<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="شاشة العرض — جدد وعتقاء">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="شاشة العرض — جدد وعتقاء">
+<meta name="twitter:description" content="شاشة العرض الخارجية للمكتبة: تُفتح من صفحة الأصحاح لعرض الآيات بملء الشاشة على بروجكتور أو تلفزيون.">
+<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<!--/seo-->
+</head>
+<body>
+<!-- شاشة العرض الخارجية: تفتحها صفحة الأصحاح (assets/screenctl.js) وتتحكم فيها. لا تُفتح وحدها. -->
+<div id="pres" class="pres on scr" data-theme="dark">
+  <div class="pres-stage"><div class="pres-txt" aria-live="polite"></div></div>
+  <div class="pres-ref"></div>
+      <span class="pres-logo" aria-hidden="true"><img class="pl-d" src="assets/brand/logo-horizontal-dark.svg" alt=""><img class="pl-l" src="assets/brand/logo-horizontal-light.svg" alt=""></span> <!-- شعار الموقع صغير تحت على الشمال (style.css: .pres-logo) -->
+  <div class="pres-dict" hidden></div>
+  <button type="button" class="scr-fs" id="fsBtn">اضغط هنا (أو F11) لملء الشاشة</button>
+  <div class="scr-orphan" hidden>هذه نافذة العرض الخارجية. افتحها من زر «العرض على شاشة خارجية» في صفحة أي أصحاح.</div>
+</div>
+<script src="assets/presfit.js"></script>
+<script>
+(function(){
+  "use strict";
+  const P=window.PRESFIT,box=document.getElementById("pres"),stage=box.querySelector(".pres-stage"),txt=box.querySelector(".pres-txt"),
+        ref=box.querySelector(".pres-ref"),dict=box.querySelector(".pres-dict"),fsBtn=document.getElementById("fsBtn"),esc=P.esc;
+  const ctl=window.opener;
+  const tell=m=>{try{ctl&&!ctl.closed&&ctl.postMessage(m,"*")}catch(_){}};
+  let ilM=null,cur=null,triM=null,parts=[],part=0,idleT=0;
+  function renderTri(){if(!triM)return;txt.classList.remove("wait");txt.removeAttribute("dir");const h=P.triHtml(triM.items);txt.style.fontSize=P.fit(stage,txt,h)+"px";
+    ref.innerHTML=`<b>${esc(triM.ref)}</b> <span class="pres-trn">الترجمات الثلاث</span>`}
+  const n=x=>String(x);
+
+  function renderIL(){
+    txt.classList.remove("wait");txt.removeAttribute("dir");
+    parts=P.ilLayout(stage,txt,ilM.sl,Math.max(26,innerHeight/30)).p;if(part<0||part>=parts.length)part=part<0?parts.length-1:parts.length-1;
+    const h=P.ilHtml(ilM.sl,parts[part]);txt.style.fontSize=P.fit(stage,txt,h)+"px";
+    ref.innerHTML=`<b>${esc(ilM.ref)}</b>${parts.length>1?` <span>(${P.ar(part+1)}/${P.ar(parts.length)})</span>`:""} <span class="pres-trn">بين السطور</span>`;
+    tell({t:"pos",part,parts:parts.length})}
+  function render(){
+    if(ilM){renderIL();return}
+    if(triM){renderTri();return}
+    if(!cur)return;
+    const h=a=>P.html(a,cur.str);
+    txt.classList.remove("wait");txt.setAttribute("dir",cur.kj?"ltr":"rtl");txt.lang=cur.kj?"en":"ar";
+    box.classList.toggle("str",!!cur.str);
+    parts=P.layout(stage,txt,cur.segs,h,P.minOk(false)).p;
+    if(part<0||part>=parts.length)part=part<0?parts.length-1:Math.min(part,parts.length-1);
+    const html=h(parts[part]);txt.style.fontSize=P.fit(stage,txt,html)+"px";
+    ref.innerHTML=`<b>${esc(cur.ref)}</b>${parts.length>1?` <span>(${part+1}/${parts.length})</span>`.replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]):""} <span class="pres-trn">${esc(cur.trn)}</span>`;
+    tell({t:"pos",part,parts:parts.length});
+  }
+  function step(dir){
+    if(ilM){if(dir>0&&part<parts.length-1){part++;render();return}if(dir<0&&part>0){part--;render();return}tell({t:"edge",dir});return}
+    if(triM){tell({t:"edge",dir});return}
+    if(!cur)return;
+    if(dir>0&&part<parts.length-1){part++;render();return}
+    if(dir<0&&part>0){part--;render();return}
+    tell({t:"edge",dir});
+  }
+  function showDict(m){
+    box.classList.add("dict");dict.hidden=false;
+    dict.innerHTML=`<div class="pres-dict-in"><div class="pres-dict-hd"><b>${esc(m.word)}</b><span>${esc(m.ref)}</span></div><div class="pres-dict-body">${
+      m.entries.map(([x,e])=>{const he=x[0]==="H";if(!e)return `<div class="pres-de"><span class="pres-dnum">${x}</span><p>هذا المدخل غير متاح.</p></div>`;
+        return `<div class="pres-de"><div class="pres-dtop"><span class="pres-dnum">${x}</span><span class="pres-dorig ${he?"he":"gr"}" lang="${he?"he":"grc"}" dir="${he?"rtl":"ltr"}">${esc(e.o)}</span></div>
+          <div class="pres-dtr" dir="ltr"><b>${esc(e.tr)}</b>${e.pr?" · "+esc(e.pr):""}</div>${e.ar?`<p class="pres-dar">${esc(e.ar)}</p>`:""}${e.d?`<p class="pres-den" dir="ltr">${e.d}</p>`:""}</div>`}).join("")}</div></div>`;
+  }
+  function hideDict(){box.classList.remove("dict");dict.hidden=true;dict.innerHTML=""}
+
+  addEventListener("message",e=>{if(e.source!==ctl)return;const m=e.data||{};
+    if(m.t==="il"){hideDict();box.classList.remove("blank","str","tri");box.classList.add("il");cur=null;triM=null;ilM=m;part=m.at==="last"?-1:0;if(m.theme)box.dataset.theme=m.theme;render()}
+    else if(m.t==="tri"){ilM=null;box.classList.remove("il");hideDict();box.classList.remove("blank","str");box.classList.add("tri");cur=null;parts=[[]];part=0;if(m.theme)box.dataset.theme=m.theme;triM=m;renderTri();tell({t:"pos",part:0,parts:1})}
+    else if(m.t==="verse"){triM=null;ilM=null;box.classList.remove("tri","il");hideDict();box.classList.remove("blank");cur=m;part=m.at==="last"?-1:0;if(m.theme)box.dataset.theme=m.theme;render()}
+    else if(m.t==="step")step(m.dir);
+    else if(m.t==="dict"){if(m.theme)box.dataset.theme=m.theme;showDict(m)}
+    else if(m.t==="undict")hideDict();
+    else if(m.t==="blank")box.classList.toggle("blank",!!m.on);
+    else if(m.t==="theme")box.dataset.theme=m.theme;
+    else if(m.t==="title"){cur=null;txt.style.fontSize="";txt.classList.add("wait");txt.textContent=m.text;ref.textContent=""}
+    else if(m.t==="bye")window.close();
+  });
+
+  /* ملء الشاشة: يحتاج ضغطة على النافذة نفسها (قيد من المتصفح) */
+  const isFs=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+  function fs(){const r=document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen;if(r){try{const p=r.call(document.documentElement);p&&p.catch&&p.catch(()=>{})}catch(_){}}}
+  fsBtn.addEventListener("click",e=>{e.stopPropagation();fs()});
+  box.addEventListener("dblclick",fs);
+  const onFs=()=>{fsBtn.hidden=isFs();setTimeout(render,80)};
+  document.addEventListener("fullscreenchange",onFs);document.addEventListener("webkitfullscreenchange",onFs);
+  addEventListener("resize",()=>render());
+  /* لو حد ضغط أسهم والتركيز على نافذة العرض نفسها */
+  /* المفاتيح تتبعت لصفحة التحكم (هي اللي بتقرر: تنقل، انتقال بالرقم، شاشة سوداء) */
+  addEventListener("keydown",e=>{const k=e.key;if(e.altKey||e.ctrlKey||e.metaKey||k==="F11")return;
+    if(["ArrowLeft","ArrowDown","PageDown"," ","Enter","ArrowRight","ArrowUp","PageUp","Backspace","Escape","b","B"].includes(k)||P.jkey(k,"x")){e.preventDefault();tell({t:"key",key:k})}});
+  box.addEventListener("mousemove",()=>{box.classList.add("ui");clearTimeout(idleT);idleT=setTimeout(()=>box.classList.remove("ui"),2000)});
+  try{"wakeLock" in navigator&&navigator.wakeLock.request("screen").catch(()=>{})}catch(_){}
+
+  if(!ctl){box.querySelector(".scr-orphan").hidden=false;fsBtn.hidden=true}
+  else tell({t:"ready"});
+})();
+</script>
+</body>
+</html>

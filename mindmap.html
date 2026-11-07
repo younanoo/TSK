@@ -7,13 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=f455e6d5">
+<link rel="stylesheet" href="assets/style.css?v=e81edc5b">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
 <meta name="theme-color" content="#FAF8F2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0B1E30" media="(prefers-color-scheme: dark)">
-<script src="assets/brand.js?v=2"></script>
+<script src="assets/brand.js?v=3"></script>
 <script src="assets/nav.js"></script>
 <script src="assets/sitemenu.js" defer></script>
 <!--seo-->
@@ -59,6 +59,7 @@
   <div id="panel" hidden></div>
 </div>
 <script src="assets/mm/idx.js"></script>
+<script src="assets/dictcopy.js?v=4"></script>
 <script>
 const ABBR="Gen Exo Lev Num Deu Jos Jdg Rut 1Sa 2Sa 1Ki 2Ki 1Ch 2Ch Ezr Neh Est Job Psa Pro Ecc Son Isa Jer Lam Eze Dan Hos Joe Amo Oba Jon Mic Nah Hab Zep Hag Zec Mal Mat Mar Luk Joh Act Rom 1Co 2Co Gal Eph Phi Col 1Th 2Th 1Ti 2Ti Tit Phm Heb Jam 1Pe 2Pe 1Jo 2Jo 3Jo Jud Rev".split(" ");
 const AR = {Gen:"التكوين",Exo:"الخروج",Lev:"اللاويين",Num:"العدد",Deu:"التثنية",Jos:"يشوع",Jdg:"القضاة",Rut:"راعوث","1Sa":"صموئيل الأول","2Sa":"صموئيل الثاني","1Ki":"الملوك الأول","2Ki":"الملوك الثاني","1Ch":"أخبار الأيام الأول","2Ch":"أخبار الأيام الثاني",Ezr:"عزرا",Neh:"نحميا",Est:"أستير",Job:"أيوب",Psa:"المزامير",Pro:"الأمثال",Ecc:"الجامعة",Son:"نشيد الأنشاد",Isa:"إشعياء",Jer:"إرميا",Lam:"مراثي إرميا",Eze:"حزقيال",Dan:"دانيال",Hos:"هوشع",Joe:"يوئيل",Amo:"عاموس",Oba:"عوبديا",Jon:"يونان",Mic:"ميخا",Nah:"ناحوم",Hab:"حبقوق",Zep:"صفنيا",Hag:"حجي",Zec:"زكريا",Mal:"ملاخي",Mat:"متى",Mar:"مرقس",Luk:"لوقا",Joh:"يوحنا",Act:"أعمال الرسل",Rom:"رومية","1Co":"كورنثوس الأولى","2Co":"كورنثوس الثانية",Gal:"غلاطية",Eph:"أفسس",Phi:"فيلبي",Col:"كولوسي","1Th":"تسالونيكي الأولى","2Th":"تسالونيكي الثانية","1Ti":"تيموثاوس الأولى","2Ti":"تيموثاوس الثانية",Tit:"تيطس",Phm:"فليمون",Heb:"العبرانيين",Jam:"يعقوب","1Pe":"بطرس الأولى","2Pe":"بطرس الثانية","1Jo":"يوحنا الأولى","2Jo":"يوحنا الثانية","3Jo":"يوحنا الثالثة",Jud:"يهوذا",Rev:"الرؤيا"};
@@ -88,6 +89,12 @@ const short=id=>{const d=dec(id);return SH[ABB(d.b)]+" "+n(d.c)+": "+n(d.v)+(E[i
 const inLib=id=>{const b=IDX[Math.floor(id/1e6)],c=b&&b[Math.floor(id%1e6/1e3)];return !!c&&c.includes(id%1e3)};
 const useSvd=()=>get("tr","svd")==="svd";
 const vt=id=>(useSvd()&&TS[id])||T[id]||"";
+/* زرار «أضف لقوائمي» (assets/dictcopy.js): النص بفاندايك (S) لو مختارة وموجودة، وإلا كتاب الحياة (T) */
+const vtr=id=>useSvd()&&TS[id]?"فاندايك":"كتاب الحياة";
+/* الشاهد بدون نهاية المقطع (١–١٠ → ١): النص المحفوظ للعقدة هو نص أول آية فقط، وبكده يطابق شاهد الآية في صفحات الأسفار */
+const ref1=id=>{const d=dec(id);return AR[ABB(d.b)]+" "+n(d.c)+": "+n(d.v)};
+const ADD=(id,sm)=>window.TSKLists?TSKLists.verseBtn({ref:ref1(id),tr:vtr(id),t:vt(id),sm}):"";
+const ADDT=id=>window.TSKLists?TSKLists.verseBtn({ref:ref1(id),tr:"كتاب الحياة",t:T[id]||"",sm:1}):"";   /* الجدول بيعرض نص كتاب الحياة */
 const wTitle=g=>(useSvd()?(g[1]||g[0]):(g[0]||g[1]))||g[2]||"الشواهد";
 const books=Object.keys(IDX).map(Number).sort((a,b)=>a-b);
 const CAPS=[[8,3,2],[14,4,3],[24,6,4]];
@@ -161,7 +168,7 @@ function draw(){chLink(dec(S.vid));
   const ext=x0[3]+colW[3]+60;B={w:kids.length>1?2*ext:ext*1.2,h:H+90,cx:0,cy:H/2};
   fit();$("#panel").hidden=true}
 function renderTable(root){
-  const t=$("#tbl"),cell=nd=>`<td rowspan="@@" class="l${nd.lv}${inLib(nd.id)?"":" ext"}" style="--bc:hsl(${(nd.br*47)%360} 52% 52%)"><div class="vref"><b>${esc(label(nd.id))}</b>${inLib(nd.id)?`<a href="${ABB(dec(nd.id).b)}.html#/${ABB(dec(nd.id).b)}/${dec(nd.id).c}:${dec(nd.id).v}" target="_blank" title="افتحه في الدراسة"><svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:""}${nd.all>nd.kids.length&&nd.lv<3?`<span class="mo">+${n(nd.all-nd.kids.length)}</span>`:""}</div><div class="ar vt">${esc(T[nd.id]||"")}</div></td>`;
+  const t=$("#tbl"),cell=nd=>`<td rowspan="@@" class="l${nd.lv}${inLib(nd.id)?"":" ext"}" style="--bc:hsl(${(nd.br*47)%360} 52% 52%)"><div class="vref"><b>${esc(label(nd.id))}</b>${T[nd.id]?ADDT(nd.id):""}${inLib(nd.id)?`<a href="${ABB(dec(nd.id).b)}.html#/${ABB(dec(nd.id).b)}/${dec(nd.id).c}:${dec(nd.id).v}" target="_blank" title="افتحه في الدراسة"><svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:""}${nd.all>nd.kids.length&&nd.lv<3?`<span class="mo">+${n(nd.all-nd.kids.length)}</span>`:""}</div><div class="ar vt">${esc(T[nd.id]||"")}</div></td>`;
   const lv=nd=>nd.kids.length?nd.kids.reduce((a,k)=>a+lv(k),0):1;
   let rows="";
   const emit=(nd,pre)=>{const row=pre.concat([cell(nd).replace("@@",lv(nd))]);
@@ -169,7 +176,7 @@ function renderTable(root){
     nd.kids.forEach((k,i)=>emit(k,i?[]:row))};
   root.kids.forEach(k=>emit(k,[]));
   // pad rows that stop early so every row has 3 columns
-  t.innerHTML=`<div class="tblhead"><h2>${esc(root.txt)}</h2><div class="sub">${esc(root.sub)}</div><div class="ar vt">${esc(vt(root.id))}</div></div>
+  t.innerHTML=`<div class="tblhead"><h2>${esc(root.txt)}</h2><div class="sub">${esc(root.sub)}</div><div class="ar vt">${esc(vt(root.id))}</div>${vt(root.id)?ADD(root.id):""}</div>
   <table><thead><tr><th>المستوى ١ — شواهد الكلمة</th><th>المستوى ٢ — شواهد الشواهد</th><th>المستوى ٣</th></tr></thead><tbody>${rows||'<tr><td colspan="3" class="muted">لا توجد شواهد لهذه الكلمة</td></tr>'}</tbody></table>`;
   t.hidden=false;$("#panel").hidden=true}
 function apply(){$("#vp").setAttribute("transform",`translate(${V.x},${V.y}) scale(${V.k})`)}
@@ -186,9 +193,9 @@ $("#vMap").onclick=()=>{S.view="m";set("mmview","m");draw()};$("#vTbl").onclick=
 function show(id){
   const d=dec(id),ab=ABB(d.b),p=$("#panel");
   p.innerHTML=`<button class="x" aria-label="إغلاق"><svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M18 6l-12 12' /> <path d='M6 6l12 12' /></svg></button><h3>${esc(label(id))}</h3><div class="ar vt">${esc(vt(id))}</div>
-  <div class="acts">${inLib(id)?`<button id="recenter">اجعله مركز الخريطة</button><a href="${ab}.html#/${ab}/${d.c}:${d.v}" target="_blank">افتحه في الدراسة <svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:`<span class="muted">هذا السفر لم يُضف إلى المكتبة بعد، فلا يمكن التوسع منه.</span>`}</div>`;
+  <div class="acts">${ADD(id)}${inLib(id)?`<button id="recenter">اجعله مركز الخريطة</button><a href="${ab}.html#/${ab}/${d.c}:${d.v}" target="_blank">افتحه في الدراسة <svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg></a>`:`<span class="muted">هذا السفر لم يُضف إلى المكتبة بعد، فلا يمكن التوسع منه.</span>`}</div>`;
   p.hidden=false;p.dataset.id=id;p.querySelector(".x").onclick=()=>p.hidden=true;
-  if(!vt(id)&&!chReady(chKey(id)))loadCh([chKey(id)],()=>{const e=p.querySelector(".vt");if(e&&p.dataset.id==String(id))e.textContent=vt(id)});
+  if(!vt(id)&&!chReady(chKey(id)))loadCh([chKey(id)],()=>{const e=p.querySelector(".vt");if(e&&p.dataset.id==String(id)){e.textContent=vt(id);const g=p.querySelector(".lsvg");if(g){g.dataset.t=vt(id);g.dataset.tr=vtr(id)}}});
   const rc=$("#recenter");if(rc)rc.onclick=()=>{setSel(id,-1);pick()}}
 (function init(){
   S.N=+$("#selN").value;

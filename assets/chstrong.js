@@ -74,7 +74,9 @@
       if(curW!==w) return;
       const body=pop.querySelector(".chs-body");
       if(bad&&nums.every(x=>!DIC[x])) body.innerHTML=`<div class="chs-na">تعذّر تحميل القاموس — غالبًا الجهاز غير متصل بالإنترنت. <button type="button" class="trb chs-retry">إعادة المحاولة</button></div>`;
-      else body.innerHTML=nums.map(x=>entryHTML(x,DIC[x])).join("");
+      else{body.innerHTML=nums.map(x=>entryHTML(x,DIC[x])).join("");
+        /* للشاشة الخارجية (screenctl.js): نفس المدخل يظهر هناك بملء الشاشة */
+        document.dispatchEvent(new CustomEvent("chs:show",{detail:{word:word.textContent.trim(),ab,c,v,entries:nums.map(x=>[x,DIC[x]||null])}}))}
       place(w);
       pop.focus({preventScroll:true});
     });
@@ -82,6 +84,7 @@
 
   function close(){
     if(!pop||!pop.classList.contains("on")) return;
+    document.dispatchEvent(new CustomEvent("chs:close"));
     pop.classList.remove("on","sheet");scrim.classList.remove("on");pop.style.transform="";
     if(curW){curW.classList.remove("on");if(document.contains(curW)&&lastFocus&&document.contains(lastFocus))lastFocus.focus({preventScroll:true})}
     curW=null;
@@ -92,5 +95,5 @@
   addEventListener("keydown",e=>{if(e.key==="Escape")close()});
   addEventListener("hashchange",close);
   addEventListener("resize",()=>{if(pop&&pop.classList.contains("on")&&curW&&document.contains(curW))place(curW);else close()});
-  window.CHS={open,close};
+  window.CHS={open,close,need}; /* need: يستخدمه العرض بملء الشاشة (present.js) لتحميل نفس مداخل القاموس */
 })();
