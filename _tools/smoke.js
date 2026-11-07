@@ -49,7 +49,7 @@ const CHECKS = [
       const pop = p.context().waitForEvent("page"); await p.click("[data-scr]"); const w = await pop; await w.waitForLoadState();
       await p.click(".cvp[data-pres='49.1:3']"); await w.waitForSelector(".pres-txt:not(.wait)"); await p.keyboard.press("ArrowLeft"); await p.waitForTimeout(400);
       const t = await w.innerText(".pres-ref"); if (!t.includes("أفسس ١: ٤")) throw new Error("screen shows «" + t + "» instead of أفسس ١: ٤"); },
-    expect: [text(".scr-bar", "أفسس ١: ٤"), has(".cvw.scr-cur")] },
+    expect: [text(".scr-bar", "الشاشة الخارجية"), has(".cvw.scr-cur")] },   /* الشريط بيقول «مش بملء الشاشة» لحد ما حد يضغط على نافذة العرض */
   { name: "NT chapter",      url: "Joh.html#/Joh/ch/3",         expect: [has(".cvt", 36)] },
   { name: "search",          url: "search.html?q=محبة",         expect: [has(".hit", 10)] },
   { name: "strong",          url: "strong.html#G25",            expect: [text("#out", "agap"), text("#out", "G25")] },

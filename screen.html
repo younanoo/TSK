@@ -38,7 +38,7 @@
   <div class="pres-ref"></div>
       <span class="pres-logo" aria-hidden="true"><img class="pl-d" src="assets/brand/logo-horizontal-dark.svg" alt=""><img class="pl-l" src="assets/brand/logo-horizontal-light.svg" alt=""></span> <!-- شعار الموقع صغير تحت على الشمال (style.css: .pres-logo) -->
   <div class="pres-dict" hidden></div>
-  <button type="button" class="scr-fs" id="fsBtn">اضغط هنا (أو F11) لملء الشاشة</button>
+  <button type="button" class="scr-fs" id="fsBtn">اضغط في أي مكان هنا، أو أي زرار في الكيبورد أو الريموت، لملء الشاشة</button>
   <div class="scr-orphan" hidden>هذه نافذة العرض الخارجية. افتحها من زر «العرض على شاشة خارجية» في صفحة أي أصحاح.</div>
 </div>
 <script src="assets/presfit.js"></script>
@@ -108,18 +108,21 @@
   function fs(){const r=document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen;if(r){try{const p=r.call(document.documentElement);p&&p.catch&&p.catch(()=>{})}catch(_){}}}
   fsBtn.addEventListener("click",e=>{e.stopPropagation();fs()});
   box.addEventListener("dblclick",fs);
-  const onFs=()=>{fsBtn.hidden=isFs();setTimeout(render,80)};
+  const onFs=()=>{fsBtn.hidden=isFs();tell({t:"fs",on:isFs()});setTimeout(render,80)};
+  /* أول ضغطة على الشاشة أو أول زرار (كيبورد أو ريموت) والنافذة دي في المقدمة = ملء الشاشة (المتصفح بيشترط تفاعل جوه النافذة نفسها) */
+  box.addEventListener("pointerdown",()=>{if(!isFs())fs()});
   document.addEventListener("fullscreenchange",onFs);document.addEventListener("webkitfullscreenchange",onFs);
   addEventListener("resize",()=>render());
   /* لو حد ضغط أسهم والتركيز على نافذة العرض نفسها */
   /* المفاتيح تتبعت لصفحة التحكم (هي اللي بتقرر: تنقل، انتقال بالرقم، شاشة سوداء) */
   addEventListener("keydown",e=>{const k=e.key;if(e.altKey||e.ctrlKey||e.metaKey||k==="F11")return;
+    if(!isFs()&&ctl&&k!=="Escape"){e.preventDefault();fs();return}
     if(["ArrowLeft","ArrowDown","PageDown"," ","Enter","ArrowRight","ArrowUp","PageUp","Backspace","Escape","b","B"].includes(k)||P.jkey(k,"x")){e.preventDefault();tell({t:"key",key:k})}});
   box.addEventListener("mousemove",()=>{box.classList.add("ui");clearTimeout(idleT);idleT=setTimeout(()=>box.classList.remove("ui"),2000)});
   try{"wakeLock" in navigator&&navigator.wakeLock.request("screen").catch(()=>{})}catch(_){}
 
   if(!ctl){box.querySelector(".scr-orphan").hidden=false;fsBtn.hidden=true}
-  else tell({t:"ready"});
+  else{tell({t:"ready"});tell({t:"fs",on:isFs()});setTimeout(()=>{try{window.focus()}catch(_){}},50)}
 })();
 </script>
 </body>

@@ -240,7 +240,7 @@
         if(k==="next")scStep(1);else if(k==="prev")scStep(-1);else if(k==="blank")scBlank(!SC.blank);else if(k==="stop")scStop();else if(k==="open")scOpenWin();
         else if(k==="theme"){setS("pres_theme",T()==="dark"?"light":"dark");scSend({t:"theme",theme:T()})}})}
     const it=scItems(),i=scIdx(),x=it[i];
-    const lab=SC.lost&&SC.win&&!SC.win.closed?`<span class="scr-st warn">الشاشة الخارجية اتفصلت — وصّلها تاني (Win+P ← Extend) أو أوقف العرض</span>`:!SC.win||SC.win.closed?`<span class="scr-st warn">نافذة العرض غير مفتوحة</span><button type="button" class="scr-b strong" data-sa="open">افتح نافذة العرض</button>`
+    const lab=SC.fs===false&&SC.win&&!SC.win.closed&&!SC.lost?`<span class="scr-st warn">الشاشة الخارجية مش بملء الشاشة — اضغط عليها مرة، أو أي زرار في الكيبورد/الريموت وهي في المقدمة</span>`:SC.lost&&SC.win&&!SC.win.closed?`<span class="scr-st warn">الشاشة الخارجية اتفصلت — وصّلها تاني (Win+P ← Extend) أو أوقف العرض</span>`:!SC.win||SC.win.closed?`<span class="scr-st warn">نافذة العرض غير مفتوحة</span><button type="button" class="scr-b strong" data-sa="open">افتح نافذة العرض</button>`
       :`<span class="scr-st"><i class="scr-dot"></i>على الشاشة الخارجية: <b>${x?(x.k==="v"?esc(x.ref):x.k==="d"?esc(x.num):"شرح")+(SC.part[1]>1?` (${ar(SC.part[0]+1)}/${ar(SC.part[1])})`:"")+` — ${ar(i+1)} من ${ar(it.length)}`:"لم يُختر عنصر بعد — اضغط ← أو زرار العرض جنب أي عنصر"}</b>${SC.blank?" · شاشة سوداء":""}</span>`;
     SC.bar.innerHTML=`${lab}<span class="scr-gap"></span>
       <button type="button" class="scr-b" data-sa="prev" title="السابق (→)" aria-label="السابق">→</button>
@@ -277,6 +277,7 @@
     if(k==="b"||k==="B"){scBlank(!SC.blank);return true}
     return false}
   addEventListener("message",e=>{if(!SC.win||e.source!==SC.win)return;const m=e.data||{};
+    if(m.t==="fs"){SC.fs=!!m.on;scUi();return}
     if(m.t==="ready"){scSend({t:"theme",theme:T()});if(scIdx()>=0)scSendItem("first");else scSend({t:"title",text:SC.o?SC.o.title():""});scUi()}
     else if(m.t==="edge")scEdge(m.dir);
     else if(m.t==="pos"){SC.part=[m.part,m.parts];scUi()}

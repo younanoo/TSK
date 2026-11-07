@@ -14,7 +14,7 @@
 (function(){
   "use strict";
   if(window.SCR) return;
-  let lost=false,src=null,cur=null,jb="",jT=0,scr=null,on=false,list=null,idx=-1,part=[0,1],dictUp=false,blank=false,poll=0,sig="",bar=null,retryT=0;
+  let fsOn=true,lost=false,src=null,cur=null,jb="",jT=0,scr=null,on=false,list=null,idx=-1,part=[0,1],dictUp=false,blank=false,poll=0,sig="",bar=null,retryT=0;
   const send=m=>{try{if(scr&&!scr.closed)scr.postMessage(m,"*")}catch(_){}};
   const theme=()=>store.get("pres_theme","dark");
 
@@ -23,7 +23,7 @@
       bar.addEventListener("click",e=>{const sn=e.target.closest("[data-sn]");if(sn){setN(+sn.dataset.sn);return}const b=e.target.closest("[data-sa]");if(!b)return;const k=b.dataset.sa;
         if(k==="undict"){undict();return}if(k==="il"){store.set("pres_il",!IL());store.set("pres_tri",false);if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="tri"){store.set("pres_il",false);store.set("pres_tri",!TRI());if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="next")step(1);else if(k==="prev")step(-1);else if(k==="blank")setBlank(!blank);else if(k==="stop")stop();else if(k==="open")openWin(null);else if(k==="theme"){store.set("pres_theme",theme()==="dark"?"light":"dark");send({t:"theme",theme:theme()})}})}
     const d=list&&list[idx],b={abbr:src?src.abbr:book().abbr};
-    const lab=lost&&scr&&!scr.closed&&!jb?`<span class="scr-st warn">الشاشة الخارجية اتفصلت — وصّلها تاني (Win+P ← Extend) أو أوقف العرض</span>`:jb?`<span class="scr-st"><b class="scr-jump">انتقال إلى: ${esc(PRESFIT.ar(jb))}</b> — Enter للانتقال · Esc للإلغاء</span>`:!scr||scr.closed?`<span class="scr-st warn">نافذة العرض غير مفتوحة</span><button type="button" class="scr-b strong" data-sa="open">افتح نافذة العرض</button>`
+    const lab=!fsOn&&scr&&!scr.closed&&!jb&&!lost?`<span class="scr-st warn">الشاشة الخارجية مش بملء الشاشة — اضغط عليها مرة، أو أي زرار في الكيبورد/الريموت وهي في المقدمة</span>`:lost&&scr&&!scr.closed&&!jb?`<span class="scr-st warn">الشاشة الخارجية اتفصلت — وصّلها تاني (Win+P ← Extend) أو أوقف العرض</span>`:jb?`<span class="scr-st"><b class="scr-jump">انتقال إلى: ${esc(PRESFIT.ar(jb))}</b> — Enter للانتقال · Esc للإلغاء</span>`:!scr||scr.closed?`<span class="scr-st warn">نافذة العرض غير مفتوحة</span><button type="button" class="scr-b strong" data-sa="open">افتح نافذة العرض</button>`
       :`<span class="scr-st"><i class="scr-dot"></i>على الشاشة الخارجية: <b>${d?`${esc(AR[b.abbr])} ${n(d.c)}: ${n(d.v)}${part[1]>1?` (${n(part[0]+1)}/${n(part[1])})`:""}`:"لم تُختر آية بعد — اضغط زر العرض جنب أي آية"}</b>${dictUp?" · قاموس سترونج":""}${blank?" · شاشة سوداء":""}</span>`;
     bar.innerHTML=`${lab}<span class="scr-gap"></span>
       <span class="scr-ns">${[1,3,5].map(k=>`<button type="button" class="scr-b ${!TRI()&&K()===k?"on":""}" data-sn="${k}" title="${k===1?"آية واحدة":n(k)+" آيات"} في الشريحة">${n(k)}</button>`).join("")}</span>
@@ -120,6 +120,7 @@
 
   /* ---- رسائل نافذة العرض ---- */
   addEventListener("message",e=>{if(!scr||e.source!==scr)return;const m=e.data||{};
+    if(m.t==="fs"){fsOn=!!m.on;ui();return}
     if(m.t==="ready"){send({t:"theme",theme:theme()});if(idx>=0)sendVerse("first");else{const b=book();send({t:"title",text:`${AR[b.abbr]} ${n(S.c)}`})}ui()}
     else if(m.t==="edge")edge(m.dir);
     else if(m.t==="pos"){part=[m.part,m.parts];ui()}
