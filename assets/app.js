@@ -1,3 +1,4 @@
+document.documentElement.classList.add('ux-a'); /* التصميم «أ»: شريط مختصر + أوضاع قراءة/دراسة/خدمة (الأنماط في style.css تحت .ux-a) */
 const TI={"flag":"<path d=\"M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z\" /> <path d=\"M5 21v-7\" />","download":"<path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2\"/><path d=\"M7 11l5 5l5 -5\"/><path d=\"M12 4l0 12\"/>","menu-2":"<path d=\"M4 6l16 0\" /> <path d=\"M4 12l16 0\" /> <path d=\"M4 18l16 0\" />","x":"<path d=\"M18 6l-12 12\" /> <path d=\"M6 6l12 12\" />","sun-moon":"<path d=\"M9.173 14.83a4 4 0 1 1 5.657 -5.657\" /> <path d=\"M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914\" /> <path d=\"M3 12h1\" /> <path d=\"M12 3v1\" /> <path d=\"M5.6 5.6l.7 .7\" /> <path d=\"M3 21l18 -18\" />","printer":"<path d=\"M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2\" /> <path d=\"M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4\" /> <path d=\"M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z\" />","search":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M21 21l-6 -6\" />","calendar":"<path d=\"M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z\" /> <path d=\"M16 3v4\" /> <path d=\"M8 3v4\" /> <path d=\"M4 11h16\" />","timeline":"<path d=\"M4 16l6 -7l5 5l5 -6\" /> <circle cx=\"15\" cy=\"14\" r=\"1.5\" /> <circle cx=\"10\" cy=\"9\" r=\"1.5\" /> <circle cx=\"4\" cy=\"16\" r=\"1.5\" /> <circle cx=\"20\" cy=\"8\" r=\"1.5\" />","tags":"<path d=\"M3 8v4.172a2 2 0 0 0 .586 1.414l5.71 5.71a2.41 2.41 0 0 0 3.408 0l3.592 -3.592a2.41 2.41 0 0 0 0 -3.408l-5.71 -5.71a2 2 0 0 0 -1.414 -.586h-4.172a2 2 0 0 0 -2 2z\" /> <path d=\"M18 19l1.592 -1.592a4.82 4.82 0 0 0 0 -6.816l-4.592 -4.592\" /> <path d=\"M7 10h-.01\" />","books":"<path d=\"M5 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z\" /> <path d=\"M9 4m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z\" /> <path d=\"M5 8h4\" /> <path d=\"M9 16h4\" /> <path d=\"M13.803 4.56l2.184 -.53c.562 -.135 1.133 .19 1.282 .732l3.695 13.418a1.02 1.02 0 0 1 -.634 1.219l-.133 .041l-2.184 .53c-.562 .135 -1.133 -.19 -1.282 -.732l-3.695 -13.418a1.02 1.02 0 0 1 .634 -1.219l.133 -.041z\" /> <path d=\"M14 9l4 -1\" /> <path d=\"M16 16l3.923 -.98\" />","microscope":"<path d=\"M5 21h14\" /> <path d=\"M6 18h2\" /> <path d=\"M7 18v3\" /> <path d=\"M9 11l3 3l6 -6l-3 -3z\" /> <path d=\"M10.5 12.5l-1.5 1.5\" /> <path d=\"M17 3l3 3\" /> <path d=\"M12 21a6 6 0 0 0 3.715 -10.712\" />","topology-star-3":"<path d=\"M10 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M18 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M10 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M6 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M18 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M22 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z\" /> <path d=\"M6 12h4\" /> <path d=\"M14 12h4\" /> <path d=\"M15 7l-2 3\" /> <path d=\"M9 7l2 3\" /> <path d=\"M11 14l-2 3\" /> <path d=\"M13 14l2 3\" />","bookmarks":"<path d=\"M15 10v11l-5 -3l-5 3v-11a3 3 0 0 1 3 -3h4a3 3 0 0 1 3 3z\" /> <path d=\"M11 3h5a3 3 0 0 1 3 3v11\" />","note":"<path d=\"M13 20l7 -7\" /> <path d=\"M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7\" />","arrows-left-right":"<path d=\"M21 17l-18 0\" /> <path d=\"M6 10l-3 -3l3 -3\" /> <path d=\"M3 7l18 0\" /> <path d=\"M18 20l3 -3l-3 -3\" />","language":"<path d=\"M4 5h7\" /> <path d=\"M9 3v2c0 4.418 -2.239 8 -5 8\" /> <path d=\"M5 9c0 2.144 2.952 3.908 6.7 4\" /> <path d=\"M12 20l4 -9l4 9\" /> <path d=\"M19.1 18h-6.2\" />","chevron-down":"<path d=\"M6 9l6 6l6 -6\" />","chevron-left":"<path d=\"M15 6l-6 6l6 6\" />","external-link":"<path d=\"M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6\" /> <path d=\"M11 13l9 -9\" /> <path d=\"M15 4h5v5\" />","arrow-back-up":"<path d=\"M9 14l-4 -4l4 -4\" /> <path d=\"M5 10h11a4 4 0 1 1 0 8h-1\" />","home":"<path d=\"M5 12l-2 0l9 -9l9 9l-2 0\" /> <path d=\"M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7\" /> <path d=\"M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6\" />","layout-grid":"<path d=\"M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" /> <path d=\"M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z\" />","arrows-shuffle":"<path d=\"M18 4l3 3l-3 3\" /> <path d=\"M18 20l3 -3l-3 -3\" /> <path d=\"M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5\" /> <path d=\"M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3\" />","zoom-in":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M7 10l6 0\" /> <path d=\"M10 7l0 6\" /> <path d=\"M21 21l-6 -6\" />","zoom-out":"<path d=\"M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" /> <path d=\"M7 10l6 0\" /> <path d=\"M21 21l-6 -6\" />","align-left":"<path d=\"M4 6l16 0\" /> <path d=\"M4 12l10 0\" /> <path d=\"M4 18l14 0\" />","align-right":"<path d=\"M4 6l16 0\" /> <path d=\"M10 12l10 0\" /> <path d=\"M6 18l14 0\" />"};
 const ic=(n,x)=>`<svg class="tic${x?" "+x:""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TI[n]}</svg>`;
 
@@ -130,16 +131,16 @@ function parseRef(q){
   return {abbr:c1.abbr,c:+c,v:+v}}
 function gotoRef(q){const r=parseRef(q);if(!r)return false;location.href=pageOf(r.abbr,"/"+r.abbr+"/"+r.c+":"+r.v);return true}
 function sideTools(){
-  /* القائمة الجانبية الموحّدة — نفس ترتيب assets/sitemenu.js:
-     ١) اذهب إلى عدد  ٢) الأسفار (موجودة في الصفحة)  ٣) الكتاب عبر الزمن  ٤) أدوات البحث  ٥) صفحات أخرى */
+  /* القائمة الجانبية: ابحث أو اذهب لآية، ثم اقرأ (الأسفار في الصفحة) · ادرس · اخدم */
   if($("#findSec"))return;
-  const L=(h,i,t,x="")=>`<a class="tool" href="${h}"${x} style="text-decoration:none;display:block;margin-top:8px">${ic(i)} ${t}</a>`;
+  const L=(h,i,t,x="")=>`<a class="tool" href="${h}"${x} style="text-decoration:none;display:block;margin-top:8px">${i.startsWith("<svg")?i:ic(i)} ${t}</a>`;
   const sec=(id,k,t,body)=>`<div class="side-sec" id="${id}" data-sec="${k}"><h4 class="sh">${t}</h4><div class="sbody">${body}</div></div>`;
   const h=$("#home");
-  h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","اذهب إلى عدد",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="مثال: يو ٣:١٦ أو إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off" enterkeyhint="go"></form>`));
-  const after=sec("timeSec","time","الكتاب عبر الزمن",L("chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)")+L("timeline.html","timeline","الخط الزمني للأحداث"))
-    +sec("toolSec","tools","أدوات البحث",L("search.html","search","البحث: كلمة · جذر · سترونج · نحوي",' id="srchLink" target="tsksearch"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
-    +sec("otherSec","other","صفحات أخرى",L("lists.html","bookmarks","قوائمي (الآيات ومداخل القاموس المختارة) <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+L("contact.html","flag","تواصل معنا / أبلغ عن خطأ",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
+  h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","ابحث أو اذهب لآية",`<form id="gotoBox" class="gotobox" role="search"><input id="gotoIn" placeholder="مثل: يو ٣: ١٦ أو محبة" aria-label="ابحث أو اذهب لآية" autocomplete="off" enterkeyhint="go"></form>`)+`<div class="ucap">اقرأ</div>`);
+  const after=`<div class="side-sec" id="readSec" data-sec="read"><div class="sbody">`+L("chrono.html","calendar","اقرأ الكتاب كله في سنة بترتيب الأحداث")+L("index.html#votd","note","آية اليوم")+`</div></div>`
+    +sec("toolSec","study","ادرس",L("search.html","search","ابحث بكلمة أو جذر أو رقم سترونج",' id="srchLink" target="tsksearch"')+L("topics.html","tags","ابحث عن موضوع في الكتاب المقدس",' target="tsktopics"')+L("mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة",' id="mmLink" target="tskmindmap"')+L("timeline.html","timeline","أحداث الكتاب على خط زمني")+L("outline.html?b="+book().abbr,"layout-grid","مخطط السفر",' id="uOlSide"'))
+    +sec("serveSec","serve","اخدم",L("lists.html","bookmarks","قوائمي: اجمع آيات وانسخها <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+`<button type="button" class="tool" id="uPresSide" style="display:block;width:100%;margin-top:8px;text-align:start">${PRES_IC} اعرض الآيات على شاشة أو بروجكتور</button>`)
+    +`<div class="ufoot"><a href="sources.html" target="_blank">المصادر</a><a href="contact.html" target="_blank">تواصل معنا</a><button type="button" id="offBtn">التنزيل دون إنترنت</button></div>`;
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }
@@ -220,7 +221,7 @@ function trText(d){const c=trCur();if(c==="alab")return diaOn()?kdGet(d):null;
   const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdD&&t.svdD[k])return t.svdD[k];return (t[c]&&t[c][k])||null}
 /* ---- اللغة الأصلية (عرض الأصحاح): نص Berean (WLC / Nestle) بترتيب الكلمات الأصلي ---- */
 function origView(){return S.view==="chapter"||S.view==="verse"}
-function origOn(){return origView()&&store.get("corig",false)===true}
+function origOn(){return origView()&&(MODE()==="study"||S.view==="verse")&&store.get("corig",false)===true}
 function origLoad(ab){if(window.ORIG&&window.ORIG[ab])return window.ORIG[ab];const src="assets/orig_"+ab+".js";
   if(LOADED[src]===undefined)loadJS(src,()=>{if(origView())render()});return null}
 function origSpan(d){const b=book(),O=origLoad(b.abbr),gr=b.id>39;
@@ -246,14 +247,20 @@ function extSync(){document.querySelectorAll("[data-scr]").forEach(b=>{b.hidden=
 try{window.screen&&screen.addEventListener&&screen.addEventListener("change",extSync)}catch(e){}
 const SCR_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h12v9h-12z"/><path d="M15 9h6v10h-12v-5"/><path d="M7 18h4"/></svg>';
 const PRES_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18"/><path d="M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-10"/><path d="M12 16v4"/><path d="M9 20h6"/></svg>';
-function cstrOn(){return S.view==="chapter"&&!origOn()&&!store.get("inter",false)&&store.get("cstr",false)===true}
+function MODE(){const m=store.get("umode","read");return ["read","study","serve"].includes(m)?m:"read"}
+function interOn(){return (MODE()==="study"||S.view==="verse")&&store.get("inter",!1)===true}
+/* الكلمات قابلة للضغط في كل الأوضاع؛ أرقام سترونج فوقها تظهر في وضع «دراسة» فقط (ويُطفئها القارئ من ⚙) */
+function cstrOn(){return S.view==="chapter"&&!origOn()&&!interOn()}
+function cstrSup(){return MODE()==="study"&&store.get("ucstr",true)===true}
+const UDOTS='<svg class="tic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="19" cy="12" r="1.9"/></svg>';
+const UGEAR='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg>';
 function sgLite(){const ab=book().abbr,k="svd/"+ab;if(window.SG&&window.SG[k])return window.SG[k];const src=`assets/sg/svd_${ab}.js`;if(JSFAIL[src])return false;if(LOADED[src]===undefined)loadJS(src,()=>{if(S.view==="chapter")render()});return null}
 function cstrSeg(d){const c=trCur();
   if(c==="alab")return diaOn()?kdArS(d):(d.arS||null);
   if(c==="svd"&&!diaOn()&&!(window.TR&&window.TR[book().abbr])){const L=sgLite();if(L){const a=L[d.c+":"+d.v];return a?a.map(x=>typeof x==="string"?[x,[]]:[x[0],x[1].split(" ")]):null}if(L===null)return null}
   return trSeg(d)}
 function trSeg(d){const c=trCur();if(c==="alab")return null;const t=trData();if(!t)return null;const k=d.c+":"+d.v;if(diaOn()&&t.svdSD&&t.svdSD[k])return t.svdSD[k];const a=t[c+"S"]&&t[c+"S"][k];return a||null}
-function viewSeg(){const INTER=store.get("inter",false);return `<span class="trgrp seg"><button class="trb ${INTER?"":"on"}" data-inter="0">${ic("menu-2")} العرض العادي</button><button class="trb ${INTER?"on":""}" data-inter="1">${ic("language")} العرض بين السطور (Interlinear)</button></span>`}
+function viewSeg(){const INTER=interOn();return `<span class="trgrp seg"><button class="trb ${INTER?"":"on"}" data-inter="0">${ic("menu-2")} العرض العادي</button><button class="trb ${INTER?"on":""}" data-inter="1">${ic("language")} العرض بين السطور (Interlinear)</button></span>`}
 function ilOpts(b){return `<div class="ilopts">${BSBB.includes(b.abbr)?`<div class="rg" role="radiogroup"><span class="rgt">المصدر</span><label class="rd ${store.get("isrc","ours")==="bsb"?"":"on"}"><input type="radio" name="isrc" data-isrc="ours" ${store.get("isrc","ours")==="bsb"?"":"checked"}><i></i>مكتبتنا (KJV + فاندايك)</label><label class="rd ${store.get("isrc","ours")==="bsb"?"on":""}"><input type="radio" name="isrc" data-isrc="bsb" ${store.get("isrc","ours")==="bsb"?"checked":""}><i></i>Berean (أصل عبري/يوناني)</label></div>`:""}<div class="rg"><span class="rgt">اتجاه النص</span><span class="dirgrp"><button class="dirb ${store.get("idir","rtl")==="rtl"?"on":""}" data-idir="rtl" title="محاذاة إلى اليمين (من اليمين إلى اليسار)" aria-label="محاذاة إلى اليمين (من اليمين إلى اليسار)" aria-pressed="${store.get("idir","rtl")==="rtl"}">${ic("align-right")}</button><button class="dirb ${store.get("idir","rtl")==="ltr"?"on":""}" data-idir="ltr" title="محاذاة إلى اليسار (من اليسار إلى اليمين)" aria-label="محاذاة إلى اليسار (من اليسار إلى اليمين)" aria-pressed="${store.get("idir","rtl")==="ltr"}">${ic("align-left")}</button></span>${fsGrp()}</div></div>`}
 function ilItem(d,b,lnk){return `<div class="ilv">${lnk===false?`<span class="ilvn">${n(d.v)}</span>`:`<button class="ilvn" data-go="${d.b}.${d.c}:${d.v}">${n(d.v)}</button>${presOK()?`<button type="button" class="cvp" data-pres="${d.b}.${d.c}:${d.v}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}<span class="cvp-l">اعرض على الشاشة</span><span class="cvp-n">معروضة الآن</span></button>`:""}`}<div class="ilcol"><div class="ilar ar">${esc(ilText(d))}</div><div class="ilrow" dir="${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"&&b.id>39?"ltr":"rtl"}">${BSBB.includes(b.abbr)&&store.get("isrc","ours")==="bsb"?interBlockB(d):interBlock(d)}</div>${fnBox(d,true)}</div></div>`}
 function verseHTML(d){
@@ -288,7 +295,7 @@ function dictInner(){
   const d=cur();
   const hist=DICT.hist.map(x=>`<button data-dn="${x}" class="${x===DICT.cur?"on":""}">${x}</button>`).join("");
   return `<div class="dhead"><h3><em>«</em>قاموس سترونج<em>»</em></h3><div class="hist">${hist}</div></div>
-    ${DICT.cur?dentHTML(DICT.cur):`<div class="empty">اضغط على أي رقم سترونج في نص العدد بالأعلى لعرض معناه هنا.</div>`}`;
+    ${DICT.cur?dentHTML(DICT.cur):`<div class="empty">اضغط على أي كلمة في نص العدد بالأعلى لعرض معناها هنا.</div>`}`;
 }
 function dictSection(d){ return d.arS?`<section class="dict" id="dict">${dictInner()}</section>`:""; }
 /* Interlinear في صفحة العدد: الضغط على رقم سترونج يفتح القاموس في الصفحة (زي العرض العادي) بدل صفحة سترونج.
@@ -442,76 +449,92 @@ window.chImgFail=function(img){
   f.innerHTML=`<img class="logo-l" src="assets/brand/logo-stacked-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="320" height="230"><img class="logo-d" src="assets/brand/logo-stacked-dark.svg" alt="" width="320" height="230">`;
 };
 function viewChapter(){
-  const INTER=store.get("inter",false);
+  const M=MODE(), ST=M==="study", SV=M==="serve", INTER=interOn();
   if(INTER) needStrong(()=>{if(S.view==="chapter")render()});
   const b=book(), c=S.c, vs=inCh(b,c), ci=b.chapters.indexOf(c);
   const pc=b.chapters[ci-1], nc=b.chapters[ci+1], me=CAT_ABBR[b.abbr];
   const pb=pc==null&&CAT[me.i-1], nb=nc==null&&CAT[me.i+1];
-  const prevBtn=pc!=null?`<button data-gc="${b.id}.${pc}" title="الأصحاح السابق">→ <span class="lb">${n(pc)}</span></button>`
+  const prevBtn=pc!=null?`<button data-gc="${b.id}.${pc}" title="الأصحاح السابق">→ <span class="lb">الأصحاح ${n(pc)}</span></button>`
     :pb?`<a class="xnav" href="${pageOf(pb.abbr,"/"+pb.abbr+"/ch/"+parseInt(pb.last))}" title="السفر السابق">→ <span class="lb">${SH[pb.abbr]} ${n(parseInt(pb.last))}</span></a>`
     :`<button disabled>→</button>`;
-  const nextBtn=nc!=null?`<button data-gc="${b.id}.${nc}" title="الأصحاح التالي"><span class="lb">${n(nc)}</span> ←</button>`
+  const nextBtn=nc!=null?`<button data-gc="${b.id}.${nc}" title="الأصحاح التالي"><span class="lb">الأصحاح ${n(nc)}</span> ←</button>`
     :nb?`<a class="xnav" href="${pageOf(nb.abbr,"/"+nb.abbr+"/ch/1")}" title="السفر التالي"><span class="lb">${SH[nb.abbr]} ${n(1)}</span> ←</a>`
     :`<button disabled>←</button>`;
   const refs=vs.reduce((a,x)=>a+refCount(x),0), CS=cstrOn(), PEND=SPLIT&&!chHas(c), PFAIL=PEND&&chFailed(c);
-  const CMP=`<a class="trb" style="text-decoration:none;display:inline-block" href="compare.html?b=${b.abbr}&c=${c}">${ic("arrows-left-right")} مقارنة الترجمات الثلاث لهذا الأصحاح</a>`;
-  $("#main").innerHTML = crumbs(`${bname(b)} <span>${n(c)}</span>`,`<span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${PEND?"…":n(refs)} شاهدًا`,"",stickBar(b,c,0,`<div class="nav">${prevBtn}${nextBtn}</div>`)) + `
-  ${chImage(b,c)}${olChapter(b,c)}<div class="chlink">${viewSeg()} ${INTER?ilOpts(b):""}${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}" title="اعرض آيات الأصحاح بملء الشاشة، آية في كل شريحة">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"} title="الصفحة هنا للتحكم، والعرض بملء الشاشة على الشاشة الخارجية (بروجكتور أو تلفزيون)">${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}<button class="trb" onclick="window.print()">${ic("printer")} طباعة هذه الصفحة</button> ${INTER?CMP:""}</div>${INTER?"":trBar(CMP)}${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:""}${PEND?(PFAIL?`<div class="chload fail">تعذّر تحميل شواهد هذا الأصحاح — غالبًا الجهاز غير متصل بالإنترنت. <button type="button" class="trb" data-chretry="${c}">إعادة المحاولة</button></div>`:`<div class="chload" role="status">جارٍ تحميل الشواهد…</div>`):""}<div class="cvlist ${CS?"cstr":""}" ${INTER?"hidden":""}>${vs.map(d=>{const k=K(d.b,d.c,d.v),rc=refCount(d);
-    const kj=trCur()==="kjv"?'dir="ltr" style="text-align:left"':"";
-    const row=CS?`<div class="cv cvs" data-go="${d.b}.${d.c}:${d.v}"><button type="button" class="cvn" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">${n(d.v)}</button><span class="cvt ar" ${kj}>${(sg=>sg?segHTML(sg):esc(trText(d)||d.text||""))(cstrSeg(d))}</span></div>`
-      :`<button class="cv" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد">
-      <span class="cvn">${n(d.v)}</span>${origOn()?origSpan(d):`<span class="cvt ar" ${kj}>${esc(trText(d)||d.text||"")}</span>`}</button>`;
-    return `<div class="cvw">${row}<div class="cvf">${presOK()?`<button type="button" class="cvp" data-pres="${d.b}.${d.c}:${d.v}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}<span class="cvp-l">اعرض على الشاشة</span><span class="cvp-n">معروضة الآن</span></button>`:""}<button type="button" class="cvm" data-go="${d.b}.${d.c}:${d.v}" title="${vref(d)} — افتح تفاصيل العدد والشواهد">${PEND?"…":rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),"pl")}</div></div>`}).join("")}</div>
-  ${fnChapter(b,vs)}
-  <div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
+  const og=origOn(), av=trAvail(), SUP=cstrSup();
+  const trSel=`<select class="utr" aria-label="الترجمة">${av.map(k=>`<option value="${k}" ${!og&&k===trCur()?"selected":""}>${TRN[k]}</option>`).join("")}${ST&&origView()?`<option value="orig" ${og?"selected":""}>اللغة الأصلية</option>`:""}</select>`;
+  const bar=`<div class="stickbar ubar"><button class="menu-btn" id="menu" aria-label="القائمة">${ic("menu-2")}</button><span class="sp"></span>${trSel}${SV?cpyTop():""}<button type="button" class="ubtn" id="uMore" aria-label="المزيد" aria-haspopup="menu" aria-expanded="false">${UDOTS}</button><button type="button" class="ubtn" id="uGear" aria-label="إعدادات العرض" aria-haspopup="dialog">${UGEAR}</button></div>`;
+  const modes=`<div class="umodes" role="tablist" aria-label="وضع الصفحة">${[["read","قراءة"],["study","دراسة"],["serve","خدمة"]].map(([k,x])=>`<button type="button" role="tab" aria-selected="${M===k}" data-umode="${k}">${x}</button>`).join("")}</div>`;
+  const head=`<div class="uhead"><h1>${bname(b)} <span>${n(c)}</span></h1><small><span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${PEND?"…":n(refs)} شاهدًا</small></div>`;
+  const CMP=`<a class="trb" href="compare.html?b=${b.abbr}&c=${c}">${ic("arrows-left-right")} مقارنة الترجمات</a>`;
+  const tools=ST?`<div class="utools"><button type="button" class="trb ${INTER?"on":""}" data-inter="${INTER?0:1}" aria-pressed="${INTER}">${ic("language")} كلمة بكلمة</button>${origView()?(og?`<button type="button" class="trb on" data-tr="${trCur()}" aria-pressed="true">اللغة الأصلية</button>`:`<button type="button" class="trb" data-orig="1" aria-pressed="false">اللغة الأصلية</button>`):""}${!og&&!INTER?`<button type="button" class="trb ${SUP?"on":""}" id="cstrBtn" aria-pressed="${SUP}">أرقام سترونج</button>`:""}${CMP}</div>${INTER?ilOpts(b):""}`:"";
+  const serveBar=SV?`<div class="userve">${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"}>${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}<button type="button" class="trb" data-uprint="1">${ic("printer")} طباعة</button></div>`:"";
+  const rows=vs.map(d=>{const rc=refCount(d), g=`${d.b}.${d.c}:${d.v}`, kj=trCur()==="kjv"&&!og?'dir="ltr" style="text-align:left"':"";
+    const txt=og?origSpan(d):`<span class="cvt ar" ${kj}>${CS?(sg=>sg?segHTML(sg):esc(trText(d)||d.text||""))(cstrSeg(d)):esc(trText(d)||d.text||"")}</span>`;
+    const foot=ST?`<div class="cvf"><button type="button" class="cvm" data-go="${g}" title="${vref(d)} — كل تفاصيل العدد والقاموس">${PEND?"…":rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",g,vref(d),"pl")}</div>`
+      :SV?`<div class="cvf">${presOK()?`<button type="button" class="cvp" data-pres="${g}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}<span class="cvp-l">اعرض على الشاشة</span><span class="cvp-n">معروضة الآن</span></button>`:""}${cpyBtn("v",g,vref(d),"pl")}</div>`:"";
+    return `<div class="cvw"><div class="cv cvs" data-gk="${g}"><button type="button" class="cvn" data-uref="${g}" aria-label="${vref(d)} — اعرض الشواهد" title="اعرض شواهد ${vref(d)}">${n(d.v)}</button>${txt}</div>${foot}</div>`}).join("");
+  $("#main").innerHTML = bar+modes+head+(store.get("uimg",false)?chImage(b,c):"")+tools+serveBar+(ST?olChapter(b,c):"")
+    +(INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:"")
+    +(PEND?(PFAIL?`<div class="chload fail">تعذّر تحميل شواهد هذا الأصحاح — غالبًا الجهاز غير متصل بالإنترنت. <button type="button" class="trb" data-chretry="${c}">إعادة المحاولة</button></div>`:`<div class="chload" role="status">جارٍ تحميل الشواهد…</div>`):"")
+    +`<div class="cvlist umode-${M} ${CS?"cstr":""} ${SUP?"":"nosup"} ${trCur()==="kjv"&&!og?"ultr":""}" ${INTER?"hidden":""}>${rows}</div>`
+    +(ST?fnChapter(b,vs):"")
+    +`<div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }
 /* سهم العدد السابق/التالي على جانبي الآية (بديل سطر «العدد السابق والتالي») */
 function vArrow(x,cls,label,path){if(!x)return "";const t=vref(x)+" — "+x.text;
   return `<button type="button" class="vnav ${cls}" data-go="${x.b}.${x.c}:${x.v}" aria-label="${label}: ${esc(vref(x))}" title="${esc(t.length>90?t.slice(0,90)+"…":t)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg></button>`}
 function viewVerse(){
+  /* صفحة العدد: الشريط الموحّد، ثم الآية، ثم تبويبات: الشواهد · معنى الكلمات · ملاحظات */
   DICT={cur:null,hist:[],trail:[]};
-  if(store.get("inter",false)) needStrong(()=>{if(S.view==="verse")render()}); /* الكلمة الأصلية ونطقها في خانات Interlinear */
+  const INTER=interOn();
+  if(INTER) needStrong(()=>{if(S.view==="verse")render()}); /* الكلمة الأصلية ونطقها في خانات Interlinear */
   const b=book(), d=cur(), k=K(d.b,d.c,d.v), gi0=GIDX[k];
   const prev=ALL[gi0-1], next=ALL[gi0+1];
-  const lab=x=>x?(x.b!==d.b?SH[BY[x.b].abbr]+" ":"")+n(x.c)+": "+n(x.v):"";
-  const me=CAT_ABBR[b.abbr], pb=!prev&&CAT[me.i-1], nb=!next&&CAT[me.i+1];
-  const xbtn=(c,cv,arrow,title)=>`<a class="xnav" href="${pageOf(c.abbr,"/"+c.abbr+"/"+cv)}" title="${title}">${arrow==="→"?"→ ":""}<span class="lb">${SH[c.abbr]} ${n(cv.replace(":",": "))}</span>${arrow==="←"?" ←":""}</a>`;
-  const isNoteG=g=>!!g&&!g.refs.length&&!!g.note;
-  const groups=d.groups.map((g,gi)=>{
-    const ck=k+"|"+gi, closed=!!S.closed[ck];
-    if(isNoteG(g)){
-      if(!g.kw&&isNoteG(d.groups[gi-1])) return ""; /* بقية ملاحظة سابقة: تُعرض ضمن بطاقتها */
-      const parts=[g]; for(let j=gi+1;j<d.groups.length;j++){const x=d.groups[j];if(isNoteG(x)&&!x.kw)parts.push(x);else break}
-      const kj=trCur()==="kjv", head=g.noteAr;
-      const body=parts.map(x=>kj?`<p class="ltr">${esc(x.note)}</p>`:x.noteAr?`<p>${esc(x.noteAr)}</p>`:(head&&x!==g?"":`<p class="ltr">${esc(x.note)}</p>`)).join("");
-      return `<section class="group notecard ${closed?"closed":""}" id="g${gi}" data-ck="${ck}">
-      <div class="ghead"><h3><span class="nic">${ic("note")}</span>${g.kw?`${kj?"TSK note":"ملاحظة TSK"} <em>«</em>${esc(kwTitle(g))}<em>»</em>`:(kj?"TSK note":"ملاحظة TSK")}</h3><span class="chev">${ic("chevron-down")}</span></div>
-      <div class="gbody"><div class="nbody">${body}</div></div></section>`}
-    return `<section class="group ${closed?"closed":""}" id="g${gi}" data-ck="${ck}">
-      <div class="ghead"><h3><em>«</em>${esc(kwTitle(g))}<em>»</em></h3>
-        ${g.kw&&trCur()!=="kjv"?`<span class="en ltr" title="الكلمة في TSK">${esc(g.kw)}</span>`:""}
-        ${g.refs.length?`<span class="count">${plural(g.refs.length,"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>`:""}<a class="mm" target="tskmindmap" href="mindmap.html#${b.abbr}/${d.c}:${d.v}/g${gi}" title="خريطة ذهنية لشواهد هذه الكلمة">${ic("topology-star-3")}</a><span class="chev">${ic("chevron-down")}</span></div>
+  const g=`${d.b}.${d.c}:${d.v}`, og=origOn(), av=trAvail(), kj=trCur()==="kjv"&&!og;
+  if(S.sn&&S.sn.k===b.abbr+"/"+d.c+":"+d.v) S.vtab="dict";
+  const isNoteG=x=>!!x&&!x.refs.length&&!!x.note;
+  /* ملاحظات TSK (بدون شواهد) → تبويب «ملاحظات» */
+  const notes=[];
+  d.groups.forEach((x,gi)=>{
+    if(!isNoteG(x)) return;
+    if(!x.kw&&isNoteG(d.groups[gi-1])) return; /* بقية ملاحظة سابقة: تُعرض ضمن بطاقتها */
+    const parts=[x]; for(let j=gi+1;j<d.groups.length;j++){const y=d.groups[j];if(isNoteG(y)&&!y.kw)parts.push(y);else break}
+    const head=x.noteAr;
+    const body=parts.map(y=>kj?`<p class="ltr">${esc(y.note)}</p>`:y.noteAr?`<p>${esc(y.noteAr)}</p>`:(head&&y!==x?"":`<p class="ltr">${esc(y.note)}</p>`)).join("");
+    notes.push(`<section class="group notecard"><div class="ghead"><h3><span class="nic">${ic("note")}</span>${x.kw?`${kj?"TSK note":"ملاحظة TSK"} <em>«</em>${esc(kwTitle(x))}<em>»</em>`:(kj?"TSK note":"ملاحظة TSK")}</h3><span class="chev">${ic("chevron-down")}</span></div><div class="gbody"><div class="nbody">${body}</div></div></section>`);
+  });
+  /* الشواهد: كل كلمة مفتاحية سطر يتفتح ويتقفل، الأولى بس مفتوحة */
+  const firstRef=d.groups.findIndex(x=>x.refs.length);
+  const groups=d.groups.map((x,gi)=>{
+    if(!x.refs.length) return "";
+    const ck=k+"|"+gi, closed=S.closed[ck]!==undefined?!!S.closed[ck]:gi!==firstRef;
+    return `<section class="group ugrp ${closed?"closed":""}" id="g${gi}" data-ck="${ck}">
+      <div class="ghead" role="button" tabindex="0" aria-expanded="${!closed}"><h3><em>«</em>${esc(kwTitle(x))}<em>»</em></h3>
+        <span class="count">${plural(x.refs.length,"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span><a class="mm" target="tskmindmap" href="mindmap.html#${b.abbr}/${d.c}:${d.v}/g${gi}" title="خريطة ذهنية لشواهد هذه الكلمة" aria-label="خريطة ذهنية لشواهد هذه الكلمة">${ic("topology-star-3")}</a><span class="chev">${ic("chevron-down")}</span></div>
       <div class="gbody">
-        ${(trCur()==="kjv"&&g.note)?`<div class="gnote"><b>TSK note</b><span class="ltr">${esc(g.note)}</span></div>`:g.noteAr?`<div class="gnote"><b>ملاحظة TSK</b>${esc(g.noteAr)}</div>`:(g.note?`<div class="gnote"><b>ملاحظة TSK</b><span class="ltr">${esc(g.note)}</span></div>`:"")}
-        <div class="refs">${g.refs.slice(0,5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}${g.refs.length>5?`<div class="morerefs" hidden>${g.refs.slice(5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}</div><button class="showall" data-n="${g.refs.length}">عرض الكل (${n(g.refs.length)})</button>`:""}</div>
+        ${(kj&&x.note)?`<div class="gnote"><b>TSK note</b><span class="ltr">${esc(x.note)}</span></div>`:x.noteAr?`<div class="gnote"><b>ملاحظة TSK</b>${esc(x.noteAr)}</div>`:(x.note?`<div class="gnote"><b>ملاحظة TSK</b><span class="ltr">${esc(x.note)}</span></div>`:"")}
+        <div class="refs">${x.refs.slice(0,5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}${x.refs.length>5?`<div class="morerefs" hidden>${x.refs.slice(5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}</div><button class="showall" data-n="${x.refs.length}">عرض الكل (${n(x.refs.length)})</button>`:""}</div>
       </div></section>`}).join("");
-  const sameCh=x=>x&&x.b===d.b&&x.c===d.c;
-  $("#main").innerHTML = crumbs(`${bname(b)} ${n(d.c)}: <span>${n(d.v)}</span>`,`<span class="ltr">${b.en} ${d.c}:${d.v}</span> · الأصحاح ${n(d.c)} · العدد ${n(d.v)} من ${n(inCh(b,d.c).length)}`,
-    "",stickBar(b,d.c,d.v,`<div class="nav">${pb?xbtn(pb,pb.last,"→","السفر السابق"):`<button data-go="${prev?prev.b+"."+prev.c+":"+prev.v:""}" ${prev?"":"disabled"} title="السابق">→ <span class="lb">${lab(prev)}</span></button>`}${nb?xbtn(nb,"1:1","←","السفر التالي"):`<button data-go="${next?next.b+"."+next.c+":"+next.v:""}" ${next?"":"disabled"} title="التالي"><span class="lb">${lab(next)}</span> ←</button>`}</div>`)) + `
-    <div class="chlink"><button data-gc="${d.b}.${d.c}">${ic("menu-2")} عرض الأصحاح ${n(d.c)} كاملًا</button></div>
-    ${olVerse(b,d)}${viewSeg()}${store.get("inter",false)?ilOpts(b):trBar()}<div class="vwrap">${store.get("inter",false)?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${ilItem(d,b,false)}</div>`:""}<div class="verse-card ${store.get("nostr2",true)?"nostr":""}" ${store.get("inter",false)?"hidden":""}>
-      ${origOn()?`<div class="ar orig-v">${origSpan(d)}</div>`:`<div class="ar">${verseHTML(d)}</div>`}
-      <div class="verse-meta">
-        <span class="pill">${plural(d.groups.length,"كلمة واحدة","كلمتان","كلمات","كلمة")}</span>
-        <span class="pill">${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span>
-        <span class="pill">${n(verseCount(d))} آية للقراءة</span>${cpyBtn("v",d.b+"."+d.c+":"+d.v,vref(d),true)}<a class="rep" href="${repHref(vref(d),origOn()?"النص العبري أو اليوناني":TRN[trCur()])}" target="tskcontact" title="أبلغ عن خطأ في نص هذه الآية">${REP_IC}<span>أبلغ عن خطأ</span></a>${!origOn()&&((d.arS&&(!trText(d)||trCur()==="alab"))||trSeg(d))?`<button class="tgl ${store.get("nostr2",true)?"":"on"}" id="strTgl">أرقام سترونج</button>`:""}
-      </div>
+  const rc=refCount(d), dict=dictSection(d), fn=fnBox(d,true);
+  const tabs=[["refs","الشواهد",rc?n(rc):""],dict?["dict","معنى الكلمات",""]:null,(notes.length||fn)?["notes","ملاحظات",""]:null].filter(Boolean);
+  if(!tabs.some(x=>x[0]===S.vtab)) S.vtab="refs";
+  const P=(id,html)=>`<div class="vpanel ${kj?"kjv":""}" id="vp-${id}" data-vp="${id}" role="tabpanel" aria-labelledby="vt-${id}" ${S.vtab===id?"":"hidden"}>${html}</div>`;
+  /* مكان العدد في مخطط السفر: أقرب قسم بس، في سطر واحد */
+  const OL=olLoad(b.abbr), olr=OL?OL.filter(r=>olIn(r,d.c,d.v)).pop():null;
+  const olH=olr?`<p class="uol">${ic("bookmarks")} من قسم: <b>${esc(olr[2]||olr[1])}</b> <small>(${olFmt(olr)})</small> · <a href="outline.html?b=${b.abbr}" target="tskoutline">مخطط السفر</a></p>`:"";
+  const trSel=`<select class="utr" aria-label="الترجمة">${av.map(x=>`<option value="${x}" ${!og&&x===trCur()?"selected":""}>${TRN[x]}</option>`).join("")}${origView()?`<option value="orig" ${og?"selected":""}>اللغة الأصلية</option>`:""}</select>`;
+  $("#main").innerHTML = `<div class="stickbar ubar"><button class="menu-btn" id="menu" aria-label="القائمة">${ic("menu-2")}</button><span class="sp"></span>${trSel}<button type="button" class="ubtn" id="uMore" aria-label="المزيد" aria-haspopup="menu" aria-expanded="false">${UDOTS}</button><button type="button" class="ubtn" id="uGear" aria-label="إعدادات العرض" aria-haspopup="dialog">${UGEAR}</button></div>
+    <a class="uback" href="#/${b.abbr}/ch/${d.c}" data-gc="${d.b}.${d.c}">→ ${bname(b)} ${n(d.c)} <small>· الأصحاح كاملًا</small></a>
+    <div class="uhead uvhead"><h1>${bname(b)} ${n(d.c)}: <span>${n(d.v)}</span></h1>${olH}</div>
+    ${INTER?ilOpts(b):""}
+    <div class="vwrap">${INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${ilItem(d,b,false)}</div>`:""}<div class="verse-card ${store.get("nostr2",true)?"nostr":""}" ${INTER?"hidden":""}>
+      ${og?`<div class="ar orig-v">${origSpan(d)}</div>`:`<div class="ar" ${kj?'dir="ltr" style="text-align:left"':""}>${verseHTML(d)}</div>`}
+      <div class="uvacts">${cpyBtn("v",g,vref(d),true)}${presOK()?`<button type="button" class="trb" data-pres="${g}">${PRES_IC} اعرض</button>`:""}</div>
     </div>${vArrow(prev,"vprev","العدد السابق",'<path d="M9 6l6 6l-6 6"/>')}${vArrow(next,"vnext","العدد التالي",'<path d="M15 6l-6 6l6 6"/>')}</div>
-    ${tpChips(d)}${fnBox(d,true)}
-    ${dictSection(d)}
-    <div class="tskhead" id="tskSec"><h2>${ic("arrows-shuffle")} الشواهد المقابلة من TSK</h2><p>من «كنز معرفة الكتاب المقدس» (Treasury of Scripture Knowledge): الآيات المرتبطة بكلمات هذا العدد${refCount(d)?` — ${plural(refCount(d),"شاهد واحد","شاهدان","شواهد","شاهدًا")}`:""}.</p></div>
-    ${d.groups.length>0?`<nav class="kw-index"><span class="kwact"><button class="tgl" id="expandAll">${ic("chevron-down")} فتح كل الكلمات</button><button class="tgl" id="collapseAll">${ic("chevron-left")} طي كل الكلمات</button></span>${d.groups.map((g,gi)=>(!g.refs.length&&g.note&&!g.kw&&d.groups[gi-1]&&!d.groups[gi-1].refs.length&&d.groups[gi-1].note)?"":`<a href="#g${gi}" data-jump="g${gi}">${(!g.refs.length&&g.note)?ic("note")+" ":""}${esc(kwTitle(g))}${g.refs.length?`<b>${n(g.refs.length)}</b>`:""}</a>`).join("")}</nav>`:""}
-    ${groups || `<div class="empty">لا توجد شواهد في TSK لهذا العدد (أحيانًا يضم TSK شواهد العدد إلى العدد الذي قبله).</div>`}`;
+    <div class="vtabs" role="tablist" aria-label="أقسام العدد">${tabs.map(([id,l,c])=>`<button type="button" role="tab" id="vt-${id}" data-vtab="${id}" aria-selected="${S.vtab===id}" aria-controls="vp-${id}" tabindex="${S.vtab===id?0:-1}">${l}${c?` <b>${c}</b>`:""}</button>`).join("")}</div>
+    ${P("refs",`<p class="utsk">${ic("arrows-shuffle")} الآيات المرتبطة بكل كلمة في هذا العدد، من «كنز معرفة الكتاب المقدس» (TSK).</p>${groups||`<div class="empty">لا توجد شواهد في TSK لهذا العدد (أحيانًا يضم TSK شواهد العدد إلى العدد الذي قبله).</div>`}`)}
+    ${dict?P("dict",dict):""}${(notes.length||fn)?P("notes",notes.join("")+fn):""}`;
   /* يُعاد مع كل render حتى يكتمل تحميل نص الترجمة بأرقامه (tr_<السفر>.js)، ثم يُمسح */
   if(S.sn&&S.sn.k===b.abbr+"/"+d.c+":"+d.v&&$("#dict")){showEntry(S.sn.num,{scroll:!S.sn.done});S.sn.done=true;if(document.querySelector(".verse-card .sw"))S.sn=null}
 }
@@ -617,13 +640,13 @@ function fromHash(){
 window.addEventListener("popstate",fromHash);
 
 document.addEventListener("click",e=>{
-  {const w=e.target.closest(".cvlist .cvs .sw");if(w){loadJS("assets/chstrong.js",()=>window.CHS&&window.CHS.open(w));return}
+  {const w=e.target.closest(".cvlist .cvs .sw");if(w&&!e.target.closest(".geo-nm")){loadJS("assets/chstrong.js",()=>window.CHS&&window.CHS.open(w));return}
    if(e.target.closest(".cvlist .cvs")&&!e.target.closest(".cvn"))return} /* في وضع الأرقام: الضغط على النص لا يفتح العدد، رقم العدد فقط */
   {const pr=e.target.closest("[data-pres]");if(pr){const p=parseGo(pr.dataset.pres);if(!p)return;
     if(window.SCR&&SCR.on){SCR.show(...p);return}   /* وضع الشاشة الخارجية: الآية تروح للشاشة الخارجية */
     loadJS("assets/presfit.js",()=>loadJS("assets/present.js",()=>window.PRES&&window.PRES.open(...p)));return}}
   if(e.target.closest("[data-scr]")){loadJS("assets/presfit.js",()=>loadJS("assets/screenctl.js",()=>window.SCR&&SCR.toggle()));return}
-  if(e.target.closest("#cstrBtn")){store.set("cstr",!cstrOn());render();return}
+  if(e.target.closest("#cstrBtn")){store.set("ucstr",!cstrSup());render();return}
   const cr=e.target.closest("[data-chretry]"); if(cr){cr.dataset.chretry.split(" ").forEach(c=>retryJS(chSrc(+c)));render();return}
   const jr=e.target.closest("[data-jsretry]"); if(jr){retryJS(jr.dataset.jsretry); if(!jr.dataset.dn){render();return}}
   const sr=e.target.closest(".sref"); if(sr){ if($("#dict")) showEntry(sr.dataset.sn,{fromRef:true}); return }
@@ -654,7 +677,7 @@ document.addEventListener("click",e=>{
   const vb=e.target.closest("#vlist button"); if(vb){go(S.b,S.c,+vb.dataset.v);return}
   const sc=e.target.closest("[data-scope]"); if(sc){S.scope=sc.dataset.scope;S.limit=60;viewSearch();return}
   if(e.target.closest("a.mm"))return;
-  const h=e.target.closest(".ghead"); if(h){const s=h.parentElement;s.classList.toggle("closed");if(s.classList.contains("closed"))S.closed[s.dataset.ck]=true;else delete S.closed[s.dataset.ck];store.set("closed",S.closed);return}
+  const h=e.target.closest(".ghead"); if(h){const s=h.parentElement;s.classList.toggle("closed");S.closed[s.dataset.ck]=s.classList.contains("closed");store.set("closed",S.closed);return}
   if(e.target.closest("#more")){S.limit+=60;viewSearch();return}
 });
 document.addEventListener("change",e=>{const t=e.target;
@@ -663,9 +686,9 @@ document.addEventListener("change",e=>{const t=e.target;
   if(t.classList.contains("sbCh")){goChapter(b.id,+t.value);return}
   if(t.classList.contains("sbV")){go(b.id,S.c,+t.value)}
 });
-document.addEventListener("submit",e=>{if(e.target.id==="gotoBox"){e.preventDefault();const i=$("#gotoIn");if(!gotoRef(i.value)){i.classList.add("bad");setTimeout(()=>i.classList.remove("bad"),900)}}});
+document.addEventListener("submit",e=>{if(e.target.id==="gotoBox"){e.preventDefault();const i=$("#gotoIn");const q=i.value.trim();if(q&&!gotoRef(q))location.href="search.html?q="+encodeURIComponent(q);}});
 $("#home").addEventListener("click",()=>{location.href="index.html"});
-function setAll(closed){ if(S.view!=="verse")return; const d=cur(),k=K(d.b,d.c,d.v); d.groups.forEach((g,gi)=>{if(closed)S.closed[k+"|"+gi]=true;else delete S.closed[k+"|"+gi]}); store.set("closed",S.closed); render(); }
+function setAll(closed){ if(S.view!=="verse")return; const d=cur(),k=K(d.b,d.c,d.v); d.groups.forEach((g,gi)=>{S.closed[k+"|"+gi]=!!closed}); store.set("closed",S.closed); render(); }
 function offOpen(){if(window.OFFLINE_UI)return window.OFFLINE_UI.open();const x=document.createElement("script");x.src="assets/offline.js";document.head.appendChild(x)}
 document.addEventListener("click",e=>{if(e.target.closest("#offBtn")){offOpen();return}if(e.target.closest("#expandAll"))setAll(false);else if(e.target.closest("#collapseAll"))setAll(true)});
 $("#themeBtn").addEventListener("click",()=>{
@@ -809,6 +832,7 @@ fromHash();
   }
   function syncDict(){
     const d=$("#dict"); if(!d) return;
+    if($("#main .vtabs")){if(d.classList.contains("uxt-dsheet")){d.classList.remove("uxt-dsheet");if(!sheetKind)scrim.classList.remove("on")}return}
     const filled=!d.querySelector(":scope > .empty:not(.loading):not(.loadfail)");
     if(isMobile()&&filled){
       if(!d.classList.contains("uxt-dsheet")){d.classList.add("uxt-dsheet");scrim.classList.add("on")}
@@ -851,14 +875,14 @@ fromHash();
       const sp=$(".sp",sb); sb.insertBefore(pick,sp);
       /* في وضع Interlinear مفيش .trbar — الأدوات كلها جوه .chlink، فلازم Aa يظهر برضه */
       const inter=!!$("#main .ilist");
-      if($("#main>.trbar, #main>.trgrp.seg, #main>.ilopts")||(S.view!=="verse"&&$("#main>.chlink"))){
+      if(!sb.classList.contains("ubar")&&($("#main>.trbar, #main>.trgrp.seg, #main>.ilopts")||(S.view!=="verse"&&$("#main>.chlink")))){
         const on=$("#main>.trbar .trb.on");
         const lab=inter?"Interlinear":(on?on.textContent.trim():"");
         const aa=el("button",{class:"uxt-aa",type:"button","aria-haspopup":"dialog","aria-label":"إعدادات العرض"},`Aa${lab?` <small dir="auto">${lab}</small>`:""}`);
         aa.addEventListener("click",openAa); sb.insertBefore(aa,sp.nextSibling);
       }
       const th=el("button",{class:"uxt-theme",type:"button",title:"الوضع الفاتح / الداكن","aria-label":"الوضع الفاتح / الداكن"},SVG_THEME);
-      th.addEventListener("click",()=>$("#themeBtn").click()); sb.append(th);
+      th.addEventListener("click",()=>$("#themeBtn").click()); if(!sb.classList.contains("ubar"))sb.append(th);
       /* أزرار السابق/التالي: aria-label من الـ title لأن النص بيختفي على الموبايل */
       $$(".nav button, .nav a",sb).forEach(x=>{if(x.title&&!x.getAttribute("aria-label"))x.setAttribute("aria-label",x.title+" "+(x.textContent.replace(/[←→]/g,"").trim()))});
     }else{
@@ -892,15 +916,159 @@ fromHash();
     /* #4 صفوف الشواهد */
     $$("#main .r").forEach(r=>{if(r.querySelector(".self"))r.classList.add("uxt-tap")});
 
-    syncDict(); syncOffline();
+    syncDict(); syncOffline(); uxAfter();
   }
+
+  /* ==========================================================
+     التصميم «أ»: لوحة الشواهد، ⚙، ⋯، الأوضاع، التلميحات
+     ========================================================== */
+  /* لوحة الشواهد: رقم العدد يفتحها بدل الانتقال لصفحة العدد */
+  function openRefs(gs){
+    const p=parseGo(gs); if(!p) return;
+    const k=K(p[0],p[1],p[2]), d=ALL[GIDX[k]]; if(!d) return;
+    const rc=refCount(d);
+    openSheet("refs",`${vref(d)}<small class="usub">${rc?plural(rc,"شاهد واحد","شاهدان","شواهد","شاهدًا")+" من «كنز معرفة الكتاب المقدس»":"لا توجد شواهد لهذا العدد"}</small>`,body=>{
+      const txt=origOn()?origSpan(d):esc(trText(d)||d.text||"");
+      const kj=trCur()==="kjv";
+      const groups=d.groups.map((g,gi)=>{
+        if(!g.refs.length){const nt=!kj&&g.noteAr?g.noteAr:g.note;return nt?`<div class="unote"><b>ملاحظة TSK</b> <span ${!kj&&g.noteAr?"":'class="ltr"'}>${esc(nt)}</span></div>`:""}
+        const ck=k+"|"+gi, closed=!!S.closed[ck];
+        return `<section class="group ${closed?"closed":""}" data-ck="${ck}"><div class="ghead"><h3><em>«</em>${esc(kwTitle(g))}<em>»</em></h3><span class="count">${plural(g.refs.length,"شاهد واحد","شاهدان","شواهد","شاهدًا")}</span><span class="chev">${ic("chevron-down")}</span></div><div class="gbody"><div class="refs">${g.refs.slice(0,5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}${g.refs.length>5?`<div class="morerefs" hidden>${g.refs.slice(5).map(r=>refRow(r,`${k}|${gi}|${r.l}`)).join("")}</div><button class="showall" data-n="${g.refs.length}">عرض الكل (${n(g.refs.length)})</button>`:""}</div></div></section>`}).join("");
+      body.innerHTML=`<div class="uvtext ar" ${kj&&!origOn()?'dir="ltr" style="text-align:left"':""}>${txt}</div>${groups||`<p class="uempty">لا توجد شواهد في TSK لهذا العدد (أحيانًا يضم TSK شواهد العدد إلى العدد الذي قبله).</p>`}
+        <div class="uacts">${cpyBtn("v",gs,vref(d),true)}${presOK()?`<button type="button" class="trb" data-pres="${gs}">${PRES_IC} اعرض الآية</button>`:""}<button type="button" class="trb uprim" data-go="${gs}">كل تفاصيل العدد والقاموس ←</button></div>`;
+      $$(".r",body).forEach(r=>{if(r.querySelector(".self"))r.classList.add("uxt-tap")});
+    });
+    try{cpyCount()}catch(e){}
+  }
+  /* ⚙ إعدادات العرض */
+  const usw=(id,label,on)=>`<button type="button" class="usw" id="${id}" role="switch" aria-checked="${on}"><span>${label}</span><i aria-hidden="true"></i></button>`;
+  const isDark=()=>(document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))==="dark";
+  function openGear(){
+    const ST=MODE()==="study", VV=S.view==="verse";
+    openSheet("gear","إعدادات العرض",body=>{
+      let h=`<div class="uxt-sec"><div class="uxt-row"><span>حجم الخط</span>${fsGrp()}</div></div><div class="uxt-sec"><h4>النص</h4>`;
+      if(diaAvail()&&!origOn()) h+=usw("diaBtn","التشكيل",diaOn());
+      if(VV&&!origOn()&&!interOn()&&document.querySelector(".verse-card .sw")) h+=usw("strTgl","أرقام سترونج فوق الكلمات",!store.get("nostr2",true));
+      if(!VV&&ST&&!origOn()&&!interOn()) h+=usw("cstrBtn","أرقام سترونج فوق الكلمات",cstrSup());
+      if(!VV) h+=usw("uImg","صورة الأصحاح",store.get("uimg",false));
+      h+=`</div>`;
+      if(ST||VV) h+=`<div class="uxt-sec"><h4>طريقة العرض</h4>${viewSeg()}${interOn()?ilOpts(book()):""}</div>`;
+      h+=`<div class="uxt-sec"><h4>المظهر</h4>${usw("uDark","الوضع الداكن",isDark())}</div>`;
+      if(!VV) h+=`<div class="uxt-sec"><button type="button" class="ulink" id="uTips">اعرض التلميحات مرة أخرى</button></div>`;
+      body.innerHTML=h;
+    });
+  }
+  /* ⋯ الأفعال */
+  let moreEl=null;
+  function closeMore(){if(!moreEl)return;moreEl.remove();moreEl=null;const b=$("#uMore");b&&b.setAttribute("aria-expanded","false")}
+  function toggleMore(btn){
+    if(moreEl){closeMore();return}
+    const b=book(), VV=S.view==="verse", r=btn.getBoundingClientRect();
+    const d=VV?cur():null, vs=inCh(b,S.c), start=VV?`${d.b}.${d.c}:${d.v}`:`${b.id}.${S.c}:${vs[0].v}`;
+    moreEl=el("div",{class:"umore",role:"menu","aria-label":"المزيد"},
+      (presOK()?`<button type="button" role="menuitem" data-pres="${start}">${PRES_IC} ${VV?"اعرض من هذه الآية بملء الشاشة":"عرض بملء الشاشة"}</button>`:"")+
+      (extOK()||(window.SCR&&SCR.on)?`<button type="button" role="menuitem" data-scr="1">${SCR_IC} ${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</button>`:"")+
+      (VV?"":`<button type="button" role="menuitem" data-uprint="1">${ic("printer")} طباعة الأصحاح</button>`)+
+      `<a role="menuitem" href="compare.html?b=${b.abbr}&c=${S.c}">${ic("arrows-left-right")} مقارنة الترجمات الثلاث</a>`+
+      `<a role="menuitem" href="lists.html" target="tsklists">${CPY_LIST} قوائمي</a>`+
+      (VV?`<a role="menuitem" href="${repHref(vref(d),origOn()?"النص العبري أو اليوناني":TRN[trCur()])}" target="tskcontact">${REP_IC} أبلغ عن خطأ في نص هذه الآية</a>`:""));
+    document.body.append(moreEl);
+    const w=moreEl.offsetWidth; moreEl.style.top=(r.bottom+6)+"px"; moreEl.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+"px";
+    btn.setAttribute("aria-expanded","true");
+    const f=moreEl.querySelector("button,a"); f&&f.focus();
+  }
+  /* صفحة العدد: التبويبات (من غير إعادة رسم)، الكلمة تفتح تبويب «معنى الكلمات»، والسحب يمين/شمال للعدد التالي/السابق */
+  function applyVtab(focus){
+    $$("#main .vtabs [data-vtab]").forEach(b=>{const on=b.dataset.vtab===S.vtab;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;if(on&&focus)b.focus()});
+    $$("#main .vpanel").forEach(p=>p.hidden=p.dataset.vp!==S.vtab);
+  }
+  document.addEventListener("click",e=>{
+    if(S.view!=="verse"||!$("#dict")) return;
+    if(e.target.closest(".verse-card .sw, .verse-card span.sn, .ilist a.iln")&&S.vtab!=="dict"){S.vtab="dict";applyVtab()}
+  },true);
+  document.addEventListener("click",e=>{
+    const b=e.target.closest&&e.target.closest("#main .vtabs [data-vtab]"); if(b){S.vtab=b.dataset.vtab;applyVtab();return}
+    const s=e.target.closest&&e.target.closest("#strTgl.usw"); if(s){s.setAttribute("aria-checked",!store.get("nostr2",true))}
+  });
+  document.addEventListener("keydown",e=>{
+    const t=e.target;
+    if(t.matches&&t.matches("#main .vtabs [data-vtab]")&&(e.key==="ArrowLeft"||e.key==="ArrowRight")){
+      const bs=$$("#main .vtabs [data-vtab]"), i=bs.indexOf(t), j=(i+(e.key==="ArrowLeft"?1:-1)+bs.length)%bs.length; /* RTL: اليسار = التالي */
+      S.vtab=bs[j].dataset.vtab; applyVtab(true); e.preventDefault(); return}
+    if(t.matches&&t.matches("#main .ugrp > .ghead")&&(e.key==="Enter"||e.key===" ")){e.preventDefault();t.click()}
+  });
+  /* aria-expanded لسطر الكلمة بعد ما app.js يفتحه/يقفله */
+  document.addEventListener("click",e=>{const h=e.target.closest&&e.target.closest("#main .ugrp > .ghead");if(h&&!e.target.closest("a.mm"))setTimeout(()=>h.setAttribute("aria-expanded",!h.parentElement.classList.contains("closed")),0)});
+  let tx0=null;
+  main.addEventListener("touchstart",e=>{tx0=S.view==="verse"&&e.target.closest(".vwrap")&&!e.target.closest(".sw,button,a")?[e.touches[0].clientX,e.touches[0].clientY]:null},{passive:true});
+  main.addEventListener("touchend",e=>{if(!tx0)return;const p=e.changedTouches[0],dx=p.clientX-tx0[0],dy=p.clientY-tx0[1];tx0=null;
+    if(Math.abs(dx)>70&&Math.abs(dy)<50){const b=$(dx>0?"#main .vnav.vnext":"#main .vnav.vprev");b&&b.click()}},{passive:true});
+
+  /* تلميحات أول مرة: ٣ خطوات، ولا تظهر مرة أخرى بعد «تمام» أو «تخطي» */
+  const TIPS=[[()=>$("#main .cvlist .cvn"),"اضغط على أي رقم عدد لترى شواهده."],
+    [()=>$("#main .cvlist .cvt .sw")||$("#main .cvlist .cvt"),"اضغط على أي كلمة لتعرف أصلها العبري أو اليوناني ومعناها."],
+    [()=>$("#uGear"),"من هنا تغيّر حجم الخط والتشكيل وطريقة العرض."]];
+  let tipStep=0, tipEl=null, tipAnchor=null;
+  function tipClear(){if(tipEl)tipEl.remove();tipEl=null;if(tipAnchor)tipAnchor.classList.remove("utip-ring");tipAnchor=null}
+  function tipEnd(){tipClear();store.set("utipsDone",true)}
+  function tipPlace(){
+    if(!tipEl||!tipAnchor)return;
+    const r=tipAnchor.getBoundingClientRect(), w=tipEl.offsetWidth;
+    let left=r.left+r.width/2-w/2; left=Math.max(12,Math.min(innerWidth-w-12,left));
+    tipEl.style.left=left+"px"; tipEl.style.top=(r.bottom+12)+"px";
+    tipEl.style.setProperty("--ax",Math.max(14,Math.min(w-14,r.left+r.width/2-left))+"px");
+  }
+  function tipShow(){
+    tipClear();
+    if(S.view!=="chapter"||tipStep>=TIPS.length) return tipEnd();
+    const [get,txt]=TIPS[tipStep], a=get(); if(!a){tipStep++;return tipShow()}
+    tipAnchor=a; a.classList.add("utip-ring");
+    if(tipStep<2) a.scrollIntoView({block:"center"}); else {const sb=$("#main .stickbar");sb&&sb.classList.remove("uxt-hide")}
+    tipEl=el("div",{class:"utip",role:"dialog","aria-label":"تلميح"},`<div class="ut-n">تلميح ${n(tipStep+1)} من ${n(TIPS.length)}</div><div class="ut-t">${txt}</div><div class="ut-b"><button type="button" class="ut-skip">تخطي</button><button type="button" class="ut-next">${tipStep===TIPS.length-1?"تمام":"التالي"}</button></div>`);
+    document.body.append(tipEl); tipPlace();
+    $(".ut-next",tipEl).addEventListener("click",()=>{tipStep++;tipShow()});
+    $(".ut-skip",tipEl).addEventListener("click",tipEnd);
+    $(".ut-next",tipEl).focus();
+  }
+  function tipsStart(){tipStep=0;tipShow()}
+  addEventListener("scroll",tipPlace,{passive:true}); addEventListener("resize",tipPlace);
+  /* بعد كل render */
+  let tipsTried=false;
+  function uxAfter(){
+    closeMore();
+    document.documentElement.dataset.uxmode=MODE();
+    const ps=$("#uPresSide"); if(ps){const b=book(),c=S.view==="book"?b.chapters[0]:S.c,v=(inCh(b,c)[0]||{}).v||1;ps.dataset.pres=`${b.id}.${c}:${v}`}
+    if(tipAnchor&&!document.contains(tipAnchor)){const s=tipStep;tipClear();tipStep=s;if(S.view==="chapter")setTimeout(tipShow,50)}
+    if(S.view==="chapter"&&!tipsTried&&!store.get("utipsDone",false)){tipsTried=true;setTimeout(()=>{if(!tipEl&&!sheetKind&&S.view==="chapter")tipsStart()},900)}
+  }
+  document.addEventListener("click",e=>{if(e.target.closest(".uxt-sheet [data-go]"))closeSheet()},true);
+  document.addEventListener("click",e=>{
+    const t=e.target;
+    if(moreEl&&!t.closest(".umore")&&!t.closest("#uMore")) closeMore();
+    let x;
+    if((x=t.closest("[data-uref]"))){openRefs(x.dataset.uref);return}
+    if((x=t.closest("button[data-umode]"))){if(x.dataset.umode!==MODE()){store.set("umode",x.dataset.umode);render()}return}
+    if((x=t.closest("#uMore"))){toggleMore(x);return}
+    if(t.closest("#uGear")){tipClear();openGear();return}
+    if(t.closest(".umore [data-pres], .umore [data-scr]")){closeMore();return}
+    if(t.closest("[data-uprint]")){closeMore();setTimeout(()=>window.print(),50);return}
+    if(t.closest("#uImg")){store.set("uimg",!store.get("uimg",false));render();return}
+    if((x=t.closest("#uDark"))){$("#themeBtn").click();x.setAttribute("aria-checked",isDark());return}
+    if(t.closest("#uTips")){closeSheet();store.set("utipsDone",false);setTimeout(tipsStart,250);return}
+  });
+  document.addEventListener("change",e=>{
+    const s=e.target.closest(".utr"); if(!s) return;
+    if(s.value==="orig") store.set("corig",true); else {store.set("tr",s.value);store.set("corig",false)}
+    render();
+  });
+  addEventListener("keydown",e=>{if(e.key==="Escape"){closeMore();if(tipEl)tipEnd()}});
 
   /* observer: app.js بيعمل innerHTML لـ #main في كل render */
   let busy=false;
   new MutationObserver(()=>{
     if(busy) return; busy=true;
     requestAnimationFrame(()=>{
-      if(!$(".uxt-mark",main)){ if(sheetKind==="aa"){ /* translation change → أعد بناء الـ sheet */ const k=sheetKind; sheetKind=null; process(); if(k)openAa(); } else process(); }
+      if(!$(".uxt-mark",main)){ if(sheetKind==="aa"||sheetKind==="gear"){ /* translation change → أعد بناء الـ sheet */ const k=sheetKind; sheetKind=null; process(); if(k==="aa")openAa(); else openGear(); } else process(); }
       syncDict(); syncOffline();
       busy=false;
     });

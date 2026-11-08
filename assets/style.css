@@ -1322,6 +1322,143 @@ html.pres-on{overflow:hidden}
 .chload.fail{animation:none;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 @keyframes chl-in{from{opacity:0}to{opacity:1}}
 
+/* ===== التصميم «أ»: شريط صفحة الأصحاح المختصر، أوضاع قراءة/دراسة/خدمة، لوحة الشواهد، ⚙ و⋯، التلميحات، القائمة الجانبية ===== */
+.ux-a .stickbar.ubar{gap:6px;flex-wrap:nowrap}
+.ux-a .ubar .sp{display:none!important}
+@media (min-width:881px){.ux-a .ubar .sp{display:block!important;flex:1}.ux-a .ubar .uxt-pick{max-width:260px}}
+.ux-a .ubar .uxt-pick{flex:1 1 auto!important;min-width:0;justify-content:space-between;padding:0 8px!important}
+.ux-a .ubar .uxt-pick span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.ux-a .ubar select.utr{display:inline-block!important;flex:0 1 auto;min-height:44px;width:auto;max-width:88px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:0 4px;font:600 14px var(--ui)}
+.ux-a .ubar .ubtn{flex:none;width:44px;height:44px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.ux-a .ubar .ubtn:hover,.ux-a .ubar .ubtn[aria-expanded=true]{border-color:var(--accent);color:var(--accent)}
+.ux-a .ubar .ubtn .tic{width:22px;height:22px}
+.ux-a .ubar .cpy-tops{flex:none}
+@media (max-width:480px){.ux-a .ubar .uxt-pick .chev{display:none}.ux-a .ubar .uxt-pick{padding:0 6px!important;font-size:15px}.ux-a .ubar select.utr{max-width:80px}}
+
+/* مفتاح الأوضاع */
+.umodes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;background:var(--line);border-radius:12px;margin:0 0 16px}
+.umodes button{min-height:42px;border:0;border-radius:9px;background:transparent;color:var(--ink);opacity:.8;font:600 15px var(--ui);cursor:pointer}
+.umodes button:hover{opacity:1}
+.umodes button[aria-selected=true]{background:var(--paper);color:var(--heading);opacity:1;box-shadow:0 1px 3px rgba(0,0,0,.16)}
+.umodes button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+
+.uhead{margin:0 0 14px}
+.uhead h1{margin:0;font:700 36px/1.25 var(--display);color:var(--heading)}
+.uhead h1 span{color:var(--gold)}
+.uhead small{display:block;font:500 13px var(--ui);color:var(--muted);margin-top:2px}
+@media (max-width:880px){.uhead h1{font-size:28px}}
+.utools,.userve{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.utools .trb,.userve .trb{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.utools .trb.on{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}
+
+/* رقم العدد زرار */
+.ux-a .cvlist .cv .cvn{background:none;border:0;cursor:pointer;padding:0;min-height:32px;font:700 15px var(--ui);color:var(--gold);border-radius:8px}
+.ux-a .cvlist .cv .cvn:hover{background:var(--gold-soft)}
+.ux-a .cvlist .cv{cursor:default}
+.ux-a .cvlist .cv:hover{background:transparent}
+.cvlist.nosup .cvt .sw sup{display:none}
+.cvlist.nosup .cvt .sw{border-bottom:1px dotted transparent}
+.cvlist.nosup .cvt .sw:hover{border-bottom-color:var(--gold);background:var(--gold-soft)}
+.cvw .cvf{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;padding:0 20px 12px}
+.cvw:not(:last-child){border-bottom:1px solid var(--line)}
+.cvw .cv{border-bottom:0}
+.umode-study .cvm,.umode-serve .cvm{display:inline-flex!important;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--gold);font:600 13px var(--ui);cursor:pointer}
+.umode-study .cvm:hover{border-color:var(--gold)}
+
+/* قراءة: نص متصل زي صفحة الكتاب */
+.cvlist.umode-read{background:transparent;border:0;box-shadow:none;border-radius:0;overflow:visible;padding:0 2px;text-align:justify;font:calc(23px*var(--fs,1))/2.1 var(--script);color:var(--ink)}
+@media (max-width:880px){.cvlist.umode-read{font-size:calc(20px*var(--fs,1))}}
+.umode-read .cvw,.umode-read .cv{display:inline}
+.umode-read .cvw{border:0!important}
+.umode-read .cv{padding:0;border:0;background:none!important}
+.umode-read .cvt{display:inline;font-size:inherit;line-height:inherit;zoom:1}
+.ux-a .umode-read .cv .cvn{display:inline-block;vertical-align:super;font:700 13px/1 var(--ui);color:var(--gold);padding:8px 5px;margin:-8px 1px;min-height:0}
+
+.cvlist.umode-read.ultr{direction:ltr;text-align:justify;font-family:"Noto Serif",Georgia,serif;line-height:1.9}
+.umode-read.ultr .cvt{text-align:inherit!important}
+.ux-a .umode-read.ultr .cv .cvn{margin:-8px 2px -8px 6px}
+/* لوحة الشواهد */
+.ux-on .uxt-sheet .shd h3 .usub{display:block;font:500 13px var(--ui);color:var(--muted);margin-top:2px}
+.uvtext{font:calc(21px*var(--fs,1))/1.9 var(--script);padding:10px 14px;background:var(--bg);border:1px solid var(--line);border-radius:12px;margin:0 0 14px}
+.uxt-sheet .group{margin:0 0 10px;box-shadow:none}
+.uxt-sheet .group .mm{display:none}
+.unote{font:14px/1.8 var(--ui);background:var(--gold-soft);border-radius:10px;padding:8px 12px;margin:0 0 10px}
+.unote b{color:var(--gold)}
+.uempty{color:var(--muted);font:14px/1.8 var(--ui)}
+.uacts{position:sticky;bottom:-18px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--paper);border-top:1px solid var(--line);padding:12px 0 6px;margin-top:12px}
+.uacts .trb{display:inline-flex;align-items:center;gap:6px}
+.uacts .uprim{background:var(--accent);color:var(--on-accent,#fff);border-color:var(--accent);margin-inline-start:auto}
+
+/* مفاتيح ⚙ */
+.usw{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;min-height:48px;background:none;border:0;padding:0;font:600 15px var(--ui);color:var(--ink);cursor:pointer;text-align:start}
+.usw i{flex:none;width:46px;height:26px;border-radius:999px;background:var(--line);position:relative;transition:background .15s}
+.usw i:after{content:"";position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:right .15s}
+.usw[aria-checked=true] i{background:var(--gold)}
+.usw[aria-checked=true] i:after{right:23px}
+.usw:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:8px}
+.ulink{background:none;border:0;padding:0;min-height:44px;color:var(--accent);font:600 14px var(--ui);text-decoration:underline;cursor:pointer}
+
+/* قائمة ⋯ */
+.umore{position:fixed;z-index:95;min-width:240px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.2);padding:6px;display:flex;flex-direction:column}
+.umore>*{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 12px;border:0;background:none;border-radius:8px;color:var(--ink);font:500 15px var(--ui);text-decoration:none;cursor:pointer;text-align:start}
+.umore>*:hover,.umore>*:focus-visible{background:var(--accent-soft);outline:none}
+.umore .tic{width:20px;height:20px;flex:none}
+
+/* التلميحات */
+.utip{position:fixed;z-index:96;width:min(290px,calc(100vw - 24px));box-sizing:border-box;background:#0F3554;color:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 12px 28px rgba(0,0,0,.3);font:15px/1.6 var(--ui)}
+.utip:before{content:"";position:absolute;top:-7px;left:calc(var(--ax,50%) - 7px);width:14px;height:14px;background:#0F3554;transform:rotate(45deg)}
+.ut-n{font-size:12px;opacity:.85}
+.ut-t{font-weight:600;font-size:16px}
+.ut-b{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.ut-skip{background:none;border:0;color:#fff;opacity:.9;font:14px var(--ui);min-height:40px;padding:0 4px;cursor:pointer}
+.ut-next{background:#fff;color:#0F3554;border:0;border-radius:999px;padding:0 18px;min-height:40px;font:700 14px var(--ui);cursor:pointer}
+.utip-ring{box-shadow:0 0 0 3px var(--paper),0 0 0 6px var(--gold)!important;border-radius:8px;position:relative;z-index:3;background:var(--gold-soft)}
+
+/* القائمة الجانبية */
+.ucap{font:700 14px var(--ui)!important;color:var(--gold)!important;margin:18px 6px 2px;letter-spacing:.02em}
+.ux-a #toolSec>.sh,.ux-a #serveSec>.sh{color:var(--gold)}
+.ufoot{display:flex;flex-wrap:wrap;gap:6px 16px;margin:20px 6px 10px;font:13px var(--ui)}
+.ufoot a,.ufoot button{color:var(--muted);background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:none;min-height:32px}
+.ufoot a:hover,.ufoot button:hover{color:var(--accent)}
+@media print{.umodes,.utools,.userve,.umore,.utip{display:none!important}}
+
+/* ===== صفحة العدد: الشريط الموحّد، الآية، التبويبات ===== */
+.uback{display:inline-flex;align-items:center;gap:6px;min-height:40px;color:var(--accent);font:600 14px var(--ui);text-decoration:none;cursor:pointer}
+.uback small{color:var(--muted);font-weight:500}
+.uback:hover{color:var(--gold)}
+.uvhead{margin-bottom:12px}
+.uol{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:6px 0 0;font:13.5px/1.7 var(--ui);color:var(--muted)}
+.uol b{color:var(--ink);font-weight:600}
+.uol a{color:var(--accent);text-decoration:none;font-weight:600}
+.uol .tic{width:16px;height:16px}
+.uvacts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.uvacts .trb{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;font-size:13.5px;border-radius:999px}
+.uvacts .trb .tic{width:17px;height:17px}
+.vtabs{display:flex;gap:2px;margin:20px 0 0;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:6;background:var(--bg)}
+.vtabs::-webkit-scrollbar{display:none}
+.vtabs button{flex:none;min-height:48px;padding:0 14px;border:0;border-bottom:3px solid transparent;background:none;color:var(--muted);font:600 15px var(--ui);cursor:pointer;white-space:nowrap}
+.vtabs button:hover{color:var(--ink)}
+.vtabs button b{font:600 12px var(--ui);background:var(--line);color:var(--ink);border-radius:999px;padding:1px 8px;margin-inline-start:4px}
+.vtabs button[aria-selected=true]{color:var(--heading);border-bottom-color:var(--gold)}
+.vtabs button[aria-selected=true] b{background:var(--gold);color:var(--on-gold,#fff)}
+.vtabs button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:6px}
+.vpanel{padding-top:14px}
+.vpanel[hidden]{display:none!important}
+.utsk{display:flex;gap:6px;align-items:center;margin:0 0 12px;font:13.5px/1.8 var(--ui);color:var(--muted)}
+.utsk .tic{width:16px;height:16px;flex:none}
+.vpanel .ugrp{margin-bottom:10px}
+.vpanel .ugrp>.ghead{cursor:pointer}
+.vpanel .ugrp>.ghead:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:12px}
+.vpanel .ugrp.closed>.gbody{display:none}
+.vpanel .r .lbl .en{display:none}
+.vpanel.kjv .r .lbl .en{display:inline}
+.vpanel .r .lbl .self{font-size:0!important;min-width:40px;min-height:36px;padding:0 10px;display:inline-flex;align-items:center;justify-content:center}
+.vpanel .r .lbl .self:before{content:"←";font:700 17px/1 var(--ui)}
+.vpanel .dict{margin-top:0}
+.ux-a .vpanel .uxt-off{padding:8px 12px;font-size:13px;margin-bottom:10px}
+.ux-a .vpanel .uxt-off button{min-height:36px;font-size:13px}
+@media print{.vtabs,.uback,.uvacts{display:none!important}.vpanel[hidden]{display:block!important}}
+
 /* pre:start — نص مكتوب مسبقًا في الصفحة لمحركات البحث (يستبدله التطبيق فور تحميله) */
 .pre{max-width:820px;margin:0 auto;padding:28px 20px 60px;line-height:2.1;color:var(--ink)}
 .pre h1{font-family:"El Messiri",serif;color:var(--heading);font-size:2rem;margin:.2em 0 .3em}

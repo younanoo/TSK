@@ -1,6 +1,6 @@
 /* جدد وعتقاء — القائمة الجانبية الموحّدة (☰) لكل الصفحات غير صفحات الأسفار
    الترتيب (نفس ترتيب القائمة الجانبية في صفحات الأسفار — app.js ‏sideTools):
-   ١) اذهب إلى عدد  ٢) الأسفار  ٣) الكتاب عبر الزمن  ٤) أدوات البحث  ٥) صفحات أخرى
+   ١) ابحث أو اذهب لآية  ٢) اقرأ (الأسفار، القراءة الزمنية، آية اليوم)  ٣) ادرس  ٤) اخدم  ثم روابط صغيرة
    لو غيّرت روابط هنا، غيّرها كمان في app.js (sideTools).
    الصفحة الرئيسية تفتح نفس القائمة بـ window.TSKMenu.open()، وتقدر تضيف قسمًا خاصًا بها عبر window.TSK_MENU_EXTRA = {title, html}. */
 (function(){
@@ -10,10 +10,9 @@
   var BKGRP=[["التوراة (الخمسة)",1,5],["الأسفار التاريخية",6,17],["أسفار الشعر والحكمة",18,22],["الأنبياء الكبار",23,27],["الأنبياء الصغار",28,39],["الأناجيل وأعمال الرسل",40,44],["رسائل بولس",45,57],["الرسائل العامة",58,65],["الرؤيا",66,66]];
   var ic=function(n){return '<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(TI[n]||"")+'</svg>'};
   var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
-  var TIME=[["chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)"],["timeline.html","timeline","الخط الزمني للأحداث"]];
-  var TOOLS=[["search.html","search","البحث: كلمة · جذر · سترونج · نحوي"],
-    ["mindmap.html","topology-star-3","الخريطة الذهنية للشواهد"],["topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)"]];
-  var OTHER=[["lists.html","copy","قوائمي (الآيات ومداخل القاموس المختارة)"],["sources.html","books","المصادر والمراجع"],["contact.html","flag","تواصل معنا / أبلغ عن خطأ"]];
+  var READ=[["chrono.html","calendar","اقرأ الكتاب كله في سنة بترتيب الأحداث"],["index.html#votd","calendar","آية اليوم"]];
+  var STUDY=[["search.html","search","ابحث بكلمة أو جذر أو رقم سترونج"],["topics.html","tags","ابحث عن موضوع في الكتاب المقدس"],["mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة"],["timeline.html","timeline","أحداث الكتاب على خط زمني"],["outline.html","books","مخطط السفر"]];
+  var SERVE=[["lists.html","copy","قوائمي: اجمع آيات وانسخها"]];
 
   /* ---------- اذهب إلى عدد: «يو ٣: ١٦» أو «مز ٢٣» أو كلمة → البحث ---------- */
   var nz=function(x){return String(x).replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[ً-ْ\s.]/g,"").toLowerCase()};
@@ -39,11 +38,11 @@
     panel=document.createElement("aside"); panel.className="sm-panel"; panel.setAttribute("role","dialog"); panel.setAttribute("aria-modal","true"); panel.setAttribute("aria-label","القائمة");
     var extra=window.TSK_MENU_EXTRA;
     panel.innerHTML='<div class="sm-head"><a class="sm-home" href="index.html">'+ic("home")+' الصفحة الرئيسية</a><button type="button" class="sm-x" aria-label="إغلاق">'+ic("x")+'</button></div>'+
-      sec("اذهب إلى عدد",'<form class="gotobox sm-go"><input placeholder="مثال: يو ٣:١٦ أو إش ٥٣" aria-label="اذهب إلى عدد أو ابحث عن كلمة" autocomplete="off" enterkeyhint="go"></form>')+
-      sec("الأسفار",books)+
-      sec("الكتاب عبر الزمن",TIME.map(link).join(""))+
-      sec("أدوات البحث",TOOLS.map(link).join(""))+
-      sec("صفحات أخرى",OTHER.map(link).join("")+'<button type="button" class="tool sm-off">'+ic("download")+' التنزيل للاستخدام دون إنترنت</button>')+
+      sec("ابحث أو اذهب لآية",'<form class="gotobox sm-go" role="search"><input placeholder="مثل: يو ٣: ١٦ أو محبة" aria-label="ابحث أو اذهب لآية" autocomplete="off" enterkeyhint="go"></form>')+
+      sec("اقرأ",books+READ.map(link).join(""))+
+      sec("ادرس",STUDY.map(link).join(""))+
+      sec("اخدم",SERVE.map(link).join(""))+
+      '<div class="ufoot"><a href="features.html">كل الأدوات</a><a href="sources.html">المصادر</a><a href="contact.html">تواصل معنا</a><button type="button" class="sm-off">التنزيل دون إنترنت</button></div>'+
       (extra&&extra.title?'<div class="side-sec sm-extra"><h4>'+extra.title+'</h4>'+extra.html+'</div>':"");
     document.body.appendChild(scrim); document.body.appendChild(panel);
     scrim.addEventListener("click",close);
@@ -52,6 +51,7 @@
     panel.querySelector(".sm-go").addEventListener("submit",function(e){
       e.preventDefault(); var i=this.querySelector("input"), q=i.value.trim();
       if(!q){i.focus();return}
+      var sq=q.replace(/\s/g,"");if(/^[GH]\d+$/i.test(sq)){location.href="search.html#tab=strong&q="+sq.toUpperCase();return}
       location.href=parseRef(q)||("search.html?q="+encodeURIComponent(q));
     });
     panel.querySelector(".sm-off").addEventListener("click",function(){

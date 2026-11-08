@@ -226,11 +226,23 @@
   const B = "(^|[" + PUN + "\\u200f])";
   function markChapter(main, c){
     const F = D().forms;
-    main.querySelectorAll(".cv[data-go]").forEach(btn => {
-      const m = btn.dataset.go.match(/\.(\d+):(\d+)$/); if (!m || +m[1] !== c) return;
+    main.querySelectorAll(".cv[data-go], .cv[data-gk]").forEach(btn => {
+      const m = (btn.dataset.go || btn.dataset.gk).match(/\.(\d+):(\d+)$/); if (!m || +m[1] !== c) return;
       const fv = F[c + ":" + m[2]]; if (!fv) return;
       const t = btn.querySelector(".cvt"); if (!t || t.dataset.geo) return;
       t.dataset.geo = "1";
+      /* النص مقسّم كلمات (.sw) — في صفحة الأصحاح الكلمة نفسها تفتح معناها: نميّز اسم المكان جوه كلمته */
+      const sws = t.querySelectorAll(".sw");
+      if (sws.length) {
+        sws.forEach(sw => {
+          const tn = [...sw.childNodes].find(x => x.nodeType === 3); if (!tn) return;
+          const w = tn.textContent.replace(new RegExp("[" + PUN + "]", "g"), "");
+          if (!fv[w]) return;
+          const s = document.createElement("span"); s.className = "geo-nm"; s.dataset.geo = fv[w]; s.title = "اعرض على الخريطة"; s.textContent = tn.textContent;
+          tn.replaceWith(s);
+        });
+        return;
+      }
       const forms = Object.keys(fv).sort((a, b) => b.length - a.length);
       const re = new RegExp(B + "(" + forms.map(reEsc).join("|") + ")(?=$|[" + PUN + "])", "g");
       t.innerHTML = t.innerHTML.replace(re, (all, pre, w) => `${pre}<span class="geo-nm" data-geo="${fv[w]}" title="اعرض على الخريطة">${w}</span>`);
