@@ -131,14 +131,14 @@ function parseRef(q){
   return {abbr:c1.abbr,c:+c,v:+v}}
 function gotoRef(q){const r=parseRef(q);if(!r)return false;location.href=pageOf(r.abbr,"/"+r.abbr+"/"+r.c+":"+r.v);return true}
 function sideTools(){
-  /* القائمة الجانبية: ابحث أو اذهب لآية، ثم اقرأ (الأسفار في الصفحة) · ادرس · اخدم */
+  /* القائمة الجانبية: ابحث أو اذهب لآية، ثم اقرأ (الأسفار في الصفحة) · الكتاب المقدس عبر الزمن · ادرس · اخدم */
   if($("#findSec"))return;
   const L=(h,i,t,x="")=>`<a class="tool" href="${h}"${x} style="text-decoration:none;display:block;margin-top:8px">${i.startsWith("<svg")?i:ic(i)} ${t}</a>`;
   const sec=(id,k,t,body)=>`<div class="side-sec" id="${id}" data-sec="${k}"><h4 class="sh">${t}</h4><div class="sbody">${body}</div></div>`;
   const h=$("#home");
   h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","ابحث أو اذهب لآية",`<form id="gotoBox" class="gotobox" role="search"><input id="gotoIn" placeholder="مثل: يو ٣: ١٦ أو محبة" aria-label="ابحث أو اذهب لآية" autocomplete="off" enterkeyhint="go"></form>`)+`<div class="ucap">اقرأ</div>`);
-  const after=`<div class="side-sec" id="readSec" data-sec="read"><div class="sbody">`+L("chrono.html","calendar","اقرأ الكتاب كله في سنة بترتيب الأحداث")+L("index.html#votd","note","آية اليوم")+`</div></div>`
-    +sec("toolSec","study","ادرس",L("search.html","search","ابحث بكلمة أو جذر أو رقم سترونج",' id="srchLink" target="tsksearch"')+L("topics.html","tags","ابحث عن موضوع في الكتاب المقدس",' target="tsktopics"')+L("mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة",' id="mmLink" target="tskmindmap"')+L("timeline.html","timeline","أحداث الكتاب على خط زمني")+L("outline.html?b="+book().abbr,"layout-grid","مخطط السفر",' id="uOlSide"'))
+  const after=sec("timeSec","time","الكتاب المقدس عبر الزمن",L("chrono.html","calendar","اقرأ الكتاب المقدس بالترتيب الزمني")+L("timeline.html","timeline","أحداث الكتاب على الخط الزمني"))
+    +sec("toolSec","study","ادرس",L("search.html","search","ابحث بكلمة أو جذر أو رقم سترونج",' id="srchLink" target="tsksearch"')+L("topics.html","tags","ابحث عن موضوع في الكتاب المقدس",' target="tsktopics"')+L("mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة",' id="mmLink" target="tskmindmap"')+L("outline.html?b="+book().abbr,"layout-grid","مخطط السفر",' id="uOlSide"'))
     +sec("serveSec","serve","اخدم",L("lists.html","bookmarks","قوائمي: اجمع آيات وانسخها <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+`<button type="button" class="tool" id="uPresSide" style="display:block;width:100%;margin-top:8px;text-align:start">${PRES_IC} اعرض الآيات على شاشة أو بروجكتور</button>`)
     +`<div class="ufoot"><a href="sources.html" target="_blank">المصادر</a><a href="contact.html" target="_blank">تواصل معنا</a><button type="button" id="offBtn">التنزيل دون إنترنت</button></div>`;
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
@@ -247,7 +247,7 @@ function extSync(){document.querySelectorAll("[data-scr]").forEach(b=>{b.hidden=
 try{window.screen&&screen.addEventListener&&screen.addEventListener("change",extSync)}catch(e){}
 const SCR_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h12v9h-12z"/><path d="M15 9h6v10h-12v-5"/><path d="M7 18h4"/></svg>';
 const PRES_IC='<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18"/><path d="M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-10"/><path d="M12 16v4"/><path d="M9 20h6"/></svg>';
-function MODE(){const m=store.get("umode","read");return ["read","study","serve"].includes(m)?m:"read"}
+function MODE(){const m=store.get("umode","read");return ["read","study"].includes(m)?m:"read"}  /* وضع «خدمة» أُلغي؛ القيمة القديمة serve ترجع قراءة */
 function interOn(){return (MODE()==="study"||S.view==="verse")&&store.get("inter",!1)===true}
 /* الكلمات قابلة للضغط في كل الأوضاع؛ أرقام سترونج فوقها تظهر في وضع «دراسة» فقط (ويُطفئها القارئ من ⚙) */
 function cstrOn(){return S.view==="chapter"&&!origOn()&&!interOn()}
@@ -449,7 +449,7 @@ window.chImgFail=function(img){
   f.innerHTML=`<img class="logo-l" src="assets/brand/logo-stacked-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="320" height="230"><img class="logo-d" src="assets/brand/logo-stacked-dark.svg" alt="" width="320" height="230">`;
 };
 function viewChapter(){
-  const M=MODE(), ST=M==="study", SV=M==="serve", INTER=interOn();
+  const M=MODE(), ST=M==="study", RD=M==="read", INTER=interOn();
   if(INTER) needStrong(()=>{if(S.view==="chapter")render()});
   const b=book(), c=S.c, vs=inCh(b,c), ci=b.chapters.indexOf(c);
   const pc=b.chapters[ci-1], nc=b.chapters[ci+1], me=CAT_ABBR[b.abbr];
@@ -463,16 +463,16 @@ function viewChapter(){
   const refs=vs.reduce((a,x)=>a+refCount(x),0), CS=cstrOn(), PEND=SPLIT&&!chHas(c), PFAIL=PEND&&chFailed(c);
   const og=origOn(), av=trAvail(), SUP=cstrSup();
   const trSel=`<select class="utr" aria-label="الترجمة">${av.map(k=>`<option value="${k}" ${!og&&k===trCur()?"selected":""}>${TRN[k]}</option>`).join("")}${ST&&origView()?`<option value="orig" ${og?"selected":""}>اللغة الأصلية</option>`:""}</select>`;
-  const bar=`<div class="stickbar ubar"><button class="menu-btn" id="menu" aria-label="القائمة">${ic("menu-2")}</button><span class="sp"></span>${trSel}${SV?cpyTop():""}<button type="button" class="ubtn" id="uMore" aria-label="المزيد" aria-haspopup="menu" aria-expanded="false">${UDOTS}</button><button type="button" class="ubtn" id="uGear" aria-label="إعدادات العرض" aria-haspopup="dialog">${UGEAR}</button></div>`;
-  const modes=`<div class="umodes" role="tablist" aria-label="وضع الصفحة">${[["read","قراءة"],["study","دراسة"],["serve","خدمة"]].map(([k,x])=>`<button type="button" role="tab" aria-selected="${M===k}" data-umode="${k}">${x}</button>`).join("")}</div>`;
+  const bar=`<div class="stickbar ubar"><button class="menu-btn" id="menu" aria-label="القائمة">${ic("menu-2")}</button><span class="sp"></span>${trSel}<button type="button" class="ubtn" id="uMore" aria-label="المزيد" aria-haspopup="menu" aria-expanded="false">${UDOTS}</button><button type="button" class="ubtn" id="uGear" aria-label="إعدادات العرض" aria-haspopup="dialog">${UGEAR}</button></div>`;
+  const modes=`<div class="umodes" role="tablist" aria-label="وضع الصفحة">${[["read","قراءة"],["study","دراسة"]].map(([k,x])=>`<button type="button" role="tab" aria-selected="${M===k}" data-umode="${k}">${x}</button>`).join("")}</div>`;
   const head=`<div class="uhead"><h1>${bname(b)} <span>${n(c)}</span></h1><small><span class="ltr">${b.en} ${c}</span> · ${n(vs.length)} عددًا · ${PEND?"…":n(refs)} شاهدًا</small></div>`;
   const CMP=`<a class="trb" href="compare.html?b=${b.abbr}&c=${c}">${ic("arrows-left-right")} مقارنة الترجمات</a>`;
   const tools=ST?`<div class="utools"><button type="button" class="trb ${INTER?"on":""}" data-inter="${INTER?0:1}" aria-pressed="${INTER}">${ic("language")} كلمة بكلمة</button>${origView()?(og?`<button type="button" class="trb on" data-tr="${trCur()}" aria-pressed="true">اللغة الأصلية</button>`:`<button type="button" class="trb" data-orig="1" aria-pressed="false">اللغة الأصلية</button>`):""}${!og&&!INTER?`<button type="button" class="trb ${SUP?"on":""}" id="cstrBtn" aria-pressed="${SUP}">أرقام سترونج</button>`:""}${CMP}</div>${INTER?ilOpts(b):""}`:"";
-  const serveBar=SV?`<div class="userve">${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"}>${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}<button type="button" class="trb" data-uprint="1">${ic("printer")} طباعة</button></div>`:"";
+  const serveBar=RD?`<div class="userve">${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"}>${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}</div>`:"";
   const rows=vs.map(d=>{const rc=refCount(d), g=`${d.b}.${d.c}:${d.v}`, kj=trCur()==="kjv"&&!og?'dir="ltr" style="text-align:left"':"";
     const txt=og?origSpan(d):`<span class="cvt ar" ${kj}>${CS?(sg=>sg?segHTML(sg):esc(trText(d)||d.text||""))(cstrSeg(d)):esc(trText(d)||d.text||"")}</span>`;
     const foot=ST?`<div class="cvf"><button type="button" class="cvm" data-go="${g}" title="${vref(d)} — كل تفاصيل العدد والقاموس">${PEND?"…":rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",g,vref(d),"pl")}</div>`
-      :SV?`<div class="cvf">${presOK()?`<button type="button" class="cvp" data-pres="${g}" title="اعرض من هذه الآية بملء الشاشة" aria-label="${vref(d)} — عرض بملء الشاشة">${PRES_IC}<span class="cvp-l">اعرض على الشاشة</span><span class="cvp-n">معروضة الآن</span></button>`:""}${cpyBtn("v",g,vref(d),"pl")}</div>`:"";
+      :"";
     return `<div class="cvw"><div class="cv cvs" data-gk="${g}"><button type="button" class="cvn" data-uref="${g}" aria-label="${vref(d)} — اعرض الشواهد" title="اعرض شواهد ${vref(d)}">${n(d.v)}</button>${txt}</div>${foot}</div>`}).join("");
   $("#main").innerHTML = bar+modes+head+(store.get("uimg",false)?chImage(b,c):"")+tools+serveBar+(ST?olChapter(b,c):"")
     +(INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:"")
@@ -657,10 +657,10 @@ document.addEventListener("click",e=>{
   if(e.target.closest("#strTgl")){const vc=document.querySelector(".verse-card");const off=!vc.classList.contains("nostr");vc.classList.toggle("nostr",off);e.target.closest("#strTgl").classList.toggle("on",!off);store.set("nostr2",off);return}
   if(e.target.closest("#diaBtn")){store.set("dia",!diaOn());render();return}
   const tb=e.target.closest("[data-tr]"); if(tb){store.set("tr",tb.dataset.tr);store.set("corig",false);render();return}
-  if(e.target.closest("[data-orig]")){store.set("corig",true);render();return}
+  if(e.target.closest("[data-orig]")){store.set("corig",true);store.set("inter",false);render();return}  /* اللغة الأصلية وكلمة بكلمة لا يعملان معًا */
   const sb=e.target.closest("[data-isrc]"); if(sb){store.set("isrc",sb.dataset.isrc);render();return}
   const db=e.target.closest("[data-idir]"); if(db){store.set("idir",db.dataset.idir);render();return}
-  const ib=e.target.closest("[data-inter]"); if(ib){store.set("inter",ib.dataset.inter==="1");render();return}
+  const ib=e.target.closest("[data-inter]"); if(ib){const on=ib.dataset.inter==="1";store.set("inter",on);if(on)store.set("corig",false);render();return}
   const gc=e.target.closest("[data-gc]"); if(gc){const p=gc.dataset.gc.split("."); goChapter(+p[0],+p[1]); return}
   const g=e.target.closest("[data-go]");
   if(g&&g.dataset.go){const p=parseGo(g.dataset.go); if(p) go(...p); return}
@@ -1005,13 +1005,27 @@ fromHash();
   main.addEventListener("touchend",e=>{if(!tx0)return;const p=e.changedTouches[0],dx=p.clientX-tx0[0],dy=p.clientY-tx0[1];tx0=null;
     if(Math.abs(dx)>70&&Math.abs(dy)<50){const b=$(dx>0?"#main .vnav.vnext":"#main .vnav.vprev");b&&b.click()}},{passive:true});
 
-  /* تلميحات أول مرة: ٣ خطوات، ولا تظهر مرة أخرى بعد «تمام» أو «تخطي» */
-  const TIPS=[[()=>$("#main .cvlist .cvn"),"اضغط على أي رقم عدد لترى شواهده."],
-    [()=>$("#main .cvlist .cvt .sw")||$("#main .cvlist .cvt"),"اضغط على أي كلمة لتعرف أصلها العبري أو اليوناني ومعناها."],
-    [()=>$("#uGear"),"من هنا تغيّر حجم الخط والتشكيل وطريقة العرض."]];
-  let tipStep=0, tipEl=null, tipAnchor=null;
+  /* التلميحات: لكل وضع مجموعة. تظهر كل مرة تُفتح فيها الصفحة أو يدخل القارئ الوضع،
+     إلا لو اختار «لا تُظهر هذه التلميحات مرة أخرى» (يُحفظ لكل وضع في tsklib:utipsOff). التلميح اللي عنصره مش موجود بيتنطّ. */
+  const TIPSETS={
+    read:[[()=>$("#main .cvlist .cvn"),"اضغط على أي رقم عدد لترى شواهده."],
+      [()=>$("#main .cvlist .cvt .sw")||$("#main .cvlist .cvt"),"اضغط على أي كلمة لتعرف أصلها العبري أو اليوناني ومعناها."],
+      [()=>$("#main .userve [data-pres]"),"اعرض الأصحاح بملء الشاشة، آية في كل شريحة — مناسب للخدمة والاجتماعات."],
+      [()=>$("#uGear"),"من هنا تغيّر حجم الخط والتشكيل وطريقة العرض."]],
+    study:[[()=>$("#main .utools [data-inter]"),"«كلمة بكلمة» يعرض تحت الآية كل كلمة عبرية أو يونانية بنطقها ومعناها والكلمة العربية المقابلة لها."],
+      [()=>$("#main .utools [data-orig], #main .utools [data-tr]"),"اقرأ الأصحاح بالعبرية أو اليونانية كما كُتب أول مرة."],
+      [()=>$("#cstrBtn"),"يُظهر أرقام سترونج فوق الكلمات أو يخفيها."],
+      [()=>$('#main .utools a[href^="compare.html"]'),"ينقلك إلى صفحة مقارنة الترجمات لتقرأ هذا الأصحاح في أكثر من ترجمة جنبًا إلى جنب."],
+      [()=>$("#main details.olbox"),"مخطط السفر: أقسامه وعناوينها، لتعرف مكان هذا الأصحاح في الصورة الكاملة."],
+      [()=>$("#main .cvlist:not(.nosup) .cvt .sw"),"الرقم فوق كل كلمة هو رقمها في قاموس سترونج. اضغط على الكلمة لتعرف أصلها ومعناها."],
+      [()=>$("#main .cvlist .cvm"),"يمكنك الاطلاع على الشواهد المقابلة لهذه الآية، مع معنى كلماتها والملاحظات."],
+      [()=>$("#main .cvlist .cvf .cpy"),"يمكنك إضافة الآية إلى إحدى قوائمك."],
+      [()=>$("#main .cvlist .cvf .cpy-dd"),"يمكنك التحكم في قوائمك: اختيار القائمة التي تُضاف إليها الآيات، أو إنشاء قائمة جديدة."]]};
+  const tipsOff=m=>(store.get("utipsOff",{})||{})[m]===true;
+  function tipsSetOff(m,off){const o=store.get("utipsOff",{})||{};if(off)o[m]=true;else delete o[m];store.set("utipsOff",o)}
+  let tipStep=0, tipEl=null, tipAnchor=null, tipMode="read";
   function tipClear(){if(tipEl)tipEl.remove();tipEl=null;if(tipAnchor)tipAnchor.classList.remove("utip-ring");tipAnchor=null}
-  function tipEnd(){tipClear();store.set("utipsDone",true)}
+  const tipEnd=tipClear;
   function tipPlace(){
     if(!tipEl||!tipAnchor)return;
     const r=tipAnchor.getBoundingClientRect(), w=tipEl.offsetWidth;
@@ -1021,26 +1035,30 @@ fromHash();
   }
   function tipShow(){
     tipClear();
-    if(S.view!=="chapter"||tipStep>=TIPS.length) return tipEnd();
-    const [get,txt]=TIPS[tipStep], a=get(); if(!a){tipStep++;return tipShow()}
+    const L=TIPSETS[tipMode]||[];
+    if(S.view!=="chapter"||MODE()!==tipMode||tipStep>=L.length) return tipEnd();
+    const [get,txt]=L[tipStep], a=get(); if(!a){tipStep++;return tipShow()}
+    const shown=L.filter(x=>x[0]()).length, idx=L.slice(0,tipStep).filter(x=>x[0]()).length, last=!L.slice(tipStep+1).some(x=>x[0]());
     tipAnchor=a; a.classList.add("utip-ring");
-    if(tipStep<2) a.scrollIntoView({block:"center"}); else {const sb=$("#main .stickbar");sb&&sb.classList.remove("uxt-hide")}
-    tipEl=el("div",{class:"utip",role:"dialog","aria-label":"تلميح"},`<div class="ut-n">تلميح ${n(tipStep+1)} من ${n(TIPS.length)}</div><div class="ut-t">${txt}</div><div class="ut-b"><button type="button" class="ut-skip">تخطي</button><button type="button" class="ut-next">${tipStep===TIPS.length-1?"تمام":"التالي"}</button></div>`);
+    if(a.closest(".stickbar")){const sb=$("#main .stickbar");sb&&sb.classList.remove("uxt-hide")} else a.scrollIntoView({block:"center"});
+    tipEl=el("div",{class:"utip",role:"dialog","aria-label":"تلميح"},`<div class="ut-n">تلميح ${n(idx+1)} من ${n(shown)}</div><div class="ut-t">${txt}</div><label class="ut-off"><input type="checkbox" ${tipsOff(tipMode)?"checked":""}> لا تُظهر هذه التلميحات مرة أخرى</label><div class="ut-b"><button type="button" class="ut-skip">${last?"إغلاق":"تخطي"}</button><button type="button" class="ut-next">${last?"تمام":"التالي"}</button></div>`);
     document.body.append(tipEl); tipPlace();
+    $(".ut-off input",tipEl).addEventListener("change",e=>tipsSetOff(tipMode,e.target.checked));
     $(".ut-next",tipEl).addEventListener("click",()=>{tipStep++;tipShow()});
     $(".ut-skip",tipEl).addEventListener("click",tipEnd);
     $(".ut-next",tipEl).focus();
   }
-  function tipsStart(){tipStep=0;tipShow()}
+  function tipsStart(m){tipMode=m||MODE();tipStep=0;tipShow()}
   addEventListener("scroll",tipPlace,{passive:true}); addEventListener("resize",tipPlace);
   /* بعد كل render */
-  let tipsTried=false;
+  const tipsShownIn=new Set();  /* مرة لكل وضع في كل فتحة للصفحة (التنقل بين الأصحاحات مش بيعيدها) */
   function uxAfter(){
     closeMore();
     document.documentElement.dataset.uxmode=MODE();
     const ps=$("#uPresSide"); if(ps){const b=book(),c=S.view==="book"?b.chapters[0]:S.c,v=(inCh(b,c)[0]||{}).v||1;ps.dataset.pres=`${b.id}.${c}:${v}`}
+    if(tipEl&&(S.view!=="chapter"||MODE()!==tipMode)) tipClear();
     if(tipAnchor&&!document.contains(tipAnchor)){const s=tipStep;tipClear();tipStep=s;if(S.view==="chapter")setTimeout(tipShow,50)}
-    if(S.view==="chapter"&&!tipsTried&&!store.get("utipsDone",false)){tipsTried=true;setTimeout(()=>{if(!tipEl&&!sheetKind&&S.view==="chapter")tipsStart()},900)}
+    if(S.view==="chapter"){const m=MODE();if(!tipsShownIn.has(m)&&!tipsOff(m)){tipsShownIn.add(m);setTimeout(()=>{if(!tipEl&&!sheetKind&&S.view==="chapter"&&MODE()===m)tipsStart(m)},800)}}
   }
   document.addEventListener("click",e=>{if(e.target.closest(".uxt-sheet [data-go]"))closeSheet()},true);
   document.addEventListener("click",e=>{
@@ -1055,11 +1073,11 @@ fromHash();
     if(t.closest("[data-uprint]")){closeMore();setTimeout(()=>window.print(),50);return}
     if(t.closest("#uImg")){store.set("uimg",!store.get("uimg",false));render();return}
     if((x=t.closest("#uDark"))){$("#themeBtn").click();x.setAttribute("aria-checked",isDark());return}
-    if(t.closest("#uTips")){closeSheet();store.set("utipsDone",false);setTimeout(tipsStart,250);return}
+    if(t.closest("#uTips")){closeSheet();setTimeout(()=>tipsStart(MODE()),250);return}
   });
   document.addEventListener("change",e=>{
     const s=e.target.closest(".utr"); if(!s) return;
-    if(s.value==="orig") store.set("corig",true); else {store.set("tr",s.value);store.set("corig",false)}
+    if(s.value==="orig"){store.set("corig",true);store.set("inter",false)} else {store.set("tr",s.value);store.set("corig",false)}
     render();
   });
   addEventListener("keydown",e=>{if(e.key==="Escape"){closeMore();if(tipEl)tipEnd()}});

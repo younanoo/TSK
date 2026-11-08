@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=4ee308ad">
+<link rel="stylesheet" href="assets/style.css?v=dbfe60c1">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -17,11 +17,22 @@
 html,body{overflow-x:clip;padding:0}
 .ol{max-width:900px;margin:0 auto;padding:18px 16px 70px}
 .ol h1{font:700 22px var(--ui);margin:0 0 4px}.ol .sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
-.ol .top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.ol .top a,.ol .top select{font:14px var(--ui)}
-.ol .top a{color:var(--muted);text-decoration:none}
+.ol .top{display:flex;gap:10px;align-items:stretch;margin:4px 0 16px}
+.ol .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ol .selw{position:relative;flex:1 1 auto;min-width:0;max-width:320px}
+.ol .selw::after{content:"";position:absolute;inset-inline-end:16px;top:50%;width:8px;height:8px;border:solid var(--gold);border-width:0 0 2px 2px;transform:translateY(-70%) rotate(-45deg);pointer-events:none}
+.ol .selw select{appearance:none;-webkit-appearance:none;width:100%;min-height:46px;padding:0 14px;padding-inline-end:40px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--heading);font:700 15.5px var(--ui);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.ol .selw select:hover,.ol .selw select:focus-visible{border-color:var(--gold);outline:none}
+.ol .bkbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:0 16px;border:1px solid var(--gold);border-radius:12px;color:var(--heading);text-decoration:none;font:600 14.5px var(--ui);background:transparent}
+.ol .bkbtn:hover,.ol .bkbtn:focus-visible{background:var(--paper)}
+.ol .bkbtn .tic{width:17px;height:17px}
 .ol .src{margin-top:22px;color:var(--muted);font-size:12.5px;line-height:1.7}
 .olr .orc{font:12px var(--ui);color:var(--muted)}
 .ol .olr{border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-bottom:6px}
+.ol .pick h2{font:700 15px var(--ui);color:var(--heading);margin:18px 0 8px}
+.ol .pick .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.ol .pick a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);text-decoration:none;font:600 14.5px var(--ui);text-align:center}
+.ol .pick a:hover,.ol .pick a:focus-visible{border-color:var(--gold);color:var(--heading)}
 .ol .olr.l2{margin-inline-start:22px}.ol .olr.l3{margin-inline-start:44px}.ol .olr.l4{margin-inline-start:66px}
 </style><!--seo-->
 <meta name="description" content="مخطط تفصيلي لكل سفر من أسفار الكتاب المقدس بالعربية والإنجليزية مع الأعداد.">
@@ -48,7 +59,7 @@ html,body{overflow-x:clip;padding:0}
 <div class="ol">
 <h1 id="h"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10v11l-5 -3l-5 3v-11a3 3 0 0 1 3 -3h4a3 3 0 0 1 3 3z" /> <path d="M11 3h5a3 3 0 0 1 3 3v11" /></svg> مخطط السفر</h1>
 <p class="sub" id="sub"></p>
-<div class="top"><a href="index.html">← المكتبة</a><a id="bk" href="#">فتح السفر</a><select id="sel" aria-label="السفر"></select></div>
+<div class="top"><label class="selw"><span class="vh">السفر</span><select id="sel" aria-label="اختر السفر"></select></label><a id="bk" class="bkbtn" href="#">فتح السفر</a></div>
 <div id="list"></div>
 <p class="src">المخطط من «Berean Study Bible — Book Outlines» (Bible Hub)، وعناوينه بالإنجليزية مترجمة إلى العربية. الأرقام هي المقاطع داخل السفر وفق ترقيم الترجمات الإنجليزية.</p>
 </div>
@@ -56,19 +67,28 @@ html,body{overflow-x:clip;padding:0}
 const BOOKS=[{"a":"Gen","n":"التكوين","nc":50},{"a":"Exo","n":"الخروج","nc":40},{"a":"Lev","n":"اللاويين","nc":27},{"a":"Num","n":"العدد","nc":36},{"a":"Deu","n":"التثنية","nc":34},{"a":"Jos","n":"يشوع","nc":24},{"a":"Jdg","n":"القضاة","nc":21},{"a":"Rut","n":"راعوث","nc":4},{"a":"1Sa","n":"صموئيل الأول","nc":31},{"a":"2Sa","n":"صموئيل الثاني","nc":24},{"a":"1Ki","n":"الملوك الأول","nc":22},{"a":"2Ki","n":"الملوك الثاني","nc":25},{"a":"1Ch","n":"أخبار الأيام الأول","nc":29},{"a":"2Ch","n":"أخبار الأيام الثاني","nc":36},{"a":"Ezr","n":"عزرا","nc":10},{"a":"Neh","n":"نحميا","nc":13},{"a":"Est","n":"أستير","nc":10},{"a":"Job","n":"أيوب","nc":42},{"a":"Psa","n":"المزامير","nc":150},{"a":"Pro","n":"الأمثال","nc":31},{"a":"Ecc","n":"الجامعة","nc":12},{"a":"Son","n":"نشيد الأنشاد","nc":8},{"a":"Isa","n":"إشعياء","nc":66},{"a":"Jer","n":"إرميا","nc":52},{"a":"Lam","n":"مراثي إرميا","nc":5},{"a":"Eze","n":"حزقيال","nc":48},{"a":"Dan","n":"دانيال","nc":12},{"a":"Hos","n":"هوشع","nc":14},{"a":"Joe","n":"يوئيل","nc":3},{"a":"Amo","n":"عاموس","nc":9},{"a":"Oba","n":"عوبديا","nc":1},{"a":"Jon","n":"يونان","nc":4},{"a":"Mic","n":"ميخا","nc":7},{"a":"Nah","n":"ناحوم","nc":3},{"a":"Hab","n":"حبقوق","nc":3},{"a":"Zep","n":"صفنيا","nc":3},{"a":"Hag","n":"حجي","nc":2},{"a":"Zec","n":"زكريا","nc":14},{"a":"Mal","n":"ملاخي","nc":4},{"a":"Mat","n":"متى","nc":28},{"a":"Mar","n":"مرقس","nc":16},{"a":"Luk","n":"لوقا","nc":24},{"a":"Joh","n":"يوحنا","nc":21},{"a":"Act","n":"أعمال الرسل","nc":28},{"a":"Rom","n":"رومية","nc":16},{"a":"1Co","n":"كورنثوس الأولى","nc":16},{"a":"2Co","n":"كورنثوس الثانية","nc":13},{"a":"Gal","n":"غلاطية","nc":6},{"a":"Eph","n":"أفسس","nc":6},{"a":"Phi","n":"فيلبي","nc":4},{"a":"Col","n":"كولوسي","nc":4},{"a":"1Th","n":"تسالونيكي الأولى","nc":5},{"a":"2Th","n":"تسالونيكي الثانية","nc":3},{"a":"1Ti","n":"تيموثاوس الأولى","nc":6},{"a":"2Ti","n":"تيموثاوس الثانية","nc":4},{"a":"Tit","n":"تيطس","nc":3},{"a":"Phm","n":"فليمون","nc":1},{"a":"Heb","n":"العبرانيين","nc":13},{"a":"Jam","n":"يعقوب","nc":5},{"a":"1Pe","n":"بطرس الأولى","nc":5},{"a":"2Pe","n":"بطرس الثانية","nc":3},{"a":"1Jo","n":"يوحنا الأولى","nc":5},{"a":"2Jo","n":"يوحنا الثانية","nc":1},{"a":"3Jo","n":"يوحنا الثالثة","nc":1},{"a":"Jud","n":"يهوذا","nc":1},{"a":"Rev","n":"الرؤيا","nc":22}];
 const OLB=["Gen", "Exo", "Lev", "Num", "Deu", "Jos", "Jdg", "Rut", "1Sa", "2Sa", "1Ki", "2Ki", "1Ch", "2Ch", "Ezr", "Neh", "Est", "Job", "Psa", "Pro", "Ecc", "Son", "Isa", "Jer", "Lam", "Eze", "Dan", "Hos", "Joe", "Amo", "Oba", "Jon", "Mic", "Nah", "Hab", "Zep", "Hag", "Zec", "Mal", "Mat", "Mar", "Luk", "Joh", "Act", "Rom", "1Co", "2Co", "Gal", "Eph", "Phi", "Col", "1Th", "2Th", "1Ti", "2Ti", "Tit", "Phm", "Heb", "Jam", "1Pe", "2Pe", "1Jo", "2Jo", "3Jo", "Jud", "Rev"];
 const AR="٠١٢٣٤٥٦٧٨٩",n=x=>String(x).replace(/\d/g,d=>AR[d]);
-const abbr=new URLSearchParams(location.search).get("b")||"Jon";
-const book=BOOKS.find(x=>x.a===abbr)||BOOKS.find(x=>x.a==="Jon");
-const sel=document.getElementById("sel");
-sel.innerHTML=BOOKS.filter(x=>OLB.includes(x.a)).map(x=>'<option value="'+x.a+'"'+(x.a===book.a?" selected":"")+'>'+x.n+'</option>').join("");
-sel.onchange=()=>location.search="?b="+sel.value;
+const abbr=new URLSearchParams(location.search).get("b");
+const book=abbr&&BOOKS.find(x=>x.a===abbr&&OLB.includes(x.a));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sel=document.getElementById("sel");
+if(!book){
+ /* بدون سفر في الرابط: اختر السفر أولًا */
+ document.querySelector(".ol .top").style.display="none";
+ document.getElementById("sub").textContent="اختر السفر لترى أقسامه وعناوينه، ثم اضغط على أي عنوان لتقرأه.";
+ const ok=BOOKS.filter(x=>OLB.includes(x.a)), nt=BOOKS.findIndex(x=>x.a==="Mat");
+ const grp=(t,L)=>L.length?'<h2>'+t+'</h2><div class="g">'+L.map(x=>'<a href="?b='+x.a+'">'+esc(x.n)+'</a>').join("")+'</div>':"";
+ document.getElementById("list").innerHTML='<div class="pick">'+grp("العهد القديم",ok.filter(x=>BOOKS.indexOf(x)<nt))+grp("العهد الجديد",ok.filter(x=>BOOKS.indexOf(x)>=nt))+'</div>';
+} else {
+sel.innerHTML='<option value="">كل الأسفار…</option>'+BOOKS.filter(x=>OLB.includes(x.a)).map(x=>'<option value="'+x.a+'"'+(x.a===book.a?" selected":"")+'>'+x.n+'</option>').join("");
+sel.onchange=()=>{location.search=sel.value?"?b="+sel.value:""};
 const fmt=r=>r[3]===r[5]?n(r[3])+": "+n(r[4])+"–"+n(r[6]):n(r[3])+": "+n(r[4])+" – "+n(r[5])+": "+n(r[6]);
-document.title="مخطط سفر "+book.n+" — مكتبة دراسة الشواهد";
+document.title="مخطط سفر "+book.n+" — جدد وعتقاء";
 document.getElementById("h").innerHTML="<svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M15 10v11l-5 -3l-5 3v-11a3 3 0 0 1 3 -3h4a3 3 0 0 1 3 3z' /> <path d='M11 3h5a3 3 0 0 1 3 3v11' /></svg> مخطط سفر "+book.n;
-document.getElementById("bk").href=book.a+".html";document.getElementById("bk").innerHTML="فتح سفر "+book.n+" <svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg>";
+document.getElementById("bk").href=book.a+".html";document.getElementById("bk").innerHTML="اقرأ السفر <svg class='tic' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6' /> <path d='M11 13l9 -9' /> <path d='M15 4h5v5' /></svg>";
 const s=document.createElement("script");s.src="assets/ol_"+book.a+".js";
 s.onload=()=>{const O=window.OL[book.a];
  document.getElementById("sub").textContent=n(O.filter(r=>r[0]===1).length)+" أقسام رئيسية · "+n(O.length)+" عنوانًا";
  document.getElementById("list").innerHTML=O.map(r=>'<a class="olr l'+r[0]+'" href="'+book.a+'.html#/'+book.a+'/'+r[3]+':'+r[4]+'"><span class="ort">'+esc(r[2]||r[1])+'</span><span class="ore ltr">'+esc(r[1])+'</span><span class="orn">'+fmt(r)+'</span></a>').join("")};
 document.body.appendChild(s);
+}
 </script></body></html>

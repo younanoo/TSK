@@ -1,6 +1,6 @@
 /* جدد وعتقاء — القائمة الجانبية الموحّدة (☰) لكل الصفحات غير صفحات الأسفار
    الترتيب (نفس ترتيب القائمة الجانبية في صفحات الأسفار — app.js ‏sideTools):
-   ١) ابحث أو اذهب لآية  ٢) اقرأ (الأسفار، القراءة الزمنية، آية اليوم)  ٣) ادرس  ٤) اخدم  ثم روابط صغيرة
+   ١) ابحث أو اذهب لآية  ٢) اقرأ (الأسفار)  ٣) الكتاب المقدس عبر الزمن  ٤) ادرس  ٥) اخدم  ثم روابط صغيرة
    لو غيّرت روابط هنا، غيّرها كمان في app.js (sideTools).
    الصفحة الرئيسية تفتح نفس القائمة بـ window.TSKMenu.open()، وتقدر تضيف قسمًا خاصًا بها عبر window.TSK_MENU_EXTRA = {title, html}. */
 (function(){
@@ -10,8 +10,8 @@
   var BKGRP=[["التوراة (الخمسة)",1,5],["الأسفار التاريخية",6,17],["أسفار الشعر والحكمة",18,22],["الأنبياء الكبار",23,27],["الأنبياء الصغار",28,39],["الأناجيل وأعمال الرسل",40,44],["رسائل بولس",45,57],["الرسائل العامة",58,65],["الرؤيا",66,66]];
   var ic=function(n){return '<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(TI[n]||"")+'</svg>'};
   var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
-  var READ=[["chrono.html","calendar","اقرأ الكتاب كله في سنة بترتيب الأحداث"],["index.html#votd","calendar","آية اليوم"]];
-  var STUDY=[["search.html","search","ابحث بكلمة أو جذر أو رقم سترونج"],["topics.html","tags","ابحث عن موضوع في الكتاب المقدس"],["mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة"],["timeline.html","timeline","أحداث الكتاب على خط زمني"],["outline.html","books","مخطط السفر"]];
+  var TIME=[["chrono.html","calendar","اقرأ الكتاب المقدس بالترتيب الزمني"],["timeline.html","timeline","أحداث الكتاب على الخط الزمني"]];
+  var STUDY=[["search.html","search","ابحث بكلمة أو جذر أو رقم سترونج"],["topics.html","tags","ابحث عن موضوع في الكتاب المقدس"],["mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة"],["outline.html","books","مخطط السفر"]];
   var SERVE=[["lists.html","copy","قوائمي: اجمع آيات وانسخها"]];
 
   /* ---------- اذهب إلى عدد: «يو ٣: ١٦» أو «مز ٢٣» أو كلمة → البحث ---------- */
@@ -39,7 +39,8 @@
     var extra=window.TSK_MENU_EXTRA;
     panel.innerHTML='<div class="sm-head"><a class="sm-home" href="index.html">'+ic("home")+' الصفحة الرئيسية</a><button type="button" class="sm-x" aria-label="إغلاق">'+ic("x")+'</button></div>'+
       sec("ابحث أو اذهب لآية",'<form class="gotobox sm-go" role="search"><input placeholder="مثل: يو ٣: ١٦ أو محبة" aria-label="ابحث أو اذهب لآية" autocomplete="off" enterkeyhint="go"></form>')+
-      sec("اقرأ",books+READ.map(link).join(""))+
+      sec("اقرأ",books)+
+      sec("الكتاب المقدس عبر الزمن",TIME.map(link).join(""))+
       sec("ادرس",STUDY.map(link).join(""))+
       sec("اخدم",SERVE.map(link).join(""))+
       '<div class="ufoot"><a href="features.html">كل الأدوات</a><a href="sources.html">المصادر</a><a href="contact.html">تواصل معنا</a><button type="button" class="sm-off">التنزيل دون إنترنت</button></div>'+
