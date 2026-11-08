@@ -902,7 +902,8 @@ fromHash();
 
     /* #1 صورة الأصحاح بعد النص على الموبايل */
     const hero=$("#main>figure.chhero");
-    if(hero&&isMobile()){const foot=$("#main>.chfoot")||null;const list=$("#main>.cvlist");
+    /* في الشكل الجديد الصورة اختيارية من ⚙، فتفضل مكانها فوق النص */
+    if(hero&&isMobile()&&!$("#main .ubar")){const foot=$("#main>.chfoot")||null;const list=$("#main>.cvlist");
       (foot?foot.before(hero):list&&list.after(hero)); hero.classList.add("uxt-moved");}
 
     /* Interlinear: زرار واضح تحت كل عدد يفتحه في صفحة العدد (الشواهد + سترونج) */
