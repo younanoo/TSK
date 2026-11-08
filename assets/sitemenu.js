@@ -11,8 +11,7 @@
   var ic=function(n){return '<svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(TI[n]||"")+'</svg>'};
   var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
   var TIME=[["chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)"],["timeline.html","timeline","الخط الزمني للأحداث"]];
-  var TOOLS=[["search.html","search","بحث في الكتاب المقدس"],["strong.html","language","بحث في قاموس سترونج (برقم الكلمة)"],
-    ["arword.html","language","بحث بكلمة عربية (الجذر والأصل)"],["grammar.html","microscope","بحث نحوي باللغات الأصلية"],
+  var TOOLS=[["search.html","search","البحث: كلمة · جذر · سترونج · نحوي"],
     ["mindmap.html","topology-star-3","الخريطة الذهنية للشواهد"],["topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)"]];
   var OTHER=[["lists.html","copy","قوائمي (الآيات ومداخل القاموس المختارة)"],["sources.html","books","المصادر والمراجع"],["contact.html","flag","تواصل معنا / أبلغ عن خطأ"]];
 

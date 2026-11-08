@@ -138,12 +138,12 @@ function sideTools(){
   const h=$("#home");
   h&&h.insertAdjacentHTML("afterend",sec("findSec","goto","اذهب إلى عدد",`<form id="gotoBox" class="gotobox"><input id="gotoIn" placeholder="مثال: يو ٣:١٦ أو إش ٥٣:٥" aria-label="اذهب إلى عدد" autocomplete="off" enterkeyhint="go"></form>`));
   const after=sec("timeSec","time","الكتاب عبر الزمن",L("chrono.html","calendar","القراءة الزمنية (٣٦٥ يومًا)")+L("timeline.html","timeline","الخط الزمني للأحداث"))
-    +sec("toolSec","tools","أدوات البحث",L("search.html","search","بحث في الكتاب المقدس",' id="srchLink" target="tsksearch"')+L("strong.html","language","بحث في قاموس سترونج (برقم الكلمة)",' target="tskstrong"')+L("arword.html","language","بحث بكلمة عربية (الجذر والأصل)",' target="tskarword"')+L("grammar.html","microscope","بحث نحوي باللغات الأصلية",' target="_blank"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
+    +sec("toolSec","tools","أدوات البحث",L("search.html","search","البحث: كلمة · جذر · سترونج · نحوي",' id="srchLink" target="tsksearch"')+L("mindmap.html","topology-star-3","الخريطة الذهنية للشواهد",' id="mmLink" target="tskmindmap"')+L("topics.html","tags","فهرس المواضيع (٤٦ ألف موضوع)",' target="tsktopics"'))
     +sec("otherSec","other","صفحات أخرى",L("lists.html","bookmarks","قوائمي (الآيات ومداخل القاموس المختارة) <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+L("sources.html","books","المصادر والمراجع",' target="_blank"')+L("contact.html","flag","تواصل معنا / أبلغ عن خطأ",' target="_blank"')+`<button class="tool" id="offBtn" style="display:block;width:100%;margin-top:8px;text-align:start">${ic("download")} التنزيل للاستخدام دون إنترنت</button>`);
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }
-function mmFix(){if(!$("#mmLink")){const g=document.querySelector('#toolSec a[href="grammar.html"]');g&&g.insertAdjacentHTML("afterend",`<a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none;display:block;margin-top:8px">${ic("topology-star-3")} الخريطة الذهنية للشواهد</a>`)}}
+function mmFix(){if(!$("#mmLink")){const g=document.getElementById("srchLink");g&&g.insertAdjacentHTML("afterend",`<a id="mmLink" class="tool" target="tskmindmap" href="mindmap.html" style="text-decoration:none;display:block;margin-top:8px">${ic("topology-star-3")} الخريطة الذهنية للشواهد</a>`)}}
 function sidebar(){
   sideTools();mmFix();
   const old=new Set([...document.querySelectorAll("#booksel details[open]")].map(x=>x.dataset.g));
@@ -273,7 +273,7 @@ function dentHTML(num,d=cur()){
   const ws=wordsFor(d,num);
   return `<div class="dent">
     <div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span>
-      <a class="stopen" href="strong.html#${num}" target="_blank" rel="noopener">فتح في صفحة سترونج ${ic("external-link")}</a>
+      <a class="stopen" href="search.html#tab=strong&q=${num}" target="_blank" rel="noopener">فتح في صفحة سترونج ${ic("external-link")}</a>
       <button type="button" class="stai" data-askai data-num="${num}" data-ref="${d&&d.c?esc(AR[book().abbr]+" "+n(d.c)+": "+n(d.v)):""}" data-words="${esc(ws.join("، "))}" title="اسأل وضع الذكاء الاصطناعي في Google عن هذه الكلمة">${AI_IC} اسأل Google AI</button>
       <a class="rep" href="${repHref(num+(d&&d.c?" — "+AR[book().abbr]+" "+n(d.c)+": "+n(d.v):""),"قاموس سترونج")}" target="tskcontact" title="أبلغ عن خطأ في هذا المدخل أو في رقم سترونج لهذه الكلمة">${REP_IC}<span>أبلغ عن خطأ</span></a>
       ${ws.length?`<span class="inv"><small>في النص:</small>${ws.map(esc).join("، ")}</span>`:""}</div>
@@ -358,7 +358,7 @@ function interBlock(d){
   const ST=window.STRONG||{};
   /* نص فاندايك الموسوم: لكل رقم سترونج قائمة بالكلمات العربية بالترتيب */
   const q={}; ((t.svdS&&t.svdS[key])||[]).forEach(([w,ns],si)=>{let m=ns.findIndex(x=>!FN.has(x)); if(m<0)m=0; ns.forEach((x,i)=>{(q[x]=q[x]||[]).push({w:i===m?w.trim():"〃",si,used:false})})});
-  const cell=(x,eng,ara,cls)=>{const e=ST[x]||{}; return `<div class="ilc${cls||""}"><a class="iln" href="strong.html#${x}" target="_blank">${x}</a><span class="ilo">${esc(e.o||"")}</span><span class="ilt">${esc(e.tr||"")}</span><span class="ilk">${esc(eng)}</span><span class="ila">${esc(ara)}</span></div>`};
+  const cell=(x,eng,ara,cls)=>{const e=ST[x]||{}; return `<div class="ilc${cls||""}"><a class="iln" href="search.html#tab=strong&q=${x}" target="_blank">${x}</a><span class="ilo">${esc(e.o||"")}</span><span class="ilt">${esc(e.tr||"")}</span><span class="ilk">${esc(eng)}</span><span class="ila">${esc(ara)}</span></div>`};
   const out=[];
   kj.forEach(([w,ns])=>{
     const word=w.trim(); if(!word) return;
@@ -388,7 +388,7 @@ function interBlockB(d){const ab=book().abbr,B=bsbLoad(ab);if(!B)return `<div cl
   const w=B[d.c+":"+d.v];if(!w)return `<div class="ilv-none">لا يتوفر هذا العدد في هذا المصدر</div>`;
   const ST=window.STRONG||{};
   const fl=fnHas(d)||[];return w.map(([o,tr,sid,pc,en,pn],wi)=>{const fm=fl.map((x,i)=>x[0]===wi?i+1:0).filter(Boolean);const e=ST[sid]||{};const tip=((window.BSBP&&window.BSBP[pc])||pc)+(e.ar?" — "+e.ar:"");
-    return `<div class="ilc" title="${esc(tip)}"><a class="iln" href="strong.html#${sid}" target="_blank">${sid||"&nbsp;"}</a><span class="ilo">${esc(o)}</span><span class="ilt">${esc(tr)}</span><span class="ilk">${esc(en||"—")}${esc(pn)}${fm.length?`<sup class="fnm" title="حاشية">${fm.map(n).join("،")}</sup>`:""}</span><span class="ilp ltr">${esc(pc)}</span></div>`}).join("")}
+    return `<div class="ilc" title="${esc(tip)}"><a class="iln" href="search.html#tab=strong&q=${sid}" target="_blank">${sid||"&nbsp;"}</a><span class="ilo">${esc(o)}</span><span class="ilt">${esc(tr)}</span><span class="ilk">${esc(en||"—")}${esc(pn)}${fm.length?`<sup class="fnm" title="حاشية">${fm.map(n).join("،")}</sup>`:""}</span><span class="ilp ltr">${esc(pc)}</span></div>`}).join("")}
 /* ---- حواشي Berean (Footnotes) مع الترجمة العربية ---- */
 function fnLoad(abbr){if(window.FN&&window.FN[abbr])return window.FN[abbr];const src="assets/fn_"+abbr+".js";
   if(LOADED[src]===undefined)loadJS(src,()=>{if(["chapter","verse"].includes(S.view))render()});return null}

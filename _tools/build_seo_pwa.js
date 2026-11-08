@@ -16,7 +16,9 @@ const TOUCHED = new Set();                               // files this run actua
 const read = p => fs.readFileSync(A(p), "utf8"), write = (p, s) => { try { if (fs.readFileSync(A(p), "utf8") === s) return; } catch (e) {} TOUCHED.add(p); const f = A(p), t = f + ".~tmp"; for (let i = 0; ; i++) { try { fs.writeFileSync(t, s); fs.renameSync(t, f); return; } catch (e) { if (!["EINVAL","EBUSY","EPERM","EACCES"].includes(e.code) || i > 20) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 700); } } };
 /* stamps: a step is skipped when its source files have the same size+mtime as last time (saved right away, so a cut-off run keeps its progress) */
 const ST_FILE = path.join(__dirname, ".stamps.json"); let STAMPS = {}; try { if (!FULL) STAMPS = JSON.parse(fs.readFileSync(ST_FILE, "utf8")); } catch (e) {}
-const sig = files => files.map(f => { try { const st = fs.statSync(A(f)); return st.size + ":" + Math.round(st.mtimeMs); } catch (e) { return "-"; } }).join("|");
+const STATC = {};                                       // assets/lib_*.js مش بيتغيّروا أثناء البناء: نسألهم عن حجمهم وتاريخهم مرة واحدة بس
+const statOf = f => /^assets\/lib_/.test(f) ? (STATC[f] || (STATC[f] = fs.statSync(A(f)))) : fs.statSync(A(f));
+const sig = files => files.map(f => { try { const st = statOf(f); return st.size + ":" + Math.round(st.mtimeMs); } catch (e) { return "-"; } }).join("|");
 const fresh = (key, files) => STAMPS[key] === sig(files);
 const stampSave = (key, files) => { STAMPS[key] = sig(files); try { fs.writeFileSync(ST_FILE, JSON.stringify(STAMPS)); } catch (e) {} };
 const SELF = ["_tools/build_seo_pwa.js", "_tools/site_meta.js", "assets/catalog.js"];
@@ -31,23 +33,28 @@ const BASE_PATH = new URL(BASE).pathname;               // "/TSK/"
    assets/lib_<سفر>.js يفضل هو المصدر (أدوات البناء بتقراه زي ما هو). للأسفار اللي هنا، صفحة السفر تحمّل
    assets/lib/<سفر>/index.js (هيكل صغير) وملف لكل أصحاح وقت الحاجة. التقسيم بيتعاد بس للسفر اللي ملفه اتغيّر.
    للتأكد إن الملفات المقسّمة تطابق الأصل حرف بحرف:  node _tools/verify_split.js --all */
-const SPLIT_BOOKS = new Set(["Eph", "Psa"]);             // التجربة؛ عند التعميم: كل الأسفار
+const SPLIT_BOOKS = new Set(CAT.map(c => c.abbr));      // كل الأسفار الـ٦٦ (التجربة كانت على أفسس والمزامير)
 const { splitBook } = require("./split_lib.js");
 const splitOn = c => SPLIT_BOOKS.has(c.abbr);
+/* على قرص بطيء كل سؤال عن ملف بياخد وقت، فالتقسيم بيتعاد بس لما حجم/تاريخ lib_<سفر>.js يتغيّر (مسجّل في .stamps.json) */
 for (const c of CAT.filter(splitOn)) {
-  const r = splitBook(ROOT, c.abbr);
+  const key = "split:" + c.abbr, src = [`assets/lib_${c.abbr}.js`];
+  if (fresh(key, src)) continue;
+  const r = splitBook(ROOT, c.abbr, { force: true });
+  if (r.chapters !== c.nc) throw new Error(`split ${c.abbr}: ${r.chapters} أصحاح في lib_ لكن الفهرس فيه ${c.nc}`);
   r.files.forEach(f => TOUCHED.add(f.split(path.sep).join("/")));
-  if (r.changed) console.log(`split: ${c.abbr} → assets/lib/${c.abbr}/ (${r.files.length} ملف اتكتب)`);
+  if (r.files.length) console.log(`split: ${c.abbr} → assets/lib/${c.abbr}/ (${r.files.length} ملف اتكتب)`);
+  STAMPS["splitv:" + c.abbr] = hashOf(`assets/lib/${c.abbr}/index.js`);   // رقم إصدار الهيكل = بصمة محتواه (بيتحسب مرة وقت التقسيم بس)
+  stampSave(key, src);
 }
-const LIBTAG = c => splitOn(c) ? `<script src="assets/lib/${c.abbr}/index.js?v=${hashOf(`assets/lib/${c.abbr}/index.js`)}"></script>` : null;
+const libVer = c => { const k = "splitv:" + c.abbr; if (!STAMPS[k]) { STAMPS[k] = hashOf(`assets/lib/${c.abbr}/index.js`); try { fs.writeFileSync(ST_FILE, JSON.stringify(STAMPS)); } catch (e) {} } return STAMPS[k]; };
+const LIBTAG = c => splitOn(c) ? `<script src="assets/lib/${c.abbr}/index.js?v=${libVer(c)}"></script>` : null;
 
 /* ---------- per-page meta ---------- */
 const TOOLS = {
   "index.html":   { title: `${SITE} — ${TAGLINE}`, desc: M.SITE_DESC, sitemap: 1 },
-  "search.html":  { desc: "ابحث في نص الكتاب المقدس بالعربية (ترجمة فاندايك) بكلمة أو عبارة أو برقم سترونج، مع تجاهل التشكيل والهمزات، في كل الأسفار أو في سفر واحد.", sitemap: 1 },
+  "search.html":  { title: "البحث في الكتاب المقدس — جدد وعتقاء", desc: "ابحث في الكتاب المقدس من خانة واحدة: بكلمة أو عبارة في فاندايك وكتاب الحياة وKJV، أو بالجذر العربي وأصله العبري واليوناني، أو برقم سترونج، أو بحسب القواعد النحوية في اللغات الأصلية.", sitemap: 1 },
   "topics.html":  { desc: "فهرس مواضيع الكتاب المقدس بالعربية: أكثر من ٤٦ ألف موضوع من فهارس Nave وTorrey، لكل موضوع مواضعه في الأسفار ونصوصها.", sitemap: 1 },
-  "arword.html":  { desc: "ابحث بكلمة عربية، فنعرض جذرها والكلمات العبرية واليونانية التي ترجمها فاندايك وكتاب الحياة إلى كلمات من هذا الجذر، بشرح عربي وإنجليزي لكل كلمة.", sitemap: 1 },
-  "strong.html":  { desc: "قاموس سترونج للكلمات العبرية واليونانية في الكتاب المقدس، بشرح عربي وإنجليزي ونطق كل كلمة، مع الأعداد التي ترد فيها.", sitemap: 1 },
   "lists.html":   { desc: "قوائمي: اجمع الآيات ومداخل قواميس سترونج وBDB وأبوت-سميث في قوائم حسب الموضوع، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو ملف نصي." },
   "dictcopy.html":{ desc: "انتقلت إلى قوائمي." },
   "copy.html":    { desc: "انتقلت إلى قوائمي." },
@@ -60,7 +67,6 @@ const TOOLS = {
   "screen.html":  { desc: "شاشة العرض الخارجية للمكتبة: تُفتح من صفحة الأصحاح لعرض الآيات بملء الشاشة على بروجكتور أو تلفزيون." },
   "contact.html": { desc: "تواصل مع «جدد وعتقاء»: أبلغ عن خطأ في آية أو في مدخل قاموس، أو أرسل اقتراحًا أو سؤالًا، من خلال نموذج بسيط لا يحتاج إلى تسجيل.", sitemap: 1 },
   "notes.html":   { desc: "ملاحظات على الفروق بين الترجمات العربية والإنجليزية في المكتبة، خصوصًا ما سببه اختلاف النص اليوناني الذي بُنيت عليه كل ترجمة، سفرًا سفرًا.", sitemap: 1 },
-  "grammar.html": { desc: "بحث نحوي في كل أسفار الكتاب المقدس بلغتيه الأصليتين (العبرية واليونانية) حسب نوع الكلمة وتصريفها، من تحليل Berean Standard Bible.", sitemap: 1 },
 };
 
 function headBlock(o) {
@@ -119,7 +125,7 @@ function bookPre(c, LIB) {
 }
 const indexPre = () => `<article class="pre"><h1>${SITE} — ${TAGLINE}</h1><p class="pre-desc">${esc(M.SITE_DESC)}</p>` +
   `<nav class="pre-books">${groupedLinks()}</nav>` +
-  `<p><a href="search.html">البحث في الكتاب المقدس</a> · <a href="topics.html">فهرس المواضيع</a> · <a href="strong.html">قاموس سترونج</a></p></article>`;
+  `<p><a href="search.html">البحث في الكتاب المقدس</a> · <a href="topics.html">فهرس المواضيع</a></p></article>`;
 
 /* ---------- pages ---------- */
 const htmlFiles = fs.readdirSync(ROOT).filter(f => f.endsWith(".html") && !["404.html", "offline.html"].includes(f) && !/(_test\.html|^test_)/i.test(f));
@@ -206,7 +212,7 @@ write("assets/style.css", css);
 
 /* ---------- Strong's page: assets/strong.js + assets/sidx.js (the sources other pages and the review tools use) → small chunks ----------
    assets/strong/<G|H><n÷100>.js holds, for 100 numbers, the dictionary entry (e) and where the word occurs (o: [book, chapter, verse, "word|word"],
-   in Bible order). strong.html loads only the chunk it needs and shows the verse text from assets/tx/alab_<Book>.js. Rewritten only on change. */
+   in Bible order). search.html (tab=strong) loads only the chunk it needs and shows the verse text from assets/tx/alab_<Book>.js. Rewritten only on change. */
 (function () {
   if (!fs.existsSync(A("assets/strong.js")) || !fs.existsSync(A("assets/sidx.js"))) return;
   const SRC = [...SELF, "assets/strong.js", "assets/sidx.js"];
@@ -322,7 +328,7 @@ write("manifest.webmanifest", JSON.stringify({
   shortcuts: [
     { name: "البحث في الكتاب المقدس", short_name: "البحث", url: "search.html" },
     { name: "فهرس المواضيع", short_name: "المواضيع", url: "topics.html" },
-    { name: "قاموس سترونج", short_name: "سترونج", url: "strong.html" }]
+    { name: "قاموس سترونج", short_name: "سترونج", url: "search.html#tab=strong" }]
 }, null, 1) + "\n");
 
 /* ---------- service worker registration (in brand.js, loaded by every page) ---------- */
@@ -349,6 +355,10 @@ const PUB = [];
 (function walk(dir) {
   for (const e of fs.readdirSync(A(dir), { withFileTypes: true })) {
     const p = dir ? dir + "/" + e.name : e.name;
+    if (e.isDirectory() && p === "assets/lib") {           // ملفات الأصحاحات معروفة من الفهرس (عدد الأصحاحات)؛ مفيش داعي نقرا ٦٦ مجلد
+      for (const c of CAT) { const d = "assets/lib/" + c.abbr;
+        if (splitOn(c)) { PUB.push(d + "/index.js"); for (let i = 1; i <= c.nc; i++) PUB.push(`${d}/${i}.js`); } }
+      continue; }
     if (e.isDirectory()) { if (!SKIP_DIR.has(e.name) && !e.name.startsWith("_") && !(dir === "img" && e.name !== "web")) walk(p); continue; }
     if (p === "sw.js" || !OK_EXT.test(p) || dir === "img" || SKIP_FILE(p)) continue;
     { const m = p.match(/^assets\/lib_([1-3]?[A-Za-z]+)\.js$/); if (m && SPLIT_BOOKS.has(m[1])) continue; }   // مصدر التقسيم؛ الصفحة بتستخدم assets/lib/<سفر>/      // img/*.jpg originals are not published (only img/web)

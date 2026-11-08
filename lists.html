@@ -357,7 +357,7 @@ function draw(){
   document.title=(n?"("+nAr(n)+") ":"")+l.name+" — قوائمي — جدد وعتقاء";
   $("#copyAll").disabled=$("#present").disabled=$("#dlTxt").disabled=$("#clear").disabled=!a.length;
   scrSync();
-  if(!a.length&&!(ED&&!ED.id)){box.innerHTML='<li class="empty">القائمة دي لسه فاضية.<br>افتح أي سفر أو قاموس واضغط «أضف» جنب الآية أو المدخل (والسهم ▾ جنبه لاختيار القائمة).<br>أو اكتب <a href="#" data-a="note0">شرح</a> من عندك.<br><a href="index.html">المكتبة</a> · <a href="strong.html">قاموس سترونج</a> · <a href="arword.html">البحث بالكلمة العربية</a></li>';return}
+  if(!a.length&&!(ED&&!ED.id)){box.innerHTML='<li class="empty">القائمة دي لسه فاضية.<br>افتح أي سفر أو قاموس واضغط «أضف» جنب الآية أو المدخل (والسهم ▾ جنبه لاختيار القائمة).<br>أو اكتب <a href="#" data-a="note0">شرح</a> من عندك.<br><a href="index.html">المكتبة</a> · <a href="search.html">البحث (كلمة · جذر · سترونج · نحوي)</a></li>';return}
   var out=[];
   a.forEach(function(x,i){
     if(ED&&ED.id===x.id){out.push(editorLi());return}
