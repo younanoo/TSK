@@ -1331,7 +1331,7 @@ html.pres-on{overflow:hidden}
 .ux-a .ubar select.utr{display:inline-block!important;flex:0 1 auto;min-height:44px;width:auto;max-width:88px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:0 4px;font:600 14px var(--ui)}
 .ux-a .ubar .ubtn{flex:none;width:44px;height:44px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:10px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .ux-a .ubar .ubtn:hover,.ux-a .ubar .ubtn[aria-expanded=true]{border-color:var(--accent);color:var(--accent)}
-.ux-a .ubar .ubtn .tic{width:22px;height:22px}
+.ux-a .ubar .ubtn .tic,.ux-a .ubar .ubtn>svg{width:22px;height:22px}
 .ux-a .ubar .cpy-tops{flex:none}
 @media (max-width:480px){.ux-a .ubar .uxt-pick .chev{display:none}.ux-a .ubar .uxt-pick{padding:0 6px!important;font-size:15px}.ux-a .ubar select.utr{max-width:80px}}
 
@@ -1419,9 +1419,11 @@ html.pres-on{overflow:hidden}
 /* القائمة الجانبية */
 .ucap{font:700 14px var(--ui)!important;color:var(--gold)!important;margin:18px 6px 2px;letter-spacing:.02em}
 .ux-a #toolSec>.sh,.ux-a #serveSec>.sh{color:var(--gold)}
-.ufoot{display:flex;flex-wrap:wrap;gap:6px 16px;margin:20px 6px 10px;font:13px var(--ui);align-items:center}
-.ufoot a,.ufoot button{color:var(--muted);background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:none;min-height:32px;display:inline-flex;align-items:center;line-height:1.4}
-.ufoot a:hover,.ufoot button:hover{color:var(--accent)}
+.ufoot{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:8px;margin:22px 0 12px;padding-top:16px;border-top:1px solid var(--line);font:600 13px var(--ui)}
+.ufoot a,.ufoot button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:0 10px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--muted);font:inherit;line-height:1.3;text-align:center;text-decoration:none;cursor:pointer}
+.ufoot a:hover,.ufoot button:hover,.ufoot a:focus-visible,.ufoot button:focus-visible{border-color:var(--gold);color:var(--heading);outline:none}
+.ufoot button{grid-column:1/-1;border-color:var(--gold);color:var(--heading);min-height:44px}
+.ufoot button .tic{width:17px;height:17px}
 @media print{.umodes,.utools,.userve,.umore,.utip{display:none!important}}
 
 /* ===== صفحة العدد: الشريط الموحّد، الآية، التبويبات ===== */

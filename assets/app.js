@@ -140,7 +140,7 @@ function sideTools(){
   const after=sec("timeSec","time","الكتاب المقدس عبر الزمن",L("chrono.html","calendar","اقرأ الكتاب المقدس بالترتيب الزمني")+L("timeline.html","timeline","أحداث الكتاب على الخط الزمني"))
     +sec("toolSec","study","ادرس",L("search.html","search","ابحث بكلمة أو جذر أو رقم سترونج",' id="srchLink" target="tsksearch"')+L("topics.html","tags","ابحث عن موضوع في الكتاب المقدس",' target="tsktopics"')+L("mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة",' id="mmLink" target="tskmindmap"')+L("outline.html?b="+book().abbr,"layout-grid","مخطط السفر",' id="uOlSide"'))
     +sec("serveSec","serve","اخدم",L("lists.html","bookmarks","قوائمي: اجمع آيات وانسخها <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+`<button type="button" class="tool" id="uPresSide" style="display:block;width:100%;margin-top:8px;text-align:start">${PRES_IC} اعرض الآيات على شاشة أو بروجكتور</button>`)
-    +`<div class="ufoot"><a href="sources.html" target="_blank">المصادر</a><a href="contact.html" target="_blank">تواصل معنا</a><button type="button" id="offBtn">التنزيل دون إنترنت</button></div>`;
+    +`<div class="ufoot"><a href="sources.html" target="_blank">المصادر</a><a href="contact.html" target="_blank">تواصل معنا</a><button type="button" id="offBtn">${ic("download")} التنزيل دون إنترنت</button></div>`;
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }
@@ -332,7 +332,7 @@ function viewBook(){
   const art=M[key]
     ? `<picture><source type="image/webp" srcset="img/web/${key}-800.webp 800w, img/web/${key}-1600.webp 1600w" sizes="${sz}"><img src="img/web/${key}-1600.jpg" srcset="img/web/${key}-800.jpg 800w, img/web/${key}-1600.jpg 1600w" sizes="${sz}" alt="${alt}" width="${M[key][0]}" height="${M[key][1]}" decoding="async" fetchpriority="high" data-try="${raw.join("|")}" onerror="bkImgFail(this)"></picture>`
     : `<img src="${raw[0]}" alt="${alt}" decoding="async" fetchpriority="high" data-try="${raw.slice(1).join("|")}" onerror="bkImgFail(this)">`;
-  $("#main").innerHTML = crumbs(`<span class="crumb-mini"><a href="index.html">المكتبة</a> ‹ ${bname(b)}</span>`,"") + `
+  $("#main").innerHTML = `<div class="stickbar ubar ubk"><button class="menu-btn" id="menu" aria-label="القائمة">${ic("menu-2")}</button><span class="sp"></span></div>` + `
   <figure class="bkhero" style="--pos:${meta.pos||"50% 50%"}">
     ${art}
     <figcaption class="bkcap">
@@ -882,7 +882,7 @@ fromHash();
         aa.addEventListener("click",openAa); sb.insertBefore(aa,sp.nextSibling);
       }
       const th=el("button",{class:"uxt-theme",type:"button",title:"الوضع الفاتح / الداكن","aria-label":"الوضع الفاتح / الداكن"},SVG_THEME);
-      th.addEventListener("click",()=>$("#themeBtn").click()); if(!sb.classList.contains("ubar"))sb.append(th);
+      th.addEventListener("click",()=>$("#themeBtn").click()); if(!sb.classList.contains("ubar"))sb.append(th); else if(sb.classList.contains("ubk")){th.className="ubtn";sb.append(th)}  /* صفحة السفر: نفس شريط الأصحاح + زرار الثيم */
       /* أزرار السابق/التالي: aria-label من الـ title لأن النص بيختفي على الموبايل */
       $$(".nav button, .nav a",sb).forEach(x=>{if(x.title&&!x.getAttribute("aria-label"))x.setAttribute("aria-label",x.title+" "+(x.textContent.replace(/[←→]/g,"").trim()))});
     }else{
