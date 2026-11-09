@@ -108,6 +108,10 @@
   function fs(){const r=document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen;if(r){try{const p=r.call(document.documentElement);p&&p.catch&&p.catch(()=>{})}catch(_){}}}
   fsBtn.addEventListener("click",e=>{e.stopPropagation();fs()});
   box.addEventListener("dblclick",fs);
+  /* ضغطة على كلمة (أو رقم سترونج) أو خانة بين السطور: صفحة التحكم تحمّل القاموس وتعرضه هنا */
+  txt.addEventListener("click",e=>{const sn=e.target.closest(".sn"),w=e.target.closest(".sw"),c=e.target.closest(".ilc");
+    if(w){const x=w.cloneNode(true);x.querySelectorAll("sup").forEach(s=>s.remove());tell({t:"word",nums:sn?[sn.dataset.sn]:(w.dataset.n||"").split(" "),word:x.textContent.trim()});return}
+    if(c){const a=c.querySelector(".iln"),k=c.querySelector(".ila")||c.querySelector(".ilk");if(a)tell({t:"word",nums:[a.textContent.trim()],word:k?k.textContent.trim():""})}});
   const onFs=()=>{fsBtn.hidden=isFs();tell({t:"fs",on:isFs()});setTimeout(render,80)};
   /* أول ضغطة على الشاشة أو أول زرار (كيبورد أو ريموت) والنافذة دي في المقدمة = ملء الشاشة (المتصفح بيشترط تفاعل جوه النافذة نفسها) */
   box.addEventListener("pointerdown",()=>{if(!isFs())fs()});

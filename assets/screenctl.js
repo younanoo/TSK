@@ -25,7 +25,7 @@
       bar.querySelector(".scr-jf").addEventListener("submit",e=>{e.preventDefault();const i=e.target.querySelector("input"),v=i.value.trim();if(!v)return;
         if(!cur){cur={abbr:book().abbr,list:book().verses};src=cur;list=cur.list}jb=v;i.value="";i.blur();jumpGo()});
       bar.addEventListener("click",e=>{const sn=e.target.closest("[data-sn]");if(sn){setN(+sn.dataset.sn);return}const b=e.target.closest("[data-sa]");if(!b)return;const k=b.dataset.sa;
-        if(k==="undict"){undict();return}if(k==="dia"){store.set("dia",store.get("dia",false)!==true);try{render()}catch(_){}if(idx>=0){part=[0,1];sendVerse("first")}ui();return}if(k==="il"){store.set("pres_il",!IL());store.set("pres_tri",false);if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="tri"){store.set("pres_il",false);store.set("pres_tri",!TRI());if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="next")step(1);else if(k==="prev")step(-1);else if(k==="blank")setBlank(!blank);else if(k==="stop")stop();else if(k==="open")openWin(null);else if(k==="theme"){store.set("pres_theme",theme()==="dark"?"light":"dark");send({t:"theme",theme:theme()})}})}
+        if(k==="undict"){undict();return}if(k==="str"){store.set("pres_str",!STR());if(idx>=0){part=[0,1];sendVerse("first")}ui();return}if(k==="dia"){store.set("dia",store.get("dia",false)!==true);try{render()}catch(_){}if(idx>=0){part=[0,1];sendVerse("first")}ui();return}if(k==="il"){store.set("pres_il",!IL());store.set("pres_tri",false);if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="tri"){store.set("pres_il",false);store.set("pres_tri",!TRI());if(idx>=0){part=[0,1];sendVerse("first");mark(false)}ui();return}if(k==="next")step(1);else if(k==="prev")step(-1);else if(k==="blank")setBlank(!blank);else if(k==="stop")stop();else if(k==="open")openWin(null);else if(k==="theme"){store.set("pres_theme",theme()==="dark"?"light":"dark");send({t:"theme",theme:theme()})}})}
     const d=list&&list[idx],b={abbr:src?src.abbr:book().abbr};
     const lab=!fsOn&&scr&&!scr.closed&&!jb&&!lost?`<span class="scr-st warn">الشاشة الخارجية مش بملء الشاشة — اضغط عليها مرة، أو أي زرار في الكيبورد/الريموت وهي في المقدمة</span>`:lost&&scr&&!scr.closed&&!jb?`<span class="scr-st warn">الشاشة الخارجية اتفصلت — وصّلها تاني (Win+P ← Extend) أو أوقف العرض</span>`:jb?`<span class="scr-st"><b class="scr-jump">انتقال إلى: ${esc(PRESFIT.ar(jb))}</b> — Enter للانتقال · Esc للإلغاء</span>`:!scr||scr.closed?`<span class="scr-st warn">نافذة العرض غير مفتوحة</span><button type="button" class="scr-b strong" data-sa="open">افتح نافذة العرض</button>`
       :`<span class="scr-st"><i class="scr-dot"></i>على الشاشة الخارجية: <b>${d?`${esc(AR[b.abbr])} ${n(d.c)}: ${n(d.v)}${part[1]>1?` (${n(part[0]+1)}/${n(part[1])})`:""}`:"لم تُختر آية بعد — اضغط «اعرض» جنب أي آية، أو «التالي»"}</b>${dictUp?" · قاموس سترونج":""}${blank?" · شاشة سوداء":""}</span>`;
@@ -34,6 +34,7 @@
       ${src&&src!==cur||!(TRI()||diaAvail())?"":`<button type="button" class="scr-b ${store.get("dia",false)===true?"on":""}" data-sa="dia" title="إظهار التشكيل أو إخفاؤه">تشكيل</button>`}
       <button type="button" class="scr-b ${TRI()?"on":""}" data-sa="tri" title="الآية بالترجمات الثلاث مع بعض">٣ ترجمات</button>
       <button type="button" class="scr-b ${IL()?"on":""}" data-sa="il" title="الآية بالعرض بين السطور">بين السطور</button>
+      ${TRI()||IL()?"":`<button type="button" class="scr-b ${STR()?"on":""}" data-sa="str" title="إظهار أرقام سترونج على الشاشة الخارجية؛ والضغط على كلمة يعرض معناها هناك">سترونج</button>`}
       ${dictUp?`<button type="button" class="scr-b strong" data-sa="undict" title="رجوع للآية على الشاشة الخارجية">رجوع للآية</button>`:""}
       <button type="button" class="scr-b" data-sa="prev" title="الآية السابقة (→)">→ السابق</button>
       <button type="button" class="scr-b" data-sa="next" title="الآية التالية (←)">التالي ←</button>
@@ -67,12 +68,13 @@
 
   /* ---- الآية ---- */
   function segsOf(d){
-    if(src&&src.foreign){const a=src.segs(d,cstrOn(),trCur());return a?{a,str:cstrOn()&&trCur()==="svd"}:null}
+    if(src&&src.foreign){const a=src.segs(d,STR(),trCur());return a?{a,str:STR()&&trCur()==="svd"}:null}
     if(window.chEnsure&&!chEnsure(d.c))return null;   /* الأصحاح لسه بيتحمّل — sendVerse بيعيد المحاولة */
-    if(cstrOn()){const sg=cstrSeg(d);if(sg)return {a:sg,str:true};return null}
+    if(STR()&&cstrOn()){const sg=cstrSeg(d);if(sg)return {a:sg,str:true};return null}   /* أرقام سترونج: زر «سترونج» في الشريط (نفس إعداد العرض بملء الشاشة) */
     const t=trText(d)||(trCur()==="alab"&&!diaOn()?d.text:null);if(!t)return null;
     return {a:t.split(/(\s+)/).filter(Boolean).map(x=>[x,[]]),str:false};
   }
+  const STR=()=>store.get("pres_str",false)===true;
   const TRI=()=>store.get("pres_tri",false)===true;   /* الترجمات الثلاث — نفس إعداد العرض بملء الشاشة */
   const IL=()=>store.get("pres_il",false)===true;     /* بين السطور */
   const K=()=>TRI()||IL()?1:PRESFIT.N(store.get("pres_n",1));   /* آية أو ٣ أو ٥ في الشريحة */
@@ -89,7 +91,7 @@
     send({t:"verse",segs:PRESFIT.join(ss.map((x,j)=>[x.a,n(list[g[j]].v)])),str:ss[0].str,kj:trCur()==="kjv",ref:`${AR[b.abbr]} ${n(d.c)}: ${n(d.v)}${e!==d?"–"+n(e.v):""}`,trn:TRN[trCur()],theme:theme(),at:at||"first"});
     sig=sigNow();
   }
-  const sigNow=()=>[trCur(),diaOn(),store.get("dia",false),cstrOn(),TRI(),IL(),store.get("isrc","ours")].join("|");
+  const sigNow=()=>[trCur(),diaOn(),store.get("dia",false),STR(),TRI(),IL(),store.get("isrc","ours")].join("|");
   function show(bid,c,v){
     if(!on) start();
     cur={abbr:book().abbr,list:book().verses};src=cur;list=cur.list;idx=Math.max(0,list.findIndex(d=>d.c===c&&d.v===v));part=[0,1];
@@ -129,6 +131,7 @@
     if(m.t==="fs"){fsOn=!!m.on;ui();return}
     if(m.t==="ready"){send({t:"theme",theme:theme()});if(idx>=0)sendVerse("first");else{const b=book();send({t:"title",text:`${AR[b.abbr]} ${n(S.c)}`})}ui()}
     else if(m.t==="edge")edge(m.dir);
+    else if(m.t==="word")wordDict(m.nums,m.word);
     else if(m.t==="pos"){part=[m.part,m.parts];ui()}
     else if(m.t==="key"){if(idx>=0||PRESFIT.jkey(m.key,jb))key(m.key)}
   });
@@ -137,6 +140,10 @@
     e.preventDefault();e.stopPropagation();const c=a.closest(".ilc"),w=c&&(c.querySelector(".ila")||c.querySelector(".ilk")),v=a.closest(".ilv"),g=v&&v.querySelector(".ilvn[data-go]"),m=g&&g.dataset.go.match(/\.(\d+):(\d+)$/);
     loadJS("assets/chstrong.js",()=>{if(!window.CHS||!CHS.need)return;CHS.need([num],DIC=>{dictUp=true;
       send({t:"dict",word:(w&&w.textContent.trim())||num,ref:`${AR[book().abbr]}${m?` ${n(+m[1])}: ${n(+m[2])}`:""}`,entries:[[num,DIC[num]||null]],theme:theme()});ui()})})},true);
+  /* ضغطة على كلمة أو رقم سترونج في نافذة العرض نفسها: المدخل يظهر هناك */
+  function wordDict(nums,word){nums=(nums||[]).filter(x=>/^[GH]\d+$/.test(x));if(!nums.length||!on||!scr)return;const d=list&&list[idx];
+    loadJS("assets/chstrong.js",()=>{if(!window.CHS||!CHS.need)return;CHS.need(nums,DIC=>{dictUp=true;
+      send({t:"dict",word:word||nums[0],ref:d?`${AR[src.abbr]} ${n(d.c)}: ${n(d.v)}`:"",entries:nums.map(x=>[x,DIC[x]||null]),theme:theme()});ui()})})}
   /* ---- قاموس سترونج: نفس المدخل على الشاشة الخارجية ---- */
   document.addEventListener("chs:show",e=>{if(!on||!scr)return;const x=e.detail;dictUp=true;
     send({t:"dict",word:x.word,ref:`${AR[x.ab]} ${n(x.c)}: ${n(x.v)}`,entries:x.entries,theme:theme()});ui()});

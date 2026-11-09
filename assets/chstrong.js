@@ -63,7 +63,7 @@
     if(curW&&curW!==w) curW.classList.remove("on");
     curW=w; w.classList.add("on");
     if(!pop.classList.contains("on")) lastFocus=document.activeElement;
-    const cv=w.closest("[data-go]"),m=cv&&cv.dataset.go.match(/^(\d+)\.(\d+):(\d+)$/),b=book(),ab=b.abbr;
+    const cv=w.closest("[data-go],[data-gk]"),m=cv&&(cv.dataset.go||cv.dataset.gk).match(/^(\d+)\.(\d+):(\d+)$/),b=book(),ab=b.abbr;
     const c=m?+m[2]:S.c,v=m?+m[3]:1;
     const word=w.cloneNode(true);word.querySelectorAll("sup").forEach(x=>x.remove());
     const head=`<div class="chs-grab"></div><div class="chs-hd"><b class="chs-w">${escH(word.textContent.trim())}</b><span class="chs-ref">${AR[ab]} ${n(c)}: ${n(v)}</span><button type="button" class="chs-x" aria-label="إغلاق">✕</button></div>`;
