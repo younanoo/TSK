@@ -449,7 +449,7 @@ window.chImgFail=function(img){
   f.innerHTML=`<img class="logo-l" src="assets/brand/logo-stacked-light.svg" alt="جدد وعتقاء — كنوز الكتاب المقدس" width="320" height="230"><img class="logo-d" src="assets/brand/logo-stacked-dark.svg" alt="" width="320" height="230">`;
 };
 function viewChapter(){
-  const M=MODE(), ST=M==="study", RD=M==="read", INTER=interOn();
+  const M=MODE(), ST=M==="study", RD=M==="read", INTER=interOn(), SCRON=!!(window.SCR&&SCR.on);   /* الشاشة الخارجية شغالة: زر «اعرض» جنب كل آية */
   if(INTER) needStrong(()=>{if(S.view==="chapter")render()});
   const b=book(), c=S.c, vs=inCh(b,c), ci=b.chapters.indexOf(c);
   const pc=b.chapters[ci-1], nc=b.chapters[ci+1], me=CAT_ABBR[b.abbr];
@@ -471,13 +471,13 @@ function viewChapter(){
   const serveBar=RD?`<div class="userve">${presOK()?`<button type="button" class="trb" data-pres="${b.id}.${c}:${vs[0].v}">${PRES_IC} عرض بملء الشاشة</button>`:""}${matchMedia("(pointer:fine)").matches?`<button type="button" class="trb ${window.SCR&&SCR.on?"on":""}" data-scr="1" ${extOK()||(window.SCR&&SCR.on)?"":"hidden"}>${SCR_IC} <span>${window.SCR&&SCR.on?"إيقاف الشاشة الخارجية":"العرض على شاشة خارجية"}</span></button>`:""}</div>`:"";
   const rows=vs.map(d=>{const rc=refCount(d), g=`${d.b}.${d.c}:${d.v}`, kj=trCur()==="kjv"&&!og?'dir="ltr" style="text-align:left"':"";
     const txt=og?origSpan(d):`<span class="cvt ar" ${kj}>${CS?(sg=>sg?segHTML(sg):esc(trText(d)||d.text||""))(cstrSeg(d)):esc(trText(d)||d.text||"")}</span>`;
-    const foot=ST?`<div class="cvf"><button type="button" class="cvm" data-go="${g}" title="${vref(d)} — كل تفاصيل العدد والقاموس">${PEND?"…":rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",g,vref(d),"pl")}</div>`
-      :"";
+    const foot=ST?`<div class="cvf">${SCRON?`<button type="button" class="cvp" data-pres="${g}" title="اعرض هذه الآية على الشاشة الخارجية" aria-label="${vref(d)} — اعرض على الشاشة الخارجية">${PRES_IC}<span class="cvp-l">اعرض</span><span class="cvp-n">معروضة الآن</span></button>`:""}<button type="button" class="cvm" data-go="${g}" title="${vref(d)} — كل تفاصيل العدد والقاموس">${PEND?"…":rc?n(rc)+" شاهدًا":"—"}</button>${cpyBtn("v",g,vref(d),"pl")}</div>`
+      :SCRON?`<div class="cvf">${SCRON?`<button type="button" class="cvp" data-pres="${g}" title="اعرض هذه الآية على الشاشة الخارجية" aria-label="${vref(d)} — اعرض على الشاشة الخارجية">${PRES_IC}<span class="cvp-l">اعرض</span><span class="cvp-n">معروضة الآن</span></button>`:""}</div>`:"";
     return `<div class="cvw"><div class="cv cvs" data-gk="${g}"><button type="button" class="cvn" data-uref="${g}" aria-label="${vref(d)} — اعرض الشواهد" title="اعرض شواهد ${vref(d)}">${n(d.v)}</button>${txt}</div>${foot}</div>`}).join("");
   $("#main").innerHTML = bar+modes+head+(store.get("uimg",false)?chImage(b,c):"")+tools+serveBar+(ST?olChapter(b,c):"")
     +(INTER?`<div class="ilist ${store.get("idir","rtl")==="ltr"?"ltr":""}">${vs.map(d=>ilItem(d,b)).join("")}</div>`:"")
     +(PEND?(PFAIL?`<div class="chload fail">تعذّر تحميل شواهد هذا الأصحاح — غالبًا الجهاز غير متصل بالإنترنت. <button type="button" class="trb" data-chretry="${c}">إعادة المحاولة</button></div>`:`<div class="chload" role="status">جارٍ تحميل الشواهد…</div>`):"")
-    +`<div class="cvlist umode-${M} ${CS?"cstr":""} ${SUP?"":"nosup"} ${trCur()==="kjv"&&!og?"ultr":""}" ${INTER?"hidden":""}>${rows}</div>`
+    +`<div class="cvlist umode-${SCRON&&!ST?"serve":M} ${CS?"cstr":""} ${SUP?"":"nosup"} ${trCur()==="kjv"&&!og?"ultr":""}" ${INTER?"hidden":""}>${rows}</div>`
     +(ST?fnChapter(b,vs):"")
     +`<div class="chfoot"><div class="nav">${prevBtn}${nextBtn}</div></div>`;
 }

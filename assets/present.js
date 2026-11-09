@@ -231,7 +231,7 @@
   }
   /* ارجع للصفحة عند آخر آية اتعرضت (بعد ما يرجع التاريخ خطوة) */
   function sync(d){if(!d)return;setTimeout(()=>{if(S.view==="chapter"&&S.c!==d.c)goChapter(d.b,d.c);
-      setTimeout(()=>{const el=document.querySelector(`.cv[data-go="${d.b}.${d.c}:${d.v}"]`);if(el){el.scrollIntoView({block:"center"});el.classList.add("pres-last");setTimeout(()=>el.classList.remove("pres-last"),1600)}},80)},30)}
+      setTimeout(()=>{const el=document.querySelector(`.cv[data-go="${d.b}.${d.c}:${d.v}"], .cv[data-gk="${d.b}.${d.c}:${d.v}"]`);if(el){el.scrollIntoView({block:"center"});el.classList.add("pres-last");setTimeout(()=>el.classList.remove("pres-last"),1600)}},80)},30)}
 
   addEventListener("keydown",onKey,true);
   document.addEventListener("fullscreenchange",onFsChange);document.addEventListener("webkitfullscreenchange",onFsChange);
