@@ -3,7 +3,7 @@
    التنقل: ← / ↓ / مسافة / Enter / PageDown = التالي، → / ↑ / Backspace / PageUp = السابق، Home = أول الأصحاح، Esc = خروج.
    أزرار ١ / ٣ / ٥: عدد الآيات في كل شريحة (من نفس الأصحاح)، وحجم الخط يتظبط على قدها.
    زر «٣ ترجمات»: الآية بفاندايك وكتاب الحياة وKJV مع بعض في نفس الشريحة (آية واحدة، بدون أرقام سترونج).
-   زر «بين السطور»: الآية بخانات العرض بين السطور (نفس مصدر الصفحة: مكتبتنا أو Berean)، والضغط على خانة يفتح قاموس سترونج.
+   زر «بين السطور»: الآية بخانات العرض بين السطور، وبجانبه اختيار المصدر «مكتبتنا / Berean» (نفس إعداد الصفحة isrc)، والضغط على خانة يفتح قاموس سترونج.
    يتفتح تلقائيًا لو العرض بدأ من صفحة في وضع بين السطور. لسفر الصفحة فقط.
    الانتقال المباشر: اكتب رقم العدد، أو أصحاح:عدد (3:16)، أو سفر وأصحاح وعدد (يو 3:16) ثم Enter — أو زر «انتقال» على الموبايل. Esc يلغي.
    السفر التاني بيتعرض من غير ما الصفحة تتحمّل (PRESFIT.foreign)، ولما تخرج من العرض بتروح لصفحته.
@@ -16,7 +16,7 @@
   "use strict";
   if(window.PRES) return;
   const MQ=matchMedia("(max-width:880px)");
-  let src=null,cur=null,jb="",jT=0,dictOn=null,wasFs=false,pendSync=null,box,stage,txt,ref,bar,hint,list=[],idx=0,part=0,parts=[],open_=false,wake=null,idleT=0,histPushed=false,waitT=0;
+  let fsManual=false,src=null,cur=null,jb="",jT=0,dictOn=null,wasFs=false,pendSync=null,box,stage,txt,ref,bar,hint,list=[],idx=0,part=0,parts=[],open_=false,wake=null,idleT=0,histPushed=false,waitT=0;
   const T=()=>store.get("pres_theme","dark");
   const STR=()=>store.get("pres_str",false)===true;
   const TRI=()=>store.get("pres_tri",false)===true;
@@ -31,6 +31,7 @@
         <button type="button" class="pres-b" data-pa="dia" title="إظهار التشكيل أو إخفاؤه (فاندايك وكتاب الحياة)">تشكيل</button>
         <button type="button" class="pres-b" data-pa="tri" title="الآية بالترجمات الثلاث مع بعض">٣ ترجمات</button>
         <button type="button" class="pres-b" data-pa="il" title="الآية بالعرض بين السطور (كلمة بكلمة)">بين السطور</button>
+        <span class="pres-ns pres-isrc" role="group" aria-label="مصدر العرض بين السطور" style="display:none"><button type="button" class="pres-b" data-pisrc="ours" title="مكتبتنا: الكلمة الأصلية بترتيب KJV مع معناها وكلمة فاندايك المقابلة">مكتبتنا</button><button type="button" class="pres-b" data-pisrc="bsb" title="Berean: النص العبري أو اليوناني بترتيبه الأصلي">Berean</button></span>
         <button type="button" class="pres-b" data-pa="jump" title="انتقال إلى عدد (أو اكتب الرقم ثم Enter)">انتقال</button>
         <button type="button" class="pres-b" data-pa="str" title="إظهار أرقام سترونج؛ اضغط على الكلمة لعرض معناها">سترونج</button>
         <button type="button" class="pres-b" data-pa="theme" title="خلفية سوداء / بيضاء" aria-label="خلفية سوداء / بيضاء"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0 -18z"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
@@ -63,12 +64,13 @@
       if(/^[GH]\d+$/.test(num||"")){const w=c.querySelector(".ila")||c.querySelector(".ilk");openDict([num],(w&&w.textContent.trim())||num)}return}}
     {const w=e.target.closest(".pres-txt .sw");if(w&&STR()&&!TRI()){const sn=e.target.closest(".sn");openDict(sn?[sn.dataset.sn]:w.dataset.n.split(" "),wordOf(w));return}}
     {const pn=e.target.closest("[data-pn]");if(pn){store.set("pres_n",+pn.dataset.pn);store.set("pres_tri",false);store.set("pres_il",false);part=0;show();wakeUi();return}}
+    {const s=e.target.closest("[data-pisrc]");if(s){store.set("isrc",s.dataset.pisrc);try{render()}catch(_){}part=0;show();wakeUi();return}}   /* نفس إعداد الصفحة */
     const a=e.target.closest("[data-pa]"),tr=e.target.closest("[data-ptr]");
     if(tr){store.set("tr",tr.dataset.ptr);store.set("corig",false);store.set("pres_tri",false);try{render()}catch(_){}show();wakeUi();return}
     if(a){const k=a.dataset.pa;
       if(k==="next")next();else if(k==="prev")prev();else if(k==="close")close();
       else if(k==="theme"){store.set("pres_theme",T()==="dark"?"light":"dark");box.dataset.theme=T()}
-      else if(k==="fs"){enterFs()}
+      else if(k==="fs"){if(isFs()){fsManual=true;exitFs()}else enterFs()}   /* الزر يبدّل: يخرج من ملء الشاشة ويفضل العرض مفتوح، أو يرجع له */
       else if(k==="jump"){jumpOpen(true)}
       else if(k==="tri"){store.set("pres_tri",!TRI());store.set("pres_il",false);part=0;if(dictOn)closeDict();else show()}
       else if(k==="dia"){store.set("dia",store.get("dia",false)!==true);try{render()}catch(_){}part=0;show()}   /* نفس إعداد الصفحة */
@@ -186,6 +188,8 @@
       if(j<0){f.hidden=false;f.querySelector(".pres-jmsg").textContent=`«${PRESFIT.ar(String(str).trim())}» غير موجود — اكتب رقم العدد، أو أصحاح:عدد، أو سفر وأصحاح وعدد مثل «يو ٣:١٦»`;jb="";clearTimeout(jT);jT=setTimeout(jumpClose,3500);flash();return}
       jumpClose();src=s2;list=s2.list;idx=j;part=0;show()})}
   function renderTrs(){const sb=box.querySelector('[data-pa="str"]');sb.classList.toggle("on",STR());
+    {const g=box.querySelector(".pres-isrc"),on=IL()&&!TRI()&&!src.foreign&&typeof BSBB!=="undefined"&&BSBB.includes(src.abbr),v=store.get("isrc","ours")==="bsb"?"bsb":"ours";
+     g.style.display=on?"":"none";g.querySelectorAll("[data-pisrc]").forEach(x=>{x.classList.toggle("on",x.dataset.pisrc===v);x.setAttribute("aria-pressed",x.dataset.pisrc===v)})}
     {const db=box.querySelector('[data-pa="dia"]');db.hidden=src.foreign||!(TRI()||diaAvail());db.classList.toggle("on",store.get("dia",false)===true)}const av=trAvail(),c=trCur();box.querySelector(".pres-trs").innerHTML=av.length>1?av.map(k=>`<button type="button" class="pres-b ${k===c&&!TRI()?"on":""}" data-ptr="${k}" title="${TRN[k]}">${MQ.matches&&k==="alab"?"الحياة":TRN[k]}</button>`).join(""):""}
   function next(){if(part<parts.length-1){part++;show();return}const g=PRESFIT.group(list,idx,K()),j=g[g.length-1]+1;if(j<list.length){idx=j;part=0;show()}else flash()}
   function prev(){if(part>0){part--;show();return}const s=PRESFIT.prevStart(list,idx,K());if(s>=0){idx=s;part=-1;show()}else flash()}
@@ -196,7 +200,11 @@
   function enterFs(){const r=box.requestFullscreen||box.webkitRequestFullscreen;if(r){try{const p=r.call(box);p&&p.catch&&p.catch(()=>{})}catch(_){}}}
   function exitFs(){const x=document.exitFullscreen||document.webkitExitFullscreen;if(x&&isFs()){try{const p=x.call(document);p&&p.catch&&p.catch(()=>{})}catch(_){}}}
   /* الخروج من ملء الشاشة (Esc أو زر المتصفح) = الخروج من العرض */
-  function onFsChange(){const f=isFs();box&&box.classList.toggle("fs",f);if(open_&&wasFs&&!f){wasFs=false;close();return}wasFs=f;if(open_)setTimeout(show,60)}
+  function onFsChange(){const f=isFs();box&&box.classList.toggle("fs",f);fsBtn();
+    if(open_&&wasFs&&!f&&!fsManual){wasFs=false;close();return}fsManual=false;wasFs=f;if(open_)setTimeout(show,60)}
+  function fsBtn(){const b=box&&box.querySelector('[data-pa="fs"]');if(!b)return;const f=isFs(),t=f?"الخروج من ملء الشاشة (العرض يظل مفتوحًا)":"ملء الشاشة";
+    b.title=t;b.setAttribute("aria-label",t);
+    b.innerHTML=f?'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19v-2a2 2 0 0 1 2 -2h2"/><path d="M15 5v2a2 2 0 0 0 2 2h2"/><path d="M5 15h2a2 2 0 0 1 2 2v2"/><path d="M5 9h2a2 2 0 0 0 2 -2v-2"/></svg>':'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8v-2a2 2 0 0 1 2 -2h2"/><path d="M4 16v2a2 2 0 0 0 2 2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M16 20h2a2 2 0 0 0 2 -2v-2"/></svg>'}
   async function keepAwake(){try{if("wakeLock" in navigator)wake=await navigator.wakeLock.request("screen")}catch(_){wake=null}}
   function wakeUi(){box.classList.add("ui");clearTimeout(idleT);idleT=setTimeout(()=>box.classList.remove("ui"),2600)}
 
