@@ -113,8 +113,10 @@
   document.addEventListener("mousedown",function(e){if(PK&&!PK.el.contains(e.target)&&!PK.anchor.contains(e.target))closePick()},true);
   document.addEventListener("touchstart",function(e){if(PK&&!PK.el.contains(e.target)&&!PK.anchor.contains(e.target))closePick()},{capture:true,passive:true});
   document.addEventListener("keydown",function(e){if(e.key==="Escape"&&PK){var a=PK.anchor;closePick();try{a.focus()}catch(x){}}});
-  addEventListener("resize",closePick);
-  addEventListener("scroll",function(e){if(PK&&!(e.target&&e.target.nodeType===1&&PK.el.contains(e.target)))closePick()},true);
+  /* على الموبايل: الكتابة في خانة «قائمة جديدة» بتفتح الكيبورد فتعمل resize وscroll — ساعتها نحرّك النافذة بدل ما نقفلها */
+  function typing(){var a=document.activeElement;return !!(PK&&a&&a.tagName==="INPUT"&&PK.el.contains(a))}
+  addEventListener("resize",function(){if(typing())place();else closePick()});
+  addEventListener("scroll",function(e){if(!PK||(e.target&&e.target.nodeType===1&&PK.el.contains(e.target)))return;if(typing())place();else closePick()},true);
 
   /* حالة الزرار: on = موجود في القائمة الافتراضية (الضغطة هتشيله)، some = موجود في قوائم تانية بس */
   function btnState(key){var s=state(),w=where(key,s),l=find(s,s.last),on=w.indexOf(l)>=0;
