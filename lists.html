@@ -94,11 +94,49 @@ html,body{overflow-x:clip;padding:0}
 .cbar .note{border-color:var(--gold);color:var(--gold);font-weight:600}
 .cbar .danger{color:var(--bad,#a33)}
 .cbar .sp{flex:1}
-.flds{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 14px;padding:4px 0 12px;border-bottom:1px solid var(--line);font-size:14px}
-.flds b{font:600 13px var(--ui);color:var(--muted);margin-inline-end:4px}
-.flds label{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);cursor:pointer}
-.flds label:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}
-.flds input{accent-color:var(--gold)}
+/* نسخ ▾ + ⋯ */
+.cbar{position:sticky}
+.cpg{display:inline-flex;gap:1px}
+.cbar .cpg .main:first-child{border-start-end-radius:0;border-end-end-radius:0}
+.cbar .cpg .cdd{border-start-start-radius:0;border-end-start-radius:0;padding:0 10px}
+.cbar .cdd .tic,.cbar .mbtn .tic{width:18px;height:18px}
+.cbar .mbtn{width:44px;justify-content:center;padding:0}
+.lmenu{position:absolute;top:100%;z-index:20;min-width:250px;background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.18);padding:6px;display:flex;flex-direction:column;gap:2px}
+.lmenu[hidden]{display:none}
+#copyMenu{inset-inline-start:0}#moreMenu{inset-inline-end:0}
+.cbar .lmenu button{border:0;border-radius:8px;min-height:46px;padding:0 12px;background:none;font:500 15px var(--ui);color:var(--ink);justify-content:flex-start;width:100%}
+.cbar .lmenu button:hover,.cbar .lmenu button:focus-visible{background:var(--gold-soft);outline:none}
+.cbar .lmenu .usw{justify-content:space-between}
+.cbar .lmenu .danger{color:var(--bad,#a33);border-top:1px solid var(--line);border-radius:0 0 8px 8px;margin-top:4px}
+.cbar .lmenu button:disabled{opacity:.45}
+/* شكل مداخل القاموس */
+.dfmt{margin:0 0 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+.dfmt[hidden]{display:none}
+.dfmt>summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:48px;padding:4px 14px;cursor:pointer;font:600 14px var(--ui);color:var(--gold)}
+.dfmt>summary::-webkit-details-marker{display:none}
+.dfmt>summary .v{margin-inline-start:auto;font:500 13px var(--ui);color:var(--muted)}
+.dfmt>summary .tic{width:18px;height:18px;transition:transform .15s}
+.dfmt[open]>summary .tic{transform:rotate(180deg)}
+.dfmt>summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:12px}
+.dfb{padding:4px 14px 14px;border-top:1px solid var(--line)}
+.dseg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.dseg label{display:flex;align-items:center;gap:8px;min-height:56px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer}
+.dseg label:has(input:checked){border-color:var(--gold);background:var(--gold-soft)}
+.dseg label:has(input:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+.dseg input{accent-color:var(--gold);margin:0}
+.dseg b{display:block;font:600 14px var(--ui);color:var(--ink)}
+.dseg small{display:block;font:500 12px var(--ui);color:var(--muted)}
+@media (max-width:560px){.dseg{grid-template-columns:1fr}}
+.dcus{margin-top:8px;border-top:1px dashed var(--line)}
+.dcus[hidden]{display:none}
+.dnote{margin:10px 0 0;font:500 12.5px var(--ui);color:var(--muted)}
+/* + أضف شرحًا */
+.addn{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin-top:10px;border:1px dashed var(--gold);border-radius:14px;background:transparent;color:var(--gold);font:600 14px var(--ui);cursor:pointer}
+.addn:hover,.addn:focus-visible{background:var(--gold-soft);outline:none}
+.addn[hidden]{display:none}
+/* الموبايل: «عرض بملء الشاشة» يتختصر لـ«اعرض» عشان الشريط يفضل سطر واحد */
+.pl-s{display:none}
+@media (max-width:420px){.cbar .pl-l{display:none}.cbar .pl-s{display:inline}.cbar{gap:6px}}
 /* العناصر */
 .items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .it{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
@@ -185,7 +223,7 @@ html.scr-on .cpp{padding-bottom:110px}
 .mvm .mv-r .lsp-n{flex:1}
 .mvm .mv-e{padding:10px 8px;color:var(--muted);font:500 13px var(--ui)}
 @media(max-width:640px){.it{grid-template-columns:1fr}.it .acts{max-width:none}}
-@media print{.sitebar,.cbar,.flds,.howto,.acts,.sub,.side,.mpick,.sd-show,.lhead button,.lhint{display:none!important}.it{border:0;padding:4px 0;background:none}.it .kd{display:none}}
+@media print{.sitebar,.cbar,.dfmt,.addn,.howto,.acts,.sub,.side,.mpick,.sd-show,.lhead button,.lhint{display:none!important}.it{border:0;padding:4px 0;background:none}.it .kd{display:none}}
 </style>
 <!--seo-->
 <meta name="description" content="قوائمي: اجمع الآيات ومداخل قواميس سترونج وBDB وأبوت-سميث في قوائم حسب الموضوع، وأضف شرحك بين العناصر، ثم انسخ القائمة إلى Word أو ملف نصي.">
@@ -217,12 +255,12 @@ html.scr-on .cpp{padding-bottom:110px}
 <ul>
 <li><b>الإضافة إلى القوائم:</b> في صفحات الأسفار والقواميس وصفحة البحث والخريطة الذهنية، يضيف زر «أضف» الآية أو المدخل مباشرةً إلى القائمة المفتوحة في هذه الصفحة (وهي آخر قائمة استخدمتها). أما السهم الصغير ▾ بجانبه فيتيح لك اختيار قائمة أخرى أو إنشاء قائمة جديدة. ويمكن أن تُضاف الآية الواحدة إلى أكثر من قائمة.</li>
 <li><b>القوائم:</b> تظهر القوائم في العمود الجانبي، وتبقى «القائمة الرئيسية» في أعلاه دائمًا، فلا يمكن حذفها ولا تغيير اسمها. ويمكنك إنشاء قوائم أخرى، والبحث عنها بالاسم، وترتيبها بالسحب أو بالأسهم، وتغيير اسم أي منها أو حذفها من أعلى الصفحة. وعلى الهاتف تُفتح القوائم من الزر الذي يحمل اسم القائمة الحالية.</li>
-<li><b>الشرح:</b> يضيف زر «+ شرح» نصًّا من كتابتك بعد أي عنصر، ويضيف زر «+ شرح في الآخر» نصًّا في نهاية القائمة. ويمكنك تنسيق الشرح بالخط العريض والنقاط والترقيم، وتعديله أو حذفه في أي وقت. أما نصوص الآيات ومداخل القواميس فلا تُعدَّل.</li>
+<li><b>الشرح:</b> يضيف زر «+ شرح» نصًّا من كتابتك بعد أي عنصر، ويضيف زر «+ أضف شرحًا» تحت آخر عنصر نصًّا في نهاية القائمة. ويمكنك تنسيق الشرح بالخط العريض والنقاط والترقيم، وتعديله أو حذفه في أي وقت. أما نصوص الآيات ومداخل القواميس فلا تُعدَّل.</li>
 <li><b>تنظيم العناصر:</b> بجانب كل عنصر أزرار لتحريكه إلى أعلى أو إلى أسفل، ونقله أو نسخه إلى قائمة أخرى، وحذفه من القائمة.</li>
-<li><b>النسخ:</b> ينسخ زر «نسخ القائمة» محتواها كله بتنسيقه، لتلصقه في Word أو في أي ملف، ويحفظه زر «تنزيل ملف نصي» في ملف نصي (txt). وتحدد خيارات «مداخل القاموس» الحقول التي تُنسخ وتُعرض من كل مدخل.</li>
+<li><b>النسخ:</b> ينسخ زر «نسخ القائمة» محتواها كله بتنسيقه، لتلصقه في Word أو في أي ملف، والسهم ▾ بجانبه فيه «سطر فارغ بين العناصر» و«تنزيل كملف نصي». ويحدد «شكل مداخل القاموس» (مختصر أو كامل أو مخصص) ما يظهر من كل مدخل هنا وفي النسخ والعرض؛ ولا يظهر إلا إذا كانت في القائمة مداخل من القاموس.</li>
 <li><b>العرض:</b> يعرض زر «عرض بملء الشاشة» عناصر القائمة عنصرًا في كل شريحة، ويمكن بدء العرض من أي عنصر بالزر الذي بجانبه. وإذا كانت هناك شاشة خارجية متصلة، يظهر زر «العرض على شاشة خارجية»، فتصبح هذه الصفحة أداةً للتحكم في العرض.</li>
 </ul>
-<p>تُحفظ القوائم في هذا المتصفح على هذا الجهاز فقط. ولنقل قائمة إلى جهاز آخر أو إرسالها لغيرك، اضغط «نقل لجهاز آخر / مشاركة»: يظهر كود QR تصوّره بكاميرا الجهاز الآخر، أو لينك ترسله، فتُضاف القائمة هناك قائمةً جديدة.</p></details>
+<p>تُحفظ القوائم في هذا المتصفح على هذا الجهاز فقط. ولنقل قائمة إلى جهاز آخر أو إرسالها لغيرك، اضغط ⋯ ثم «نقل لجهاز آخر / مشاركة»: يظهر كود QR تصوّره بكاميرا الجهاز الآخر، أو لينك ترسله، فتُضاف القائمة هناك قائمةً جديدة.</p></details>
 
 <button type="button" class="mpick" id="mPick" aria-expanded="false" aria-controls="side"></button>
 <div class="lay" id="lay">
@@ -237,25 +275,39 @@ html.scr-on .cpp{padding-bottom:110px}
 <p class="lhint" id="lhint"></p>
 
 <div class="cbar">
-<button class="main" id="copyAll" type="button">نسخ القائمة</button>
-<button id="present" type="button" title="اعرض عناصر القائمة دي بملء الشاشة، عنصر في كل شريحة"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z" /><path d="M7 20h10" /><path d="M9 16v4" /><path d="M15 16v4" /></svg> عرض بملء الشاشة</button>
+<span class="cpg"><button class="main" id="copyAll" type="button">نسخ القائمة</button><button class="main cdd" id="copyOpt" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="copyMenu" aria-label="خيارات النسخ"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6" /></svg></button></span>
+<button id="present" type="button" title="اعرض عناصر القائمة دي بملء الشاشة، عنصر في كل شريحة"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10z" /><path d="M7 20h10" /><path d="M9 16v4" /><path d="M15 16v4" /></svg><span class="pl-l">عرض بملء الشاشة</span><span class="pl-s">اعرض</span></button>
 <button id="scr" type="button" hidden title="الصفحة هنا للتحكم، والعرض بملء الشاشة على الشاشة الخارجية (بروجكتور أو تلفزيون)"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19l18 0" /><path d="M5 6m0 1a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z" /></svg> <span>العرض على شاشة خارجية</span></button>
-<button id="share" type="button" title="لينك وكود QR للقائمة دي: افتحه على جهاز تاني، أو ابعته لحد، فتتضاف القائمة عنده"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6h-6z" /><path d="M14 4h6v6h-6z" /><path d="M4 14h6v6h-6z" /><path d="M14 14h2v2h-2z" /><path d="M18 18h2v2h-2z" /><path d="M14 18h2" /><path d="M18 14h2" /></svg> نقل لجهاز آخر / مشاركة</button>
-<button id="dlTxt" type="button">تنزيل ملف نصي (.txt)</button>
-<button class="note" id="addNote" type="button">+ شرح في الآخر</button>
 <span class="sp"></span>
-<button class="danger" id="clear" type="button">مسح محتوى القائمة</button>
+<button id="moreL" class="mbtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="moreMenu" aria-label="المزيد"><svg class="tic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button>
+<div class="lmenu" id="copyMenu" hidden>
+<button type="button" class="usw" role="switch" data-f="gap" aria-checked="true"><span>سطر فارغ بين العناصر</span><i aria-hidden="true"></i></button>
+<button type="button" class="lmi" id="dlTxt">تنزيل كملف نصي</button>
 </div>
-<div class="flds" role="group" aria-label="اللي يتنسخ من مداخل القاموس"><b>مداخل القاموس:</b>
-<label><input type="checkbox" data-f="tr" checked> النطق</label>
-<label><input type="checkbox" data-f="occ" checked> عدد مرات الورود</label>
-<label><input type="checkbox" data-f="ref" checked> الموضع في الآية</label>
-<label><input type="checkbox" data-f="ar" checked> المعنى بالعربية</label>
-<label><input type="checkbox" data-f="en" checked> الإنجليزي</label>
-<b style="margin-inline-start:10px">عام:</b>
-<label><input type="checkbox" data-f="gap" checked> سطر فارغ بين العناصر</label>
+<div class="lmenu" id="moreMenu" role="menu" hidden>
+<button type="button" class="lmi" role="menuitem" id="share"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6h-6z" /><path d="M14 4h6v6h-6z" /><path d="M4 14h6v6h-6z" /><path d="M14 14h2v2h-2z" /><path d="M18 18h2v2h-2z" /><path d="M14 18h2" /><path d="M18 14h2" /></svg> نقل لجهاز آخر / مشاركة</button>
+<button type="button" class="lmi danger" role="menuitem" id="clear">مسح محتوى القائمة</button>
 </div>
+</div>
+<details class="dfmt" id="dfmt" hidden><summary><span>شكل مداخل القاموس</span><span class="v" id="dfmtV"></span><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6" /></svg></summary>
+<div class="dfb">
+<div class="dseg" role="radiogroup" aria-label="شكل مداخل القاموس">
+<label><input type="radio" name="dp" value="short"><span><b>مختصر</b><small>الكلمة ومعناها بالعربية</small></span></label>
+<label><input type="radio" name="dp" value="full"><span><b>كامل</b><small>كل التفاصيل</small></span></label>
+<label><input type="radio" name="dp" value="custom"><span><b>مخصص</b><small>اختار بنفسك</small></span></label>
+</div>
+<div class="dcus" id="dcus" hidden>
+<button type="button" class="usw" role="switch" data-f="tr"><span>النطق</span><i aria-hidden="true"></i></button>
+<button type="button" class="usw" role="switch" data-f="occ"><span>عدد مرات الورود</span><i aria-hidden="true"></i></button>
+<button type="button" class="usw" role="switch" data-f="ref"><span>الموضع في الآية</span><i aria-hidden="true"></i></button>
+<button type="button" class="usw" role="switch" data-f="ar"><span>المعنى بالعربية</span><i aria-hidden="true"></i></button>
+<button type="button" class="usw" role="switch" data-f="en"><span>النص الإنجليزي</span><i aria-hidden="true"></i></button>
+</div>
+<p class="dnote">يتطبّق على شكلها هنا، وفي النسخ، وفي العرض بملء الشاشة.</p>
+</div>
+</details>
 <ol class="items" id="items"></ol>
+<button type="button" class="addn" id="addNote" hidden>+ أضف شرحًا</button>
 </div></div>
 </div>
 <script src="assets/dictcopy.js?v=4"></script>
@@ -279,8 +331,29 @@ var fontOf=function(t){return isHe(t)?"'SBL Hebrew','Ezra SIL','Times New Roman'
 
 /* ---------- الحقول (واحدة لكل القوائم) ---------- */
 var F={tr:1,occ:1,ref:1,ar:1,en:1,gap:1};
-try{var sv=JSON.parse(localStorage.getItem(FK)||"null");if(sv)for(var k in F)if(k in sv)F[k]=sv[k]}catch(e){}
-document.querySelectorAll(".flds input").forEach(function(i){i.checked=!!F[i.dataset.f];i.onchange=function(){F[i.dataset.f]=i.checked?1:0;try{localStorage.setItem(FK,JSON.stringify(F))}catch(e){}draw();try{window.LISTSCR&&LISTSCR.refresh()}catch(e){}}});
+try{var sv=JSON.parse(localStorage.getItem(FK)||"null");if(sv){for(var k in F)if(k in sv)F[k]=sv[k];if(sv.dp==="custom")F.dp="custom"}}catch(e){}
+/* شكل مداخل القاموس: مختصر / كامل / مخصص (المخصص = مفاتيح الحقول الخمسة) */
+var DF=["tr","occ","ref","ar","en"], PRE={short:{tr:0,occ:0,ref:0,ar:1,en:0},full:{tr:1,occ:1,ref:1,ar:1,en:1}};
+function preOf(){if(F.dp==="custom")return "custom";for(var k in PRE)if(DF.every(function(f){return !!F[f]===!!PRE[k][f]}))return k;return "custom"}
+function saveF(){try{localStorage.setItem(FK,JSON.stringify(F))}catch(e){}draw();try{window.LISTSCR&&LISTSCR.refresh()}catch(e){}}
+function syncF(){var p=preOf();
+  document.querySelectorAll("input[name=dp]").forEach(function(r){r.checked=r.value===p});
+  $("#dcus").hidden=p!=="custom";
+  document.querySelectorAll(".usw[data-f]").forEach(function(b){b.setAttribute("aria-checked",!!F[b.dataset.f])});
+  $("#dfmtV").textContent=p==="short"?"مختصر":p==="full"?"كامل":"مخصص"}
+document.querySelectorAll("input[name=dp]").forEach(function(r){r.onchange=function(){
+  if(r.value==="custom"){F.dp="custom"}else{delete F.dp;DF.forEach(function(f){F[f]=PRE[r.value][f]})}
+  syncF();saveF()}});
+document.querySelectorAll(".usw[data-f]").forEach(function(b){b.onclick=function(){var f=b.dataset.f;F[f]=F[f]?0:1;if(f!=="gap")F.dp="custom";syncF();saveF()}});
+syncF();
+/* نسخ ▾ و ⋯: قوائم صغيرة تتقفل بالضغط برّه أو Esc */
+function menuT(btn,menu){btn.onclick=function(e){e.stopPropagation();var open=menu.hidden;closeMenus();if(open){menu.hidden=false;btn.setAttribute("aria-expanded","true");var f=menu.querySelector("button:not(:disabled)");f&&f.focus()}}}
+function closeMenus(){["copyMenu","moreMenu"].forEach(function(id){var m=$("#"+id);if(!m.hidden){m.hidden=true;var b=document.querySelector('[aria-controls="'+id+'"]');b&&b.setAttribute("aria-expanded","false")}})}
+menuT($("#copyOpt"),$("#copyMenu"));menuT($("#moreL"),$("#moreMenu"));
+document.addEventListener("click",function(e){if(!e.target.closest(".lmenu"))closeMenus()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&(!$("#copyMenu").hidden||!$("#moreMenu").hidden)){var o=!$("#copyMenu").hidden?"#copyOpt":"#moreL";closeMenus();$(o).focus()}});
+$("#moreMenu").addEventListener("click",function(e){if(e.target.closest("button"))setTimeout(closeMenus,0)});
+$("#copyMenu").addEventListener("click",function(e){if(e.target.closest("#dlTxt"))setTimeout(closeMenus,0)});
 
 /* ---------- القائمة المفتوحة ---------- */
 var cur=null, ED=null;   /* ED: الشرح اللي بيتكتب دلوقتي {id|null, at, text} */
@@ -372,7 +445,9 @@ function draw(){
   $("#ren").hidden=$("#del").hidden=l.id===L.MAIN;
   $("#lhint").innerHTML=s.last===l.id?'زرار «أضف» في صفحات الأسفار والقواميس بيضيف على <b>القائمة دي</b>.':'';
   document.title=(n?"("+nAr(n)+") ":"")+l.name+" — قوائمي — جدد وعتقاء";
-  $("#copyAll").disabled=$("#present").disabled=$("#dlTxt").disabled=$("#clear").disabled=!a.length;
+  $("#copyAll").disabled=$("#copyOpt").disabled=$("#present").disabled=$("#dlTxt").disabled=$("#clear").disabled=!a.length;
+  $("#dfmt").hidden=!a.some(function(x){return x.k==="d"});
+  $("#addNote").hidden=!a.length||!!(ED&&!ED.id);
   scrSync();
   if(!a.length&&!(ED&&!ED.id)){box.innerHTML='<li class="empty">القائمة دي لسه فاضية.<br>افتح أي سفر أو قاموس واضغط «أضف» جنب الآية أو المدخل (والسهم ▾ جنبه لاختيار القائمة).<br>أو اكتب <a href="#" data-a="note0">شرح</a> من عندك.<br><a href="index.html">المكتبة</a> · <a href="search.html">البحث (كلمة · جذر · سترونج · نحوي)</a></li>';return}
   var out=[];
