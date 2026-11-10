@@ -3,7 +3,7 @@ const fs = require("fs"), vm = require("vm"), path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 
 /* ← غيّر هذا السطر إذا انتقل الموقع إلى نطاق خاص (مثل https://example.org/) */
-const BASE = "https://tsk-tan-pi.vercel.app/";
+const BASE = "https://godod.app/";
 const SITE = "جدد وعتقاء";
 const TAGLINE = "كنوز الكتاب المقدس";
 
@@ -27,8 +27,9 @@ function bookDesc(c) {
          `ونص كتاب الحياة وفاندايك وKJV، وقاموس سترونج ومخطط السفر — ${plural(c.nc, "أصحاح واحد", "أصحاحان", "أصحاحات", "أصحاحًا")} و${plural(c.nv, "عدد واحد", "عددان", "أعداد", "عددًا")}.`;
 }
 const SITE_DESC = "مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.";
+const SITE_META_DESC = "مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من TSK مع فاندايك وأرقام سترونج والقواميس والخرائط. ابدأ دراسة أي آية الآن.";
 
 function runJS(file) { const ctx = {}; ctx.window = ctx; vm.runInNewContext(fs.readFileSync(path.join(ROOT, file), "utf8"), ctx); return ctx; }
 const catalog = () => runJS("assets/catalog.js").CATALOG;
 
-module.exports = { ROOT, BASE, SITE, TAGLINE, AR, BKGRP, n, nk, plural, esc, fullName, bookTitle, bookDesc, SITE_DESC, runJS, catalog };
+module.exports = { ROOT, BASE, SITE, TAGLINE, AR, BKGRP, n, nk, plural, esc, fullName, bookTitle, bookDesc, SITE_DESC, SITE_META_DESC, runJS, catalog };

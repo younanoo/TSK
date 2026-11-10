@@ -52,7 +52,7 @@ const LIBTAG = c => splitOn(c) ? `<script src="assets/lib/${c.abbr}/index.js?v=$
 
 /* ---------- per-page meta ---------- */
 const TOOLS = {
-  "index.html":   { title: `${SITE} — ${TAGLINE}`, desc: M.SITE_DESC, sitemap: 1 },
+  "index.html":   { title: `${SITE} — ${TAGLINE}`, desc: M.SITE_META_DESC, sitemap: 1 },
   "search.html":  { title: "البحث في الكتاب المقدس — جدد وعتقاء", desc: "ابحث في الكتاب المقدس من خانة واحدة: بكلمة أو عبارة في فاندايك وكتاب الحياة وKJV، أو بالجذر العربي وأصله العبري واليوناني، أو برقم سترونج، أو بحسب القواعد النحوية في اللغات الأصلية.", sitemap: 1 },
   "features.html":{ title: "إمكانيات الموقع — جدد وعتقاء", desc: "كل أدوات «جدد وعتقاء» لدراسة الكتاب المقدس بالعربية: الشواهد المتقاطعة، وقاموس سترونج وBDB وأبوت-سميث بالعربية، والبحث، والخرائط، والعرض في الخدمة، والقراءة الزمنية، والأسئلة الشائعة.", sitemap: 1 },
   "topics.html":  { desc: "فهرس مواضيع الكتاب المقدس بالعربية: أكثر من ٤٦ ألف موضوع من فهارس Nave وTorrey، لكل موضوع مواضعه في الأسفار ونصوصها.", sitemap: 1 },
@@ -153,7 +153,7 @@ for (const f of htmlFiles) {
     h = setInner(h, '<div class="booksel" id="booksel">', SIDEBAR);
     sitemap.push([BASE + f, "0.8"]);
   } else {
-    const t = TOOLS[f] || { desc: M.SITE_DESC };
+    const t = TOOLS[f] || { desc: M.SITE_META_DESC };
     const title = t.title || (h.match(/<title>([^<]*)<\/title>/) || [, SITE])[1];
     const o = { title: t.title, ogTitle: title, desc: t.desc, url: f === "index.html" ? BASE : BASE + f, og: "assets/og/site.jpg" };
     if (f === "index.html") {
