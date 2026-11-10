@@ -1,0 +1,84 @@
+name: Deploy to godod server
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Never run two deployments at the same time
+concurrency:
+  group: deploy-godod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Prepare SSH key and known_hosts
+        env:
+          SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.SERVER_KNOWN_HOSTS }}
+          HOST: ${{ secrets.SERVER_HOST }}
+          DEPLOY_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          set -euo pipefail
+          for v in SSH_KEY KNOWN_HOSTS HOST DEPLOY_USER; do
+            if [ -z "${!v}" ]; then echo "::error::Missing GitHub secret for $v"; exit 1; fi
+          done
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: git pull on server
+        env:
+          HOST: ${{ secrets.SERVER_HOST }}
+          DEPLOY_USER: ${{ secrets.SERVER_USER }}
+          PORT: ${{ secrets.SERVER_PORT }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "${PORT:-22}" \
+            -o StrictHostKeyChecking=yes \
+            -o IdentitiesOnly=yes \
+            -o BatchMode=yes \
+            -o ConnectTimeout=20 \
+            "$DEPLOY_USER@$HOST" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          SITE=/var/www/godod
+          cd "$SITE"
+          echo "Server: $(hostname)   User: $(whoami)   Dir: $SITE"
+
+          before=$(git rev-parse --short HEAD)
+          branch=$(git branch --show-current)
+          if [ "$branch" != "main" ]; then
+            echo "Current branch is '$branch' - switching to main"
+            git checkout main
+          fi
+
+          if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+            echo "::warning::Tracked files were edited directly on the server:"
+            git status --short --untracked-files=no
+          fi
+
+          # --ff-only: never creates merge commits on the server; fails loudly if histories diverged
+          GIT_TERMINAL_PROMPT=0 git pull --ff-only origin main
+
+          after=$(git rev-parse --short HEAD)
+          if [ "$before" = "$after" ]; then
+            echo "Already up to date at $after"
+          else
+            echo "Updated $before -> $after"
+            git diff --stat "$before" "$after" | tail -n 25
+          fi
+          git log -1 --format='Deployed commit: %h  %s  (%an, %ad)'
+          REMOTE
+
+      - name: Remove SSH key from runner
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
