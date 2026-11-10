@@ -955,7 +955,7 @@ html body .cheads{color:var(--gold)}
 .ux-on .olbox summary{min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer}
 .ux-on .olbox summary .uxt-olhint{font:500 13px var(--ui);color:var(--muted);margin-inline-start:auto}
 @media (max-width:880px){
-.ux-on #main>.chlink,.ux-on #main>.trbar,.ux-on #main>.trgrp.seg,.ux-on #main>.ilopts{display:none!important}
+.ux-on #main>.chlink,.ux-on #main>.trbar,.ux-on #main>.trgrp.seg{display:none!important} /* شريط «كلمة بكلمة» (.ilopts) ظاهر تحت الزرار مباشرة */
 .ux-on #main>.chlink.uxt-keep{display:block!important}
 .ux-on .olr .ore{display:none}
 .ux-on .olr{flex-wrap:nowrap}
