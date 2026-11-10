@@ -962,7 +962,7 @@ html body .cheads{color:var(--gold)}
 .ux-on .chhero.uxt-moved{margin-top:18px}
 
 }
-.ux-on #dict:has(> .empty:not(.loading):not(.loadfail)){display:none}
+.ux-on #dict:not(:has(.dwords)):has(> .empty:not(.loading):not(.loadfail)){display:none}
 .ux-on #dict .loadfail{display:flex;flex-direction:column;align-items:flex-start;gap:12px;line-height:1.7}
 .ux-on #dict .loadfail .trb{min-height:44px;padding:0 18px;font-size:15px}
 .ux-on .uxt-dclose{display:none}
@@ -1133,6 +1133,8 @@ html body .cheads{color:var(--gold)}
 .chs-orig.gr{font-family:"Noto Serif","Gentium Plus",serif;font-size:20px}
 .chs-tr{color:var(--muted);font-size:13px;unicode-bidi:isolate}
 .chs-ar{margin:8px 0 2px}
+.chs-gl{margin:12px 0 2px;font:700 calc(21px*var(--fs,1))/1.6 var(--script);color:var(--ink)}
+.chs-gl+.chs-ar{margin-top:4px;font-size:14.5px;line-height:1.8;color:var(--muted)}
 .chs-na{color:var(--muted);font-size:14px;margin:6px 0}
 .chs-load{color:var(--muted);font-size:14px;padding:8px 0}
 .chs-en{margin-top:4px}
@@ -1377,6 +1379,23 @@ html.pres-on{overflow:hidden}
 .cvlist.umode-read.ultr{direction:ltr;text-align:justify;font-family:"Noto Serif",Georgia,serif;line-height:1.9}
 .umode-read.ultr .cvt{text-align:inherit!important}
 .ux-a .umode-read.ultr .cv .cvn{margin:-8px 2px -8px 6px}
+/* رقم العدد: مساحة الضغط حوالي ٤٠×٤٠ من غير ما يتغيّر شكله ولا سطره */
+.ux-a .cvlist .cv .cvn{position:relative}
+.ux-a .cvlist .cv .cvn::before{content:"";position:absolute;left:50%;top:50%;width:max(40px,calc(100% + 16px));height:40px;transform:translate(-50%,-50%);z-index:1}
+/* الكلمة بالكيبورد */
+.cvt .sw[role=button]:focus-visible,.verse-card .sw[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px;background:var(--gold-soft)}
+.ghead[role=button]:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:12px}
+/* كلمات العدد في تبويب «معنى الكلمات» */
+/* وضع دراسة على الشاشات الكبيرة: سطر الآية ما يزيدش عن حوالي ٧٠ حرفًا عشان العين ما تتوهش */
+@media (min-width:1100px){.cvlist.umode-study .cv .cvt{max-width:30em}}
+.dict .col .sgl{margin:0 0 8px;font:700 calc(22px*var(--fs,1))/1.6 var(--script);color:var(--ink)}
+.dict .dwords{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px 0}
+.dict .dword{display:inline-flex;align-items:baseline;gap:6px;min-height:40px;padding:4px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--ink);font:600 16px var(--ui);cursor:pointer}
+.dict .dword small{font:600 11px var(--ui);color:var(--muted);direction:ltr}
+.dict .dword:hover{border-color:var(--gold)}
+.dict .dword.on{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.dict .dword.on small{color:inherit;opacity:.85}
+.dict .dword:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 /* لوحة الشواهد */
 .ux-on .uxt-sheet .shd h3 .usub{display:block;font:500 13px var(--ui);color:var(--muted);margin-top:2px}
 .uvtext{font:calc(21px*var(--fs,1))/1.9 var(--script);padding:10px 14px;background:var(--bg);border:1px solid var(--line);border-radius:12px;margin:0 0 14px}
@@ -1433,7 +1452,7 @@ html.pres-on{overflow:hidden}
 .uvhead{margin-bottom:12px}
 .uol{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:6px 0 0;font:13.5px/1.7 var(--ui);color:var(--muted)}
 .uol b{color:var(--ink);font-weight:600}
-.uol a{color:var(--accent);text-decoration:none;font-weight:600}
+.uol a{color:var(--accent);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;min-height:40px;padding:0 4px}
 .uol .tic{width:16px;height:16px}
 .uvacts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
 .uvacts .trb{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;font-size:13.5px;border-radius:999px}

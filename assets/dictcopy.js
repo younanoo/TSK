@@ -94,7 +94,7 @@
   function pick(anchor,o){
     if(PK&&PK.anchor===anchor){closePick();return}
     closePick();
-    var el=document.createElement("div");el.className="lsp";el.setAttribute("role","dialog");el.setAttribute("aria-label","اختار القائمة");
+    var el=document.createElement("div");el.className="lsp";el.setAttribute("role","dialog");el.setAttribute("aria-label","اختر القائمة");
     document.body.appendChild(el);PK={el:el,anchor:anchor,o:o};anchor.setAttribute("aria-expanded","true");
     el.innerHTML=pickHTML();place();
     var f=el.querySelector(".lsp-i.last")||el.querySelector(".lsp-i");if(f)f.focus({preventScroll:true});
@@ -138,7 +138,8 @@
     ".cpy-dd .tic,.dcp-dd .tic,.lsv-dd .tic{width:14px;height:14px}"+
     ".cpy-dd:hover,.cpy-dd:focus-visible,.dcp-dd:hover,.dcp-dd:focus-visible,.lsv-dd:hover,.lsv-dd:focus-visible,.cpy-dd[aria-expanded=true],.dcp-dd[aria-expanded=true],.lsv-dd[aria-expanded=true]{color:var(--gold);border-color:var(--gold);background:var(--gold-soft);outline:none}"+
     ".cvf .cpyg .cpy-dd,.dent .hd .dcp-dd{height:34px;width:28px;border-radius:999px;border-color:var(--gold);color:var(--gold)}"+
-    ".cpyg .cpy.big+.cpy-dd{border-radius:999px;border-color:var(--gold);color:var(--gold)}"+
+    ".cpyg .cpy.big+.cpy-dd{border-radius:999px;border-color:var(--gold);color:var(--gold);height:36px;width:32px}"+
+    ".cpyg .cpy.big{min-height:36px;padding-inline:14px}"+
     ".dcpg{display:inline-flex;align-items:center;gap:3px;align-self:center}"+
     ".cpy.some,.dcp.some,.lsv.some{border-style:dashed;border-color:var(--gold);color:var(--gold)}"+
     ".lsp{position:fixed;z-index:10000;width:min(320px,calc(100vw - 16px));max-height:min(70vh,460px);overflow:auto;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.22);padding:8px;font:500 14px var(--ui);direction:rtl;text-align:right}"+
@@ -208,7 +209,7 @@
       var g=document.createElement("span");g.className="dcpg";
       var b=document.createElement("button"); b.type="button"; b.className="dcp";
       var a=document.createElement("button"); a.type="button"; a.className="dcp-dd"; a.innerHTML=CHEV;
-      a.setAttribute("aria-haspopup","true");a.setAttribute("aria-expanded","false");a.setAttribute("aria-label","اختار القائمة أو اعمل قائمة جديدة");a.title="اختار القائمة / قائمة جديدة";
+      a.setAttribute("aria-haspopup","true");a.setAttribute("aria-expanded","false");a.setAttribute("aria-label","اختر القائمة أو أنشئ قائمة جديدة");a.title="اختر القائمة أو أنشئ قائمة جديدة";
       g.appendChild(b);g.appendChild(a);hd.appendChild(g);paint(b);
     });
   }
@@ -224,7 +225,7 @@
      الصفحة تكتب TSKLists.verseBtn({ref, tr, t, sm}) → <span class="lsvg" data-ref data-tr data-t>؛ الضغط والتلوين من هنا.
      لو النص بيتحمّل بعدين، الصفحة تحدّث data-t على الـ span. */
   function verseBtn(o){return '<span class="lsvg'+(o.sm?" sm":"")+'" data-ref="'+esc(o.ref)+'" data-tr="'+esc(o.tr)+'" data-t="'+esc(o.t||"")+'">'+
-    '<button type="button" class="lsv"></button><button type="button" class="lsv-dd" aria-haspopup="true" aria-expanded="false" aria-label="اختار القائمة أو اعمل قائمة جديدة" title="اختار القائمة / قائمة جديدة">'+CHEV+'</button></span>'}
+    '<button type="button" class="lsv"></button><button type="button" class="lsv-dd" aria-haspopup="true" aria-expanded="false" aria-label="اختر القائمة أو أنشئ قائمة جديدة" title="اختر القائمة أو أنشئ قائمة جديدة">'+CHEV+'</button></span>'}
   function vOpts(g){var ref=g.dataset.ref,tr=g.dataset.tr;
     return {key:"v|"+ref+"|"+tr,label:"<b>"+esc(ref)+"</b> <span class=\"ct-tr\">("+esc(tr)+")</span>",title:"أضف <b>"+esc(ref)+"</b> إلى:",
       build:function(){var t=(g.dataset.t||"").trim();return t?{k:"v",t:t,ref:ref,tr:tr,at:Date.now()}:{err:"نص الآية لسه بيتحمّل… حاول تاني بعد لحظة"}}}}

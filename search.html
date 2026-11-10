@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=96ac23fb">
+<link rel="stylesheet" href="assets/style.css?v=35a7887d">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -31,6 +31,16 @@ html,body{overflow-x:clip;padding:0}
 .utabs button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:6px}
 .uhint{margin:8px 0 0;font:13px var(--ui);color:var(--muted);min-height:0}.uhint:empty{display:none}
 .uhint b{color:var(--accent)}
+/* الموبايل: بعد البحث تتقفل الخيارات في سطر واحد عشان النتائج تبان من أول الشاشة */
+.uoptT{display:none}
+@media (max-width:720px){
+ .uoptT:not([hidden]){display:flex;align-items:center;gap:8px;width:100%;min-height:44px;margin:10px 0 0;padding:6px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper);font:600 14px var(--ui);color:var(--ink);cursor:pointer;text-align:start}
+ .uoptT .v{font-weight:500;font-size:13px;color:var(--muted);margin-inline-start:auto}
+ .uoptT .chev{flex:none;color:var(--gold);transition:transform .15s}
+ .uoptT[aria-expanded=true] .chev{transform:rotate(180deg)}
+ .uoptT:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+ #uf.ocl .upanels{display:none}
+}
 /* ---- خيارات كل تبويب ---- */
 .upanels{margin:12px 0 4px}
 .upanel{display:none}.upanel.on{display:block}
@@ -119,31 +129,31 @@ mark{background:var(--gold-soft);color:inherit;box-shadow:0 0 0 2px var(--gold-s
 .gmore{margin:10px 0;padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--gold-soft);font:600 13px var(--ui);cursor:pointer;color:var(--ink)}
 </style><!--seo-->
 <meta name="description" content="ابحث في الكتاب المقدس من خانة واحدة: بكلمة أو عبارة في فاندايك وكتاب الحياة وKJV، أو بالجذر العربي وأصله العبري واليوناني، أو برقم سترونج، أو بحسب القواعد النحوية في اللغات الأصلية.">
-<link rel="canonical" href="https://younanoo.github.io/TSK/search.html">
+<link rel="canonical" href="https://tsk-tan-pi.vercel.app/search.html">
 <link rel="manifest" href="manifest.webmanifest">
 <meta property="og:site_name" content="جدد وعتقاء">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:type" content="website">
 <meta property="og:title" content="البحث في الكتاب المقدس — جدد وعتقاء">
 <meta property="og:description" content="ابحث في الكتاب المقدس من خانة واحدة: بكلمة أو عبارة في فاندايك وكتاب الحياة وKJV، أو بالجذر العربي وأصله العبري واليوناني، أو برقم سترونج، أو بحسب القواعد النحوية في اللغات الأصلية.">
-<meta property="og:url" content="https://younanoo.github.io/TSK/search.html">
-<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:url" content="https://tsk-tan-pi.vercel.app/search.html">
+<meta property="og:image" content="https://tsk-tan-pi.vercel.app/assets/og/site.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="البحث في الكتاب المقدس — جدد وعتقاء">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="البحث في الكتاب المقدس — جدد وعتقاء">
 <meta name="twitter:description" content="ابحث في الكتاب المقدس من خانة واحدة: بكلمة أو عبارة في فاندايك وكتاب الحياة وKJV، أو بالجذر العربي وأصله العبري واليوناني، أو برقم سترونج، أو بحسب القواعد النحوية في اللغات الأصلية.">
-<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta name="twitter:image" content="https://tsk-tan-pi.vercel.app/assets/og/site.jpg">
 <!--/seo-->
 </head><body>
-<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.173 14.83a4 4 0 1 1 5.657 -5.657" /> <path d="M11.294 12.707l.174 .247a7.5 7.5 0 0 0 8.845 2.492a9 9 0 0 1 -14.671 2.914" /> <path d="M3 12h1" /> <path d="M12 3v1" /> <path d="M5.6 5.6l.7 .7" /> <path d="M3 21l18 -18" /></svg></button></header>
+<header class="sitebar"><a class="sb-logo" href="index.html" title="الصفحة الرئيسية"><img class="logo-l" src="assets/brand/logo-horizontal-light.svg" alt="جدد وعتقاء" width="146" height="44"><img class="logo-d" src="assets/brand/logo-horizontal-dark.svg" alt="جدد وعتقاء" width="146" height="44"></a><span class="sp"></span><a class="sb-link" href="index.html"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg> المكتبة</a><button class="sb-theme" id="brandTheme" type="button" aria-label="الوضع الفاتح / الداكن"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg></button></header>
 
 <div class="spage">
 <h1><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /> <path d="M21 21l-6 -6" /></svg> بحث</h1>
 <form id="uf" autocomplete="off">
  <div class="utop">
-  <div class="urow"><input type="search" id="uq" aria-label="نص البحث" placeholder="اكتب كلمة أو جذرًا أو رقم سترونج مثل G26"><button type="submit">بحث</button></div>
+  <div class="urow"><input type="search" id="uq" aria-label="نص البحث" placeholder="اكتب كلمة أو جذرًا أو رقم سترونج مثل G26"><button type="submit">ابحث</button></div>
   <div class="utabs" role="tablist" aria-label="نوع البحث">
    <button type="button" role="tab" data-tab="word">كلمة</button>
    <button type="button" role="tab" data-tab="root">جذر</button>
@@ -152,7 +162,8 @@ mark{background:var(--gold-soft);color:inherit;box-shadow:0 0 0 2px var(--gold-s
   </div>
  </div>
  <p class="uhint" id="uhint" aria-live="polite"></p>
- <div class="upanels">
+ <button type="button" class="uoptT" id="uoptT" aria-expanded="true" aria-controls="upanels" hidden><span>خيارات البحث</span><span class="v" id="uoptV"></span><svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"/></svg></button>
+ <div class="upanels" id="upanels">
   <div class="upanel" data-for="word">
    <p class="udesc">يبحث عن الكلمة أو العبارة في نص الترجمة التي تختارها، مع تجاهل التشكيل والهمزات.</p>
   </div>
@@ -211,7 +222,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const D=x=>String(x).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
 const OUT=()=>$("#out");
 const isHeb=x=>x[0]==="H";
-const plural=(k,one,two,few,many)=>k===1?one:k===2?two:(k>=3&&k<=10)?`${n(k)} ${few}`:`${n(k)} ${many}`;
+const plural=(k,one,two,few,many)=>{const r=k>100?k%100:k;return k===1?one:k===2?two:(r>=3&&r<=10)?`${n(k)} ${few}`:`${n(k)} ${many}`}; /* ١٠٨ آيات، ١١٧ موضعًا */
 const lsGet=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 
@@ -255,7 +266,7 @@ function readUI(){const g=k=>{const x=document.querySelector('input[name='+k+']:
 function showTab(tab){CUR=tab;
   document.querySelectorAll(".utabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
   document.querySelectorAll(".upanel").forEach(p=>p.classList.toggle("on",p.dataset.for===tab));
-  syncOpts();$("#uq").placeholder=PH[tab]}
+  syncOpts();$("#uq").placeholder=PH[tab];syncOptT()}
 function syncOpts(){
   const rk=(document.querySelector('input[name=rk]:checked')||{}).value||"ar";
   const text=CUR==="word"||(CUR==="root"&&rk==="ar");
@@ -265,14 +276,23 @@ function syncOpts(){
   ki.disabled=noK;ko.hidden=noK;
   if(noK&&ki.checked)document.querySelector('input[name=t][value=svd]').checked=true;
   const t=(document.querySelector('input[name=t]:checked')||{}).value;$("#uq").dir=CUR==="strong"||(text&&t==="kjv")?"ltr":"auto"}
+/* سطر «خيارات البحث» على الموبايل: مقفول بعد أي بحث (ما عدا «نحوي»، لأن شروطه هي البحث نفسه)، والقارئ يفتحه ويقفله بنفسه */
+let SEARCHED=false,OPT_USER=null;
+function optSum(){const lab=k=>{const x=document.querySelector('input[name='+k+']:checked');return x&&!x.closest("[hidden]")?x.parentElement.textContent.trim().replace(/\s*\(.*\)$/,""):""};
+  if(CUR==="word")return [lab("t"),lab("m"),$("#bks").dataset.val?$("#bksum").textContent:""].filter(Boolean).join(" · ");
+  if(CUR==="root")return [lab("rk"),lab("t")].filter(Boolean).join(" · ");
+  return "الشرح والأمثلة"}
+function syncOptT(){const b=$("#uoptT");if(!b)return;const can=SEARCHED&&CUR!=="grammar";b.hidden=!can;
+  const open=!can||OPT_USER===true;$("#uf").classList.toggle("ocl",!open);b.setAttribute("aria-expanded",open);$("#uoptV").textContent=can?optSum():""}
 function setUI(s){
+  SEARCHED=!!s.q;
   $("#uq").value=s.q;showTab(s.tab);
   document.querySelector('input[name=t][value='+s.t+']').checked=true;
   document.querySelector('input[name=m][value='+s.m+']').checked=true;
   document.querySelector('input[name=rk][value='+s.rk+']').checked=true;
   setBooks(s.b);AM=s.am==="w"?"w":"r";
   if(s.tab==="grammar"||$("#gbk").value!==(s.gb||"")){buildG(s.gb||"");(s.f||"").split(",").forEach(p=>{const i=p.indexOf(":");if(i<0)return;const el=document.querySelector('#gr select[data-k="'+p.slice(0,i)+'"]');if(el)el.value=p.slice(i+1)})}
-  syncOpts()}
+  syncOpts();syncOptT()}
 /* تخمين التبويب: بين «كلمة» و«سترونج» فقط، ولا يغيّر اختيار القارئ */
 function guess(){const v=$("#uq").value.trim();if(MANUAL||!v||(CUR!=="word"&&CUR!=="strong"))return setHint("");
   const t=isNum(v)?"strong":"word";if(t!==CUR)showTab(t);
@@ -314,6 +334,8 @@ function welcome(){document.title="بحث — جدد وعتقاء";
   .map(([h,b,t])=>'<a href="'+h+'"><b>'+b+'</b>'+t+'</a>').join("")+'</div>'}
 
 $("#uf").addEventListener("submit",e=>{e.preventDefault();submit()});
+$("#uoptT").addEventListener("click",()=>{OPT_USER=$("#uoptT").getAttribute("aria-expanded")!=="true";syncOptT()});
+$("#uf").addEventListener("change",()=>syncOptT());
 $("#uq").addEventListener("input",guess);
 document.querySelector(".utabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;MANUAL=true;setHint("");showTab(b.dataset.tab);
   const v=$("#uq").value.trim();if(v&&b.dataset.tab!=="grammar")submit();else if(b.dataset.tab!=="grammar")OUT().innerHTML="";$("#uq").focus()});
@@ -376,7 +398,7 @@ function textSearch(){
   const occ=hits.reduce((s,[,l])=>s+l.reduce((t,x)=>t+x.n,0),0);
   const ml=mode==="exact"?"الكلمة كما هي":"جزء من الكلمة";
   const scope=" — "+TRN+(SEL.size===ABBR.length?"":" — في "+nAr(SEL.size)+" من "+nAr(ABBR.length)+" سفرًا");
-  meta.textContent=total?("وُجد «"+Q+"» في "+nAr(total)+" آية ("+nAr(occ)+" موضع) — "+ml+scope):("لا توجد نتائج لـ «"+Q+"» ("+ml+")"+scope+".");
+  meta.textContent=total?("وُجد «"+Q+"» في "+plural(total,"آية واحدة","آيتين","آيات","آية")+" ("+plural(occ,"موضع واحد","موضعين","مواضع","موضعًا")+")"):("لا توجد نتائج لـ «"+Q+"» ("+ml+")"+scope+".");
   if(ISAR&&hasArabic(Q)&&!/\s/.test(Q)){const e=encodeURIComponent(Q);
     meta.insertAdjacentHTML("afterend",'<p class="usug">تريد كل صيغ الكلمة؟ <a href="#tab=root&rk=ar&t='+TR+'&q='+e+'">← بالجذر العربي</a> · <a href="#tab=root&rk=orig&q='+e+'">← أصلها في العبري واليوناني</a></p>')}
   const flat=[];hits.forEach(([a,l])=>{flat.push({head:a,count:l.length});l.forEach(x=>flat.push({a,x}))});
@@ -401,7 +423,7 @@ function runRoot(){
     const list=verses.map(v=>({...v,use:v.hits.filter(t=>ok(t[0]))})).filter(v=>v.use.length);
     const by={};list.forEach(v=>{(by[v.a]=by[v.a]||[]).push(v)});
     const occ=list.reduce((s,v)=>s+v.use.length,0);
-    meta.textContent=list.length?("وُجد «"+Q+"» بالجذر"+(rootsTxt.length?" ("+rootsTxt.join("، ")+")":"")+" في "+TRN+" في "+nAr(list.length)+" آية ("+nAr(occ)+" موضع)"):("لا توجد نتائج لـ «"+Q+"» بالجذر في "+TRN+".");
+    meta.textContent=list.length?("وُجد «"+Q+"» بالجذر"+(rootsTxt.length?" ("+rootsTxt.join("، ")+")":"")+" في "+plural(list.length,"آية واحدة","آيتين","آيات","آية")+" ("+plural(occ,"موضع واحد","موضعين","مواضع","موضعًا")+")"):("لا توجد نتائج لـ «"+Q+"» بالجذر في "+TRN+".");
     const flat=[];ABBR.forEach(a=>{if(!by[a])return;flat.push({head:a,count:by[a].length});by[a].sort((x,y)=>{const[c1,v1]=x.k.split(":"),[c2,v2]=y.k.split(":");return c1-c2||v1-v2}).forEach(v=>flat.push({a,v}))});
     res.innerHTML="";
     paged(flat,res,it=>{const v=it.v,sp=v.use.map(t=>[v.mp[t[1]],v.mp[t[2]-1]+1]).sort((x,y)=>x[0]-y[0]);let h="",p=0;sp.forEach(([s,e])=>{if(s<p)return;h+=esc(v.raw.slice(p,s))+"<mark>"+esc(v.raw.slice(s,e))+"</mark>";p=e});h+=esc(v.raw.slice(p));
@@ -639,7 +661,7 @@ function gShow(abs,flt,wq,tok){
         if(ok&&wq){if(/^[HG]\d+$/i.test(wq)){ok=(w[2]||"").toUpperCase()===wq.toUpperCase()}else{const q=NORM(wq);ok=NORM(w[0]).includes(q)||NORM(w[1]).includes(q)||NORM(w[4]).split(/[^a-z]+/).includes(q)||NORM(w[4]).includes(q)}}
         if(ok){hits.push(w);words++;const id=w[2]||w[0];(lem[id]=lem[id]||{o:w[0],t:w[1],e:w[4],id:w[2],c:0}).c++}});
       if(hits.length)out.push({a,k,hits})})});
-  $("#gm").textContent=words?"وُجد "+nAr(words)+" كلمة في "+nAr(out.length)+" آية":"لا توجد نتائج";
+  $("#gm").textContent=words?"وُجد "+plural(words,"كلمة واحدة","كلمتين","كلمات","كلمة")+" في "+plural(out.length,"آية واحدة","آيتين","آيات","آية"):"لا توجد نتائج";
   const ls=Object.values(lem).sort((x,y)=>y.c-x.c).slice(0,24);
   $("#lem").innerHTML=ls.map(l=>'<span><span class="o">'+esc(l.o)+'</span>'+esc(l.t||"")+' <small>'+(l.id||"")+' · '+nAr(l.c)+'</small></span>').join("");
   G_OUT=out;gDraw(300,tok)}

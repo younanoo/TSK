@@ -3,7 +3,7 @@ const fs = require("fs"), vm = require("vm"), path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 
 /* ← غيّر هذا السطر إذا انتقل الموقع إلى نطاق خاص (مثل https://example.org/) */
-const BASE = "https://younanoo.github.io/TSK/";
+const BASE = "https://tsk-tan-pi.vercel.app/";
 const SITE = "جدد وعتقاء";
 const TAGLINE = "كنوز الكتاب المقدس";
 

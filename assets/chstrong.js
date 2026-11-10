@@ -42,8 +42,8 @@
     if(!e) return `<div class="chs-e"><div class="chs-top"><span class="chs-num">${num}</span></div><p class="chs-na">هذا المدخل غير متاح.</p></div>`;
     return `<div class="chs-e">
       <div class="chs-top"><span class="chs-num">${num}</span><span class="chs-orig ${isHe(num)?"he":"gr"}" lang="${isHe(num)?"he":"grc"}" dir="${isHe(num)?"rtl":"ltr"}">${escH(e.o)}</span><span class="chs-tr" dir="ltr"><b>${escH(e.tr)}</b>${e.pr?" · "+escH(e.pr):""}</span></div>
-      ${e.ar?`<p class="chs-ar">${escH(e.ar)}</p>`:`<p class="chs-na">الترجمة العربية لهذا المدخل غير متاحة بعد.</p>`}
-      ${e.d?`<details class="chs-en"><summary>Strong's Dictionary (English)</summary><p dir="ltr">${e.d}</p></details>`:""}
+      ${e.ar?(p=>`${p.g?`<p class="chs-gl">${escH(p.g)}</p>`:""}<p class="chs-ar">${escH(p.rest)}</p>`)((window.strongParts||(a=>({g:"",rest:a})))(e.ar)):`<p class="chs-na">الترجمة العربية لهذا المدخل غير متاحة بعد.</p>`}
+      ${e.d?`<details class="chs-en"><summary>النص الإنجليزي الأصلي</summary><p dir="ltr">${e.d}</p></details>`:""}
     </div>`;
   }
 
@@ -67,7 +67,7 @@
     const c=m?+m[2]:S.c,v=m?+m[3]:1;
     const word=w.cloneNode(true);word.querySelectorAll("sup").forEach(x=>x.remove());
     const head=`<div class="chs-grab"></div><div class="chs-hd"><b class="chs-w">${escH(word.textContent.trim())}</b><span class="chs-ref">${AR[ab]} ${n(c)}: ${n(v)}</span><button type="button" class="chs-x" aria-label="إغلاق">✕</button></div>`;
-    const more=`<div class="chs-ft"><a class="chs-more" href="#/${ab}/${c}:${v}/${nums[0]}">عرض المزيد ←</a><span class="chs-hint">العدد كاملًا مع الشواهد والقواميس الأخرى</span></div>`;
+    const more=`<div class="chs-ft"><a class="chs-more" href="#/${ab}/${c}:${v}/${nums[0]}">كل معاني الكلمة وشواهدها ←</a><span class="chs-hint">تفتح صفحة العدد مع القواميس الأخرى</span></div>`;
     pop.innerHTML=head+`<div class="chs-body"><div class="chs-load">جارٍ التحميل…</div></div>`+more;
     pop.classList.add("on");place(w);
     need(nums,(DIC,bad)=>{

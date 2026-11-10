@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=96ac23fb">
+<link rel="stylesheet" href="assets/style.css?v=35a7887d">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -64,7 +64,7 @@ body.h{background:var(--bg)}
 .h-go.bad{animation:hshake .35s}
 @keyframes hshake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .h-hint{font-size:13.5px;color:#AFC0D2;margin:12px 0 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.h-chip{all:unset;unicode-bidi:plaintext;cursor:pointer;font:500 13px var(--ui);padding:4px 11px;border-radius:999px;border:1px solid rgba(243,235,217,.25);color:#F3EBD9}
+.h-chip{all:unset;unicode-bidi:plaintext;cursor:pointer;font:500 13px var(--ui);padding:0 14px;min-height:40px;display:inline-flex;align-items:center;box-sizing:border-box;border-radius:999px;border:1px solid rgba(243,235,217,.25);color:#F3EBD9}
 .h-chip:hover{background:rgba(243,235,217,.1)}
 .h-ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .h-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font:600 15px var(--ui);padding:11px 20px;border-radius:12px;cursor:pointer;border:1px solid transparent}
@@ -120,7 +120,7 @@ body.h{background:var(--bg)}
 .h-r a:hover{text-decoration:underline}
 .h-r p{margin:0;font:16px/1.8 var(--script);color:var(--ink)}
 .h-more{font-size:13.5px;color:var(--muted);margin:4px 0 0}
-.h-more a{color:var(--accent)}
+.h-more a{color:var(--accent);display:inline-block;padding:10px 4px;margin:-10px 0}
 .h-skel{height:120px;border-radius:16px;background:linear-gradient(90deg,var(--chip),var(--paper),var(--chip));background-size:200% 100%;animation:hsk 1.4s infinite}
 @keyframes hsk{to{background-position:-200% 0}}
 @media (max-width:900px){.h-votd{grid-template-columns:1fr}}
@@ -203,7 +203,7 @@ body.h{background:var(--bg)}
 .h-demo{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;min-height:420px}
 .h-dbar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--chip)}
 .h-dbar i{width:10px;height:10px;border-radius:50%;background:var(--line)}
-.h-dbar span{margin-inline-start:10px;font:500 12.5px var(--ui);color:var(--muted);direction:ltr}
+.h-dbar span{margin-inline-start:10px;font:500 12.5px var(--ui);color:var(--muted)}
 .h-dbody{padding:24px clamp(18px,3vw,30px)}
 .h-panel[hidden]{display:none}
 .h-panel h3{margin:0 0 6px;font:700 20px var(--display);color:var(--heading)}
@@ -419,23 +419,23 @@ body.h{background:var(--bg)}
 </style>
 <!--seo-->
 <meta name="description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.">
-<link rel="canonical" href="https://younanoo.github.io/TSK/">
+<link rel="canonical" href="https://tsk-tan-pi.vercel.app/">
 <link rel="manifest" href="manifest.webmanifest">
 <meta property="og:site_name" content="جدد وعتقاء">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:type" content="website">
 <meta property="og:title" content="جدد وعتقاء — كنوز الكتاب المقدس">
 <meta property="og:description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.">
-<meta property="og:url" content="https://younanoo.github.io/TSK/">
-<meta property="og:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
+<meta property="og:url" content="https://tsk-tan-pi.vercel.app/">
+<meta property="og:image" content="https://tsk-tan-pi.vercel.app/assets/og/site.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="جدد وعتقاء — كنوز الكتاب المقدس">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="جدد وعتقاء — كنوز الكتاب المقدس">
 <meta name="twitter:description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.">
-<meta name="twitter:image" content="https://younanoo.github.io/TSK/assets/og/site.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"جدد وعتقاء","alternateName":"جدد وعتقاء — كنوز الكتاب المقدس","url":"https://younanoo.github.io/TSK/","inLanguage":"ar","description":"مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.","potentialAction":{"@type":"SearchAction","target":"https://younanoo.github.io/TSK/search.html?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<meta name="twitter:image" content="https://tsk-tan-pi.vercel.app/assets/og/site.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"جدد وعتقاء","alternateName":"جدد وعتقاء — كنوز الكتاب المقدس","url":"https://tsk-tan-pi.vercel.app/","inLanguage":"ar","description":"مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من «كنز معرفة الكتاب المقدس» (TSK)، مع نص فاندايك وكتاب الحياة وKJV مرتبطة بأرقام سترونج، وقواميس سترونج وBDB وأبوت-سميث بالعربية، والعرض بين السطور، وخرائط الأماكن، والقراءة الزمنية، والخرائط الذهنية.","potentialAction":{"@type":"SearchAction","target":"https://tsk-tan-pi.vercel.app/search.html?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
 <!--/seo-->
 </head>
 <body class="h">
@@ -496,7 +496,7 @@ body.h{background:var(--bg)}
       <p class="h-sub">كل آية في الكتاب المقدس معها شواهدها: الآيات التي تشرحها وتكملها، من أول التكوين إلى آخر الرؤيا.</p>
       <form class="h-go" id="hGo" role="search">
         <input id="hGoIn" placeholder="ابحث أو اذهب لآية" aria-label="ابحث أو اذهب لآية" autocomplete="off">
-        <button type="submit"><svg class="ic"><use href="#i-search"/></svg> اذهب</button>
+        <button type="submit"><svg class="ic"><use href="#i-search"/></svg> ابحث</button>
       </form>
       <div class="h-hint">جرّب:
         <button type="button" class="h-chip" data-q="يو ٣: ١٦">يو ٣: ١٦</button>
@@ -523,7 +523,6 @@ body.h{background:var(--bg)}
   <div class="h-wrap">
     <p class="h-kick">آية اليوم وشواهدها</p>
     <h2 class="h-h2">في كل يوم آية… ومعها الكتاب كله</h2>
-    <p class="h-lead">لكل يوم آية، ومعها أهم الشواهد المرتبطة بكلماتها.</p>
     <div class="h-votd">
       <div class="h-vmain" id="vMain"><div class="h-skel"></div></div>
       <div class="h-vrefs" id="vRefs"><div class="h-skel"></div><div class="h-skel"></div></div>
@@ -544,7 +543,7 @@ body.h{background:var(--bg)}
         <button class="h-step" role="tab" aria-selected="false" aria-controls="p3" id="t3" tabindex="-1"><span><b>اضغط على الكلمة</b><span>يظهر أصلها ومعناها بالعربية</span></span></button>
       </div>
       <div class="h-demo">
-        <div class="h-dbar"><i></i><i></i><i></i><span id="dUrl">Joh.html#/Joh/ch/3</span></div>
+        <div class="h-dbar"><i></i><i></i><i></i><span id="dUrl">يوحنا ٣</span></div>
         <div class="h-dbody" id="dBody"></div>
       </div>
     </div>
@@ -761,13 +760,13 @@ function svHTML(){return EX.seg.map(([w,ns])=>ns.length&&EX.st[ns[0]]?`<button t
 function wordHTML(k){const e=EX.st[k];if(!e)return"";return `<div class="h-word"><div class="gk">${esc(e.o)}<small>${esc(e.tr)}</small></div><div><span class="num">${k}</span><p>${esc(e.ar)}</p><p style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"><a class="h-btn out" style="font-size:13px;padding:6px 12px" href="search.html#tab=strong&q=${k}" target="_blank">افتح ${k} في القاموس</a><button class="h-btn acc" style="font-size:13px;padding:6px 12px" type="button" data-askai data-num="${k}" data-o="${esc(e.o)}" data-tr="${esc(e.tr)}" data-ref="يوحنا ٣: ١٦" data-words="${esc((EX.seg.find(x=>x[1][0]===k)||[""])[0])}">${ic("sparkles")} اسأل Google AI</button></p></div></div>`}
 function demoSeg(seg,max){let out="",c=0;for(const [w,ns] of seg){if(c>=max)break;out+=ns.length?`<s>${esc(w)}</s><sub>${ns[0]}</sub>`:esc(w);if(/\S/.test(w))c++}return out+" …"}
 const PANELS=[
- ["Joh.html#/Joh/ch/3",()=>`<h3>افتح الأصحاح</h3><p>اكتب الشاهد في خانة البحث بأي صيغة، أو اختر السفر والأصحاح من القائمة. يفتح الأصحاح على وضع «قراءة»: النص وحده، بلا زحمة.</p>
+ ["يوحنا ٣",()=>`<h3>افتح الأصحاح</h3><p>اكتب الشاهد في خانة البحث بأي صيغة، أو اختر السفر والأصحاح من القائمة. يفتح الأصحاح على وضع «قراءة»: النص وحده، بلا زحمة.</p>
    <div class="h-fake-in">يو ٣: ١٦<span class="cur"></span></div>
    <div class="h-tags"><code>يو ٣: ١٦</code><code>يوحنا ٣ ١٦</code><code>Joh 3:16</code><code>مز ٢٣</code></div>
    <div class="h-ver h-read"><sup>١٥</sup>لكي لا يهلك كل من يؤمن به بل تكون له الحياة الأبدية. <sup class="hl">١٦</sup>${esc(EX.text)} <sup>١٧</sup>…</div>`],
- ["Joh.html#/Joh/ch/3",()=>`<h3>اضغط على رقم العدد</h3><p>اضغط على رقم العدد فتظهر لوحة فيها شواهده: الآيات المرتبطة بكل كلمة في الآية، من كل الكتاب. لهذه الآية وحدها ${N(EX.nrefs)} شاهدًا. جرّب الضغط على الكلمات المظللة:</p>
+ ["يوحنا ٣ ← شواهد العدد ١٦",()=>`<h3>اضغط على رقم العدد</h3><p>اضغط على رقم العدد فتظهر لوحة فيها شواهده: الآيات المرتبطة بكل كلمة في الآية، من كل الكتاب. لهذه الآية وحدها ${N(EX.nrefs)} شاهدًا. جرّب الضغط على الكلمات المظللة:</p>
    <div class="h-ver" id="exVer"><sup class="hl">١٦</sup>${verseMarked()}</div><div id="exRefs">${refsHTML(0)}</div>`],
- ["search.html#tab=strong&q=G25",()=>`<h3>اضغط على الكلمة</h3><p>اضغط على أي كلمة في النص فيظهر أصلها العبري أو اليوناني ونطقها ومعناها بالعربية من قاموس سترونج. جرّب هنا:</p>
+ ["يوحنا ٣: ١٦ ← معنى «أحب»",()=>`<h3>اضغط على الكلمة</h3><p>اضغط على أي كلمة في النص فيظهر أصلها العبري أو اليوناني ونطقها ومعناها بالعربية من قاموس سترونج. جرّب هنا:</p>
    <div class="h-sv" id="exSv">${svHTML()}</div><div id="exWord">${wordHTML("G25")}</div>`]
 ];
 const tabs=[...document.querySelectorAll(".h-step")],body=document.getElementById("dBody"),url=document.getElementById("dUrl");
@@ -830,7 +829,7 @@ function guide(){
   let intro="",steps=[],note="";
   if(location.protocol==="file:"){
     intro="لا يعمل التثبيت والموقع مفتوح كملف من الجهاز. افتح الموقع من الإنترنت أولًا:";
-    steps=[`افتح <b>younanoo.github.io/TSK</b> في المتصفح`,`اضغط على زر ${kb("تنزيل التطبيق")} مرة أخرى`];
+    steps=[`افتح <b>tsk-tan-pi.vercel.app</b> في المتصفح`,`اضغط على زر ${kb("تنزيل التطبيق")} مرة أخرى`];
   }else if(iOS){
     intro="على الآيفون والآيباد يتم التثبيت من قائمة المشاركة:";
     steps=[`اضغط على زر المشاركة ${kb(SHARE)} ${/CriOS|EdgiOS/.test(ua)?"الموجود في شريط العنوان بالأعلى":"الموجود بالأسفل في Safari"}`,
@@ -886,7 +885,7 @@ dd.querySelectorAll("[data-om]").forEach(b=>b.addEventListener("click",()=>{dd.c
   const top=$(".h-top .h-wrap"), theme=$("#hTheme");
   const menuBtn=el("button",{class:"uxh-menu",type:"button","aria-label":"القائمة","aria-haspopup":"dialog","aria-expanded":"false"},
     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>`);
-  top.append(menuBtn);
+  top.prepend(menuBtn);  /* ☰ في أول الشريط (يمين) زي صفحات الأسفار والأدوات */
   /* القائمة نفسها هي القائمة الموحّدة لكل الصفحات (assets/sitemenu.js)، ونضيف لها أقسام الصفحة الرئيسية */
   const sections=$$(".h-nav a").map(a=>`<a href="${a.getAttribute("href")}">${a.textContent}</a>`).join("");
   window.TSK_MENU_EXTRA={title:"أقسام الصفحة الرئيسية",html:`<div class="uxh-links">${sections}</div>`};

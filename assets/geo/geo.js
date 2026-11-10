@@ -56,6 +56,11 @@
   /* ---------- CSS ---------- */
   document.head.appendChild(Object.assign(document.createElement("style"), {textContent: `
   .geo-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;margin:14px 0}
+  .geo-mini{border-radius:12px;box-shadow:none;margin:10px 0}
+  .geo-tog{display:flex;align-items:center;gap:6px;width:100%;min-height:52px;padding:4px 12px;border:0;background:none;cursor:pointer;font:600 14px var(--ui);color:var(--gold);text-align:start}
+  .geo-tog svg{width:18px;height:18px;flex:none}
+  .geo-tog .geo-hint{margin-inline-start:auto;font:500 13px var(--ui);color:var(--muted)}
+  .geo-tog:focus-visible,.geo-btn:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:12px}
   .geo-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
   .geo-hd b{font:700 16px var(--display);color:var(--heading);display:flex;align-items:center;gap:6px}
   .geo-hd b svg{width:18px;height:18px;color:var(--gold)}
@@ -165,22 +170,36 @@
   }
 
   /* ---------- بطاقة خريطة الأصحاح ---------- */
-  function chapterCard(main, c){
+  /* الخريطة مقفولة افتراضيًا (سطر واحد) عشان النص يظهر من أول الشاشة؛ الموقع يفتكر اختيار القارئ */
+  const mapOpen = () => sget("geoMapOpen", false) === true;
+  let focusAfter = null;
+  const shownOf = E => { const P = D().places, ids = Object.keys(E.pl), outer = ids.filter(id => !P[id].inner); return outer.length ? outer : ids; };
+  function miniCard(main, c){
     const E = chOf(c); if (!E || main.querySelector(".geo-card")) return;
     const anchor = main.querySelector(".cvlist") || main.querySelector(".ilist"); if (!anchor) return;
+    const k = shownOf(E).length;
+    const card = document.createElement("section"); card.className = "geo-card geo-mini";
+    card.innerHTML = `<button type="button" class="geo-tog" data-geomap="1" aria-expanded="false">${MAPIC}<span class="geo-tt">خريطة الأصحاح</span><span class="geo-hint">${k === 1 ? "مكان واحد" : k === 2 ? "مكانان" : AN(k) + (k <= 10 ? " أماكن" : " مكانًا")} · اضغط للعرض</span></button>`;
+    anchor.parentNode.insertBefore(card, anchor);
+    if (focusAfter === "mini") { focusAfter = null; card.querySelector(".geo-tog").focus({preventScroll: true}); }
+  }
+  function chapterCard(main, c){
+    const E = chOf(c); if (!E || main.querySelector(".geo-card:not(.geo-mini)")) return;
+    const anchor = main.querySelector(".cvlist") || main.querySelector(".ilist"); if (!anchor) return;
     const P = D().places, ids = Object.keys(E.pl);
-    const outer = ids.filter(id => !P[id].inner);
-    const shown = outer.length ? outer : ids;            // أبواب/أروقة داخل المدينة تظهر فقط إن لم يوجد غيرها
+    const shown = shownOf(E);                            // أبواب/أروقة داخل المدينة تظهر فقط إن لم يوجد غيرها
     const route = E.route || [], hasRoute = route.length > 1;
     const hasPoly = shown.some(id => P[id].poly);
     const hasMn = shown.some(id => !P[id].poly && !route.includes(id));
     const card = document.createElement("section");
     card.className = "geo-card";
     card.innerHTML = `<div class="geo-hd"><b>${MAPIC}<span>خريطة الأصحاح${hasRoute ? `<small>${esc(E.rt)}</small>` : ""}</span></b>
-        <div class="geo-btns">${hasRoute ? `<button class="geo-btn on" data-fit="trip">الرحلة</button><button class="geo-btn" data-fit="all">كل الأماكن</button>` : ""}${swHTML(true, "الخرائط")}</div></div>
+        <div class="geo-btns">${hasRoute ? `<button class="geo-btn on" data-fit="trip">الرحلة</button><button class="geo-btn" data-fit="all">كل الأماكن</button>` : ""}<button type="button" class="geo-btn" data-geomap="0" aria-expanded="true">إخفاء الخريطة</button></div></div>
       <div class="geo-map" dir="ltr" role="region" aria-label="خريطة أماكن الأصحاح"></div>
       <div class="geo-leg">${hasRoute ? '<span><i class="lg-st"></i>محطة في الرحلة</span>' : ""}${hasMn ? `<span><i class="lg-mn"></i>${hasRoute ? "مكان آخر مذكور في الأصحاح" : "مكان مذكور في الأصحاح"}</span>` : ""}${hasPoly ? '<span><i class="lg-rg"></i>إقليم أو جزيرة أو بحر</span>' : ""}${hasRoute ? '<span><i class="lg-rt"></i>مسار الرحلة (تقريبي)</span>' : ""}</div>`;
+    main.querySelectorAll(".geo-mini").forEach(x => x.remove());
     anchor.parentNode.insertBefore(card, anchor);
+    if (focusAfter === "full") { focusAfter = null; card.querySelector("[data-geomap]").focus({preventScroll: true}); }
     const el = card.querySelector(".geo-map");
     const map = L.map(el, {zoomControl: false, scrollWheelZoom: false});
     L.control.zoom({position: "topright"}).addTo(map);
@@ -386,9 +405,16 @@
     sset("geo", on);
     if (!on) { closePlace(); strip(); }
     else { const main = document.getElementById("main"); main && main.querySelectorAll(".geo-offbar").forEach(x => x.remove()); }
-    document.querySelectorAll("#geoAaSw").forEach(b => b.textContent = on ? "إيقاف" : "تشغيل");
+    document.querySelectorAll("#geoAaSw").forEach(b => b.setAttribute("aria-checked", on));
     schedule();
   }
+  document.addEventListener("click", e => {
+    const t = e.target.closest && e.target.closest("[data-geomap]"); if (!t) return;
+    const open = t.dataset.geomap === "1", main = document.getElementById("main"); sset("geoMapOpen", open);
+    if (open) { t.querySelector(".geo-hint") && (t.querySelector(".geo-hint").textContent = "جارٍ تحميل الخريطة…"); t.setAttribute("aria-busy", "true"); focusAfter = "full"; }
+    else { focusAfter = "mini"; main && main.querySelectorAll(".geo-card").forEach(x => x.remove()); }
+    schedule();
+  });
   document.addEventListener("click", e => {
     const b = e.target.closest && e.target.closest("[data-geosw]"); if (!b) return;
     e.preventDefault(); setOn(!isOn());
@@ -399,7 +425,9 @@
     if (!t || t.textContent.trim() !== "إعدادات العرض" || document.getElementById("geoAaSw")) return;
     const body = t.closest(".shd") && t.closest(".shd").parentNode.querySelector(".sbd"); if (!body) return;
     const sec = document.createElement("div"); sec.className = "uxt-sec";
-    sec.innerHTML = `<h4>الخرائط</h4><div class="uxt-row"><span>خرائط الأماكن وتمييزها في النص</span><button class="uxt-sw" id="geoAaSw" type="button">${isOn() ? "إيقاف" : "تشغيل"}</button></div>`;
+    /* مفتاح زي باقي مفاتيح ⚙؛ اسمه حسب اللي بيعمله فعلًا: في «قراءة» وصفحة العدد مفيش خريطة، تمييز الأسماء بس */
+    const study = !!document.querySelector("#main .cvlist.umode-study");
+    sec.innerHTML = `<h4>الأماكن</h4><button type="button" class="usw" id="geoAaSw" role="switch" aria-checked="${isOn()}"><span>${study ? "الخرائط وتمييز الأماكن" : "تمييز أسماء الأماكن"}</span><i aria-hidden="true"></i></button>`;
     body.append(sec);
     sec.querySelector("#geoAaSw").addEventListener("click", () => setOn(!isOn()));
   }).observe(document.body, {childList: true, subtree: true});
@@ -428,8 +456,11 @@
     const main = document.getElementById("main"); if (!main) return;
     dataReady(() => {
       if (!chOf(w.c)) return;
-      if (!isOn()) { if (w.view === "chapter") offBar(main); return; }
-      if (w.view === "chapter") { markChapter(main, w.c); whenNear(main, () => { const w2 = where(); if (w2.view !== "chapter" || w2.c !== w.c) return; mapReady(() => { if (isOn()) chapterCard(main, w.c); }); }); }
+      /* وضع «قراءة»: النص وحده، فلا بطاقة خريطة ولا زر إظهارها (حتى لو القارئ جاي من وضع «دراسة») */
+      const reading = () => !!main.querySelector(".cvlist.umode-read");
+      if (w.view === "chapter" && reading()) main.querySelectorAll(".geo-card,.geo-offbar").forEach(x => x.remove());
+      if (!isOn()) { if (w.view === "chapter" && !reading()) offBar(main); return; }
+      if (w.view === "chapter") { markChapter(main, w.c); if (!reading() && !mapOpen()) miniCard(main, w.c); else if (!reading()) whenNear(main, () => { const w2 = where(); if (w2.view !== "chapter" || w2.c !== w.c || reading()) return; mapReady(() => { if (isOn() && !reading() && mapOpen()) chapterCard(main, w.c); }); }); }
       else markVerse(main, w.c, w.v);
     });
   }

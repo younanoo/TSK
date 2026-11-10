@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /TSK/_tools/
+Disallow: /_tools/
 
-Sitemap: https://younanoo.github.io/TSK/sitemap.xml
+Sitemap: https://tsk-tan-pi.vercel.app/sitemap.xml
