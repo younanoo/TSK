@@ -19,9 +19,9 @@ jobs:
     timeout-minutes: 10
 
     env:
-      SERVER_HOST: ${{ vars.SERVER_HOST }}   # 162.35.41.191
-      SERVER_USER: ${{ vars.SERVER_USER }}   # deploy
-      SERVER_PORT: ${{ vars.SERVER_PORT || '22' }}
+      SERVER_HOST: ${{ vars.SERVER_HOST || secrets.SERVER_HOST }}   # 162.35.41.191
+      SERVER_USER: ${{ vars.SERVER_USER || secrets.SERVER_USER }}   # deploy
+      SERVER_PORT: ${{ vars.SERVER_PORT || secrets.SERVER_PORT || '22' }}
       SITE_DIR: /var/www/godod
 
     steps:
