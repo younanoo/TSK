@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /_tools/
 
-Sitemap: https://tsk-tan-pi.vercel.app/sitemap.xml
+Sitemap: https://godod.app/sitemap.xml
