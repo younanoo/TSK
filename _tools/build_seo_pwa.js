@@ -52,7 +52,7 @@ const LIBTAG = c => splitOn(c) ? `<script src="assets/lib/${c.abbr}/index.js?v=$
 
 /* ---------- per-page meta ---------- */
 const TOOLS = {
-  "index.html":   { title: `${SITE} — ${TAGLINE}`, desc: M.SITE_META_DESC, sitemap: 1 },
+  "index.html":   { title: `${SITE} — دراسة الكتاب المقدس بالشواهد`, desc: M.SITE_META_DESC, sitemap: 1 },
   "search.html":  { title: "البحث في الكتاب المقدس — جدد وعتقاء", desc: "ابحث في الكتاب المقدس من خانة واحدة: بكلمة أو عبارة في فاندايك وكتاب الحياة وKJV، أو بالجذر العربي وأصله العبري واليوناني، أو برقم سترونج، أو بحسب القواعد النحوية في اللغات الأصلية.", sitemap: 1 },
   "features.html":{ title: "إمكانيات الموقع — جدد وعتقاء", desc: "كل أدوات «جدد وعتقاء» لدراسة الكتاب المقدس بالعربية: الشواهد المتقاطعة، وقاموس سترونج وBDB وأبوت-سميث بالعربية، والبحث، والخرائط، والعرض في الخدمة، والقراءة الزمنية، والأسئلة الشائعة.", sitemap: 1 },
   "topics.html":  { desc: "فهرس مواضيع الكتاب المقدس بالعربية: أكثر من ٤٦ ألف موضوع من فهارس Nave وTorrey، لكل موضوع مواضعه في الأسفار ونصوصها.", sitemap: 1 },
@@ -124,9 +124,11 @@ function bookPre(c, LIB) {
     `<nav class="pre-ch" aria-label="الأصحاحات">${chs.map(ch => `<a href="#/${c.abbr}/ch/${ch}">${n(ch)}</a>`).join("")}</nav>${body}` +
     `<p class="pre-src">نص الآيات من ترجمة فاندايك، والشواهد من «كنز معرفة الكتاب المقدس» (TSK).</p></article>`;
 }
-const indexPre = () => `<article class="pre"><h1>${SITE} — ${TAGLINE}</h1><p class="pre-desc">${esc(M.SITE_DESC)}</p>` +
-  `<nav class="pre-books">${groupedLinks()}</nav>` +
-  `<p><a href="search.html">البحث في الكتاب المقدس</a> · <a href="topics.html">فهرس المواضيع</a></p></article>`;
+/* الرئيسية: روابط الأسفار الـ٦٦ مكتوبة في HTML داخل #hBooks بنفس شكل ما يرسمه الجافاسكريبت (index.html يعيد رسمها عند التحميل).
+   أسماء المجموعات هنا لازم تطابق BG في index.html. */
+const HOME_BG = [["التوراة",1,5],["الأسفار التاريخية",6,17],["الشعر والحكمة",18,22],["الأنبياء الكبار",23,27],["الأنبياء الصغار",28,39],["الأناجيل وأعمال الرسل",40,44],["رسائل بولس",45,57],["الرسائل العامة",58,65],["الرؤيا",66,66]];
+const homeBooksPre = () => HOME_BG.map(([t, a, z]) => { const bs = CAT.filter(c => c.id >= a && c.id <= z);
+  return `<details class="h-bg"><summary><span>${t}</span><b>${n(bs.length)}</b></summary><div class="bl">${bs.map(bookLink).join("")}</div></details>`; }).join("");
 
 /* ---------- pages ---------- */
 const htmlFiles = fs.readdirSync(ROOT).filter(f => f.endsWith(".html") && !["404.html", "offline.html"].includes(f) && !/(_test\.html|^test_)/i.test(f));
@@ -159,7 +161,7 @@ for (const f of htmlFiles) {
     if (f === "index.html") {
       o.ld = { "@context": "https://schema.org", "@type": "WebSite", name: SITE, alternateName: `${SITE} — ${TAGLINE}`, url: BASE, inLanguage: "ar",
         description: M.SITE_DESC, potentialAction: { "@type": "SearchAction", target: BASE + "search.html?q={search_term_string}", "query-input": "required name=search_term_string" } };
-      h = setInner(h, '<main id="main">', indexPre());
+      h = setInner(h, '<div class="h-bp" id="hBooks">', homeBooksPre());
       h = setInner(h, '<div class="booksel" id="booksel">', SIDEBAR);
     }
     h = applyHead(h, o);
