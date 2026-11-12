@@ -43,7 +43,7 @@
       sec("الكتاب المقدس عبر الزمن",TIME.map(link).join(""))+
       sec("ادرس",STUDY.map(link).join(""))+
       sec("اخدم",SERVE.map(link).join(""))+
-      '<div class="ufoot"><a href="features.html">كل الأدوات</a><a href="sources.html">المصادر</a><a href="contact.html">تواصل معنا</a><a href="https://www.youtube.com/playlist?list=PLXQIsyACqP-c" target="_blank" rel="noopener">شروحات الفيديو</a><button type="button" class="sm-off">'+ic("download")+' التنزيل دون إنترنت</button></div>'+
+      '<div class="ufoot"><a href="features.html">كل الأدوات</a><a href="sources.html">المصادر</a><a href="contact.html">تواصل معنا</a><a class="uvid" href="https://www.youtube.com/playlist?list=PLXQIsyACqP-c" target="_blank" rel="noopener">'+(window.TSK_VIC||"")+' شروحات الفيديو</a><button type="button" class="sm-off">'+ic("download")+' التنزيل دون إنترنت</button></div>'+
       (extra&&extra.title?'<div class="side-sec sm-extra"><h4>'+extra.title+'</h4>'+extra.html+'</div>':"");
     document.body.appendChild(scrim); document.body.appendChild(panel);
     scrim.addEventListener("click",close);

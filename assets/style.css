@@ -1447,6 +1447,7 @@ html.pres-on{overflow:hidden}
 .ufoot a:hover,.ufoot button:hover,.ufoot a:focus-visible,.ufoot button:focus-visible{border-color:var(--gold);color:var(--heading);outline:none}
 .ufoot button{grid-column:1/-1;border-color:var(--gold);color:var(--heading);min-height:44px}
 .ufoot button .tic{width:17px;height:17px}
+.ufoot a.uvid{grid-column:1/-1;gap:9px;color:var(--heading)}.ufoot .vic{width:24px;height:17px;flex:none}
 @media print{.umodes,.utools,.userve,.umore,.utip{display:none!important}}
 
 /* ===== صفحة العدد: الشريط الموحّد، الآية، التبويبات ===== */
