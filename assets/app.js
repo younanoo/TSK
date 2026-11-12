@@ -90,7 +90,7 @@ try{const _t=new URLSearchParams(location.search).get("tr");if(["alab","svd","kj
 })();
 
 const first = LIB[0];
-if(store.get("b",null)!==first.id){store.set("b",first.id);store.set("c",first.verses[0].c);store.set("v",first.verses[0].v);}
+if(store.get("b",null)!==first.id){store.set("b",first.id);store.set("c",first.verses[0].c);store.set("v",first.verses[0].v);store.set("vt",null);}
 const S = {
   b: store.get("b",first.id), c: store.get("c",first.verses[0].c), v: store.get("v",first.verses[0].v),
   view:"home", done: store.get("done",{}), stars: store.get("stars",{}), notes: store.get("notes",{}),
@@ -648,7 +648,7 @@ function _render(){
 }
 
 /* ---------- navigation ---------- */
-function save(){store.set("b",S.b);store.set("c",S.c);store.set("v",S.v)}
+function save(){const b=BY[S.b];let v=S.v;if(b&&b.idx[S.c+":"+v]==null){const d=b.verses.find(x=>x.c===S.c);if(d)v=d.v}store.set("b",S.b);store.set("c",S.c);store.set("v",v);/* نص العدد لكارت «تابع من حيث توقفت» في الرئيسية */try{const d=b&&b.verses[b.idx[S.c+":"+v]];if(d)store.set("vt",String(trText(d)||d.text||"").slice(0,160))}catch(e){}}
 function go(b,c,v,push=true){
   S.b=b;S.c=c;S.v=v;S.view="verse";save();
   if(push) history.pushState(null,"",`#/${BY[b].abbr}/${c}:${v}`);
@@ -665,8 +665,8 @@ function parseGo(s){const m=s.match(/^(\d+)\.(\d+):(\d+)$/);return m?[+m[1],+m[2
 function fromHash(){
   const h=decodeURIComponent(location.hash.slice(1));
   let m=h.match(/^\/([1-3]?[A-Za-z]{2,3})\/(\d+):(\d+)(?:\/([GH]\d+))?$/); S.sn=m&&m[4]?{num:m[4],k:m[1]+"/"+m[2]+":"+m[3]}:null; /* #/Isa/11:1/H5342 = العدد مع فتح الرقم في القاموس (رابط «عرض المزيد» في نافذة سترونج) */
-  if(m&&BY_ABBR[m[1]]&&BY_ABBR[m[1]].idx[m[2]+":"+m[3]]!=null){const b=BY_ABBR[m[1]];S.b=b.id;S.c=+m[2];S.v=+m[3];S.view="verse";}
-  else if((m=h.match(/^\/([1-3]?[A-Za-z]{2,3})\/ch\/(\d+)$/))&&BY_ABBR[m[1]]&&BY_ABBR[m[1]].chapters.includes(+m[2])){S.b=BY_ABBR[m[1]].id;S.c=+m[2];S.view="chapter";}
+  if(m&&BY_ABBR[m[1]]&&BY_ABBR[m[1]].idx[m[2]+":"+m[3]]!=null){const b=BY_ABBR[m[1]];S.b=b.id;S.c=+m[2];S.v=+m[3];S.view="verse";save();}
+  else if((m=h.match(/^\/([1-3]?[A-Za-z]{2,3})\/ch\/(\d+)$/))&&BY_ABBR[m[1]]&&BY_ABBR[m[1]].chapters.includes(+m[2])){S.b=BY_ABBR[m[1]].id;S.c=+m[2];S.view="chapter";save();}
   else if((m=h.match(/^\/([1-3]?[A-Za-z]{2,3})$/))&&BY_ABBR[m[1]]){S.b=BY_ABBR[m[1]].id;S.view="book";}
   else S.view="book";
   render();

@@ -503,7 +503,7 @@ paintTheme();
 const lbId=get("b",null);
 if(lbId!=null&&BYID[lbId]&&document.getElementById("hResume")){const lb=BYID[lbId],lc=get("c",1),lv=get("v",1),r=document.getElementById("hResume");
   r.href=vlink(lb.abbr,lc,lv);document.getElementById("hResRef").textContent=`${AR[lb.abbr]} ${n(lc)}: ${n(lv)}`;
-  document.getElementById("hResTxt").textContent=lb.first||"";r.classList.add("on");}
+  document.getElementById("hResTxt").textContent=get("vt",null)||(lc==1&&lv==1?lb.first:"")||"";r.classList.add("on");}
 
 /* ---------- مربع الانتقال/البحث ---------- */
 const nz=x=>String(x).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[ً-ْ\s.]/g,"").toLowerCase();
