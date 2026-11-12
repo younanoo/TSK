@@ -88,6 +88,7 @@ list:[
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add);else add();
 })();
 /* foot:end */
+
 
 /* sw:start — حفظ الموقع للعمل دون إنترنت (assets/../sw.js) */
 (function(){
