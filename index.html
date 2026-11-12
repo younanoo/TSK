@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=a591cb36">
+<link rel="stylesheet" href="assets/style.css?v=857cad81">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -266,6 +266,7 @@ body.h{background:var(--bg)}
 .h-ver sup.hl{background:var(--gold);color:var(--on-gold,#fff);border-radius:6px;padding:1px 6px;box-shadow:0 0 0 3px var(--gold-soft)}
 
 </style>
+
 <!--seo-->
 <meta name="description" content="مكتبة عربية مجانية لدراسة الكتاب المقدس بالشواهد: أكثر من ٣٨٠ ألف شاهد من TSK مع فاندايك وأرقام سترونج والقواميس والخرائط. ابدأ دراسة أي آية الآن.">
 <link rel="canonical" href="https://godod.app/">
@@ -410,7 +411,7 @@ body.h{background:var(--bg)}
       <a class="h-feat" href="search.html#tab=strong&amp;q=G25">
         <span class="fi"><svg class="ic"><use href="#i-lang"/></svg></span>
         <h3>معنى الكلمة الأصلي</h3>
-        <p>قاموس سترونج بالعربية لأول مرة: الكلمة العبرية أو اليونانية ونطقها ومعناها، ومعه قاموسا BDB وأبوت-سميث.</p>
+        <p>قاموس سترونج بالعربية لأول مرة (ترجمة آلية بالذكاء الاصطناعي): الكلمة العبرية أو اليونانية ونطقها ومعناها، ومعه قاموسا BDB وأبوت-سميث.</p>
         <span class="go">جرّب «أحب» (G25)</span>
       </a>
       <a class="h-feat gold" href="mindmap.html#Joh/3:16/g0">
@@ -446,7 +447,8 @@ body.h{background:var(--bg)}
     <div>
       <p><b style="color:var(--heading)">جدد وعتقاء</b>: مشروع غير ربحي لخدمة القارئ العربي في دراسة الكتاب المقدس.</p>
       <p>نص «كتاب الحياة» مستخدم بإذن من Biblica, Inc.® لأغراض غير ربحية. التفاصيل الكاملة في <a href="sources.html">المصادر والمراجع</a>.</p>
-      <p>© ٢٠٢٦ <b style="color:var(--heading)">سامح يونان انطون</b> (Sameh Younan Anton) — تصميم الموقع وتطويره. التصميم والبرمجة: جميع الحقوق محفوظة. الترجمات العربية للقواميس والملاحظات: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" target="_blank" rel="noopener license">CC BY-NC-SA 4.0</a>.</p>
+      <p>© ٢٠٢٦ <b style="color:var(--heading)">سامح يونان انطون</b> (Sameh Younan Anton) — تصميم الموقع وتطويره. التصميم والبرمجة: جميع الحقوق محفوظة.</p>
+      <p>الترجمات العربية للقواميس والملاحظات: ترجمة آلية بالذكاء الاصطناعي لم تُراجَع مراجعة كاملة (<a href="sources.html#ai">التفاصيل</a>)، وهي منشورة بترخيص <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" target="_blank" rel="noopener license">CC BY-NC-SA 4.0</a>.</p>
       <p>لاحظت خطأً أو عندك اقتراح؟ <a href="contact.html">تواصل معنا</a>.</p>
     </div>
     <nav aria-label="روابط">
@@ -584,7 +586,7 @@ const EX={"text":"لأنه هكذا أحب الله العالم حتى بذل �
 function verseMarked(){let t=esc(EX.text);EX.groups.forEach(([k],i)=>{const e=esc(k);if(e&&t.includes(e))t=t.replace(e,`<mark data-g="${i}">${e}</mark>`)});return t}
 function refsHTML(i){const [kw,rs,all]=EX.groups[i];return `<div class="h-grp" style="margin-top:14px"><h4><span>${esc(kw)}</span><small>${N(all)} ${all>10||all<3?"شاهدًا":"شواهد"}</small></h4>${rs.map(([rb,rc,rv,re,rt])=>`<div class="h-r"><a href="${vlink(rb,rc,rv)}">${lbl(rb,rc,rv,re)}</a><p>${esc(rt)}${re?" …":""}</p></div>`).join("")}</div>`}
 function svHTML(){return EX.seg.map(([w,ns])=>ns.length&&EX.st[ns[0]]?`<button type="button" data-n="${ns[0]}" aria-pressed="${ns[0]==="G25"}">${esc(w)}</button>`:esc(w)).join("")}
-function wordHTML(k){const e=EX.st[k];if(!e)return"";return `<div class="h-word"><div class="gk">${esc(e.o)}<small>${esc(e.tr)}</small></div><div><span class="num">${k}</span><p>${esc(e.ar)}</p><p style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"><a class="h-btn out" style="font-size:13px;padding:6px 12px" href="search.html#tab=strong&q=${k}" target="_blank">افتح ${k} في القاموس</a><button class="h-btn acc" style="font-size:13px;padding:6px 12px" type="button" data-askai data-num="${k}" data-o="${esc(e.o)}" data-tr="${esc(e.tr)}" data-ref="يوحنا ٣: ١٦" data-words="${esc((EX.seg.find(x=>x[1][0]===k)||[""])[0])}">${ic("sparkles")} اسأل Google AI</button></p></div></div>`}
+function wordHTML(k){const e=EX.st[k];if(!e)return"";return `<div class="h-word"><div class="gk">${esc(e.o)}<small>${esc(e.tr)}</small></div><div><span class="num">${k}</span><p>${esc(e.ar)}</p>${window.TSK_AINOTE_S||""}<p style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px"><a class="h-btn out" style="font-size:13px;padding:6px 12px" href="search.html#tab=strong&q=${k}" target="_blank">افتح ${k} في القاموس</a><button class="h-btn acc" style="font-size:13px;padding:6px 12px" type="button" data-askai data-num="${k}" data-o="${esc(e.o)}" data-tr="${esc(e.tr)}" data-ref="يوحنا ٣: ١٦" data-words="${esc((EX.seg.find(x=>x[1][0]===k)||[""])[0])}">${ic("sparkles")} اسأل Google AI</button></p></div></div>`}
 const PANELS=[
  ["يوحنا ٣",()=>`<h3>افتح الأصحاح</h3><p>اكتب الشاهد في خانة البحث بأي صيغة، أو اختر السفر والأصحاح من القائمة. يفتح الأصحاح على وضع «قراءة»: النص وحده، بلا زحمة.</p>
    <div class="h-fake-in">يو ٣: ١٦<span class="cur"></span></div>

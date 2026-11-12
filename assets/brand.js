@@ -8,6 +8,11 @@
   });
 })();
 
+/* ai-note:start — إفصاح الترجمة الآلية للقواميس: نص واحد تستعمله كل لوحات القواميس (سترونج وBDB وأبوت-سميث والبحث والنافذة الصغيرة) */
+window.TSK_AINOTE='<p class="aino" role="note"><span class="aino-t">ترجمة آلية بالذكاء الاصطناعي</span> لم تُراجَع مراجعة كاملة، والنص الإنجليزي الأصلي متاح للمقارنة. <a href="sources.html#ai" target="_blank" rel="noopener">التفاصيل</a></p>';
+window.TSK_AINOTE_S='<p class="aino s" role="note"><span class="aino-t">ترجمة آلية بالذكاء الاصطناعي</span> · <a href="sources.html#ai" target="_blank" rel="noopener">التفاصيل</a></p>';
+/* ai-note:end */
+
 /* foot:start — سطر حقوق النشر والتواصل أسفل كل صفحة (الصفحة الرئيسية لها تذييلها الخاص) */
 (function(){
   function add(){
@@ -17,7 +22,7 @@
     document.head.appendChild(css);
     var f=document.createElement("footer");f.className="site-foot";
     f.innerHTML='<p>© ٢٠٢٦ سامح يونان انطون (Sameh Younan Anton) — تصميم الموقع وتطويره.<a href="contact.html">تواصل معنا</a>·<a href="sources.html#license">المصادر والتراخيص</a></p>'+
-      '<p><small>التصميم والبرمجة: جميع الحقوق محفوظة. الترجمات العربية للقواميس والملاحظات: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" target="_blank" rel="noopener license" style="margin:0">CC BY-NC-SA 4.0</a>. وتخضع النصوص والبيانات المأخوذة من مصادر أخرى لتراخيصها.</small></p>';
+      '<p><small>التصميم والبرمجة: جميع الحقوق محفوظة.</small></p><p><small>الترجمات العربية للقواميس والملاحظات: ترجمة آلية بالذكاء الاصطناعي لم تُراجَع مراجعة كاملة (<a href="sources.html#ai" style="margin:0">التفاصيل</a>)، وهي منشورة بترخيص <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" target="_blank" rel="noopener license" style="margin:0">CC BY-NC-SA 4.0</a>. وتخضع النصوص والبيانات المأخوذة من مصادر أخرى لتراخيصها.</small></p>';
     document.body.appendChild(f);
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",add);else add();

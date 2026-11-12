@@ -296,6 +296,10 @@ mark{background:var(--mark);color:inherit;border-radius:3px;padding:0 2px}
 .dent .na{font-size:13px;color:var(--muted);font-style:italic}
 .dent .back{margin-top:14px;font-size:13px}
 .dent .back a{color:var(--accent);cursor:pointer;font-weight:600}
+.aino{margin:10px 0 0;padding:7px 12px;border-radius:10px;background:var(--gold-soft);border:1px solid var(--line);color:var(--muted);font:500 12.5px/1.8 var(--ui)}
+.aino .aino-t{color:var(--ink);font-weight:700}
+.aino a{color:var(--accent);font-weight:600;margin-inline-start:4px;white-space:nowrap}
+.aino.s{margin:8px 0 0;padding:4px 10px;font-size:12px}
 @media (max-width:880px){.dent .cols{grid-template-columns:1fr}.dent .col.arc{border:0;padding:0;border-bottom:1px dashed var(--line);padding-bottom:12px}.dent .orig{font-size:28px}}
 
 .booksel a{display:flex;align-items:center;gap:10px;text-decoration:none}

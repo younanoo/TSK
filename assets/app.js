@@ -284,6 +284,7 @@ function dentHTML(num,d=cur()){
       <button type="button" class="stai" data-askai data-num="${num}" data-ref="${d&&d.c?esc(AR[book().abbr]+" "+n(d.c)+": "+n(d.v)):""}" data-words="${esc(ws.join("، "))}" title="اسأل وضع الذكاء الاصطناعي في Google عن هذه الكلمة">${AI_IC} اسأل Google AI</button>
       <a class="rep" href="${repHref(num+(d&&d.c?" — "+AR[book().abbr]+" "+n(d.c)+": "+n(d.v):""),"قاموس سترونج")}" target="tskcontact" title="أبلغ عن خطأ في هذا المدخل أو في رقم سترونج لهذه الكلمة">${REP_IC}<span>أبلغ عن خطأ</span></a>
       ${ws.length?`<span class="inv"><small>في النص:</small>${ws.map(esc).join("، ")}</span>`:""}</div>
+    ${e.ar&&window.TSK_AINOTE||""}
     <div class="cols">
       <div class="col arc"><h5>المعنى بالعربية</h5>${e.ar?(p=>`${p.g?`<p class="sgl">${linkRefs(esc(p.g))}</p>`:""}<div class="tx">${linkRefs(esc(p.rest))}</div>`)(strongParts(e.ar)):`<div class="tx"><span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد (تُترجم حاليًا كلمات أعداد السفر فقط).</span></div>`}</div>
       <div class="col enc"><h5>النص الإنجليزي الأصلي</h5><div class="tx">${linkRefs(e.d)}</div></div>

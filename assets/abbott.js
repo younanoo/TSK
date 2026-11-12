@@ -68,10 +68,10 @@
     const body=e.ar?render(e.ar,true):`<span class="na">ترجمة هذا المدخل غير متاحة بعد.</span>`;
     return `<div class="dent"><div class="hd"><span class="num">${num}</span><span class="orig" lang="grc" dir="ltr">${esc(e.l||"")}</span>${occ}
         <button type="button" class="as-en-t" data-asen>النص الإنجليزي الأصلي</button></div>
-      <div class="as-body ar" dir="rtl">${body}</div>
+      ${e.ar&&window.TSK_AINOTE||""}<div class="as-body ar" dir="rtl">${body}</div>
       <div class="as-en" dir="ltr" hidden>${render(e.en,false)}</div>
       <button type="button" class="as-more" hidden>اقرأ المدخل كاملًا ↓</button>
-      <p class="as-src">† في أول المدخل: الكلمة لا ترد عند كتّاب اليونانية الكلاسيكية · † في آخره: ذُكرت كل مواضعها في العهد الجديد · * : الكلمة لا ترد في السبعينية.<br>المصدر: G. Abbott-Smith, <i>A Manual Greek Lexicon of the New Testament</i> (1922) — ملكية عامة. الترجمة العربية: جدد وعتقاء.</p></div>`;
+      <p class="as-src">† في أول المدخل: الكلمة لا ترد عند كتّاب اليونانية الكلاسيكية · † في آخره: ذُكرت كل مواضعها في العهد الجديد · * : الكلمة لا ترد في السبعينية.<br>المصدر: G. Abbott-Smith, <i>A Manual Greek Lexicon of the New Testament</i> (1922) — ملكية عامة. الترجمة العربية: جدد وعتقاء (ترجمة آلية بالذكاء الاصطناعي).</p></div>`;
   }
   function fit(root){
     (root||document).querySelectorAll(".asbox .as-body:not([data-fit])").forEach(b=>{

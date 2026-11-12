@@ -101,10 +101,10 @@
     return `<div class="dent"><div class="hd"><span class="num">${num}</span>${hw?`<span class="orig he" lang="he" dir="rtl">${hw}</span>`:""}${occ}
         <button type="button" class="bd-en-t" data-bden>النص الإنجليزي الأصلي</button></div>
       ${e.u?`<p class="bd-under">الكلمة <span class="bd-he" lang="he" dir="rtl">${e.u}</span> لا مدخل مستقلًا لها في BDB، بل تُذكر ضمن مادة <span class="bd-he" lang="he" dir="rtl">${hw}</span> التالية.</p>`:""}
-      <div class="bd-body ar" dir="rtl">${body}</div>
+      ${arTxt&&window.TSK_AINOTE||""}<div class="bd-body ar" dir="rtl">${body}</div>
       <div class="bd-en" dir="ltr" hidden>${render(e.en,false)}</div>
       <button type="button" class="bd-more" hidden>اقرأ المدخل كاملًا ↓</button>
-      <p class="bd-src">${MODE==="short"?"نسخة مختصرة: المعاني وأوزان الفعل والشواهد الكتابية · ":""}† : ذُكرت كل مواضع الكلمة في العهد القديم.<br>المصدر: Brown, Driver &amp; Briggs, <i>A Hebrew and English Lexicon of the Old Testament</i> (1906) — ملكية عامة؛ النسخة الرقمية: Open Scriptures Hebrew Bible Project (CC BY 4.0). الترجمة العربية: جدد وعتقاء.</p></div>`;
+      <p class="bd-src">${MODE==="short"?"نسخة مختصرة: المعاني وأوزان الفعل والشواهد الكتابية · ":""}† : ذُكرت كل مواضع الكلمة في العهد القديم.<br>المصدر: Brown, Driver &amp; Briggs, <i>A Hebrew and English Lexicon of the Old Testament</i> (1906) — ملكية عامة؛ النسخة الرقمية: Open Scriptures Hebrew Bible Project (CC BY 4.0). الترجمة العربية: جدد وعتقاء (ترجمة آلية بالذكاء الاصطناعي).</p></div>`;
   }
   function fit(root){
     (root||document).querySelectorAll(".bdbox .bd-body:not([data-fit])").forEach(b=>{

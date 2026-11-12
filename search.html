@@ -4,7 +4,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Serif+Hebrew:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=a591cb36">
+<link rel="stylesheet" href="assets/style.css?v=857cad81">
 <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
 <link rel="icon" href="assets/brand/mark-micro.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/brand/app-icon-square-180.png">
@@ -495,6 +495,7 @@ function arRender(){
   const card=x=>{const e=STRONG[x.n],fs=Object.entries(x.f).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([f,c])=>`${esc(f)} (${n(c)})`).join("، ");
     return `<section class="dict"><div class="dent"><div class="hd"><span class="num">${x.n}</span><span class="orig ${isHeb(x.n)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span><span class="cnt">${n(x.c)} مرة</span></div>
     <p class="meta">تُرجمت إلى: <b>${fs}</b></p>
+    ${e.ar&&window.TSK_AINOTE||""}
     <div class="cols"><div class="col arc"><h5>المعنى بالعربية</h5><div class="tx clamp">${e.ar?link(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد.</span>`}</div></div>
     <div class="col enc"><h5>Strong's Dictionary (English)</h5><div class="tx clamp">${link(e.d)}</div></div></div>
     <button type="button" class="more" data-more>عرض المزيد</button> <a class="open" href="#tab=strong&q=${x.n}">افتح الكلمة وكل الأعداد التي ترد فيها ←</a></div></section>`};
@@ -569,6 +570,7 @@ function stRender(){
   {const nb=[...new Set(cur.map(o=>o.x[0]))].map(b=>"assets/tx/alab_"+b+".js").filter(s=>LD[s]!==1&&LD[s]!==2);
    if(nb.length)needAll(nb,()=>{if(S.num===num&&OUT().querySelector(".stres"))stRender()})}
   const dent=e?`<div class="dent"><div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span><button type="button" class="stai" data-askai data-num="${num}" title="اسأل وضع الذكاء الاصطناعي في Google عن هذه الكلمة" style="margin-inline-start:auto"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"/></svg> اسأل Google AI</button><a class="rep" href="contact.html?t=c&p=${encodeURIComponent(num)}&tr=${encodeURIComponent("قاموس سترونج")}" target="tskcontact" title="أبلغ عن خطأ في هذا المدخل"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg><span>أبلغ عن خطأ</span></a></div>
+    ${e.ar&&window.TSK_AINOTE||""}
     <div class="cols"><div class="col arc"><h5>المعنى بالعربية</h5><div class="tx">${e.ar?link(esc(e.ar)):`<span class="na">الترجمة العربية لهذا المدخل غير متاحة بعد.</span>`}</div></div>
     <div class="col enc"><h5>Strong's Dictionary (English)</h5><div class="tx">${link(e.d)}</div></div></div></div>`
     :`<div class="dent"><div class="hd"><span class="num">${esc(num)}</span></div><p class="na">هذا المدخل غير متاح.</p></div>`;

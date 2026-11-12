@@ -43,6 +43,7 @@
     return `<div class="chs-e">
       <div class="chs-top"><span class="chs-num">${num}</span><span class="chs-orig ${isHe(num)?"he":"gr"}" lang="${isHe(num)?"he":"grc"}" dir="${isHe(num)?"rtl":"ltr"}">${escH(e.o)}</span><span class="chs-tr" dir="ltr"><b>${escH(e.tr)}</b>${e.pr?" · "+escH(e.pr):""}</span></div>
       ${e.ar?(p=>`${p.g?`<p class="chs-gl">${escH(p.g)}</p>`:""}<p class="chs-ar">${escH(p.rest)}</p>`)((window.strongParts||(a=>({g:"",rest:a})))(e.ar)):`<p class="chs-na">الترجمة العربية لهذا المدخل غير متاحة بعد.</p>`}
+      ${e.ar&&window.TSK_AINOTE_S||""}
       ${e.d?`<details class="chs-en"><summary>النص الإنجليزي الأصلي</summary><p dir="ltr">${e.d}</p></details>`:""}
     </div>`;
   }
