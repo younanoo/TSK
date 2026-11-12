@@ -49,3 +49,10 @@ assets/geo_test/
 /Jud/
 /Rev/
 _tools/.stamps.json
+
+# مخرجات Claude (صور وفيديوهات مؤقتة) — ليست جزءًا من الموقع
+Claude outputs/
+
+# Claude working outputs: never publish
+Claude outputs/
+"Claude outputs/" 
