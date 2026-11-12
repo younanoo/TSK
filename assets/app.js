@@ -123,7 +123,7 @@ document.documentElement.style.setProperty("--fs",store.get("fs",1));
 const nz=x=>String(x).replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[\u064B-\u0652\s.]/g,"").toLowerCase();
 /* «يو ٣:١٦» / «إش 53:5» / «Rom 8» → {abbr,c,v} — يستخدمه «اذهب إلى عدد» وخانة «انتقال» في العرض بملء الشاشة والشاشة الخارجية */
 function parseRef(q){
-  const m=String(q).trim().replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).match(/^(.*?)\s*(\d+)?\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
+  const m=String(q).trim().replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).match(/^(.*?)\s*(\d+)\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
   if(!m)return null;
   const name=nz(m[1]!=null?m[1]:m[4]),c=m[2]||m[5]||"1",v=m[3]||"1"; if(!name)return null;
   const c1=CAT.find(x=>[AR[x.abbr],SH[x.abbr],x.abbr,x.en].some(t=>nz(t)===name))||CAT.find(x=>[AR[x.abbr],x.en].some(t=>nz(t).startsWith(name)));

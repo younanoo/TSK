@@ -17,7 +17,7 @@
   /* ---------- اذهب إلى عدد: «يو ٣: ١٦» أو «مز ٢٣» أو كلمة → البحث ---------- */
   var nz=function(x){return String(x).replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).replace(/[أإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[ً-ْ\s.]/g,"").toLowerCase()};
   function parseRef(q){
-    var m=q.trim().replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).match(/^(.*?)\s*(\d+)?\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
+    var m=q.trim().replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d)}).match(/^(.*?)\s*(\d+)\s*[:\s٫.]\s*(\d+)$|^(.*?)\s*(\d+)?$/);
     if(!m) return null;
     var name=nz(m[1]!=null?m[1]:m[4]), c=m[2]||m[5], v=m[3]; if(!name) return null;
     var ab=ABBR.find(function(a){return [AR[a],SH[a],a].some(function(t){return nz(t)===name})})||((c||v)&&ABBR.find(function(a){return nz(AR[a]).indexOf(name)===0}));

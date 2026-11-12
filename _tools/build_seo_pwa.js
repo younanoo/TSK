@@ -350,7 +350,7 @@ write("assets/brand.js", bj);
 
 /* backups, raw sources, tests and the 11 legacy per-book folders (pre-flattening) are not part of the published site */
 const SKIP_DIR = new Set(["_tools", ".git", "node_modules", ".vscode", "backup", "Bibles", "geo_test",
-  "1Jo", "1Pe", "1Th", "2Jo", "2Pe", "3Jo", "Col", "Heb", "Jam", "Jud", "Rev"]);
+  "1Jo", "1Pe", "1Th", "2Jo", "2Pe", "3Jo", "Col", "Heb", "Jam", "Jud", "Rev", "Claude outputs"]);
 const SKIP_FILE = p => /(^|\/)([^/]*_test\.html|test_[^/]*)$|\.bak$/i.test(p) || p === "assets/mm_data.js";
 const OK_EXT = /\.(html|js|css|svg|png|jpe?g|webp|ico|webmanifest|woff2?)$/i;
 /* the published files, listed once (names only — reading a folder is fast; asking each file for its size/date is what is slow) */
