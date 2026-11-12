@@ -140,7 +140,7 @@ function sideTools(){
   const after=sec("timeSec","time","الكتاب المقدس عبر الزمن",L("chrono.html","calendar","اقرأ الكتاب المقدس بالترتيب الزمني")+L("timeline.html","timeline","أحداث الكتاب على الخط الزمني"))
     +sec("toolSec","study","ادرس",L("search.html","search","ابحث بكلمة أو جذر أو رقم سترونج",' id="srchLink" target="tsksearch"')+L("topics.html","tags","ابحث عن موضوع في الكتاب المقدس",' target="tsktopics"')+L("mindmap.html","topology-star-3","تتبّع شواهد آية كشبكة",' id="mmLink" target="tskmindmap"')+L("outline.html?b="+book().abbr,"layout-grid","مخطط السفر",' id="uOlSide"'))
     +sec("serveSec","serve","اخدم",L("lists.html","bookmarks","قوائمي: اجمع آيات وانسخها <b class=\"cpy-count\" hidden></b>",' target="tsklists"')+`<button type="button" class="tool" id="uPresSide" style="display:block;width:100%;margin-top:8px;text-align:start">${PRES_IC} اعرض الآيات على شاشة أو بروجكتور</button>`)
-    +`<div class="ufoot"><a href="sources.html" target="_blank">المصادر</a><a href="contact.html" target="_blank">تواصل معنا</a><button type="button" id="offBtn">${ic("download")} التنزيل دون إنترنت</button></div>`;
+    +`<div class="ufoot"><a href="sources.html" target="_blank">المصادر</a><a href="contact.html" target="_blank">تواصل معنا</a><a href="https://www.youtube.com/playlist?list=PLXQIsyACqP-c" target="_blank" rel="noopener">شروحات الفيديو</a><button type="button" id="offBtn">${ic("download")} التنزيل دون إنترنت</button></div>`;
   const bk=document.querySelector('#side [data-sec="books"]')||$("#findSec");
   bk&&bk.insertAdjacentHTML("afterend",after);
 }

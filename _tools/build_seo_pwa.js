@@ -93,6 +93,17 @@ function headBlock(o) {
 ${o.ld ? `<script type="application/ld+json">${JSON.stringify(o.ld)}</script>\n` : ""}<!--/seo-->
 `;
 }
+/* ---------- روابط الفيسبوك/يوتيوب وفيديوهات الشرح (البيانات الأصلية في assets/brand.js بين vid:start وvid:end) ---------- */
+const VID = (() => { const b = read("assets/brand.js"), a = b.indexOf("window.TSK_LINKS"), z = b.indexOf("(function(){", a); const ctx = {}; ctx.window = ctx; require("vm").runInNewContext(b.slice(a, z), ctx); return { L: ctx.TSK_LINKS, V: ctx.TSK_VIDS }; })();
+const vidLD = (v, name, desc) => ({ "@type": "VideoObject", name, description: desc || name, thumbnailUrl: `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`, uploadDate: "2026-11-12", duration: `PT${Math.floor(v.s / 60)}M${v.s % 60}S`, contentUrl: `https://www.youtube.com/watch?v=${v.id}`, embedUrl: `https://www.youtube.com/embed/${v.id}`, inLanguage: "ar", publisher: { "@type": "Organization", name: SITE, url: BASE } });
+function siteLD(f) {
+  const org = { "@type": "Organization", name: SITE, url: BASE, sameAs: [VID.L.fb, VID.L.yt] };
+  const intro = vidLD(VID.V.intro, VID.V.intro.t, VID.V.intro.ds);
+  if (f === "index.html") return { "@context": "https://schema.org", "@graph": [
+    { "@type": "WebSite", name: SITE, alternateName: `${SITE} — ${TAGLINE}`, url: BASE, inLanguage: "ar", description: M.SITE_DESC, publisher: org,
+      potentialAction: { "@type": "SearchAction", target: BASE + "search.html?q={search_term_string}", "query-input": "required name=search_term_string" } }, org, intro ] };
+  return { "@context": "https://schema.org", "@graph": [org, intro, ...VID.V.list.map((v, i) => vidLD(v, `شرح موقع ${SITE} ${i + 1}: ${v.t}`))] };
+}
 function applyHead(h, o) {
   h = h.replace(/<!--seo-->[\s\S]*?<!--\/seo-->\n?/, "");
   if (o.title) h = h.replace(/<title>[^<]*<\/title>/, `<title>${esc(o.title)}</title>`);
@@ -158,9 +169,8 @@ for (const f of htmlFiles) {
     const t = TOOLS[f] || { desc: M.SITE_META_DESC };
     const title = t.title || (h.match(/<title>([^<]*)<\/title>/) || [, SITE])[1];
     const o = { title: t.title, ogTitle: title, desc: t.desc, url: f === "index.html" ? BASE : BASE + f, og: "assets/og/site.jpg" };
+    if (f === "index.html" || f === "features.html") o.ld = siteLD(f);
     if (f === "index.html") {
-      o.ld = { "@context": "https://schema.org", "@type": "WebSite", name: SITE, alternateName: `${SITE} — ${TAGLINE}`, url: BASE, inLanguage: "ar",
-        description: M.SITE_DESC, potentialAction: { "@type": "SearchAction", target: BASE + "search.html?q={search_term_string}", "query-input": "required name=search_term_string" } };
       h = setInner(h, '<div class="h-bp" id="hBooks">', homeBooksPre());
       h = setInner(h, '<div class="booksel" id="booksel">', SIDEBAR);
     }
