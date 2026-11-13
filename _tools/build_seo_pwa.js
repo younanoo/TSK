@@ -24,7 +24,7 @@ const stampSave = (key, files) => { STAMPS[key] = sig(files); try { fs.writeFile
 const SELF = ["_tools/build_seo_pwa.js", "_tools/site_meta.js", "assets/catalog.js"];
 const hashOf = p => crypto.createHash("sha1").update(fs.readFileSync(A(p))).digest("hex").slice(0, 8);
 /* app.js and style.css versions follow their content, so browsers never reuse a stale copy after a change */
-const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "3", APP_VER = hashOf("assets/app.js");
+const CSS_VER = hashOf("assets/style.css"), BRAND_VER = "4", APP_VER = hashOf("assets/app.js");
 const CAT = M.catalog();
 const today = new Date().toISOString().slice(0, 10);
 const BASE_PATH = new URL(BASE).pathname;               // "/TSK/"
@@ -345,7 +345,7 @@ write("manifest.webmanifest", JSON.stringify({
 }, null, 1) + "\n");
 
 /* ---------- service worker registration (in brand.js, loaded by every page) ---------- */
-let bj = read("assets/brand.js").replace(/\n?\/\* sw:start[\s\S]*?\/\* sw:end \*\/\n?/, "");
+let bj = read("assets/brand.js").replace(/\n?\/\* sw:start[\s\S]*?\/\* sw:end \*\/\n?/, "").replace(/\n?\/\* ga:start[\s\S]*?\/\* ga:end \*\/\n?/, "");
 bj += `
 /* sw:start — حفظ الموقع للعمل دون إنترنت (assets/../sw.js) */
 (function(){
@@ -355,6 +355,13 @@ bj += `
   addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(function(){})});
 })();
 /* sw:end */
+/* ga:start — Google Analytics (assets/analytics.js) */
+(function(){
+  try{var me=document.currentScript,s=document.createElement("script");s.async=true;
+  s.src=(me&&me.src?me.src.replace(/brand\\.js(\\?.*)?$/,""):"assets/")+"analytics.js?v=${hashOf("assets/analytics.js")}";
+  document.head.appendChild(s)}catch(e){}
+})();
+/* ga:end */
 `;
 write("assets/brand.js", bj);
 
@@ -391,7 +398,7 @@ const ckOf = p => { if (CK[p]) return CK[p];
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بترجمة فاندايك وكتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/lib\//.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|listshare|qrcode\.min|screenctl)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/lib\//.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|listshare|qrcode\.min|screenctl|analytics)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) || /^assets\/sg\//.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) || /^assets\/strong\//.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },

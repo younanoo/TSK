@@ -89,7 +89,6 @@ list:[
 })();
 /* foot:end */
 
-
 /* sw:start — حفظ الموقع للعمل دون إنترنت (assets/../sw.js) */
 (function(){
   if(!("serviceWorker" in navigator)||!/^https?:$/.test(location.protocol))return;
@@ -98,3 +97,10 @@ list:[
   addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(function(){})});
 })();
 /* sw:end */
+/* ga:start — Google Analytics (assets/analytics.js) */
+(function(){
+  try{var me=document.currentScript,s=document.createElement("script");s.async=true;
+  s.src=(me&&me.src?me.src.replace(/brand\.js(\?.*)?$/,""):"assets/")+"analytics.js?v=b07b2217";
+  document.head.appendChild(s)}catch(e){}
+})();
+/* ga:end */
