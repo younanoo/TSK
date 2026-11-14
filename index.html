@@ -173,7 +173,9 @@ body.h{background:var(--bg)}
 .is-app [data-install]{display:none!important}
 .dlopt{display:flex;gap:12px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;font:inherit;color:inherit;width:100%;text-align:start}
 .dlopt:hover{border-color:var(--accent)}.dlopt .ic{width:22px;height:22px;flex:none;color:var(--accent)}.dlopt .t{flex:1}.dlopt .t b{display:block;font-size:15px;color:var(--heading)}.dlopt .t small{display:block;color:var(--muted);font-size:13px;line-height:1.7}.dlopt .sz{font:600 13px var(--ui);white-space:nowrap;color:var(--accent)}
-.dlh{margin:14px 0 8px;font:700 13px var(--ui);color:var(--muted)}.is-app #dlInst{display:none}
+.dlh{margin:14px 0 8px;font:700 13px var(--ui);color:var(--muted)}.is-app #dlInstall,.is-app .dlp{display:none}
+.dlnote{margin:0 0 12px;font:600 14px/1.8 var(--ui);color:var(--heading)}.dlfoot{margin:4px 0 0;font:12.5px/1.8 var(--ui);color:var(--muted)}
+.h-dlg .dlgo{margin-top:12px;width:100%;font:600 15px var(--ui);border-radius:12px;padding:11px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:#fff}
 .h-dlg{border:0;padding:0;border-radius:22px;background:var(--paper);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35);width:min(460px,calc(100vw - 32px));max-height:calc(100vh - 32px)}
 .h-dlg::backdrop{background:var(--scrim)}
 .h-dlg .dh{display:flex;align-items:center;gap:12px;padding:20px 22px 0}
@@ -477,11 +479,11 @@ body.h{background:var(--bg)}
 <dialog class="h-dlg" id="dlDlg" aria-labelledby="dlTitle">
   <div class="dh"><img src="assets/brand/app-icon-192.png" alt=""><h3 id="dlTitle">تنزيل «جدد وعتقاء»</h3><button class="x" type="button" id="dlClose" aria-label="إغلاق"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg></button></div>
   <div class="db">
-    <div id="dlInst"><div class="dlh">بالإنترنت</div>
-    <button class="dlopt" type="button" id="dlInstall"><svg class="ic"><use href="#i-download"/></svg><span class="t"><b>تثبيت التطبيق</b><small>أيقونة على الشاشة تُفتح مثل أي تطبيق. تُحفظ الصفحات التي تفتحها تلقائيًا، ويحتاج باقي المحتوى إلى اتصال.</small></span><span class="sz">خفيف</span></button></div>
-    <div class="dlh">دون إنترنت — اختر ما تنزّله على جهازك</div>
-    <button class="dlopt" type="button" data-om="app"><svg class="ic"><use href="#i-offline"/></svg><span class="t"><b>التطبيق بدون الصور</b><small>كل الأسفار والترجمات والبحث والخرائط الذهنية.</small></span><span class="sz" id="szApp">…</span></button>
-    <button class="dlopt" type="button" data-om="img"><svg class="ic"><use href="#i-offline"/></svg><span class="t"><b>التطبيق مع الصور</b><small>كل ما سبق مع صور الأسفار والأصحاحات.</small></span><span class="sz" id="szImg">…</span></button>
+    <p class="dlnote" id="dlNote" hidden>اختر ما تنزّله على جهازك ليعمل التطبيق دون إنترنت.</p>
+    <button class="dlopt" type="button" id="dlInstall" data-om="lite"><svg class="ic"><use href="#i-download"/></svg><span class="t"><b>تثبيت التطبيق</b><small>أيقونة على الشاشة تُفتح مثل أي تطبيق. تُحفظ الصفحات التي تفتحها تلقائيًا، ويحتاج باقي المحتوى إلى اتصال.</small></span><span class="sz">خفيف</span></button>
+    <button class="dlopt" type="button" data-om="app"><svg class="ic"><use href="#i-offline"/></svg><span class="t"><b>التطبيق بدون صور</b><small><span class="dlp">أيقونة على الشاشة تُفتح مثل أي تطبيق + </span>كل الأسفار والترجمات والبحث والخرائط الذهنية، تعمل دون إنترنت.</small></span><span class="sz" id="szApp">…</span></button>
+    <button class="dlopt" type="button" data-om="img"><svg class="ic"><use href="#i-offline"/></svg><span class="t"><b>التطبيق مع الصور</b><small><span class="dlp">أيقونة على الشاشة تُفتح مثل أي تطبيق + </span>كل ما سبق مع صور الأسفار والأصحاحات.</small></span><span class="sz" id="szImg">…</span></button>
+    <p class="dlfoot">يُفضَّل استخدام شبكة Wi‑Fi للتنزيل الكبير، وما تم تنزيله سابقًا لا يُحمَّل مرة أخرى.</p>
   </div>
 </dialog>
 <dialog class="h-dlg" id="instDlg" aria-labelledby="instTitle">
@@ -665,7 +667,7 @@ document.getElementById("instClose").addEventListener("click",()=>dlg.close());
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 const kb=(t)=>`<span class="kbd">${t}</span>`;
 const SHARE=`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h-1a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-8a2 2 0 0 0 -2 -2h-1"/><path d="M12 14v-11"/><path d="M9 6l3 -3l3 3"/></svg>`;
-function guide(){
+function guide(m){
   const ua=navigator.userAgent,iOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1),
     android=/Android/i.test(ua),ff=/Firefox|FxiOS/i.test(ua),edge=/Edg\//.test(ua),safariMac=/Macintosh/.test(ua)&&/Safari/.test(ua)&&!/Chrome|Chromium|Edg/.test(ua)&&!iOS,
     sam=/SamsungBrowser/i.test(ua);
@@ -694,8 +696,12 @@ function guide(){
     steps=[`اضغط على أيقونة التثبيت ${kb("⊕")} في طرف شريط العنوان`,`أو من القائمة ${kb("⋮")} اختر ${edge?kb("التطبيقات")+" ← "+kb("تثبيت هذا الموقع كتطبيق"):kb("إرسال وحفظ ومشاركة")+" ← "+kb("تثبيت الصفحة كتطبيق")}`,`أكّد بالضغط على ${kb("تثبيت")}`];
     note="إن لم تجد أيقونة التثبيت، فربما يكون الموقع مثبّتًا لديك بالفعل: ابحث عن «جدد وعتقاء» في قائمة البرامج.";
   }
+  const after=m==="app"||m==="img";
+  if(after&&iOS)note=(note?note+" ":"")+"بعد التثبيت افتح «جدد وعتقاء» من الشاشة الرئيسية، وسيعرض عليك التطبيق تنزيل المحتوى مرة واحدة.";
   ib.innerHTML=`<p>${intro}</p><ol>${steps.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>${note?`<p class="note">${note}</p>`:""}
-   <div class="why"><span>${ic("check")} يُفتح من أيقونة على الشاشة مثل أي تطبيق</span><span>${ic("check")} الصفحات التي فتحتها سابقًا تعمل دون إنترنت</span><span>${ic("check")} مجاني وبلا تسجيل، وحجمه صغير</span></div>`;
+   <div class="why"><span>${ic("check")} يُفتح من أيقونة على الشاشة مثل أي تطبيق</span><span>${ic("check")} الصفحات التي فتحتها سابقًا تعمل دون إنترنت</span><span>${ic("check")} مجاني وبلا تسجيل، وحجمه صغير</span></div>`+
+   (after&&!iOS&&location.protocol!=="file:"?`<button type="button" class="dlgo" id="instGo">ابدأ تنزيل المحتوى الآن</button>`:"");
+  const go=document.getElementById("instGo");if(go)go.onclick=()=>{dlg.close();startDl(m)};
   dlg.showModal();
 }
 async function install(){
@@ -712,8 +718,25 @@ function openDl(){
 document.getElementById("dlClose").addEventListener("click",()=>dd.close());
 dd.addEventListener("click",e=>{if(e.target===dd)dd.close()});
 document.querySelectorAll("[data-dl]").forEach(b=>b.addEventListener("click",openDl));
-document.getElementById("dlInstall").addEventListener("click",()=>{dd.close();install()});
-dd.querySelectorAll("[data-om]").forEach(b=>b.addEventListener("click",()=>{dd.close();const m=b.dataset.om;if(window.OFFLINE_UI)return window.OFFLINE_UI.open(m);window.OFFLINE_MODE=m;const x=document.createElement("script");x.src="assets/offline.js";document.head.appendChild(x)}));
+/* اختيار واحد يعمل الخطوتين: تثبيت التطبيق ثم تنزيل المحتوى (لو اختار «بدون صور» أو «مع الصور») */
+function startDl(m){if(window.OFFLINE_UI)return window.OFFLINE_UI.open(m,true);window.OFFLINE_MODE=m;window.OFFLINE_AUTO=1;const x=document.createElement("script");x.src="assets/offline.js";document.head.appendChild(x)}
+const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+async function choose(m){
+  dd.close();
+  try{window.tskTrack&&window.tskTrack("install_choice",{choice:m,display_mode:standalone()?"app":"browser"})}catch(e){}
+  const full=m==="app"||m==="img";
+  if(standalone()){if(full)startDl(m);return}              // داخل التطبيق المثبّت: التنزيل فقط
+  if(dp){                                                  // أندرويد/كروم/إيدج: رسالة التثبيت ثم التنزيل مباشرة
+    dp.prompt();try{const r=await dp.userChoice;if(r&&r.outcome==="accepted")root.classList.add("is-app")}catch(e){}dp=null;
+    if(full)startDl(m);return}
+  guide(m);                                                // آيفون أو متصفح بلا زر تثبيت: الخطوات (+ زر بدء التنزيل لغير الآيفون)
+}
+dd.querySelectorAll("[data-om]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.om)));
+/* أول فتح للتطبيق المثبّت (ومنه الآيفون، لأن تخزينه منفصل عن Safari): اعرض اختيار التنزيل مرة واحدة لو المحتوى مش متنزّل */
+if(standalone()&&window.caches){try{if(!localStorage.getItem("tsklib:dlAsked")){
+  caches.open("jw-files").then(c=>c.keys()).then(k=>{if(k.length>400)return;
+    try{localStorage.setItem("tsklib:dlAsked","1")}catch(e){}
+    document.getElementById("dlNote").hidden=false;setTimeout(openDl,800)}).catch(()=>{})}}catch(e){}}
 })();
 </script>
 <script>
