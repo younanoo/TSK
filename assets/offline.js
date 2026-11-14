@@ -20,6 +20,7 @@
   var mb = function (b) { return b >= 1e9 ? n((b / 1e9).toFixed(1)) + " جيجا" : b >= 1e6 ? n(Math.round(b / 1e5) / 10) + " ميغا" : n(Math.max(1, Math.round(b / 1e3))) + " كيلو"; };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var G = [], have = {}, busy = false, stop = false, dlg;
+  var tr = function (e, p) { try { window.tskTrack && window.tskTrack(e, p || {}); } catch (x) {} };
 
   function cachedSet() {
     return (window.caches ? caches.open(CACHE).then(function (c) { return c.keys(); }) : Promise.resolve([])).then(function (ks) {
@@ -71,6 +72,7 @@
     sel.forEach(function (g) { missing(g).forEach(function (p) { q.push({ p: p, g: g }); }); });
     if (!q.length) return;
     var bytesAll = total(), got = 0;
+    tr("offline_download_start", { mode: MODE, mb: Math.round(bytesAll / 1e6) });
     busy = true; stop = false; $("#offGo").disabled = true; $("#offStop").style.display = ""; $("#offBar").style.display = "block"; $("#offMsg").textContent = "";
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
     var avgBytes = {}; sel.forEach(function (g) { avgBytes[g.id] = g.files.length ? g.bytes / g.files.length : 0; });
@@ -85,11 +87,12 @@
     var ws = []; for (var k = 0; k < 6; k++) ws.push(worker());
     Promise.all(ws).then(cachedSet).then(function (s) {
       have = s; busy = false; $("#offStop").style.display = "none"; list();
+      tr(stop ? "offline_download_stop" : "offline_download_done", { mode: MODE, fails: fails });
       $("#offBar").firstChild.style.width = stop ? $("#offBar").firstChild.style.width : "100%";
       $("#offMsg").textContent = stop ? "تم الإيقاف. يمكنك المتابعة لاحقًا، وما تم تنزيله محفوظ." : fails ? "اكتمل التنزيل مع تعذّر " + n(fails) + " ملف؛ أعد المحاولة." : "اكتمل التنزيل ✓ — يمكنك الآن استخدام المحدد دون إنترنت.";
     });
   }
-  function open(m) {
+  function open(m, auto) {
     if (m === "app" || m === "img") MODE = m;
     if (!("serviceWorker" in navigator) || !window.caches) { alert("المتصفح لا يدعم التخزين للاستخدام دون إنترنت."); return; }
     if (!document.getElementById("offCss")) { var st = document.createElement("style"); st.id = "offCss"; st.textContent = CSS; document.head.appendChild(st); }
@@ -100,8 +103,9 @@
     $("#offClr").onclick = function () { if (busy || !confirm("سيُحذف كل ما حُفظ للاستخدام دون إنترنت. متابعة؟")) return; caches.delete(CACHE).then(function () { have = {}; list(); $("#offMsg").textContent = "تم المسح. ستُحفظ الملفات من جديد عند فتحها."; }); };
     navigator.serviceWorker.ready.then(function () { return Promise.all([fetch("assets/offline.json").then(function (r) { return r.json(); }), cachedSet()]); }).then(function (r) {
       G = r[0]; have = r[1]; list(); $("#offMsg").textContent = ""; if (!dlg.open) dlg.showModal();
+      if (auto && !busy && total()) run();   /* من نافذة «تنزيل التطبيق»: يبدأ التنزيل مباشرة بدون زر إضافي */
     }).catch(function () { alert("تعذّر تحميل قائمة الحزم. تحقّق من الاتصال."); });
   }
   window.OFFLINE_UI = { open: open };
-  open(window.OFFLINE_MODE);
+  open(window.OFFLINE_MODE, window.OFFLINE_AUTO);
 })();
