@@ -655,55 +655,8 @@ if(tabs.length)show(0);
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-askai]");if(!b||window.AskAI)return;e.preventDefault();
   const s=document.createElement("script");s.src="assets/askai.js?v=3";s.onload=()=>window.AskAI&&window.AskAI.fromEl(b);document.body.appendChild(s)});
 
-/* ---------- تثبيت التطبيق ---------- */
-const standalone=()=>matchMedia("(display-mode: standalone)").matches||matchMedia("(display-mode: window-controls-overlay)").matches||navigator.standalone===true;
-if(standalone())root.classList.add("is-app");
-let dp=null;
-addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e});
-addEventListener("appinstalled",()=>{dp=null;root.classList.add("is-app");dlg.open&&dlg.close()});
-const dlg=document.getElementById("instDlg"),ib=document.getElementById("instBody");
-document.getElementById("instClose").addEventListener("click",()=>dlg.close());
-dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
-const kb=(t)=>`<span class="kbd">${t}</span>`;
-const SHARE=`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h-1a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-8a2 2 0 0 0 -2 -2h-1"/><path d="M12 14v-11"/><path d="M9 6l3 -3l3 3"/></svg>`;
-function guide(){
-  const ua=navigator.userAgent,iOS=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1),
-    android=/Android/i.test(ua),ff=/Firefox|FxiOS/i.test(ua),edge=/Edg\//.test(ua),safariMac=/Macintosh/.test(ua)&&/Safari/.test(ua)&&!/Chrome|Chromium|Edg/.test(ua)&&!iOS,
-    sam=/SamsungBrowser/i.test(ua);
-  let intro="",steps=[],note="";
-  if(location.protocol==="file:"){
-    intro="لا يعمل التثبيت والموقع مفتوح كملف من الجهاز. افتح الموقع من الإنترنت أولًا:";
-    steps=[`افتح <b>godod.app</b> في المتصفح`,`اضغط على زر ${kb("تنزيل التطبيق")} مرة أخرى`];
-  }else if(iOS){
-    intro="على الآيفون والآيباد يتم التثبيت من قائمة المشاركة:";
-    steps=[`اضغط على زر المشاركة ${kb(SHARE)} ${/CriOS|EdgiOS/.test(ua)?"الموجود في شريط العنوان بالأعلى":"الموجود بالأسفل في Safari"}`,
-      `مرّر القائمة لأسفل واختر ${kb("إضافة إلى الشاشة الرئيسية")}`,`اضغط ${kb("إضافة")} في أعلى الشاشة`];
-    note="إن لم تجد هذا الخيار، فافتح الموقع في Safari وجرّب مرة أخرى.";
-  }else if(android){
-    intro="على أندرويد:";
-    steps=sam?[`اضغط على القائمة ${kb("☰")} في الأسفل`,`اختر ${kb("إضافة صفحة إلى")} ← ${kb("الشاشة الرئيسية")}`]
-      :ff?[`اضغط على القائمة ${kb("⋮")}`,`اختر ${kb("تثبيت")} أو ${kb("إضافة إلى الشاشة الرئيسية")}`]
-      :[`اضغط على القائمة ${kb("⋮")} في الأعلى بجانب شريط العنوان`,`اختر ${kb("تثبيت التطبيق")} أو ${kb("إضافة إلى الشاشة الرئيسية")}`,`أكّد بالضغط على ${kb("تثبيت")}`];
-  }else if(safariMac){
-    intro="على Safari في الماك:";
-    steps=[`من القائمة العلوية اختر ${kb("ملف")} ← ${kb("إضافة إلى Dock")}`,`اضغط ${kb("إضافة")}`];
-  }else if(ff){
-    intro="لا يدعم متصفح Firefox على الحاسوب تثبيت المواقع كتطبيقات.";
-    steps=[`افتح الموقع في <b>Chrome</b> أو <b>Edge</b>`,`اضغط على زر ${kb("تنزيل التطبيق")} مرة أخرى`];
-  }else{
-    intro=edge?"على Microsoft Edge:":"على Chrome:";
-    steps=[`اضغط على أيقونة التثبيت ${kb("⊕")} في طرف شريط العنوان`,`أو من القائمة ${kb("⋮")} اختر ${edge?kb("التطبيقات")+" ← "+kb("تثبيت هذا الموقع كتطبيق"):kb("إرسال وحفظ ومشاركة")+" ← "+kb("تثبيت الصفحة كتطبيق")}`,`أكّد بالضغط على ${kb("تثبيت")}`];
-    note="إن لم تجد أيقونة التثبيت، فربما يكون الموقع مثبّتًا لديك بالفعل: ابحث عن «جدد وعتقاء» في قائمة البرامج.";
-  }
-  ib.innerHTML=`<p>${intro}</p><ol>${steps.map(x=>`<li><span>${x}</span></li>`).join("")}</ol>${note?`<p class="note">${note}</p>`:""}
-   <div class="why"><span>${ic("check")} يُفتح من أيقونة على الشاشة مثل أي تطبيق</span><span>${ic("check")} الصفحات التي فتحتها سابقًا تعمل دون إنترنت</span><span>${ic("check")} مجاني وبلا تسجيل، وحجمه صغير</span></div>`;
-  dlg.showModal();
-}
-async function install(){
-  if(dp){dp.prompt();try{const r=await dp.userChoice;if(r&&r.outcome==="accepted")root.classList.add("is-app")}catch(e){}dp=null;return}
-  guide();
-}
-document.querySelectorAll("[data-install]").forEach(b=>b.addEventListener("click",install));
+/* ---------- تثبيت التطبيق: assets/install.js (يحمّله brand.js) — أي زر عليه data-install يفتحه ---------- */
+const install=()=>{if(window.TSKInstall)window.TSKInstall.open()};
 const dd=document.getElementById("dlDlg");let szDone=0;
 const arn=x=>String(x).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]),mbf=b=>b>=1e9?arn((b/1e9).toFixed(1))+" جيجا":arn(Math.round(b/1e6))+" ميغا";
 function openDl(){

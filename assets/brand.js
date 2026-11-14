@@ -104,3 +104,11 @@ list:[
   document.head.appendChild(s)}catch(e){}
 })();
 /* ga:end */
+/* inst:start — تثبيت التطبيق (assets/install.js): نلتقط نافذة التثبيت مبكرًا، ثم نحمّل الملف */
+(function(){
+  addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__tskBip=e});
+  try{var me=document.currentScript,s=document.createElement("script");s.async=true;
+  s.src=(me&&me.src?me.src.replace(/brand\.js(\?.*)?$/,""):"assets/")+"install.js?v=9cbc3f99";
+  document.head.appendChild(s)}catch(e){}
+})();
+/* inst:end */

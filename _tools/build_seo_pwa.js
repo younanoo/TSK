@@ -341,11 +341,18 @@ write("manifest.webmanifest", JSON.stringify({
   shortcuts: [
     { name: "البحث في الكتاب المقدس", short_name: "البحث", url: "search.html" },
     { name: "فهرس المواضيع", short_name: "المواضيع", url: "topics.html" },
-    { name: "قاموس سترونج", short_name: "سترونج", url: "search.html#tab=strong" }]
+    { name: "قاموس سترونج", short_name: "سترونج", url: "search.html#tab=strong" }],
+  /* صور الشاشة: تجعل Chrome يعرض نافذة تثبيت كبيرة شبه صفحة المتجر (assets/shots — أعِد تصويرها لو تغيّر شكل الموقع كثيرًا) */
+  categories: ["books", "education"],
+  screenshots: [
+    { src: "assets/shots/narrow-home.webp", sizes: "1080x1920", type: "image/webp", form_factor: "narrow", label: "ابحث أو اذهب لأي آية" },
+    { src: "assets/shots/narrow-chapter.webp", sizes: "1080x1920", type: "image/webp", form_factor: "narrow", label: "اقرأ الأصحاح واضغط على رقم العدد لترى شواهده" },
+    { src: "assets/shots/wide-home.webp", sizes: "1920x1080", type: "image/webp", form_factor: "wide", label: "مكتبة عربية مجانية لدراسة الكتاب المقدس" },
+    { src: "assets/shots/wide-verse.webp", sizes: "1920x1080", type: "image/webp", form_factor: "wide", label: "شواهد كل آية مرتبة تحت كلماتها" }]
 }, null, 1) + "\n");
 
 /* ---------- service worker registration (in brand.js, loaded by every page) ---------- */
-let bj = read("assets/brand.js").replace(/\n?\/\* sw:start[\s\S]*?\/\* sw:end \*\/\n?/, "").replace(/\n?\/\* ga:start[\s\S]*?\/\* ga:end \*\/\n?/, "");
+let bj = read("assets/brand.js").replace(/\n?\/\* sw:start[\s\S]*?\/\* sw:end \*\/\n?/, "").replace(/\n?\/\* ga:start[\s\S]*?\/\* ga:end \*\/\n?/, "").replace(/\n?\/\* inst:start[\s\S]*?\/\* inst:end \*\/\n?/, "");
 bj += `
 /* sw:start — حفظ الموقع للعمل دون إنترنت (assets/../sw.js) */
 (function(){
@@ -362,6 +369,14 @@ bj += `
   document.head.appendChild(s)}catch(e){}
 })();
 /* ga:end */
+/* inst:start — تثبيت التطبيق (assets/install.js): نلتقط نافذة التثبيت مبكرًا، ثم نحمّل الملف */
+(function(){
+  addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__tskBip=e});
+  try{var me=document.currentScript,s=document.createElement("script");s.async=true;
+  s.src=(me&&me.src?me.src.replace(/brand\\.js(\\?.*)?$/,""):"assets/")+"install.js?v=${hashOf("assets/install.js")}";
+  document.head.appendChild(s)}catch(e){}
+})();
+/* inst:end */
 `;
 write("assets/brand.js", bj);
 
@@ -398,7 +413,7 @@ const ckOf = p => { if (CK[p]) return CK[p];
   const zlib = require("zlib");
   const GROUPS = [
     { id: "core", title: "الأساس: الصفحات والآيات والشواهد", desc: "كل الأسفار بترجمة فاندايك وكتاب الحياة (مع التشكيل) وشواهد TSK ونصوص الشواهد. لا تعمل المكتبة دون اتصال بدونها.", req: 1,
-      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/lib\//.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|listshare|qrcode\.min|screenctl|analytics)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
+      test: p => /\.html$/.test(p) || /^assets\/(lib|kd|fn|ol)_/.test(p) || /^assets\/lib\//.test(p) || /^assets\/tx\//.test(p) || /^assets\/(brand|votd)\//.test(p) || /^assets\/(app|style|catalog|brand|bookimg|imgs|home_votd|askai|offline|nav|sitemenu|dictcopy|chstrong|present|presfit|listpres|listshare|qrcode\.min|screenctl|analytics|install)\.(js|css)$/.test(p) || /^assets\/geo\/(geo|leaflet)\.(js|css)$/.test(p) || /^assets\/chrono\//.test(p) || p === "manifest.webmanifest" },
     { id: "tr", title: "فاندايك بأرقام سترونج والتشكيل، وKJV", desc: "أرقام سترونج وتشكيل فاندايك، وترجمة KJV الإنجليزية، لكل الأسفار.", test: p => /^assets\/tr_/.test(p) || /^assets\/sg\//.test(p) },
     { id: "strong", title: "قاموس سترونج", desc: "معاني الأرقام والجذور والبحث بالرقم أو بالكلمة العربية.", test: p => /^assets\/(strong|sidx|roots|arstrong)\.js$/.test(p) || /^assets\/strong\//.test(p) },
     { id: "bdb", title: "قاموس BDB العبري", desc: "معاني الكلمات العبرية من قاموس براون-درايفر-بريجز بالعربية (نسخة مختصرة).", test: p => p === "assets/bdb.js" || /^assets\/bdb\//.test(p) },

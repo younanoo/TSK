@@ -51,5 +51,39 @@
    "short_name": "سترونج",
    "url": "search.html#tab=strong"
   }
+ ],
+ "categories": [
+  "books",
+  "education"
+ ],
+ "screenshots": [
+  {
+   "src": "assets/shots/narrow-home.webp",
+   "sizes": "1080x1920",
+   "type": "image/webp",
+   "form_factor": "narrow",
+   "label": "ابحث أو اذهب لأي آية"
+  },
+  {
+   "src": "assets/shots/narrow-chapter.webp",
+   "sizes": "1080x1920",
+   "type": "image/webp",
+   "form_factor": "narrow",
+   "label": "اقرأ الأصحاح واضغط على رقم العدد لترى شواهده"
+  },
+  {
+   "src": "assets/shots/wide-home.webp",
+   "sizes": "1920x1080",
+   "type": "image/webp",
+   "form_factor": "wide",
+   "label": "مكتبة عربية مجانية لدراسة الكتاب المقدس"
+  },
+  {
+   "src": "assets/shots/wide-verse.webp",
+   "sizes": "1920x1080",
+   "type": "image/webp",
+   "form_factor": "wide",
+   "label": "شواهد كل آية مرتبة تحت كلماتها"
+  }
  ]
 }
