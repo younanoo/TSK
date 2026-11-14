@@ -1496,6 +1496,17 @@ html.pres-on{overflow:hidden}
 /* القائمة الجانبية على الموبايل فوق شريط الأصحاح الثابت (كانا بنفس الـ z-index فالشريط كان بيغطي اللوجو) + تعتيم الصفحة خلفها */
 @media (max-width:880px){aside{z-index:60}aside.open{box-shadow:0 0 0 100vmax rgba(8,22,36,.38),var(--shadow)}}
 
+/* سجل الشواهد في شريط الشاشة الخارجية: «↩ رجوع» + ▾ قائمة */
+.scr-hist{display:inline-flex;flex:0 0 auto}
+.scr-hist .scr-b:first-child{border-start-end-radius:0;border-end-end-radius:0}
+.scr-hist .scr-hdd{border-start-start-radius:0;border-end-start-radius:0;border-inline-start:0;min-width:34px;padding:0 10px}
+.scr-b:disabled{opacity:.4;cursor:default}
+.scr-hl{position:absolute;bottom:calc(100% + 8px);inset-inline-start:12px;min-width:240px;max-width:min(360px,90vw);max-height:55vh;overflow:auto;padding:6px;border-radius:14px;background:#0F1B26;color:#f4efe6;box-shadow:0 10px 30px rgba(0,0,0,.4);z-index:2}
+.scr-hl[hidden]{display:none}
+.scr-hh{font:600 12.5px var(--ui);opacity:.7;padding:6px 10px 4px}
+.scr-hi{display:flex;justify-content:space-between;gap:10px;width:100%;min-height:40px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:inherit;font:600 15px var(--ui);text-align:start;cursor:pointer}
+.scr-hi:hover{background:rgba(255,255,255,.1)}
+.scr-hi.on{color:#E6C877}.scr-hi small{font-weight:500;font-size:12px;opacity:.8}
 
 /* pre:start — نص مكتوب مسبقًا في الصفحة لمحركات البحث (يستبدله التطبيق فور تحميله) */
 .pre{max-width:820px;margin:0 auto;padding:28px 20px 60px;line-height:2.1;color:var(--ink)}

@@ -1251,3 +1251,5 @@ document.addEventListener("tsk:lists",()=>{try{cpySync()}catch(x){}});
 addEventListener("pageshow",()=>{try{cpySync()}catch(x){}});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)try{cpySync()}catch(x){}});
 /* ==== COPY LIST END ==== */
+/* العرض على الشاشة الخارجية كان شغال والصفحة اتنقلت لسفر تاني (screenctl.js: follow) — كمّل العرض هنا */
+try{if(sessionStorage.getItem("tsk_scr_live"))loadJS("assets/presfit.js",()=>loadJS("assets/screenctl.js",()=>window.SCR&&SCR.resume&&SCR.resume()))}catch(e){}
