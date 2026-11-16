@@ -85,6 +85,14 @@ html,body{overflow-x:clip;padding:0}
 .hit .lsvg{float:left;margin:0 10px 4px 0}
 .hit b{display:block;font:600 13px var(--ui);color:var(--accent);margin-bottom:2px}
 .hit .t{font:20px/1.9 "Amiri","Noto Naskh Arabic",serif;display:block}
+.vbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 6px}
+.vbar .l{font:600 14px var(--ui);color:var(--muted);margin-inline-end:4px}
+.vbar button{all:unset;cursor:pointer;font:600 14px var(--ui);padding:6px 15px;border:1px solid var(--line);border-radius:999px;color:var(--ink);background:var(--paper)}
+.vbar button:hover{border-color:var(--gold)}
+.vbar button[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.vbar button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.vna{display:block;font:500 12.5px var(--ui);color:var(--muted);margin-top:4px}
+.r .txt.en{direction:ltr;text-align:left;font-family:"Noto Serif",Georgia,serif;font-size:17px}
 .hit.en .t{font:17px/1.75 "Noto Serif",Georgia,serif;direction:ltr;text-align:left}
 .wbk{margin:18px 0 6px;font:700 15px var(--ui);color:var(--gold);display:flex;gap:8px;align-items:baseline}
 .wbk small{color:var(--muted);font-weight:500}
@@ -203,6 +211,7 @@ mark{background:var(--gold-soft);color:inherit;box-shadow:0 0 0 2px var(--gold-s
   </div>
  </div>
 </form>
+<div class="vbar" id="vbar" hidden role="group" aria-label="ترجمة نتائج البحث"><span class="l">اختر ترجمة نتائج البحث:</span><button type="button" data-v="svd">فاندايك</button><button type="button" data-v="alab">كتاب الحياة</button><button type="button" data-v="kjv">KJV</button></div>
 <div id="out"></div>
 </div>
 <script src="assets/dictcopy.js?v=4"></script>
@@ -237,7 +246,7 @@ function needAll(srcs,cb){let left=srcs.length+1,ok=true;const d=r=>{if(r===fals
 const TABS=["word","root","strong","grammar"];
 const TRS={svd:{n:"فاندايك",ar:1},alab:{n:"كتاب الحياة",ar:1},kjv:{n:"KJV",ar:0}};
 const PH={word:"اكتب كلمة أو عبارة",root:"اكتب كلمة عربية، مثل: محبة أو خلاص",strong:"G26 أو H7225 أو ٢٥",grammar:"رقم سترونج أو كلمة (اختياري)"};
-let CUR="word",MANUAL=false,RUN=0,AM="r",KEEPHINT=false;
+let CUR="word",MANUAL=false,RUN=0,AM="r",KEEPHINT=false,VW="svd"; /* VW = ترجمة عرض النتائج، فاندايك افتراضيًا دائمًا */
 const isNum=v=>/^[GH]?\d+$/i.test(D(v).replace(/\s/g,""));
 const hasLatin=v=>/[A-Za-z]/.test(v)&&!/[؀-ۿ]/.test(v);
 const hasArabic=v=>/[ء-ي]/.test(v);
@@ -245,7 +254,11 @@ function toHash(s){const p=new URLSearchParams();p.set("tab",s.tab);if(s.q)p.set
   if(s.tab==="word"){p.set("t",s.t);p.set("m",s.m);if(s.b)p.set("b",s.b)}
   else if(s.tab==="root"){p.set("rk",s.rk||"ar");if(s.rk!=="orig"){p.set("t",s.t);if(s.b)p.set("b",s.b)}else if(s.am==="w")p.set("am","w")}
   else if(s.tab==="grammar"){if(s.gb)p.set("gb",s.gb);if(s.f)p.set("f",s.f)}
+  if(s.v&&s.v!=="svd"&&VBT(s))p.set("v",s.v);
   return "#"+p.toString()}
+/* التبويبات التي تعرض آيات (فيها اختيار ترجمة النتائج) */
+function VBT(s){return s.tab==="word"||s.tab==="strong"||s.tab==="grammar"||(s.tab==="root"&&s.rk!=="orig")}
+function syncVbar(s){const b=$("#vbar");b.hidden=!(VBT(s)&&(s.q||(s.tab==="grammar"&&s.f)));b.querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===VW))}
 function parseHash(){
   let h=location.hash.replace(/^#\/?/,"");let o={};
   const dh=(()=>{try{return decodeURIComponent(h)}catch(e){return h}})();
@@ -257,11 +270,12 @@ function parseHash(){
   if(!TRS[o.t])o.t=lsGet("tsklib:str","svd");if(!TRS[o.t])o.t="svd";
   if(!["part","exact"].includes(o.m)){o.m=lsGet("tsklib:smode","part");if(!["part","exact"].includes(o.m))o.m="part"}
   if(o.rk!=="orig")o.rk="ar";
+  if(!TRS[o.v])o.v="svd";
   o.q=(o.q||"").trim();o.b=(o.b||"").split(",").filter(a=>ABBR.includes(a)).join(",");
   return o}
 function readUI(){const g=k=>{const x=document.querySelector('input[name='+k+']:checked');return x?x.value:""};
   const f=[...document.querySelectorAll("#gr select[data-k]")].filter(s=>s.value).map(s=>s.dataset.k+":"+s.value).join(",");
-  return {tab:CUR,q:$("#uq").value.trim(),t:g("t")||"svd",m:g("m")||"part",rk:g("rk")||"ar",am:AM,b:$("#bks").dataset.val||"",gb:$("#gbk")?$("#gbk").value:"",f}}
+  return {tab:CUR,q:$("#uq").value.trim(),t:g("t")||"svd",m:g("m")||"part",rk:g("rk")||"ar",am:AM,b:$("#bks").dataset.val||"",gb:$("#gbk")?$("#gbk").value:"",f,v:VW}}
 
 /* ---------- الواجهة ---------- */
 function showTab(tab){CUR=tab;
@@ -322,7 +336,7 @@ function submit(){const s=readUI();
   if(CUR==="strong"&&isNum(s.q))s.q=D(s.q).replace(/\s/g,"").toUpperCase();
   KEEPHINT=!!$("#uhint").innerHTML;go(s)}
 function go(s){const h=toHash(s);if(location.hash===h)route();else location.hash=h}
-function route(){const s=parseHash();setUI(s);const tok=++RUN;if(!KEEPHINT)setHint("");KEEPHINT=false;
+function route(){const s=parseHash();VW=s.v;setUI(s);syncVbar(s);const tok=++RUN;if(!KEEPHINT)setHint("");KEEPHINT=false;
   lsSet("tsklib:str",s.t);lsSet("tsklib:smode",s.m);
   if(!location.hash&&!s.q)return welcome();
   if(s.tab==="word")return wordRun(s,tok);
@@ -339,7 +353,13 @@ $("#uoptT").addEventListener("click",()=>{OPT_USER=$("#uoptT").getAttribute("ari
 $("#uf").addEventListener("change",()=>syncOptT());
 $("#uq").addEventListener("input",guess);
 document.querySelector(".utabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;MANUAL=true;setHint("");showTab(b.dataset.tab);
-  const v=$("#uq").value.trim();if(v&&b.dataset.tab!=="grammar")submit();else if(b.dataset.tab!=="grammar")OUT().innerHTML="";$("#uq").focus()});
+  const v=$("#uq").value.trim();if(v&&b.dataset.tab!=="grammar")submit();else{$("#vbar").hidden=true;if(b.dataset.tab!=="grammar")OUT().innerHTML=""}$("#uq").focus()});
+/* أزرار ترجمة النتائج: تغيّر العرض فقط، والبحث كما هو */
+$("#vbar").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(!b||b.dataset.v===VW)return;
+  const s=parseHash();s.v=VW=b.dataset.v;history.replaceState(null,"",toHash(s));syncVbar(s);
+  if(s.tab==="strong"&&S.num&&OUT().querySelector(".stres"))return stRender();
+  if(s.tab==="grammar"&&G_OUT.length&&$("#res"))return gDraw(G_LIM,RUN);
+  route()});
 document.querySelectorAll("input[name=t],input[name=m],input[name=rk]").forEach(r=>r.addEventListener("change",()=>{syncOpts();if($("#uq").value.trim())submit()}));
 /* أي رابط داخلي في الصفحة لتبويب معيّن = اختيار القارئ */
 document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;const h=a.getAttribute("href");
@@ -350,7 +370,13 @@ window.addEventListener("hashchange",route);
    ١) كلمة / الجذر العربي — منقول من search.html
    ===================================================================== */
 let Q,TR,TRN,ISAR,SEL,mode;
-const ADD=(a,c,v,raw)=>window.TSKLists?TSKLists.verseBtn({ref:AR[a]+" "+nAr(c)+": "+nAr(v),tr:TRN,t:raw,sm:1}):"";
+const ADD=(a,c,v,raw,trn)=>window.TSKLists?TSKLists.verseBtn({ref:AR[a]+" "+nAr(c)+": "+nAr(v),tr:trn||TRN,t:raw,sm:1}):"";
+/* تلوين مواضع [بداية، نهاية] في نص، مع ضم التشكيل الذي بعد آخر حرف */
+function markSpans(raw,sp){sp=sp.slice().sort((x,y)=>x[0]-y[0]);let h="",p=0;sp.forEach(([a,e])=>{if(a<p)return;while(e<raw.length&&DROP.test(raw[e]))e++;h+=esc(raw.slice(p,a))+"<mark>"+esc(raw.slice(a,e))+"</mark>";p=e});return h+esc(raw.slice(p))}
+/* مواضع نص البحث في أي نص (لتلوين الترجمة المعروضة لو اختلفت عن ترجمة البحث) */
+function qSpans(raw,qn){const [nt,mp]=norm(raw);let from=0,sp=[];for(;;){const i=nt.indexOf(qn,from);if(i<0)break;const j=i+qn.length;if(mode==="exact"&&((i>0&&isL(nt[i-1]))||(j<nt.length&&isL(nt[j])))){from=i+1;continue}sp.push([mp[i],mp[j-1]+1]);from=j}return sp}
+/* تلوين كلمات (بعد تجاهل التشكيل والهمزات) — لسترونج */
+function hlN(raw,words){const [nt,mp]=norm(raw),sp=[];words.forEach(w=>{const q=norm(w)[0].trim();if(!q)return;let f=0,i;while((i=nt.indexOf(q,f))>=0){sp.push([mp[i],mp[i+q.length-1]+1]);f=i+q.length}});return markSpans(raw,sp)}
 const MAP={"أ":"ا","إ":"ا","آ":"ا","ٱ":"ا","ى":"ي","ة":"ه","ؤ":"و","ئ":"ي"};
 const DROP=/[ً-ٰٟـ]/;
 const isL=c=>/[ء-ي0-9A-Za-z]/.test(c);
@@ -363,7 +389,11 @@ function qRoots(q){let rs=new Set();const m=window.RT[q];if(m)m.split(",").forEa
   if(q.endsWith("ه")||q.endsWith("ا"))cand.push(q.slice(0,-1)+"ء");
   cand.forEach(c=>{if(REV[c])rs.add(c)});
   return [...rs]}
-function hitHTML(a,c,v,raw,h){return '<a class="hit'+(ISAR?'':' en')+'" target="_blank" rel="noopener" href="'+a+'.html?tr='+TR+'#/'+a+'/'+c+':'+v+'">'+ADD(a,c,v,raw)+'<b>'+esc(AR[a])+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+h+'</span></a>'}
+function hitHTML(a,c,v,raw,h,spf){let tr=TR,t=raw,hh=h,note="";
+  if(VW!==TR){const V=window.TX&&window.TX[VW],r2=V&&V[a]&&V[a][c+":"+v];
+    if(r2!=null){tr=VW;t=r2;hh=spf?markSpans(r2,spf(r2)):esc(r2)}
+    else note='<small class="vna">هذه الآية غير موجودة بنفس الترقيم في '+TRS[VW].n+'، فظهرت بـ'+TRN+'.</small>'}
+  return '<a class="hit'+(TRS[tr].ar?'':' en')+'" target="_blank" rel="noopener" href="'+a+'.html?tr='+tr+'#/'+a+'/'+c+':'+v+'">'+ADD(a,c,v,t,TRS[tr].n)+'<b>'+esc(AR[a])+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+hh+'</span>'+note+'</a>'}
 function paged(flat,res,itemHTML){let shown=0;const STEP=150;
   function more(){let html="",cnt=0;const b=res.querySelector(".wmore");if(b)b.remove();
     while(shown<flat.length&&cnt<STEP){const it=flat[shown++];
@@ -380,7 +410,7 @@ function wordRun(s,tok){
   if(mode==="root"&&!hasArabic(Q)){OUT().innerHTML='<div class="uerr">البحث بالجذر العربي يحتاج كلمة عربية.</div>';return}
   document.title="بحث: "+Q+" ("+TRN+") — جدد وعتقاء";
   meta.textContent="جاري تحميل نص "+TRN+"…";
-  need("assets/tx_"+TR+".js",ok=>{if(tok!==RUN)return;
+  needAll([...new Set(["assets/tx_"+TR+".js","assets/tx_"+VW+".js"])],()=>{if(tok!==RUN)return;const ok=LD["assets/tx_"+TR+".js"]===1;
     if(!ok||!window.TX||!window.TX[TR]){meta.textContent="تعذر تحميل نص "+TRN+".";return}
     if(mode==="root"){meta.textContent="جاري تحميل فهرس الجذور…";need("assets/roots.js",ok2=>{if(tok!==RUN)return;if(!ok2||!window.RT){meta.textContent="تعذر تحميل فهرس الجذور.";return}runRoot()});return}
     textSearch()})}
@@ -403,7 +433,7 @@ function textSearch(){
   if(ISAR&&hasArabic(Q)&&!/\s/.test(Q)){const e=encodeURIComponent(Q);
     meta.insertAdjacentHTML("afterend",'<p class="usug">تريد كل صيغ الكلمة؟ <a href="#tab=root&rk=ar&t='+TR+'&q='+e+'">← بالجذر العربي</a> · <a href="#tab=root&rk=orig&q='+e+'">← أصلها في العبري واليوناني</a></p>')}
   const flat=[];hits.forEach(([a,l])=>{flat.push({head:a,count:l.length});l.forEach(x=>flat.push({a,x}))});
-  paged(flat,res,it=>hitHTML(it.a,it.x.c,it.x.v,it.x.raw,it.x.h))}
+  paged(flat,res,it=>hitHTML(it.a,it.x.c,it.x.v,it.x.raw,it.x.h,r=>qSpans(r,qn)))}
 function runRoot(){
   const meta=$("#meta"),res=$("#res"),T=window.TX[TR];
   const qs=norm(Q)[0].split(/[^ء-ي0-9A-Za-z]+/).filter(Boolean);
@@ -420,6 +450,8 @@ function runRoot(){
   const forms=Object.keys(form).sort((x,y)=>form[y]-form[x]);
   const off=new Set(),roff=new Set(),qset=new Set(qs);
   const ok=f=>!off.has(f)&&(qset.has(f)||!window.RT[f]||window.RT[f].split(',').some(r=>!roff.has(r)||!rootsTxt.includes(r)));
+  const allW=new Set(groups.flatMap(g=>[...g.ws]));
+  const rSpans=r=>{const [nt,mp]=norm(r),o=[],re=/[ء-ي0-9A-Za-z]+/g;let m;while((m=re.exec(nt))){if(allW.has(m[0])&&ok(m[0]))o.push([mp[m.index],mp[m.index+m[0].length-1]+1])}return o};
   function drawResults(){
     const list=verses.map(v=>({...v,use:v.hits.filter(t=>ok(t[0]))})).filter(v=>v.use.length);
     const by={};list.forEach(v=>{(by[v.a]=by[v.a]||[]).push(v)});
@@ -428,7 +460,7 @@ function runRoot(){
     const flat=[];ABBR.forEach(a=>{if(!by[a])return;flat.push({head:a,count:by[a].length});by[a].sort((x,y)=>{const[c1,v1]=x.k.split(":"),[c2,v2]=y.k.split(":");return c1-c2||v1-v2}).forEach(v=>flat.push({a,v}))});
     res.innerHTML="";
     paged(flat,res,it=>{const v=it.v,sp=v.use.map(t=>[v.mp[t[1]],v.mp[t[2]-1]+1]).sort((x,y)=>x[0]-y[0]);let h="",p=0;sp.forEach(([s,e])=>{if(s<p)return;h+=esc(v.raw.slice(p,s))+"<mark>"+esc(v.raw.slice(s,e))+"</mark>";p=e});h+=esc(v.raw.slice(p));
-      const [c,vv]=v.k.split(":");return hitHTML(it.a,c,vv,v.raw,h)})}
+      const [c,vv]=v.k.split(":");return hitHTML(it.a,c,vv,v.raw,h,rSpans)})}
   if(forms.length){const box=document.createElement("details");box.className="rootbox";box.open=forms.length>1;
     box.innerHTML='<summary>الصيغ المطابقة ('+nAr(forms.length)+') — ألغِ تحديد ما لا يخصّ المعنى</summary><div class="forms">'+forms.map(f=>'<label><input type="checkbox" checked data-f="'+esc(f)+'"> '+esc(f)+' <small>'+nAr(form[f])+'</small></label>').join("")+'</div>';
     meta.insertAdjacentElement("afterend",box);
@@ -527,7 +559,7 @@ const OCC={},CHK=new Set();
 window.STRC=(k,d)=>{for(const num in d){if(d[num].e)STRONG[num]=d[num].e;OCC[num]=d[num].o;CHK.add(num)}};
 const ckey=num=>"assets/strong/"+num[0]+Math.floor(+num.slice(1)/100)+".js";
 const CMAX={G:5624,H:8674};
-const vtx=x=>(window.TXB["alab/"+x[0]]||{})[x[1]+":"+x[2]];
+const vtx=x=>(window.TXB[VW+"/"+x[0]]||{})[x[1]+":"+x[2]];
 const PS=30;
 let S={num:"",book:"all",page:1,rows:[]};
 function hl(text,words){let t=esc(text);for(const w of words){const e=esc(w);if(e)t=t.split(e).join("<mark>"+e+"</mark>")}return t}
@@ -568,7 +600,7 @@ function stRender(){
   const rows=S.book==="all"?S.rows:S.rows.filter(o=>o.x[0]===S.book);
   const pages=Math.max(1,Math.ceil(rows.length/PS));if(S.page>pages)S.page=pages;
   const cur=rows.slice((S.page-1)*PS,S.page*PS);
-  {const nb=[...new Set(cur.map(o=>o.x[0]))].map(b=>"assets/tx/alab_"+b+".js").filter(s=>LD[s]!==1&&LD[s]!==2);
+  {const nb=[...new Set(cur.map(o=>o.x[0]))].map(b=>"assets/tx/"+VW+"_"+b+".js").filter(s=>LD[s]!==1&&LD[s]!==2);
    if(nb.length)needAll(nb,()=>{if(S.num===num&&OUT().querySelector(".stres"))stRender()})}
   const dent=e?`<div class="dent"><div class="hd"><span class="num">${num}</span><span class="orig ${isHeb(num)?"he":""}">${e.o}</span><span class="tr"><b>${e.tr}</b> · ${e.pr}</span><button type="button" class="stai" data-askai data-num="${num}" title="اسأل وضع الذكاء الاصطناعي في Google عن هذه الكلمة" style="margin-inline-start:auto"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"/></svg> اسأل Google AI</button><a class="rep" href="contact.html?t=c&p=${encodeURIComponent(num)}&tr=${encodeURIComponent("قاموس سترونج")}" target="tskcontact" title="أبلغ عن خطأ في هذا المدخل"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg><span>أبلغ عن خطأ</span></a></div>
     ${e.ar&&window.TSK_AINOTE||""}
@@ -582,7 +614,7 @@ function stRender(){
     pg=`<div class="pager"><button data-p="${S.page-1}" ${S.page<=1?"disabled":""}>السابق →</button>`+ps.map(i=>{const gap=prev&&i-prev>1?"<span>…</span>":"";prev=i;return gap+`<button data-p="${i}" class="${i===S.page?"on":""}">${n(i)}</button>`}).join("")+`<button data-p="${S.page+1}" ${S.page>=pages?"disabled":""}>← التالي</button></div>`}
   OUT().innerHTML=`<div class="stres"><section class="dict">${dent}</section>
     <div class="sum"><b>${plural(rows.length,"عدد واحد","عددان","أعداد","عددًا")}</b><span class="pill">تَرِد فيها هذه الكلمة</span><select id="stbk">${opts}</select><span class="pill">صفحة ${n(S.page)} من ${n(pages)}</span></div>`+
-    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ar">${vtx(x)!=null?hl(vtx(x),o.ws):(LD["assets/tx/alab_"+x[0]+".js"]===2?"":"…")}</div>${origHTML(x,num)}</div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg+
+    (cur.length?cur.map(o=>{const x=o.x;return `<div class="item"><div class="from"><span>«${esc(o.ws.join("، "))}»</span><a href="${x[0]}.html?tr=${VW}#/${x[0]}/${x[1]}:${x[2]}" target="_blank" rel="noopener">افتح ${AR[x[0]]||x[0]} ${n(x[1])}: ${n(x[2])} ←</a></div><div class="refs"><div class="r" style="grid-template-columns:1fr"><div class="txt ${TRS[VW].ar?"ar":"en"}">${vtx(x)!=null?(VW==="alab"?hl(vtx(x),o.ws):hlN(vtx(x),o.ws)):(LD["assets/tx/"+VW+"_"+x[0]+".js"]===1?'<span class="vna">هذا العدد غير موجود بنفس الترقيم في '+TRS[VW].n+'.</span>':LD["assets/tx/"+VW+"_"+x[0]+".js"]===2?"":"…")}</div>${origHTML(x,num)}</div></div></div>`}).join(""):`<div class="empty">لا توجد أعداد تحتوي هذا الرقم في الأسفار المزودة بقاموس سترونج.</div>`)+pg+
     `<p class="usug">تريد البحث عن هذه الكلمة بالقواعد النحوية؟ <a href="#tab=grammar&q=${num}&gb=${num[0]==="G"?"NT":"OT"}">← بحث نحوي</a></p></div>`}
 OUT().addEventListener("click",e=>{const b=e.target.closest(".stres .pager button");if(b&&!b.disabled){S.page=+b.dataset.p;stRender();window.scrollTo({top:0,behavior:"smooth"})}});
 OUT().addEventListener("change",e=>{if(e.target.id==="stbk"){S.book=e.target.value;S.page=1;stRender()}});
@@ -668,13 +700,13 @@ function gShow(abs,flt,wq,tok){
   const ls=Object.values(lem).sort((x,y)=>y.c-x.c).slice(0,24);
   $("#lem").innerHTML=ls.map(l=>'<span><span class="o">'+esc(l.o)+'</span>'+esc(l.t||"")+' <small>'+(l.id||"")+' · '+nAr(l.c)+'</small></span>').join("");
   G_OUT=out;gDraw(300,tok)}
-let G_OUT=[];
-const svdText=(b,k)=>(window.TXB["svd/"+b]||{})[k];
-function gDraw(lim,tok){const res=$("#res");if(!res)return;let cur="",html="";
-  {const bs=[...new Set(G_OUT.slice(0,lim).map(h=>h.a))].map(b=>"assets/tx/svd_"+b+".js");if(bs.some(s=>LD[s]!==1&&LD[s]!==2))return needAll(bs,()=>{if(tok===RUN)gDraw(lim,tok)})}
+let G_OUT=[],G_LIM=300;
+const svdText=(b,k)=>(window.TXB[VW+"/"+b]||{})[k];
+function gDraw(lim,tok){G_LIM=lim;const res=$("#res");if(!res)return;let cur="",html="";
+  {const bs=[...new Set(G_OUT.slice(0,lim).map(h=>h.a))].map(b=>"assets/tx/"+VW+"_"+b+".js");if(bs.some(s=>LD[s]!==1&&LD[s]!==2))return needAll(bs,()=>{if(tok===RUN)gDraw(lim,tok)})}
   G_OUT.slice(0,lim).forEach(h=>{if(h.a!==cur){cur=h.a;html+='<div class="gbk">'+AR[h.a]+'</div>'}
     const [c,v]=h.k.split(":");const T=svdText(h.a,h.k)||"";
-    html+='<a class="hit" target="_blank" rel="noopener" href="'+h.a+'.html#/'+h.a+'/'+c+':'+v+'"><b>'+AR[h.a]+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+esc(T)+'</span><div class="gchips">'+h.hits.map(w=>'<span class="chip"><span class="o">'+esc(w[0])+'</span><span class="tr">'+esc(w[1])+'</span><span class="en">'+esc(w[4]||"—")+'</span><span class="pc">'+esc(w[3])+'</span></span>').join("")+'</div></a>'});
+    html+='<a class="hit'+(TRS[VW].ar?'':' en')+'" target="_blank" rel="noopener" href="'+h.a+'.html?tr='+VW+'#/'+h.a+'/'+c+':'+v+'"><b>'+AR[h.a]+' '+nAr(c)+': '+nAr(v)+'</b><span class="t">'+esc(T)+'</span><div class="gchips">'+h.hits.map(w=>'<span class="chip"><span class="o">'+esc(w[0])+'</span><span class="tr">'+esc(w[1])+'</span><span class="en">'+esc(w[4]||"—")+'</span><span class="pc">'+esc(w[3])+'</span></span>').join("")+'</div></a>'});
   if(G_OUT.length>lim)html+='<button type="button" class="gmore" id="gmore">عرض المزيد ('+nAr(G_OUT.length-lim)+' آية متبقية)</button>';
   res.innerHTML=html;const mb=$("#gmore");if(mb)mb.onclick=()=>gDraw(lim+300,tok)}
 
